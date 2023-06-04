@@ -1,11 +1,23 @@
+## About
+Weekly report is a website to track your week goals by different types of trackers and notes.
+
+## Technologies and Frameworks
+- Firestore
+- Firebase Auth
+- Next js
+- Phosphore Icons
+
 ## Getting Started
 
-install the dependences:
+Install all the dependences:
 ```bash
 npm install
 ```
 
-First, run the development server:
+Add a file named '.env' and put the following data by your firebase project.
+
+
+Run the development server:
 
 ```bash
 npm run dev
@@ -16,4 +28,6 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
+
+And, voilà!
 

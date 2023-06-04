@@ -13,7 +13,8 @@ import { useRouter } from "next/router";
 export default function App() {
     const router = useRouter()
 
-    const idReport = typeof router.query.idReport === 'string' ? router.query.idReport : '';
+    // const idReport = typeof router.query.idReport === 'string' ? router.query.idReport : '';
+    const idReport = "reports"
 
     const [checkGoals, setCheckGoals] = useState<ICheckGoal[] | null>([])
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[] | null>([])
@@ -52,9 +53,9 @@ export default function App() {
             }
         }
 
-        // useEffect(() => {
-        //     fetchReports();
-        // }, [])
+        useEffect(() => {
+            fetchReports();
+        }, [])
 
         useEffect(() => {
             updateCheckGoals()
