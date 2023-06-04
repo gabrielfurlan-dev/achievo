@@ -16,7 +16,7 @@ npm install
 
 Add a file named '.env' and put the following data by your firebase project.
 
-![[Examples]](src\assets\img\dotenv-screenshot.png)
+![[Examples]](src/assets/img/dotenv-screenshot.png)
 
 
 Run the development server:
@@ -32,4 +32,4 @@ pnpm dev
 Open [http://localhost:3000](http://localhost:3000)
 
 And, voilà!
-![[Examples]](src\assets\img\example-screenshots.png)
+![[Examples]](src/assets/img/example-screenshots.png)
