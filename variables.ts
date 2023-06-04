@@ -1,0 +1,23 @@
+import z from 'zod';
+
+const envSchema = z.object({
+    FIREBASE_APIKEY: z.string(),
+    FIREBASE_AUTH_DOMAIN: z.string(),
+    FIREBASE_PROJECT_ID: z.string(),
+    FIREBASE_STORAGE_BUCKET: z.string(),
+    FIREBASE_MESSAGING_SENDER_ID: z.string(),
+    FIREBASE_API_ID: z.string(),
+    FIREBASE_MEASUREMENT_ID: z.string(),
+})
+
+const variables = envSchema.parse({
+    FIREBASE_APIKEY: process.env.NEXT_PUBLIC_FIREBASE_APIKEY,
+    FIREBASE_AUTH_DOMAIN: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    FIREBASE_PROJECT_ID: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    FIREBASE_STORAGE_BUCKET: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    FIREBASE_MESSAGING_SENDER_ID: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    FIREBASE_API_ID: process.env.NEXT_PUBLIC_FIREBASE_API_ID,
+    FIREBASE_MEASUREMENT_ID: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+})
+
+export default variables;
