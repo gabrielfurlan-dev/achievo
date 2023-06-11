@@ -1,3 +1,4 @@
+import { Target } from "phosphor-react";
 import { SetStateAction } from "react";
 
 type inputProps={
@@ -5,17 +6,27 @@ type inputProps={
     placeHolder?:string,
     type?:("email"|"password"|undefined),
     onChange:(value: SetStateAction<any>) => void;
+    noBackground?: boolean,
+    alignRight?: boolean,
+
+
 }
 
-export function InputText({value, placeHolder, type, onChange:method}:inputProps) {
+export function InputText({value, placeHolder, type, onChange:method, noBackground, alignRight}:inputProps) {
     return (
         <>
             <input
-                className=" border border-GRAY text-md rounded-lg py-2 px-4"
+                className="text-md rounded-lg w-full py-2 px-4"
                 placeholder={placeHolder}
                 type={type}
                 value={value}
-                onChange={method}
+                onChange={(e) => method(e.target.value)}
+                style={{
+                  borderColor:  noBackground ? "transparent" :"f3f4f6",
+                  outline: "none",
+                  backgroundColor: noBackground ? "transparent" : "none",
+                  textAlign: alignRight ? "right" : "left",
+                }}
             />
         </>
     );

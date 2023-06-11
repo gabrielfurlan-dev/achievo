@@ -1,31 +1,51 @@
 import { Checkbox } from "@mui/material";
-import { useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
+import { InputText } from "../../InputText";
+import { ICheckGoal } from "@/Interfaces/report";
 
 type CheckProps = {
+    id: number,
     title: string,
-    checked?: boolean
+    checked?: boolean,
+    setCheckGoals: (value: SetStateAction<ICheckGoal[]>) => void
 }
 
-export default function CheckInput({ title, checked }: CheckProps) {
+export default function CheckInput({ id, title, checked, setCheckGoals }: CheckProps) {
 
     const [isChecked, setIsChecked] = useState(checked)
+    const [titleInput, setTitleInput] = useState(title)
 
     const corDeFundo = isChecked ? "#c3ffc9" : "#f3f4f6";
-    const padding = title.length < 50 ? "1px" : "11px";
+
+    useEffect(() => {
+        setCheckGoals((prevProgressGoals) => {
+            const newProgress = prevProgressGoals.map((goal) => {
+                if (goal.id === id) {
+                    return {
+                        ...goal,
+                        title: titleInput,
+                        checked: isChecked != undefined ? isChecked : false,
+                    };
+                } else {
+                    return goal;
+                }
+            });
+
+            return newProgress;
+        });
+
+    }, [isChecked, titleInput])
 
     return (
         <>
-            <div className="flex flex-row gap-1 items-center justify-between pl-4 rounded-md"
+            <div className="flex flex-row gap-1 items-center justify-between rounded-md"
                 style={{
-                    paddingTop: padding,
-                    paddingBottom: padding,
-                    paddingLeft: "16px",
                     backgroundColor: corDeFundo,
                     textDecoration: isChecked ? "line-through" : "none"
                 }}
             >
-                <p>{title}</p>
-                <Checkbox checked={isChecked} onClick={() => setIsChecked(!isChecked)}/>
+                <InputText onChange={setTitleInput} value={titleInput} noBackground></InputText>
+                <Checkbox checked={isChecked} onClick={() => setIsChecked(!isChecked)} />
             </div>
         </>
     );

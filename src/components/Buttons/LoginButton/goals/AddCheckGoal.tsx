@@ -20,7 +20,7 @@ export function AddCheckGoal({ goal, setGoal }: goalProps) {
     function handleAddCheckGoal(goal: ICheckGoal[]): void {
         setExpanded(false);
         console.log('teste')
-        setGoal([...goal, { id: goal.length, title: title, checked: check }])
+        setGoal([...goal, { id: goal.length, title: title, checked: check, indice: goal.length }])
     }
 
     return (
@@ -43,7 +43,7 @@ export function AddCheckGoal({ goal, setGoal }: goalProps) {
                             </Button>
 
                             <div className="flex">
-                                <InputText onChange={(e) => setTitle(e.target.value)} />
+                                <InputText placeHolder="Levar o cachorro pra passear" onChange={(e) => setTitle(e.target.value)} />
                                 <div className="flex">
                                     <Checkbox />
                                 </div>

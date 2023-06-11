@@ -1,18 +1,9 @@
 export interface IReport {
-    id: number;
+    id: string;
     date: string;
     username: string;
-    email: string;
-    reportContent: IReportContent;
-}
-
-export interface IReportContent {
-    id: number;
     progressGoals: IProgressGoal[];
     checkGoals: ICheckGoal[];
-    hits: IHit[];
-    misses: IMiss[];
-    learnings: ILearned[];
 }
 
 export interface IProgressGoal {
@@ -20,12 +11,14 @@ export interface IProgressGoal {
     title: string;
     total: number;
     value: number;
+    indice: number
 }
 
 export interface ICheckGoal {
     id: number;
     title: string;
     checked: boolean;
+    indice: number;
 }
 
 export interface IHit {
