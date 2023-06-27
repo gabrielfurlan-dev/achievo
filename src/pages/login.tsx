@@ -1,12 +1,9 @@
 import { GoogleLogo } from "@phosphor-icons/react";
 import Swal from "sweetalert2";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'; ''
-import { initializeApp } from "firebase/app";
-import env from "variables";
 import Router from "next/router";
 import firebaseConfig from "@/firebaseConfig";
 import { useEffect, useState } from "react";
-import MutatingDots from 'react-loader-spinner'
 import { CircularProgress } from "@mui/material";
 
 function handleLoginGoogle() {
