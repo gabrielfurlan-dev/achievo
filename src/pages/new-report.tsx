@@ -90,13 +90,22 @@ export default function NewReport() {
                                 <ProgressBar key={goal.id} id={goal.id} title={goal.title} total={goal.total} atualValue={goal.value} setProgressGoals={setProgressGoals} />
                             ))}
                             <div>
-                                <Button onClick={handleAddProgressGoal}><Plus /></Button>
+                                <Button onClick={handleAddProgressGoal} className="w-full">
+                                    <div className="flex gap-2 items-center">
+                                        <Plus />
+                                        <p>Progress Goal</p>
+                                    </div></Button>
                             </div>
                             {Array.isArray(checkGoals) && checkGoals.map((goal) => (
                                 <CheckInput key={goal.id} id={goal.id} title={goal.title} checked={goal.checked} setCheckGoals={setCheckGoals} />
                             ))}
                             <div>
-                                <Button onClick={handleAddCheckGoal}><Plus /></Button>
+                                <Button onClick={handleAddCheckGoal} className="w-full">
+                                    <div className="flex gap-2 items-center">
+                                        <Plus />
+                                        <p>CheckGoal</p>
+                                    </div>
+                                </Button>
                             </div>
                         </div>
                     </div>
