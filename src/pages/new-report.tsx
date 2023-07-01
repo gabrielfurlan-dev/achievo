@@ -34,7 +34,13 @@ export default function NewReport() {
     const [checkGoals, setCheckGoals] = useState<ICheckGoal[]>([])
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([])
     const [selectedDate, setSelectedDate] = useState<string>('');
-    const name = localStorage.getItem('userName')
+
+    let name = "";
+
+    useEffect(() => {
+        name = localStorage.getItem('userName') ?? ""
+    }, [])
+
 
     useEffect(() => {
         setSelectedDate(getCurrentDate())
@@ -63,7 +69,7 @@ export default function NewReport() {
 
             <div>
                 <div className="gap-2">
-                    <PageHeader/>
+                    <PageHeader />
                     <div id="Header">
                         <h2 className="text-2xl">{name}</h2>
                         <h3 className="w-36">
