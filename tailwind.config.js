@@ -12,16 +12,16 @@ module.exports = {
             VERDE_CLARO: '#c3ffc9',
 
             PRINCIPAL: '#5C8A74',
-            PRINCIPAL_DARK: '232F24',
+            PRINCIPAL_DARK: '#232F24',
 
-            SECONDARY: 'D97251',
+            SECONDARY: '#D97251',
 
             WHITE_PRINCIPAL: '#F5F5F5',
             WHITE_SECONDARY: '#EAEAEA',
             WHITE_TERTIARY: '#DADADA',
 
             GRAY:'#808080',
-            GRAY_SECONDARY: '595959',
+            GRAY_SECONDARY: '#595959',
             GRAY_DARK: '#1C1C1C'
 
           }
