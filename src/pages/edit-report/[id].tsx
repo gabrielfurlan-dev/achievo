@@ -127,7 +127,7 @@ export default function EditReport() {
                         <h3 className="text-3xl font-bold">Metas</h3>
                         <div className="flex flex-col gap-2 mt-2 bg-gray-50 rounded-md p-4">
                             {Array.isArray(progressGoals) && progressGoals.map((goal) => (
-                                <ProgressGoal key={goal.id} id={goal.id} title={goal.title} total={goal.total} atualValue={goal.value} setProgressGoals={setProgressGoals} />
+                                <ProgressGoal key={goal.id} progressGoal={goal} setProgressGoals={setProgressGoals} />
                             ))}
                             <div>
                                 <Button onClick={handleAddProgressGoal}><Plus /></Button>

@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { InputField } from "@/components/Buttons/InputField";
 import { CreateReport } from "@/hooks/ReportService";
 import Swal from "sweetalert2";
+import PageHeader from "@/components/PageHeader";
 
 const getCurrentDate = (): string => {
     const currentDate = new Date();
@@ -32,8 +33,8 @@ export default function NewReport() {
 
     const [checkGoals, setCheckGoals] = useState<ICheckGoal[]>([])
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([])
-    const [title, setTitle] = useState('')
     const [selectedDate, setSelectedDate] = useState<string>('');
+    const name = localStorage.getItem('userName')
 
     useEffect(() => {
         setSelectedDate(getCurrentDate())
@@ -52,7 +53,7 @@ export default function NewReport() {
     }
 
     async function handleSaveReport() {
-        const idReport = await CreateReport({ selectedDate, title, progressGoals, checkGoals })
+        const idReport = await CreateReport({ selectedDate, title: name ?? "", progressGoals, checkGoals })
         Swal.fire('Good Job!', 'Relatório adicionado com sucesso!', 'success')
         router.push('/home')
     }
@@ -61,23 +62,12 @@ export default function NewReport() {
         <div className="w-4/6 m-auto mt-16">
 
             <div>
-                <div className="flex gap-2">
-                    <Button onClick={() => router.push('/home')}><ArrowLeft size={32} /></Button>
+                <div className="gap-2">
+                    <PageHeader/>
                     <div id="Header">
-                        <div className="flex gap-3">
-                            <ReadCvLogo size={32} />
-                            <div>
-                                <h1 className="text-4xl font-bold">Week Report</h1>
-                            </div>
-                        </div>
-                        <h2 className="text-2xl"><InputField placeHolder="Seu nome..." onChange={setTitle} value={title} /></h2>
-                        <h3>
-                            <input
-                                type="date"
-                                id="dateInput"
-                                value={selectedDate}
-                                onChange={handleDateChange}
-                            />
+                        <h2 className="text-2xl">{name}</h2>
+                        <h3 className="w-36">
+                            <InputField onChange={handleDateChange} value={selectedDate} type="date" noBackground />
                         </h3>
                     </div>
                 </div>
