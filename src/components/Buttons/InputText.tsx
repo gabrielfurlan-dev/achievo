@@ -4,12 +4,10 @@ import { SetStateAction } from "react";
 type inputProps={
     value?:string;
     placeHolder?:string,
-    type?:("email"|"password"|undefined),
+    type?:("email" | "password" | undefined),
     onChange:(value: SetStateAction<any>) => void;
     noBackground?: boolean,
     alignRight?: boolean,
-
-
 }
 
 export function InputText({value, placeHolder, type, onChange:method, noBackground, alignRight}:inputProps) {
@@ -24,7 +22,7 @@ export function InputText({value, placeHolder, type, onChange:method, noBackgrou
                 style={{
                   borderColor:  noBackground ? "transparent" :"f3f4f6",
                   outline: "none",
-                  backgroundColor: noBackground ? "transparent" : "none",
+                  backgroundColor: noBackground ? "transparent" : "#f3f4f6",
                   textAlign: alignRight ? "right" : "left",
                 }}
             />

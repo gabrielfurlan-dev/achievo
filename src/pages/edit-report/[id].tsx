@@ -1,5 +1,5 @@
 
-import ProgressBar from "../../components/Buttons/LoginButton/goals/ProgressBar";
+import ProgressBar from "../../components/Buttons/LoginButton/goals/ProgressGoal/ProgressBar";
 import CheckInput from "../../components/Buttons/LoginButton/goals/CheckInput";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
