@@ -1,10 +1,10 @@
 import { Target } from "phosphor-react";
-import { ChangeEvent, SetStateAction } from "react";
+import { ChangeEvent, HTMLInputTypeAttribute, SetStateAction } from "react";
 
 type InputFieldProps = {
     value?: string;
     placeHolder?: string,
-    type?: ("button" | "checkbox" | "color" | "date" | "datetime-local" | "email" | "file" | "hidden" | "image" | "month" | "number" | "password" | "radio" | "range" | "reset" | "search" | "submit" | "tel" | "text" | "time" | "url" | "week"),
+    type?: HTMLInputTypeAttribute,
     onChange: (value: SetStateAction<any>) => void;
     noBackground?: boolean,
     alignRight?: boolean,
