@@ -1,5 +1,5 @@
 import { IProgressGoal } from "@/Interfaces/report";
-import { InputText } from "@/components/Buttons/InputText";
+import { InputField } from "@/components/Buttons/InputField";
 import Modal from "@/components/Modal";
 import { Button } from "@mui/material";
 import { Trash } from "phosphor-react";
@@ -12,7 +12,7 @@ type ProgressModalProps = {
     setProgressGoal: (value: SetStateAction<IProgressGoal>) => void
 }
 
-export default function ProgressModal({ isOpen, onClose, progressGoal, setProgressGoal }: ProgressModalProps) {
+export default function ProgressGoalModal({ isOpen, onClose, progressGoal, setProgressGoal }: ProgressModalProps) {
 
     const [editingValue, setEditingValue] = useState(progressGoal.value.toString())
     const [editingTotal, setEditingTotal] = useState(progressGoal.total.toString())
@@ -39,7 +39,7 @@ export default function ProgressModal({ isOpen, onClose, progressGoal, setProgre
                     <div>
                         <div className="flex flex-col gap-2">
                             <p>Título</p>
-                            <InputText
+                            <InputField
                                 onChange={setEditingTitle}
                                 value={editingTitle}
                                 placeHolder="Concluir curso de programação."
@@ -48,18 +48,20 @@ export default function ProgressModal({ isOpen, onClose, progressGoal, setProgre
                         <div className="flex flex-col gap-4 md:flex-row mt-4 md:mt-8">
                             <div className="flex flex-col gap-2">
                                 <p>Valor Atual</p>
-                                <InputText
+                                <InputField
                                     onChange={setEditingValue}
                                     value={editingValue}
                                     placeHolder="Concluir curso de programação."
+                                    type="number"
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
                                 <p>Valor Total</p>
-                                <InputText
+                                <InputField
                                     onChange={setEditingTotal}
                                     value={editingTotal}
                                     placeHolder="Concluir curso de programação."
+                                    type="number"
                                 />
                             </div>
                         </div>

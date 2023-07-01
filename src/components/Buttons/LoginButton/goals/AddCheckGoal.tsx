@@ -1,7 +1,7 @@
 import { Button, Checkbox } from "@mui/material";
 import { Check, CheckSquareOffset, Target, X } from "phosphor-react";
 import { Dispatch, SetStateAction, useState } from "react"
-import { InputText } from "../../InputText";
+import { InputField } from "../../InputField";
 import { ICheckGoal } from "@/Interfaces/report";
 import firebaseConfig from "@/firebaseConfig";
 
@@ -43,7 +43,7 @@ export function AddCheckGoal({ goal, setGoal }: goalProps) {
                             </Button>
 
                             <div className="flex">
-                                <InputText placeHolder="Levar o cachorro pra passear" onChange={(e) => setTitle(e.target.value)} />
+                                <InputField placeHolder="Levar o cachorro pra passear" onChange={(e) => setTitle(e.target.value)} />
                                 <div className="flex">
                                     <Checkbox />
                                 </div>

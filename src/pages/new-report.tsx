@@ -1,4 +1,4 @@
-import ProgressBar from "../components/Buttons/LoginButton/goals/ProgressGoal/ProgressBar";
+import ProgressGoal from "../components/Buttons/LoginButton/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "../components/Buttons/LoginButton/goals/CheckInput";
 import { ReadCvLogo } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 import { ArrowLeft, Plus } from "phosphor-react";
 import { ICheckGoal, IProgressGoal } from "@/Interfaces/report";
 import { useRouter } from "next/router";
-import { InputText } from "@/components/Buttons/InputText";
+import { InputField } from "@/components/Buttons/InputField";
 import { CreateReport } from "@/hooks/ReportService";
 import Swal from "sweetalert2";
 
@@ -70,7 +70,7 @@ export default function NewReport() {
                                 <h1 className="text-4xl font-bold">Week Report</h1>
                             </div>
                         </div>
-                        <h2 className="text-2xl"><InputText placeHolder="Seu nome..." onChange={setTitle} value={title} /></h2>
+                        <h2 className="text-2xl"><InputField placeHolder="Seu nome..." onChange={setTitle} value={title} /></h2>
                         <h3>
                             <input
                                 type="date"
@@ -87,7 +87,7 @@ export default function NewReport() {
                         <h3 className="text-3xl font-bold">Metas</h3>
                         <div className="flex flex-col gap-2 mt-2 bg-gray-50 rounded-md p-4">
                             {Array.isArray(progressGoals) && progressGoals.map((goal) => (
-                                <ProgressBar key={goal.id} progressGoal={goal} setProgressGoals={setProgressGoals} />
+                                <ProgressGoal key={goal.id} progressGoal={goal} setProgressGoals={setProgressGoals} />
                             ))}
                             <div>
                                 <Button onClick={handleAddProgressGoal} className="w-full">

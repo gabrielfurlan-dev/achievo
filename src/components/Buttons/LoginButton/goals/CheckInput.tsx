@@ -1,6 +1,6 @@
 import { Checkbox } from "@mui/material";
 import { SetStateAction, useEffect, useState } from "react";
-import { InputText } from "../../InputText";
+import { InputField } from "../../InputField";
 import { ICheckGoal } from "@/Interfaces/report";
 
 type CheckProps = {
@@ -44,7 +44,7 @@ export default function CheckInput({ id, title, checked, setCheckGoals }: CheckP
                     textDecoration: isChecked ? "line-through" : "none"
                 }}
             >
-                <InputText onChange={setTitleInput} value={titleInput} noBackground></InputText>
+                <InputField onChange={setTitleInput} value={titleInput} noBackground></InputField>
                 <Checkbox checked={isChecked} onClick={() => setIsChecked(!isChecked)} />
             </div>
         </>
