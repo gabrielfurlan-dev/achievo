@@ -47,9 +47,17 @@ export default function ProgressGoal({ progressGoal, setProgressGoals }: Progres
         setIsModalOpen(false);
     };
 
+    function deleteGoal() {
+        setProgressGoals((goals) => {
+            return goals.filter(function (goal) {
+                return goal.id !== progressGoal.id;
+            });
+        });
+    }
+
     return (
         <div>
-            <Button className="flex w-full normal-case" onClick={openModal} style={{ color: completou ? '#EAEAEA' : '#1C1C1C' }}>
+            <button className="flex w-full normal-case" onClick={openModal} style={{ color: completou ? '#EAEAEA' : '#1C1C1C' }}>
                 <div className="flex flex-col gap-1 items-start  p-2 px-4 rounded-md  w-full" style={{ backgroundColor: corDeFundo }}>
                     <div className="flex w-full justify-between items-center">
                         <p className="mt-2 text-lg" style={{ textDecoration: completou ? "line-through" : "none" }}>
@@ -71,12 +79,13 @@ export default function ProgressGoal({ progressGoal, setProgressGoals }: Progres
                         </div>
                     </div>
                 </div>
-            </Button>
+            </button>
             <ProgressGoalModal
                 isOpen={isModalOpen}
                 onClose={closeModal}
                 progressGoal={goal}
                 setProgressGoal={setGoal}
+                deleteGoal={deleteGoal}
             />
         </div>
     );

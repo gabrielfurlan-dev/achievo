@@ -9,10 +9,11 @@ type ProgressModalProps = {
     isOpen: boolean;
     onClose: () => void;
     progressGoal: IProgressGoal;
-    setProgressGoal: (value: SetStateAction<IProgressGoal>) => void
+    setProgressGoal: (value: SetStateAction<IProgressGoal>) => void;
+    deleteGoal: () => void;
 }
 
-export default function ProgressGoalModal({ isOpen, onClose, progressGoal, setProgressGoal }: ProgressModalProps) {
+export default function ProgressGoalModal({ isOpen, onClose, progressGoal, setProgressGoal, deleteGoal }: ProgressModalProps) {
 
     const [editingValue, setEditingValue] = useState(progressGoal.value.toString())
     const [editingTotal, setEditingTotal] = useState(progressGoal.total.toString())
@@ -34,7 +35,7 @@ export default function ProgressGoalModal({ isOpen, onClose, progressGoal, setPr
 
     return (
         <div className="">
-            <Modal isOpen={isOpen} onClose={onClose} handleSaveButton={handleSaveGoal}>
+            <Modal isOpen={isOpen} onClose={onClose} handleSaveButton={handleSaveGoal} onDelete={deleteGoal} title="Editar Meta de Progresso" subtitle="Informe todos os valores abaixo">
                 <div className="w-[300px] md:w-auto">
                     <div>
                         <div className="flex flex-col gap-2">

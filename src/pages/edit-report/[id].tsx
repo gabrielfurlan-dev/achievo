@@ -1,6 +1,6 @@
 
 import ProgressGoal from "../../components/Buttons/LoginButton/goals/ProgressGoal/ProgressGoal";
-import CheckInput from "../../components/Buttons/LoginButton/goals/CheckInput";
+import CheckInput from "../../components/Buttons/LoginButton/goals/CheckGoal/CheckInput";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Button } from "@mui/material";

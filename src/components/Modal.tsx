@@ -9,9 +9,12 @@ interface ModalProps {
     handleSaveButton?: () => void;
     hideButtons?: boolean;
     hideDelete?: boolean;
+    onDelete?: () => void;
+    title: string;
+    subtitle?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, handleSaveButton, hideButtons, hideDelete }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, handleSaveButton, hideButtons, hideDelete, onDelete, title, subtitle }) => {
     if (!isOpen) return null;
 
     return (
@@ -24,15 +27,15 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, handleSaveButt
 
                 <div className='m-6'>
                     <div className="mb-8">
-                        <p className="font-bold text-2xl">Editar Progresso</p>
-                        <p className="text-GRAY">Informe todos os valores abaixo</p>
+                        <p className="font-bold text-2xl">{title}</p>
+                        <p className="text-GRAY">{subtitle}</p>
                     </div>
 
                     <div className="modal-content">{children}</div>
                     {!hideButtons && (
                         <div className='mt-10 h-12 flex justify-between'>
                             {!hideDelete && (
-                                <DangerButton onClick={() => { }}>
+                                <DangerButton onClick={onDelete}>
                                     <div className='flex gap-2'>
                                         <Trash size={20} />
                                         <p className="hidden md:block">Eliminar</p>

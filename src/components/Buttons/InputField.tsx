@@ -8,15 +8,18 @@ type InputFieldProps = {
     onChange: (value: SetStateAction<any>) => void;
     noBackground?: boolean,
     alignRight?: boolean,
+    widhtAuto?: boolean,
+    disabled?: boolean
 }
 
 
 
-export function InputField({ value, placeHolder, type, onChange: method, noBackground, alignRight }: InputFieldProps) {
+export function InputField({ value, placeHolder, type, onChange: method, noBackground, alignRight, widhtAuto, disabled }: InputFieldProps) {
     return (
         <>
             <input
-                className="text-md rounded-lg w-full py-2 px-4"
+                className="text-md rounded-lg py-2 px-4"
+                disabled={disabled}
                 placeholder={placeHolder}
                 value={value}
                 type={type}
@@ -28,6 +31,7 @@ export function InputField({ value, placeHolder, type, onChange: method, noBackg
                     outline: "none",
                     backgroundColor: noBackground ? "transparent" : "#f3f4f6",
                     textAlign: alignRight ? "right" : "left",
+                    width: widhtAuto ? "" : "100%"
                 }}
             />
         </>
