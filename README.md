@@ -9,6 +9,10 @@ Weekly report is a website to track your week goals by different types of tracke
 
 ## Getting Started
 
+### Website
+You can access the app by following url: **https://weeklyreport-preview.vercel.app**
+
+### Installing locally
 Install all the dependences:
 ```bash
 npm install
