@@ -1,6 +1,6 @@
-import { Button } from '@mui/material';
 import { Trash, X } from 'phosphor-react';
 import React, { ReactNode } from 'react';
+import { ConfirmButton, DangerButton, NoBackgroundButton } from './Buttons/Buttons';
 
 interface ModalProps {
     isOpen: boolean;
@@ -31,23 +31,19 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, handleSaveButt
                     <div className="modal-content">{children}</div>
                     {!hideButtons && (
                         <div className='mt-10 h-12 flex justify-between'>
-                            {!hideDelete && (<Button
-                                className="md:w-36 gap-2 bg-WHITE_SECONDARY hover:bg-WHITE_TERTIARY text-GRAY_DARK normal-case"
-                            >
-                                <Trash size={20} />
-                                <p className="hidden md:block">Eliminar</p>
-                            </Button>)}
+                            {!hideDelete && (
+                                <DangerButton onClick={() => { }}>
+                                    <div className='flex gap-2'>
+                                        <Trash size={20} />
+                                        <p className="hidden md:block">Eliminar</p>
+                                    </div>
+                                </DangerButton>
+                            )}
 
                             <div className="flex justify-end w-full">
                                 <div className="flex gap-2 h-full">
-                                    <Button
-                                        onClick={onClose}
-                                        className="w-20 md:w-24 bg-none text-GRAY_DARK hover:bg-WHITE_SECONDARY normal-case"
-                                    >Cancelar</Button>
-                                    <Button
-                                        onClick={handleSaveButton}
-                                        className="w-24 md:w-36 bg-PRINCIPAL text-WHITE_TERTIARY hover:bg-PRINCIPAL_DARK normal-case"
-                                    >Salvar</Button>
+                                    <NoBackgroundButton onClick={onClose}> Cancelar </NoBackgroundButton>
+                                    <ConfirmButton onClick={handleSaveButton}> <p className='px-2 font-semibold'>Salvar</p> </ConfirmButton>
                                 </div>
                             </div>
                         </div>

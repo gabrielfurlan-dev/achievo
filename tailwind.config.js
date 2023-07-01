@@ -12,7 +12,7 @@ module.exports = {
             VERDE_CLARO: '#c3ffc9',
 
             PRINCIPAL: '#5C8A74',
-            PRINCIPAL_DARK: '#232F24',
+            PRINCIPAL_DARK: '#3b4a3c',
 
             SECONDARY: '#D97251',
 

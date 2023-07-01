@@ -10,7 +10,7 @@ export default function PageHeader() {
 
     return (
         <div className="flex">
-            <Button onClick={() => router.push('/home')}><ArrowLeft size={32} /></Button>
+            <Button onClick={goBack}><ArrowLeft size={32} /></Button>
             <div className="flex gap-3">
                 <ReadCvLogo size={32} />
                 <div>
