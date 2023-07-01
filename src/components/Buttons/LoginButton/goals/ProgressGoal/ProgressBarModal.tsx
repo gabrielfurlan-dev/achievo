@@ -1,66 +1,70 @@
+import { IProgressGoal } from "@/Interfaces/report";
 import { InputText } from "@/components/Buttons/InputText";
 import Modal from "@/components/Modal";
-import { ReactNode, SetStateAction, useState } from "react";
+import { Button } from "@mui/material";
+import { Trash } from "phosphor-react";
+import { SetStateAction, useState } from "react";
 
 type ProgressModalProps = {
     isOpen: boolean;
     onClose: () => void;
-    children?: ReactNode;
-
-    title: string;
-    changeTitle: (value: SetStateAction<any>) => void;
-
-    valorAtual: string;
-    changeValorAtual: (value: SetStateAction<any>) => void;
-
-    valorTotal: string;
-    changeValorTotal: (value: SetStateAction<any>) => void;
+    progressGoal: IProgressGoal;
+    setProgressGoal: (value: SetStateAction<IProgressGoal>) => void
 }
 
-export default function ProgressModal({
-    children,
-    isOpen,
-    onClose,
-    title,
-    changeTitle,
-    valorAtual,
-    changeValorAtual,
-    valorTotal,
-    changeValorTotal }: ProgressModalProps) {
+export default function ProgressModal({ isOpen, onClose, progressGoal, setProgressGoal }: ProgressModalProps) {
+
+    const [editingValue, setEditingValue] = useState(progressGoal.value.toString())
+    const [editingTotal, setEditingTotal] = useState(progressGoal.total.toString())
+    const [editingTitle, setEditingTitle] = useState(progressGoal.title)
+
+    function handleSaveGoal() {
+
+        let newGoal: IProgressGoal = {
+            id: progressGoal.id,
+            indice: progressGoal.indice,
+            title: editingTitle,
+            value: Number(editingValue),
+            total: Number(editingTotal)
+        };
+
+        setProgressGoal(newGoal);
+        onClose()
+    }
 
     return (
-        <div>
-            <Modal isOpen={isOpen} onClose={onClose}>
-
-                <div className="m-4">
-                    <p>Título</p>
-                    <InputText
-                        onChange={changeTitle}
-                        value={title}
-                        placeHolder="Concluir curso de programação."
-                    />
-
-                    <div className="flex gap-4">
-                        <div>
-                            <p>Valor Atual</p>
+        <div className="">
+            <Modal isOpen={isOpen} onClose={onClose} handleSaveButton={handleSaveGoal}>
+                <div className="w-[300px] md:w-auto">
+                    <div>
+                        <div className="flex flex-col gap-2">
+                            <p>Título</p>
                             <InputText
-                                onChange={changeValorAtual}
-                                value={valorAtual}
+                                onChange={setEditingTitle}
+                                value={editingTitle}
                                 placeHolder="Concluir curso de programação."
                             />
                         </div>
-
-                        <div>
-                            <p>Valor Total</p>
-                            <InputText
-                                onChange={changeValorTotal}
-                                value={valorTotal}
-                                placeHolder="Concluir curso de programação."
-                            />
+                        <div className="flex flex-col gap-4 md:flex-row mt-4 md:mt-8">
+                            <div className="flex flex-col gap-2">
+                                <p>Valor Atual</p>
+                                <InputText
+                                    onChange={setEditingValue}
+                                    value={editingValue}
+                                    placeHolder="Concluir curso de programação."
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <p>Valor Total</p>
+                                <InputText
+                                    onChange={setEditingTotal}
+                                    value={editingTotal}
+                                    placeHolder="Concluir curso de programação."
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </Modal>
         </div>
     );
