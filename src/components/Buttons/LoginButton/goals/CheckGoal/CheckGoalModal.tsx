@@ -23,7 +23,7 @@ export default function CheckGoalModal({ isOpen, onClose, title, id, setCheckGoa
     }
 
     return (
-        <>
+        <div className="w-[1000px]">
             <Modal
                 isOpen={isOpen}
                 onClose={onClose}
@@ -42,6 +42,6 @@ export default function CheckGoalModal({ isOpen, onClose, title, id, setCheckGoa
                     />
                 </div>
             </Modal>
-        </>
+        </div>
     )
 }

@@ -18,8 +18,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, handleSaveButt
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 w-full">
-            <div className="bg-white rounded-2xl p-4">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white rounded-2xl p-4  w-[400px] md:w-auto">
 
                 <button className="float-right right-2 text-gray-500 hover:text-gray-700" onClick={onClose}>
                     <X size={24} />
@@ -34,19 +34,24 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, handleSaveButt
                     <div className="modal-content">{children}</div>
                     {!hideButtons && (
                         <div className='mt-10 h-12 flex justify-between'>
-                            {!hideDelete && (
-                                <DangerButton onClick={onDelete}>
-                                    <div className='flex gap-2'>
-                                        <Trash size={20} />
-                                        <p className="hidden md:block">Eliminar</p>
-                                    </div>
-                                </DangerButton>
-                            )}
+                            <div className='mr-2'>
+                                {!hideDelete && (
+                                    <DangerButton onClick={onDelete}>
+                                        <div className='flex gap-2'>
+                                            <Trash size={20} />
+                                            <p className="hidden md:block">Eliminar</p>
+                                        </div>
+                                    </DangerButton>
+                                )}
+                            </div>
+
 
                             <div className="flex justify-end w-full">
-                                <div className="flex gap-2 h-full">
+                                <div className="flex gap-2 h-full w-full justify-end">
                                     <NoBackgroundButton onClick={onClose}> Cancelar </NoBackgroundButton>
-                                    <ConfirmButton onClick={handleSaveButton}> <p className='px-2 font-semibold'>Salvar</p> </ConfirmButton>
+                                    <div className='w-36'>
+                                        <ConfirmButton onClick={handleSaveButton}> <p className='px-2 font-semibold'>Salvar</p> </ConfirmButton>
+                                    </div>
                                 </div>
                             </div>
                         </div>

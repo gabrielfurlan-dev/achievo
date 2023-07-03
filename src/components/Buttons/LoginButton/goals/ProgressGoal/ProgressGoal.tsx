@@ -14,7 +14,7 @@ export default function ProgressGoal({ progressGoal, setProgressGoals }: Progres
 
     let progressoAtual = ((Number(progressGoal.value) / Number(progressGoal.total)) * 100).toFixed();
     let completou = Number(progressoAtual) >= 100
-    let corDeFundo = completou ? "#5C8A74" : "#EAEAEA";
+    let corDeFundo = completou ? "#5C8A74" : "#F5F5F5";
 
     useEffect(() => {
 

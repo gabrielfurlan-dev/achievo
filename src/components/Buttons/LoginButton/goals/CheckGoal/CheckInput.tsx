@@ -15,7 +15,7 @@ export default function CheckInput({ id, title, checked, setCheckGoals }: CheckP
     const [isChecked, setIsChecked] = useState(checked)
     const [titleInput, setTitleInput] = useState(title)
 
-    const corDeFundo = isChecked ? "#5C8A74" : "#f3f4f6";
+    const corDeFundo = isChecked ? "#5C8A74" : "#F5F5F5";
 
     useEffect(() => {
         setCheckGoals((prevProgressGoals) => {
@@ -45,8 +45,7 @@ export default function CheckInput({ id, title, checked, setCheckGoals }: CheckP
 
     return (
         <>
-
-            <button onClick={() => setIsModalOpen(true)}>
+            <button onClick={() => setIsModalOpen(true)} className="">
                 <div className="flex flex-row gap-1 items-center justify-between rounded-md h-10"
                     style={{
                         backgroundColor: corDeFundo,
