@@ -109,11 +109,15 @@ export default function NewReport() {
                 </div>
 
                 <div className="flex justify-end">
-                    <div className="w-36">
-                        <ConfirmButton onClick={handleSaveReport}>Salvar</ConfirmButton>
+                    <div className="flex gap-2">
+                        <NoBackgroundButton onClick={() => router.push('/home')} >
+                            <p>Cancelar</p>
+                        </NoBackgroundButton>
+                        <div className="w-36"><ConfirmButton onClick={handleSaveReport}>Salvar</ConfirmButton>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
