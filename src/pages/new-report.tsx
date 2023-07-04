@@ -34,11 +34,10 @@ export default function NewReport() {
     const [checkGoals, setCheckGoals] = useState<ICheckGoal[]>([])
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([])
     const [selectedDate, setSelectedDate] = useState<string>(getCurrentDate());
-
-    let name = "";
+    const [name, setName] = useState("")
 
     useEffect(() => {
-        name = localStorage.getItem('userName') ?? ""
+        setName(localStorage.getItem('userName') ?? "")
     }, [])
 
     function handleAddCheckGoal() {
@@ -61,8 +60,8 @@ export default function NewReport() {
                 <div>
                     <PageHeader IconPage={ReadCvLogo} title="Weekly Report">
                         <div id="Header">
-                            <h2 className="text-2xl">{name}</h2>
-                            <InputField onChange={(e) => setSelectedDate(e.target.value)} value={selectedDate} type="date" noBackground widhtAuto disabled />
+                            <h2 className="text-xl">{name}</h2>
+                            <InputField onChange={(e) => setSelectedDate(e.target.value)} value={selectedDate} type="date" noBackground widhtAuto disabled noPadding />
                         </div>
                     </PageHeader>
 

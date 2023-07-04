@@ -1,4 +1,4 @@
-import { GoogleLogo } from "@phosphor-icons/react";
+import { GoogleLogo, ReadCvLogo } from "@phosphor-icons/react";
 import Swal from "sweetalert2";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'; ''
 import Router from "next/router";
@@ -48,23 +48,29 @@ export default function login() {
 
     return (
         <div className="items-center h-screen w-screen justify-center flex flex-col">
-            <div className="text-center">
-                <h2>Bem vindo ao <br /><span className="text-2xl font-semibold">Weekly Report</span></h2>
+            <div className="text-center items-center justify-center flex flex-col gap-2">
+                <ReadCvLogo size={64} className="text-PRINCIPAL" />
+                <p className="text-xl">Bem vindo ao </p>
+                <span className="text-4xl font-semibold">Weekly Report</span>
             </div>
 
-            <div className="flex mt-6">
+            <div className="flex mt-12">
                 {isLoading ? (
                     <CircularProgress color="inherit" />
                 ) : (
-                    <div>
-                        <p className="mt-10">Faça login para continuar</p>
-
+                    <div className="flex flex-col items-center gap-4">
                         <button
-                            className="flex bg-green-200 border-green-200 border-[1px] h-12 w-12 m-auto items-center justify-center rounded-md"
+                            className="flex flex-row items-center  border-[2px] m-auto rounded-xl px-4 py-2 gap-4
+                            bg-none
+                            text-GRAY_DARK
+                            border-PRINCIPAL
+                            hover:bg-PRINCIPAL hover:text-WHITE_PRINCIPAL"
                             onClick={handleLoginGoogle}
                         >
-                            <GoogleLogo color="black" size={24} />
+                            <GoogleLogo size={24} />
+                            <p className="text-lg">Fazer login com Google</p>
                         </button>
+                        <p className="text-GRAY">Entre para continuar</p>
                     </div>
                 )}
             </div>

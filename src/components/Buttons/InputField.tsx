@@ -9,12 +9,13 @@ type InputFieldProps = {
     noBackground?: boolean,
     alignRight?: boolean,
     widhtAuto?: boolean,
-    disabled?: boolean
+    disabled?: boolean,
+    noPadding?: boolean
 }
 
 
 
-export function InputField({ value, placeHolder, type, onChange: method, noBackground, alignRight, widhtAuto, disabled }: InputFieldProps) {
+export function InputField({ value, placeHolder, type, onChange: method, noBackground, alignRight, widhtAuto, disabled, noPadding }: InputFieldProps) {
     return (
         <>
             <input
@@ -31,7 +32,8 @@ export function InputField({ value, placeHolder, type, onChange: method, noBackg
                     outline: "none",
                     backgroundColor: noBackground ? "transparent" : "#f3f4f6",
                     textAlign: alignRight ? "right" : "left",
-                    width: widhtAuto ? "" : "100%"
+                    width: widhtAuto ? "" : "100%",
+                    padding: noPadding ? "0" : ""
                 }}
             />
         </>
