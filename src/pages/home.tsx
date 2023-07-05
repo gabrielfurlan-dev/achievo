@@ -11,8 +11,8 @@ export default function home() {
                 <h3>Um novo passo para seu progresso.</h3>
             </div>
 
-            <div className="mt-10 flex gap-2 h-12">
-                <IconButton IconButton={FilePlus} name="Adicionar" route="new-report" />
+            <div className="mt-10 flex gap-1 h-12">
+                <IconButton IconButton={FilePlus} name="Add" route="new-report" />
                 <IconButton IconButton={ListMagnifyingGlass} name="Listar" route="list-reports" />
             </div>
         </div>
@@ -31,7 +31,7 @@ function IconButton({ name, route, IconButton }: props) {
 
     return (
         <div className="">
-            <button className="rounded-xl hover:bg-WHITE_PRINCIPAL w-24 h-24 flex flex-col text-center items-center gap-2 justify-center text-GRAY" onClick={() => router.push(route)}>
+            <button className="rounded-xl hover:bg-WHITE_PRINCIPAL w-20 h-20 flex flex-col text-center items-center gap-2 justify-center text-GRAY" onClick={() => router.push(route)}>
                 <IconButton className="text-PRINCIPAL" size={32} />
                 <p>{name}</p>
             </button>

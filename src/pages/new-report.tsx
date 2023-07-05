@@ -30,7 +30,6 @@ const getCurrentDate = (): string => {
 export default function NewReport() {
 
     const router = useRouter()
-
     const [checkGoals, setCheckGoals] = useState<ICheckGoal[]>([])
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([])
     const [selectedDate, setSelectedDate] = useState<string>(getCurrentDate());
@@ -80,7 +79,7 @@ export default function NewReport() {
                                                     <ProgressGoal key={goal.id} progressGoal={goal} setProgressGoals={setProgressGoals} />
                                                 )) :
                                                 <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL">
-                                                    <p className="flex items-center">Adicione uma meta clicando no botão "<Plus className="text-GRAY_DARK" />" acima.</p>
+                                                    <p className="flex items-center">Adicione um check goal no icone "<Plus className="text-GRAY_DARK" />"</p>
                                                 </div>
                                         }
                                     </div>
@@ -95,10 +94,10 @@ export default function NewReport() {
                                         {
                                             checkGoals.length ?
                                                 Array.isArray(checkGoals) && checkGoals.map((goal) => (
-                                                    <CheckInput key={goal.id} id={goal.id} title={goal.title} checked={goal.checked} setCheckGoals={setCheckGoals} />
+                                                    <CheckInput key={goal.id} checkGoal={goal} setCheckGoals={setCheckGoals} />
                                                 )) :
                                                 <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL">
-                                                    <p className="flex items-center">Adicione uma meta clicando no botão "<Plus className="text-GRAY_DARK" />" acima.</p>
+                                                    <p className="flex items-center">Adicione um progresso no icone "<Plus className="text-GRAY_DARK" />"</p>
                                                 </div>
                                         }
                                     </div>

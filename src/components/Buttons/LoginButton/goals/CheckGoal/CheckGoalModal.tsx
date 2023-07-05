@@ -6,19 +6,25 @@ import { SetStateAction, useState } from "react";
 type CheckModalProps = {
     isOpen: boolean;
     onClose: () => void;
-    title: string;
-    setTitle: (value: SetStateAction<string>) => void;
-    id: Number;
-    setCheckGoal: (value: SetStateAction<ICheckGoal[]>) => void;
+    checkGoal: ICheckGoal;
+    setCheckGoal: (value: SetStateAction<ICheckGoal>) => void;
     deleteGoal: () => void;
 }
 
-export default function CheckGoalModal({ isOpen, onClose, title, id, setCheckGoal, deleteGoal,setTitle }: CheckModalProps) {
+export default function CheckGoalModal({ isOpen, onClose,checkGoal, setCheckGoal, deleteGoal }: CheckModalProps) {
 
-    const [editingTitle, setEditingTitle] = useState(title)
+    const [editingTitle, setEditingTitle] = useState(checkGoal.title)
 
     function handleSaveGoal() {
-        setTitle(editingTitle)
+
+        let newGoal: ICheckGoal = {
+            id: checkGoal.id,
+            indice: checkGoal.indice,
+            title: editingTitle,
+            checked: checkGoal.checked
+        };
+
+        setCheckGoal(newGoal)
         onClose()
     }
 

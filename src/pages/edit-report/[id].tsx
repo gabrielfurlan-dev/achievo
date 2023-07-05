@@ -11,30 +11,16 @@ import db from "@/firebaseConfig";
 import Swal from "sweetalert2";
 import { ReadCvLogo } from "@phosphor-icons/react";
 import { ArrowLeft, Plus } from "phosphor-react";
+import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons/Buttons";
+import PageHeader from "@/components/PageHeader";
 
 export default function EditReport() {
     const router = useRouter();
     const { id } = router.query;
     const [checkGoals, setCheckGoals] = useState<ICheckGoal[]>([]);
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([]);
-    const [title, setTitle] = useState("");
+    const [name, setName] = useState("");
     const [selectedDate, setSelectedDate] = useState<string>("");
-
-    const getCurrentDate = (): string => {
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        let month = String(currentDate.getMonth() + 1);
-        let day = String(currentDate.getDate());
-
-        if (month.length === 1) {
-            month = '0' + month;
-        }
-        if (day.length === 1) {
-            day = '0' + day;
-        }
-
-        return `${year}-${month}-${day}`;
-    };
 
     useEffect(() => {
         const fetchReportData = async () => {
@@ -44,10 +30,11 @@ export default function EditReport() {
                 if (docSnap.exists()) {
                     const reportData = docSnap.data();
                     console.log(reportData)
-                    setTitle(reportData.username);
+                    setName(reportData.username);
                     setSelectedDate(reportData.date);
                     setCheckGoals(reportData.checkGoals);
                     setProgressGoals(reportData.progressGoals);
+                    console.log(reportData.checkGoals)
                 } else {
                     console.log("Documento não encontrado!");
                 }
@@ -62,13 +49,16 @@ export default function EditReport() {
     }, [id]);
 
     async function handleSaveReport() {
+
+        console.log(checkGoals)
+
         try {
             const docRef = doc(db, "reports/" + id);
             await updateDoc(docRef, {
-                username: title,
+                username: name,
                 date: selectedDate,
-                checkGoals,
-                progressGoals,
+                checkGoals: checkGoals,
+                progressGoals: progressGoals,
             });
             Swal.fire("Relatório atualizado com sucesso!", "", 'success');
         } catch (error) {
@@ -86,10 +76,6 @@ export default function EditReport() {
         }
     }
 
-    const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedDate(event.target.value);
-    };
-
     function handleAddCheckGoal() {
         setCheckGoals([...checkGoals, { id: checkGoals.length, title: "Check Goal", checked: false, indice: checkGoals.length }])
     }
@@ -99,55 +85,69 @@ export default function EditReport() {
     }
 
     return (
-        <div className="w-4/6 m-auto mt-16">
+        <div className="w-5/6 md:w-4/6 mx-auto flex flex-col justify-between h-screen">
+            <div className="h-full flex flex-col justify-between my-4 md:my-16">
+                <div>
+                    <PageHeader IconPage={ReadCvLogo} title="Weekly Report">
+                        <div id="Header">
+                            <h2 className="text-xl">{name}</h2>
+                            <InputField onChange={(e) => setSelectedDate(e.target.value)} value={selectedDate} type="date" noBackground widhtAuto disabled noPadding />
+                        </div>
+                    </PageHeader>
 
-            <div>
-                <div className="flex gap-2">
-                    <Button onClick={() => router.push('/list-reports')}><ArrowLeft size={32} /></Button>
-                    <div id="Header">
-                        <div className="flex gap-3">
-                            <ReadCvLogo size={32} />
-                            <div>
-                                <h1 className="text-4xl font-bold">Week Report</h1>
+                    <div id="Goals">
+                        <div className="mt-12">
+                            <div className="flex flex-col gap-10 mt-2">
+                                <div className="  rounded-md p-4">
+                                    <div className="flex justify-between mb-2">
+                                        <p className="text-2xl font-bold">Check List</p>
+                                        <NoBackgroundButton onClick={handleAddProgressGoal} className="w-full"><Plus /></NoBackgroundButton>
+                                    </div>
+                                    <div className="flex flex-col gap-4">
+                                        {
+                                            progressGoals.length ?
+                                                Array.isArray(progressGoals) && progressGoals.map((goal) => (
+                                                    <ProgressGoal key={goal.id} progressGoal={goal} setProgressGoals={setProgressGoals} />
+                                                )) :
+                                                <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL">
+                                                    <p className="flex items-center">Adicione uma meta clicando no botão "<Plus className="text-GRAY_DARK" />" acima.</p>
+                                                </div>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div className="  rounded-md p-4">
+                                    <div className="flex justify-between mb-2">
+                                        <p className="text-2xl font-bold">Progresso</p>
+                                        <NoBackgroundButton onClick={handleAddCheckGoal} className="w-full"><Plus /></NoBackgroundButton>
+                                    </div>
+                                    <div className="flex flex-col gap-4">
+                                        {
+                                            checkGoals.length ?
+                                                Array.isArray(checkGoals) && checkGoals.map((goal) => (
+                                                    <CheckInput key={goal.id} checkGoal={goal} setCheckGoals={setCheckGoals} />
+                                                )) :
+                                                <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL">
+                                                    <p className="flex items-center">Adicione uma meta clicando no botão "<Plus className="text-GRAY_DARK" />" acima.</p>
+                                                </div>
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <h2 className="text-2xl"><InputField placeHolder="Seu nome..." onChange={setTitle} value={title} /></h2>
-                        <h3>
-                            <input
-                                type="date"
-                                id="dateInput"
-                                value={selectedDate}
-                                onChange={handleDateChange}
-                            />
-                        </h3>
                     </div>
                 </div>
-                <div id="Goals">
-                    <div className="mt-12">
-                        <h3 className="text-3xl font-bold">Metas</h3>
-                        <div className="flex flex-col gap-2 mt-2 bg-gray-50 rounded-md p-4">
-                            {Array.isArray(progressGoals) && progressGoals.map((goal) => (
-                                <ProgressGoal key={goal.id} progressGoal={goal} setProgressGoals={setProgressGoals} />
-                            ))}
-                            <div>
-                                <Button onClick={handleAddProgressGoal}><Plus /></Button>
-                            </div>
-                            {Array.isArray(checkGoals) && checkGoals.map((goal) => (
-                                <CheckInput key={goal.id} id={goal.id} title={goal.title} checked={goal.checked} setCheckGoals={setCheckGoals} />
-                            ))}
-                            <div>
-                                <Button onClick={handleAddCheckGoal}><Plus /></Button>
-                            </div>
+
+                <div className="flex justify-end">
+                    <div className="flex gap-2">
+                        <NoBackgroundButton onClick={() => router.push('/home')} >
+                            <p>Cancelar</p>
+                        </NoBackgroundButton>
+                        <div className="w-36"><ConfirmButton onClick={handleSaveReport}>Atualizar</ConfirmButton>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="flex gap-2">
-                <button className="bg-green-400 p-2 rounded-lg text-white my-10" onClick={handleSaveReport} >Atualizar</button>
-                <button className="bg-red-400 p-2 rounded-lg text-white my-10" onClick={handleDeleteReport} >Excluir</button>
-            </div>
-
-        </div>
+            </div >
+        </div >
     );
 }
