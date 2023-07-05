@@ -91,7 +91,7 @@ export default function EditReport() {
 
     return (
         <div className="w-5/6 md:w-4/6 mx-auto flex flex-col justify-between min-h-screen">
-            <div className="h-full flex flex-col justify-between my-4 md:my-16">
+            <div className="h-full flex flex-col justify-between my-12 md:my-16">
                 <div>
                     <PageHeader IconPage={ReadCvLogo} title="Weekly Report">
                         <div id="Header">
