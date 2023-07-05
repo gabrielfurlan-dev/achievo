@@ -7,6 +7,7 @@ import { Eye, PencilSimple } from 'phosphor-react';
 import Link from 'next/link';
 import PageHeader from '@/components/PageHeader';
 import { ListMagnifyingGlass } from '@phosphor-icons/react';
+import { format, parseISO } from 'date-fns';
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);
@@ -37,14 +38,15 @@ export default function ListReport() {
                 <div className='m-12 w-full'>
                     <PageHeader IconPage={ListMagnifyingGlass} title='Relatórios' subTitle='Todos os Reports aqui' />
                     <ul className='mt-10 w-full'>
-                        {reports.map((data) => (
+                        {
+                        reports.sort((a, b) => parseISO(b.date).getTime() - parseISO(a.date).getTime()).map((data) => (
                             <li className='mb-10 bg-WHITE_PRINCIPAL rounded-lg p-2 w-full'
                                 key={data.id}>
                                 <div className='flex justify-between'>
                                     <div className='ml-4 flex gap-4'>
                                         <img src={data.userPhotoURL} className='w-12 h-12 rounded-full' />
                                         <div>
-                                            <p>{data.date}</p>
+                                            <p>{format(parseISO(data.date), 'dd/MM/yyyy')}</p>
                                             <p>{data.username}</p>
                                         </div>
                                     </div>
