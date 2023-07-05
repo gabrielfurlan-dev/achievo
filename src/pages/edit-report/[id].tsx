@@ -137,7 +137,7 @@ export default function EditReport() {
                                                     <CheckInput key={goal.id} checkGoal={goal} setCheckGoals={setCheckGoals} />
                                                 )) :
                                                 <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL">
-                                                    {name != userName ? (<p className="flex">Adicione um <i>check goal&nbsp;</i> no icone "<Plus className="text-GRAY_DARK" />"</p>)
+                                                    {name == userName ? (<p className="flex">Adicione um <i>check goal&nbsp;</i> no icone "<Plus className="text-GRAY_DARK" />"</p>)
                                                         : <p>Sem metas de <i>check</i></p>
                                                     }
                                                 </div>

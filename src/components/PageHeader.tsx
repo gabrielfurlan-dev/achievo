@@ -18,7 +18,7 @@ export default function PageHeader({ IconPage, children, title, subTitle }: page
     return (
         <div className="flex flex-col gap-2">
             <div>
-                <NoBackgroundButton onClick={goBack}>
+                <NoBackgroundButton onClick={goBack} noHover>
                     <div className="flex items-center gap-4">
                         <ArrowLeft size={24} />
                         <p>Voltar</p>

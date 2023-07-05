@@ -7,6 +7,7 @@ type customButtonProps = {
     className?: string;
     noBackground?: boolean,
     width?: Number,
+    noHover?: boolean
 }
 
 export function ConfirmButton({ onClick, children }: customButtonProps) {
@@ -44,7 +45,15 @@ export function DangerButton({ onClick, children, noBackground }: customButtonPr
     );
 }
 
-export function NoBackgroundButton({ onClick, children }: customButtonProps) {
+export function NoBackgroundButton({ onClick, children, noHover }: customButtonProps) {
+
+    if (noHover) {
+        return (
+            <button onClick={onClick} className="relative block w-auto px-6 py-3 overflow-hidden text-base text-center font-semibold text-gray-800 rounded-lg transition-all duration-300">
+                {children}
+            </button>
+        )
+    }
     return (
         <button onClick={onClick} className="relative block w-auto px-6 py-3 overflow-hidden text-base text-center font-semibold text-gray-800 rounded-lg hover:text-black hover:bg-WHITE_SECONDARY transition-all duration-300">
             {children}
