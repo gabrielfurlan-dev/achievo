@@ -42,24 +42,26 @@ export default function CheckInput({ checkGoal, setCheckGoals }: CheckProps) {
     }
 
     return (
-        <>
-            <button onClick={() => setIsModalOpen(true)} className="">
-                <div className="flex flex-row gap-1 items-center justify-between rounded-md h-10"
-                    style={{
-                        backgroundColor: corDeFundo,
-                        textDecoration: goal.checked ? "line-through" : "none",
-                        color: goal.checked ? 'white' : ''
-                    }}
-                >
-                    <p className="ml-4">{checkGoal.title}</p>
-                    <button onClick={() => setGoal({checked: !goal.checked, id:goal.id, indice: goal.indice, title: goal.title})} className="mr-5">
+        <div className="gap-1 items-center justify-between">
+            <div
+                className=" rounded-md h-auto py-2"
+                style={{
+                    backgroundColor: corDeFundo,
+                    textDecoration: goal.checked ? "line-through" : "none",
+                    color: goal.checked ? 'white' : ''
+                }}
+            >
+                <div className="flex flex-row gap-1 items-center justify-between">
+                    <button onClick={() => setIsModalOpen(true)} className="w-full">
+                        <p className="ml-4 text-start w-full">{checkGoal.title}</p>
+                    </button>
+                    <button onClick={() => setGoal({ checked: !goal.checked, id: goal.id, indice: goal.indice, title: goal.title })} className="mr-5">
                         {goal.checked ?
                             <CheckSquare size={26} className="text-WHITE_PRINCIPAL" />
                             : <Square size={26} className="text-GRAY_DARK" />}
                     </button>
                 </div>
-            </button>
-
+            </div>
             <CheckGoalModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
@@ -67,6 +69,6 @@ export default function CheckInput({ checkGoal, setCheckGoals }: CheckProps) {
                 checkGoal={checkGoal}
                 setCheckGoal={setGoal}
             />
-        </>
+        </div>
     );
 }

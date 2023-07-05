@@ -4,6 +4,7 @@ export interface IReport {
     username: string;
     progressGoals: IProgressGoal[];
     checkGoals: ICheckGoal[];
+    userPhotoURL?: string;
 }
 
 export interface IProgressGoal {

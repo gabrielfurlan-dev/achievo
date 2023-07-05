@@ -7,9 +7,10 @@ type createReportProps = {
     title: string;
     progressGoals: IProgressGoal[];
     checkGoals: ICheckGoal[];
+    userPhotoURL: string;
 }
 
-export async function CreateReport({ selectedDate, title, progressGoals, checkGoals }: createReportProps) {
+export async function CreateReport({ selectedDate, title, progressGoals, checkGoals, userPhotoURL }: createReportProps) {
     try {
         const reportData: IReport = {
             id: Date.now().toString(),
@@ -17,6 +18,7 @@ export async function CreateReport({ selectedDate, title, progressGoals, checkGo
             username: title,
             progressGoals,
             checkGoals,
+            userPhotoURL
         };
 
         const collectionRef = collection(firebaseConfig, "reports");

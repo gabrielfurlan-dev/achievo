@@ -45,7 +45,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, handleSaveButt
                                 )}
                             </div>
 
-
                             <div className="flex justify-end w-full">
                                 <div className="flex gap-2 h-full w-full justify-end">
                                     <NoBackgroundButton onClick={onClose}> Cancelar </NoBackgroundButton>

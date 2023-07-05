@@ -34,9 +34,12 @@ export default function NewReport() {
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([])
     const [selectedDate, setSelectedDate] = useState<string>(getCurrentDate());
     const [name, setName] = useState("")
+    const [userPhotoURL, setUserPhotoURL] = useState("")
+
 
     useEffect(() => {
         setName(localStorage.getItem('userName') ?? "")
+        setUserPhotoURL(localStorage.getItem('userPhotoURL') ?? "")
     }, [])
 
     function handleAddCheckGoal() {
@@ -48,13 +51,13 @@ export default function NewReport() {
     }
 
     async function handleSaveReport() {
-        const idReport = await CreateReport({ selectedDate, title: name ?? "", progressGoals, checkGoals })
+        const idReport = await CreateReport({ selectedDate, title: name ?? "", progressGoals, checkGoals, userPhotoURL })
         Swal.fire('Good Job!', 'Relatório adicionado com sucesso!', 'success')
         router.push('/home')
     }
 
     return (
-        <div className="w-5/6 md:w-4/6 mx-auto flex flex-col justify-between h-screen">
+        <div className="w-5/6 md:w-4/6 mx-auto flex flex-col justify-between min-h-screen">
             <div className="h-full flex flex-col justify-between my-4 md:my-16">
                 <div>
                     <PageHeader IconPage={ReadCvLogo} title="Weekly Report">
@@ -107,8 +110,8 @@ export default function NewReport() {
                     </div>
                 </div>
 
-                <div className="flex justify-end">
-                    <div className="flex gap-2">
+                <div className="flex justify-end mt-10">
+                    <div className="flex gap-2 px-4">
                         <NoBackgroundButton onClick={() => router.push('/home')} >
                             <p>Cancelar</p>
                         </NoBackgroundButton>

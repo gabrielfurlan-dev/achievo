@@ -21,6 +21,11 @@ export default function EditReport() {
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([]);
     const [name, setName] = useState("");
     const [selectedDate, setSelectedDate] = useState<string>("");
+    const [userName, setUserName] = useState("")
+
+    useEffect(() => {
+        setUserName(localStorage.getItem('userName') ?? "")
+    }, [])
 
     useEffect(() => {
         const fetchReportData = async () => {
@@ -85,7 +90,7 @@ export default function EditReport() {
     }
 
     return (
-        <div className="w-5/6 md:w-4/6 mx-auto flex flex-col justify-between h-screen">
+        <div className="w-5/6 md:w-4/6 mx-auto flex flex-col justify-between min-h-screen">
             <div className="h-full flex flex-col justify-between my-4 md:my-16">
                 <div>
                     <PageHeader IconPage={ReadCvLogo} title="Weekly Report">
@@ -98,7 +103,7 @@ export default function EditReport() {
                     <div id="Goals">
                         <div className="mt-12">
                             <div className="flex flex-col gap-10 mt-2">
-                                <div className="  rounded-md p-4">
+                                <div className="rounded-md p-4">
                                     <div className="flex justify-between mb-2">
                                         <p className="text-2xl font-bold">Check List</p>
                                         <NoBackgroundButton onClick={handleAddProgressGoal} className="w-full"><Plus /></NoBackgroundButton>
@@ -110,7 +115,11 @@ export default function EditReport() {
                                                     <ProgressGoal key={goal.id} progressGoal={goal} setProgressGoals={setProgressGoals} />
                                                 )) :
                                                 <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL">
-                                                    <p className="flex items-center">Adicione uma meta clicando no botão "<Plus className="text-GRAY_DARK" />" acima.</p>
+                                                    <div className="flex items-center">
+                                                        {name == userName ? (<p className="flex">Adicione um progresso no icone"<Plus className="text-GRAY_DARK" />"</p>)
+                                                            : <p>Sem metas de progresso</p>
+                                                        }
+                                                    </div>
                                                 </div>
                                         }
                                     </div>
@@ -128,7 +137,9 @@ export default function EditReport() {
                                                     <CheckInput key={goal.id} checkGoal={goal} setCheckGoals={setCheckGoals} />
                                                 )) :
                                                 <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL">
-                                                    <p className="flex items-center">Adicione uma meta clicando no botão "<Plus className="text-GRAY_DARK" />" acima.</p>
+                                                    {name != userName ? (<p className="flex">Adicione um <i>check goal&nbsp;</i> no icone "<Plus className="text-GRAY_DARK" />"</p>)
+                                                        : <p>Sem metas de <i>check</i></p>
+                                                    }
                                                 </div>
                                         }
                                     </div>
@@ -138,13 +149,16 @@ export default function EditReport() {
                     </div>
                 </div>
 
-                <div className="flex justify-end">
-                    <div className="flex gap-2">
+                <div className="flex justify-end mt-10">
+                    <div className="flex gap-2 px-4">
                         <NoBackgroundButton onClick={() => router.push('/home')} >
                             <p>Cancelar</p>
                         </NoBackgroundButton>
-                        <div className="w-36"><ConfirmButton onClick={handleSaveReport}>Atualizar</ConfirmButton>
-                        </div>
+                        {name == userName &&
+                            <div className="w-36">
+                                <ConfirmButton onClick={handleSaveReport}>Atualizar</ConfirmButton>
+                            </div>
+                        }
                     </div>
                 </div>
             </div >
