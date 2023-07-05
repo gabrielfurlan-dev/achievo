@@ -2,7 +2,7 @@ import { Check } from "phosphor-react";
 import { ReactNode } from "react";
 
 type customButtonProps = {
-    onClick: (() => void) | undefined;
+    onClick?: (() => void) | undefined;
     children?: ReactNode;
     className?: string;
     noBackground?: boolean,

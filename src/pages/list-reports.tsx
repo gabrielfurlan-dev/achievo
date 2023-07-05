@@ -8,6 +8,7 @@ import Link from 'next/link';
 import PageHeader from '@/components/PageHeader';
 import { ListMagnifyingGlass } from '@phosphor-icons/react';
 import { format, parseISO } from 'date-fns';
+import { NoBackgroundButton } from '@/components/Buttons/Buttons';
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);
@@ -39,35 +40,35 @@ export default function ListReport() {
                     <PageHeader IconPage={ListMagnifyingGlass} title='Relatórios' subTitle='Todos os Reports aqui' />
                     <ul className='mt-10 w-full'>
                         {
-                        reports.sort((a, b) => parseISO(b.date).getTime() - parseISO(a.date).getTime()).map((data) => (
-                            <li className='mb-10 bg-WHITE_PRINCIPAL rounded-lg p-2 w-full'
-                                key={data.id}>
-                                <div className='flex justify-between'>
-                                    <div className='ml-4 flex gap-4'>
-                                        <img src={data.userPhotoURL} className='w-12 h-12 rounded-full' />
-                                        <div>
-                                            <p>{format(parseISO(data.date), 'dd/MM/yyyy')}</p>
-                                            <p>{data.username}</p>
+                            reports.sort((a, b) => parseISO(b.date).getTime() - parseISO(a.date).getTime()).map((data) => (
+                                <li className='mb-10 bg-WHITE_PRINCIPAL rounded-lg p-2 w-full'
+                                    key={data.id}>
+                                    <div className='flex justify-between'>
+                                        <div className='ml-4 flex gap-4 items-center'>
+                                            <img src={data.userPhotoURL} className='w-10 h-10 rounded-full' />
+                                            <div>
+                                                <p>{format(parseISO(data.date), 'dd/MM/yyyy')}</p>
+                                                <p>{data.username}</p>
+                                            </div>
+                                        </div>
+                                        <div className='flex items-center'>
+                                            {name == data.username ?
+                                                <Link href={`/edit-report/${data.id}`}>
+                                                    <NoBackgroundButton>
+                                                        <PencilSimple size={24} className='text-PRINCIPAL' />
+                                                    </NoBackgroundButton>
+                                                </Link>
+                                                :
+                                                <Link href={`/edit-report/${data.id}`}>
+                                                    <NoBackgroundButton>
+                                                        <Eye size={24} className='text-PRINCIPAL' />
+                                                    </NoBackgroundButton>
+                                                </Link>
+                                            }
                                         </div>
                                     </div>
-                                    <div className='flex items-center'>
-                                        {name == data.username ?
-                                            <Link href={`/edit-report/${data.id}`}>
-                                                <Button>
-                                                    <PencilSimple size={24} className='text-PRINCIPAL' />
-                                                </Button>
-                                            </Link>
-                                            :
-                                            <Link href={`/edit-report/${data.id}`}>
-                                                <Button>
-                                                    <Eye size={24} className='text-PRINCIPAL' />
-                                                </Button>
-                                            </Link>
-                                        }
-                                    </div>
-                                </div>
-                            </li>
-                        ))}
+                                </li>
+                            ))}
                     </ul>
                 </div>
             </div>
