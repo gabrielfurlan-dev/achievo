@@ -79,11 +79,11 @@ export default function EditReport() {
     }
 
     function handleAddCheckGoal() {
-        setCheckGoals([...checkGoals, { id: checkGoals.length, title: "Check Goal", checked: false, indice: checkGoals.length }])
+        setCheckGoals([...checkGoals, { id: checkGoals.length, title: "", checked: false, indice: checkGoals.length }])
     }
 
     function handleAddProgressGoal() {
-        setProgressGoals([...progressGoals, { id: progressGoals.length, title: "Check Goal", total: 0, value: 0, indice: progressGoals.length }])
+        setProgressGoals([...progressGoals, { id: progressGoals.length, title: "", total: 0, value: 0, indice: progressGoals.length }])
     }
 
     return (
@@ -102,7 +102,7 @@ export default function EditReport() {
                             <div className="flex flex-col gap-10 mt-2">
                                 <div className="rounded-md p-4">
                                     <div className="flex justify-between mb-2">
-                                        <p className="text-2xl font-bold">Check List</p>
+                                        <p className="text-2xl font-bold">Progresso</p>
                                         <NoBackgroundButton onClick={handleAddProgressGoal} className="w-full"><Plus /></NoBackgroundButton>
                                     </div>
                                     <div className="flex flex-col gap-4">
@@ -129,7 +129,7 @@ export default function EditReport() {
 
                                 <div className="  rounded-md p-4">
                                     <div className="flex justify-between mb-2">
-                                        <p className="text-2xl font-bold">Progresso</p>
+                                        <p className="text-2xl font-bold">Check List</p>
                                         <NoBackgroundButton onClick={handleAddCheckGoal} className="w-full"><Plus /></NoBackgroundButton>
                                     </div>
                                     <div className="flex flex-col gap-4">

@@ -35,11 +35,11 @@ export default function CheckGoalModal({ isOpen, onClose,checkGoal, setCheckGoal
                 onClose={onClose}
                 onDelete={deleteGoal}
                 handleSaveButton={handleSaveGoal}
-                title="Editar Meta de Checagem"
+                title="Editar Check-Goal"
                 subtitle="Informe o nome da meta"
             >
                 <div className="flex flex-col gap-2">
-                    <p>Valor Atual</p>
+                    <p>Meta</p>
                     <InputField
                         onChange={setEditingTitle}
                         value={editingTitle}

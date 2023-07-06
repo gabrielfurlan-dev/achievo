@@ -72,7 +72,7 @@ export default function NewReport() {
                             <div className="flex flex-col gap-10 mt-2">
                                 <div className="  rounded-md p-4">
                                     <div className="flex justify-between mb-2">
-                                        <p className="text-2xl font-bold">Check List</p>
+                                        <p className="text-2xl font-bold">Progresso</p>
                                         <NoBackgroundButton onClick={handleAddProgressGoal} className="w-full"><Plus /></NoBackgroundButton>
                                     </div>
                                     <div className="flex flex-col gap-4">
@@ -94,7 +94,7 @@ export default function NewReport() {
 
                                 <div className="  rounded-md p-4">
                                     <div className="flex justify-between mb-2">
-                                        <p className="text-2xl font-bold">Progresso</p>
+                                        <p className="text-2xl font-bold">Check List</p>
                                         <NoBackgroundButton onClick={handleAddCheckGoal} className="w-full"><Plus /></NoBackgroundButton>
                                     </div>
                                     <div className="flex flex-col gap-4">

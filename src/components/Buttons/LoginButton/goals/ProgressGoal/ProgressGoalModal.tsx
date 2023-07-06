@@ -1,8 +1,6 @@
 import { IProgressGoal } from "@/Interfaces/report";
 import { InputField } from "@/components/Buttons/InputField";
 import Modal from "@/components/Modal";
-import { Button } from "@mui/material";
-import { Trash } from "phosphor-react";
 import { SetStateAction, useState } from "react";
 
 type ProgressModalProps = {
@@ -43,25 +41,25 @@ export default function ProgressGoalModal({ isOpen, onClose, progressGoal, setPr
                             <InputField
                                 onChange={setEditingTitle}
                                 value={editingTitle}
-                                placeHolder="Concluir curso de programação."
+                                placeHolder="Levar a vó no judô."
                             />
                         </div>
                         <div className="flex flex-col gap-4 md:flex-row mt-4 md:mt-8">
                             <div className="flex flex-col gap-2">
-                                <p>Valor Atual</p>
+                                <p>Progresso Atual</p>
                                 <InputField
                                     onChange={setEditingValue}
                                     value={editingValue}
-                                    placeHolder="Concluir curso de programação."
+                                    placeHolder="4"
                                     type="number"
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <p>Valor Total</p>
+                                <p>Progresso Total</p>
                                 <InputField
                                     onChange={setEditingTotal}
                                     value={editingTotal}
-                                    placeHolder="Concluir curso de programação."
+                                    placeHolder="10"
                                     type="number"
                                 />
                             </div>
