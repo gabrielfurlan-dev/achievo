@@ -79,7 +79,11 @@ export default function NewReport() {
                                         {
                                             progressGoals.length ?
                                                 Array.isArray(progressGoals) && progressGoals.map((goal) => (
-                                                    <ProgressGoal key={goal.id} progressGoal={goal} setProgressGoals={setProgressGoals} />
+                                                    <ProgressGoal
+                                                        key={goal.id}
+                                                        progressGoal={goal}
+                                                        setProgressGoals={setProgressGoals}
+                                                    />
                                                 )) :
                                                 <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL">
                                                     <p className="flex items-center">Adicione um check goal no icone "<Plus className="text-GRAY_DARK" />"</p>
@@ -97,7 +101,11 @@ export default function NewReport() {
                                         {
                                             checkGoals.length ?
                                                 Array.isArray(checkGoals) && checkGoals.map((goal) => (
-                                                    <CheckInput key={goal.id} checkGoal={goal} setCheckGoals={setCheckGoals} />
+                                                    <CheckInput
+                                                        key={goal.id}
+                                                        checkGoal={goal}
+                                                        setCheckGoals={setCheckGoals}
+                                                    />
                                                 )) :
                                                 <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL">
                                                     <p className="flex items-center">Adicione um progresso no icone "<Plus className="text-GRAY_DARK" />"</p>

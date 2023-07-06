@@ -13,6 +13,7 @@ import { ReadCvLogo } from "@phosphor-icons/react";
 import { ArrowLeft, Plus } from "phosphor-react";
 import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons/Buttons";
 import PageHeader from "@/components/PageHeader";
+import { boolean } from "zod";
 
 export default function EditReport() {
     const router = useRouter();
@@ -21,11 +22,7 @@ export default function EditReport() {
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([]);
     const [name, setName] = useState("");
     const [selectedDate, setSelectedDate] = useState<string>("");
-    const [userName, setUserName] = useState("")
-
-    useEffect(() => {
-        setUserName(localStorage.getItem('userName') ?? "")
-    }, [])
+    const [isOwner, setIsOwner] = useState(true)
 
     useEffect(() => {
         const fetchReportData = async () => {
@@ -39,7 +36,7 @@ export default function EditReport() {
                     setSelectedDate(reportData.date);
                     setCheckGoals(reportData.checkGoals);
                     setProgressGoals(reportData.progressGoals);
-                    console.log(reportData.checkGoals)
+                    setIsOwner(localStorage.getItem('userName') == reportData.username)
                 } else {
                     console.log("Documento não encontrado!");
                 }
@@ -112,11 +109,16 @@ export default function EditReport() {
                                         {
                                             progressGoals.length ?
                                                 Array.isArray(progressGoals) && progressGoals.map((goal) => (
-                                                    <ProgressGoal key={goal.id} progressGoal={goal} setProgressGoals={setProgressGoals} />
+                                                    <ProgressGoal
+                                                        key={goal.id}
+                                                        progressGoal={goal}
+                                                        setProgressGoals={setProgressGoals}
+                                                        disabled={!isOwner}
+                                                    />
                                                 )) :
                                                 <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL">
                                                     <div className="flex items-center">
-                                                        {name == userName ? (<p className="flex">Adicione um progresso no icone"<Plus className="text-GRAY_DARK" />"</p>)
+                                                        {isOwner ? (<p className="flex">Adicione um progresso no icone"<Plus className="text-GRAY_DARK" />"</p>)
                                                             : <p>Sem metas de progresso</p>
                                                         }
                                                     </div>
@@ -134,10 +136,15 @@ export default function EditReport() {
                                         {
                                             checkGoals.length ?
                                                 Array.isArray(checkGoals) && checkGoals.map((goal) => (
-                                                    <CheckInput key={goal.id} checkGoal={goal} setCheckGoals={setCheckGoals} />
+                                                    <CheckInput
+                                                        key={goal.id}
+                                                        checkGoal={goal}
+                                                        setCheckGoals={setCheckGoals}
+                                                        disabled={!isOwner}
+                                                    />
                                                 )) :
                                                 <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL">
-                                                    {name == userName ? (<p className="flex">Adicione um <i>check goal&nbsp;</i> no icone "<Plus className="text-GRAY_DARK" />"</p>)
+                                                    {isOwner ? (<p className="flex">Adicione um <i>check goal&nbsp;</i> no icone "<Plus className="text-GRAY_DARK" />"</p>)
                                                         : <p>Sem metas de <i>check</i></p>
                                                     }
                                                 </div>
@@ -154,7 +161,7 @@ export default function EditReport() {
                         <NoBackgroundButton onClick={() => router.push('/home')} >
                             <p>Cancelar</p>
                         </NoBackgroundButton>
-                        {name == userName &&
+                        {isOwner &&
                             <div className="w-36">
                                 <ConfirmButton onClick={handleSaveReport}>Atualizar</ConfirmButton>
                             </div>

@@ -2,14 +2,14 @@ import { SetStateAction, useEffect, useState } from "react";
 import { IProgressGoal } from "@/Interfaces/report";
 import React from "react";
 import ProgressGoalModal from "./ProgressGoalModal";
-import { Button } from "@mui/material";
 
 type ProgressGoalProps = {
     progressGoal: IProgressGoal,
-    setProgressGoals: (value: SetStateAction<IProgressGoal[]>) => void
+    setProgressGoals: (value: SetStateAction<IProgressGoal[]>) => void;
+    disabled?: boolean;
 }
 
-export default function ProgressGoal({ progressGoal, setProgressGoals }: ProgressGoalProps) {
+export default function ProgressGoal({ progressGoal, setProgressGoals, disabled }: ProgressGoalProps) {
     const [goal, setGoal] = useState(progressGoal)
 
     let progressoAtual = ((Number(progressGoal.value) / Number(progressGoal.total)) * 100).toFixed();
@@ -57,7 +57,7 @@ export default function ProgressGoal({ progressGoal, setProgressGoals }: Progres
 
     return (
         <div>
-            <button className="flex w-full normal-case" onClick={openModal} style={{ color: completou ? '#EAEAEA' : '#1C1C1C' }}>
+            <button disabled={disabled} className="flex w-full normal-case" onClick={openModal} style={{ color: completou ? '#EAEAEA' : '#1C1C1C' }}>
                 <div className="flex flex-col gap-1 items-start  p-2 px-4 rounded-md  w-full" style={{ backgroundColor: corDeFundo }}>
                     <div className="flex w-full justify-between items-center">
                         <p className="mt-2 text-lg" style={{ textDecoration: completou ? "line-through" : "none" }}>
