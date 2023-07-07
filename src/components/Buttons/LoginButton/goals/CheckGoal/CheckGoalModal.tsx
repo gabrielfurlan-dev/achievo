@@ -37,6 +37,8 @@ export default function CheckGoalModal({ isOpen, onClose,checkGoal, setCheckGoal
                 handleSaveButton={handleSaveGoal}
                 title="Editar Check-Goal"
                 subtitle="Informe o nome da meta"
+                cancelText="Cancelar"
+                confirmText="Adicionar"
             >
                 <div className="flex flex-col gap-2">
                     <p>Meta</p>

@@ -60,7 +60,7 @@ export default function NewReport() {
         <div className="w-5/6 md:w-4/6 mx-auto flex flex-col justify-between min-h-screen">
             <div className="h-full flex flex-col justify-between my-12 md:my-16">
                 <div>
-                    <PageHeader IconPage={ReadCvLogo} title="Weekly Report">
+                    <PageHeader IconPage={ReadCvLogo} title="Weekly Report" goBackUrl="/home">
                         <div id="Header">
                             <h2 className="text-xl">{name}</h2>
                             <InputField onChange={(e) => setSelectedDate(e.target.value)} value={selectedDate} type="date" noBackground widhtAuto disabled noPadding />

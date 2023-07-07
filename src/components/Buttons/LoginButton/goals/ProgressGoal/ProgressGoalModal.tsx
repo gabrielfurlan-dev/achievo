@@ -33,7 +33,17 @@ export default function ProgressGoalModal({ isOpen, onClose, progressGoal, setPr
 
     return (
         <div className="">
-            <Modal isOpen={isOpen} onClose={onClose} handleSaveButton={handleSaveGoal} onDelete={deleteGoal} title="Editar Progresso" subtitle="Informe todos os valores abaixo">
+            <Modal
+                isOpen={isOpen}
+                onClose={onClose}
+                handleSaveButton={handleSaveGoal}
+                onDelete={deleteGoal}
+                title="Editar Progresso"
+                subtitle="Informe todos os valores abaixo"
+                cancelText="Cancelar"
+                confirmText="Adicionar"
+            >
+
                 <div className="">
                     <div>
                         <div className="flex flex-col gap-2">

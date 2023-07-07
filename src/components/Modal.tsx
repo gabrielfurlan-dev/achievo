@@ -10,11 +10,25 @@ interface ModalProps {
     hideButtons?: boolean;
     hideDelete?: boolean;
     onDelete?: () => void;
+
     title: string;
     subtitle?: string;
+    confirmText: "Salvar" | "Adicionar" | "Sim";
+    cancelText: "Cancelar" | "Não";
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, handleSaveButton, hideButtons, hideDelete, onDelete, title, subtitle }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen,
+    onClose,
+    children,
+    handleSaveButton,
+    hideButtons,
+    hideDelete,
+    onDelete,
+    title,
+    subtitle,
+    confirmText,
+    cancelText
+}) => {
     if (!isOpen) return null;
 
     return (
@@ -47,9 +61,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, handleSaveButt
 
                             <div className="flex justify-end w-full">
                                 <div className="flex gap-2 h-full w-full justify-end">
-                                    <NoBackgroundButton onClick={onClose}> Cancelar </NoBackgroundButton>
+                                    <NoBackgroundButton onClick={onClose}>{cancelText}</NoBackgroundButton>
                                     <div className='w-36'>
-                                        <ConfirmButton onClick={handleSaveButton}> <p className='px-2 font-semibold'>Salvar</p> </ConfirmButton>
+                                        <ConfirmButton onClick={handleSaveButton}> <p className='px-2 font-semibold'>{confirmText}</p> </ConfirmButton>
                                     </div>
                                 </div>
                             </div>

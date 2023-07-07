@@ -17,10 +17,12 @@ export default function ListReport() {
     useEffect(() => {
         const fetchReports = async () => {
             try {
+
                 const reportsCollection = collection(db, "reports");
                 const snapshot = await getDocs(reportsCollection);
                 const reportsData = snapshot.docs.map((doc) => doc.data() as IReport);
-                setReports(reportsData);
+                setReports(reportsData.sort((a, b) => parseISO(b.date).getTime() - parseISO(a.date).getTime()));
+
             } catch (error) {
                 console.error("Error fetching reports:", error);
             }
@@ -37,10 +39,10 @@ export default function ListReport() {
         <div className='flex h-screen w-full'>
             <div className='flex w-full h-full md:m-16 rounded-xl'>
                 <div className='m-12 w-full'>
-                    <PageHeader IconPage={ListMagnifyingGlass} title='Relatórios' subTitle='Todos os Reports aqui' />
+                    <PageHeader IconPage={ListMagnifyingGlass} title='Relatórios' subTitle='Todos os Reports aqui' goBackUrl='/home'/>
                     <ul className='mt-10 w-full'>
                         {
-                            reports.sort((a, b) => parseISO(b.date).getTime() - parseISO(a.date).getTime()).map((data) => (
+                            reports.map((data) => (
                                 <li className='mb-10 bg-WHITE_PRINCIPAL rounded-lg p-2 w-full'
                                     key={data.id}>
                                     <div className='flex justify-between'>

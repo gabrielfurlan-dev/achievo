@@ -1,18 +1,21 @@
 import { ArrowLeft, Icon, ReadCvLogo } from "@phosphor-icons/react"
 import { NoBackgroundButton } from "./Buttons/Buttons"
 import { ReactNode } from "react";
+import { useRouter } from "next/router";
 
 type pageHeaderProps = {
     IconPage: Icon;
     title: string;
     subTitle?: string;
     children?: ReactNode;
+    goBackUrl: "/list-reports" | "/home" | "/login" | "new-report"
 }
 
-export default function PageHeader({ IconPage, children, title, subTitle }: pageHeaderProps) {
+export default function PageHeader({ IconPage, children, title, subTitle,goBackUrl }: pageHeaderProps) {
+    const router = useRouter()
 
     function goBack() {
-        window.history.back()
+        router.push(goBackUrl)
     }
 
     return (
