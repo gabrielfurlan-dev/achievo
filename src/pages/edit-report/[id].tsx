@@ -41,7 +41,7 @@ export default function EditReport() {
         let progressGoalsIsChanged = JSON.stringify(progressGoals) !== JSON.stringify(originalProgressGoals);
 
         setModified(checkGoalsIsChanged || progressGoalsIsChanged);
-    }, [progressGoals, checkGoals]);
+    }, [progressGoals, checkGoals, originalProgressGoals, originalCheckGoals]);
 
     useEffect(() => {
 
@@ -102,12 +102,14 @@ export default function EditReport() {
     async function handleSaveReport() {
         try {
             const docRef = doc(db, "reports/" + id);
+
             await updateDoc(docRef, {
                 username: name,
                 date: selectedDate,
                 checkGoals: checkGoals,
                 progressGoals: progressGoals,
             });
+
             setOriginalCheckGoals(checkGoals)
             setOriginalProgressGoals(progressGoals)
 
