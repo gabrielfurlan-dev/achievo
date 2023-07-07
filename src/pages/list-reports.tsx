@@ -55,13 +55,13 @@ export default function ListReport() {
                                         </div>
                                         <div className='flex items-center'>
                                             {name == data.username ?
-                                                <Link href={`/edit-report/${data.id}`}>
+                                                <Link href={`/report/${data.id}`}>
                                                     <NoBackgroundButton>
                                                         <PencilSimple size={24} className='text-PRINCIPAL' />
                                                     </NoBackgroundButton>
                                                 </Link>
                                                 :
-                                                <Link href={`/edit-report/${data.id}`}>
+                                                <Link href={`/report/${data.id}`}>
                                                     <NoBackgroundButton>
                                                         <Eye size={24} className='text-PRINCIPAL' />
                                                     </NoBackgroundButton>
