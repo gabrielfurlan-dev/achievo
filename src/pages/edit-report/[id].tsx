@@ -77,7 +77,6 @@ export default function EditReport() {
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const reportData = docSnap.data();
-                    console.log(reportData)
                     setName(reportData.username);
                     setSelectedDate(reportData.date);
                     setCheckGoals(reportData.checkGoals);
