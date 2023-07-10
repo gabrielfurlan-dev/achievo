@@ -10,22 +10,8 @@ import { CreateReport } from "@/hooks/ReportService";
 import Swal from "sweetalert2";
 import PageHeader from "@/components/PageHeader";
 import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons/Buttons";
+import { getCurrentDate } from "@/hooks/DateService";
 
-const getCurrentDate = (): string => {
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    let month = String(currentDate.getMonth() + 1);
-    let day = String(currentDate.getDate());
-
-    if (month.length === 1) {
-        month = '0' + month;
-    }
-    if (day.length === 1) {
-        day = '0' + day;
-    }
-
-    return `${year}-${month}-${day}`;
-};
 
 export default function NewReport() {
 
@@ -51,7 +37,7 @@ export default function NewReport() {
     }
 
     async function handleSaveReport() {
-        const idReport = await CreateReport({ selectedDate, title: name ?? "", progressGoals, checkGoals, userPhotoURL })
+        const idReport = await CreateReport({ selectedDate, name: name ?? "", progressGoals, checkGoals, userPhotoURL })
         Swal.fire('Good Job!', 'Relatório adicionado com sucesso!', 'success')
         router.push('/home')
     }

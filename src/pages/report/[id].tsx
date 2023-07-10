@@ -3,9 +3,9 @@ import ProgressGoal from "../../components/Buttons/LoginButton/goals/ProgressGoa
 import CheckInput from "../../components/Buttons/LoginButton/goals/CheckGoal/CheckInput";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { ICheckGoal, IProgressGoal } from "@/Interfaces/report";
+import { ICheckGoal, IProgressGoal, IReport } from "@/Interfaces/report";
 import { InputField } from "@/components/Buttons/InputField";
-import { getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 import db from "@/firebaseConfig";
 import Swal from "sweetalert2";
 import { ReadCvLogo } from "@phosphor-icons/react";
@@ -13,28 +13,47 @@ import { Plus } from "phosphor-react";
 import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons/Buttons";
 import PageHeader from "@/components/PageHeader";
 import Modal from "@/components/Modal";
+import { GetReportById, UpdateReport, CreateReport } from '@/hooks/ReportService'
+import { getCurrentDate, getWeekInterval, stringToDate, getFormatedWeekInterval } from "@/hooks/DateService";
+import { getWeek } from "date-fns";
+
 
 export default function EditReport() {
     const router = useRouter();
-    const { id } = router.query;
 
+    const { id } = router.query;
     const [name, setName] = useState("");
-    const [selectedDate, setSelectedDate] = useState<string>("");
+    const [userPhotoURL, setUserPhotoURL] = useState("")
     const [isOwner, setIsOwner] = useState(true)
+    const [isNew, setIsNew] = useState(false)
+    const [modified, setModified] = useState(false);
+    const [forceCancel, setForceCancel] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+
+    const [selectedDate, setSelectedDate] = useState<string>("");
+    const [weekInterval, setWeekInterval] = useState<string>("");
+
     const [checkGoals, setCheckGoals] = useState<ICheckGoal[]>([]);
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([]);
 
     const [originalCheckGoals, setOriginalCheckGoals] = useState<ICheckGoal[]>([]);
     const [originalProgressGoals, setOriginalProgressGoals] = useState<IProgressGoal[]>([]);
-    const [modified, setModified] = useState(false);
-    const [forceCancel, setForceCancel] = useState(false);
 
-    const [showModal, setShowModal] = useState(false); // Estado para controlar a exibição do modal
+    useEffect(() => {
+        if (id == 'new') {
+            setIsNew(true)
+            setName(localStorage.getItem('userName') ?? "")
+            setUserPhotoURL(localStorage.getItem('userPhotoURL') ?? "")
+            setSelectedDate(getCurrentDate())
+        }
+        else {
+            setReportData();
+        }
+    }, [id]);
 
-    async function handleCancel(force: boolean) {
-        await setForceCancel(force)
-        await router.push('/list-reports')
-    }
+    useEffect(() => {
+        setWeekInterval(getFormatedWeekInterval(selectedDate))
+    }, [selectedDate])
 
     useEffect(() => {
         let checkGoalsIsChanged = JSON.stringify(checkGoals) !== JSON.stringify(originalCheckGoals);
@@ -70,52 +89,39 @@ export default function EditReport() {
 
     }, [modified, router, forceCancel]);
 
-    useEffect(() => {
-        const fetchReportData = async () => {
-            try {
-                const docRef = doc(db, "reports/" + id);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const reportData = docSnap.data();
-                    setName(reportData.username);
-                    setSelectedDate(reportData.date);
-                    setCheckGoals(reportData.checkGoals);
-                    setProgressGoals(reportData.progressGoals);
-                    setIsOwner(localStorage.getItem('userName') == reportData.username)
+    function handleAddCheckGoal() {
+        setCheckGoals([...checkGoals, { id: checkGoals.length, title: "Sem título", checked: false, indice: checkGoals.length }])
+    }
 
-                    setOriginalCheckGoals(reportData.checkGoals);
-                    setOriginalProgressGoals(reportData.progressGoals);
-                } else {
-                    console.log("Documento não encontrado!");
-                }
-            } catch (error) {
-                console.error("Erro ao buscar os dados do relatório:", error);
-            }
-        };
+    function handleAddProgressGoal() {
+        setProgressGoals([...progressGoals, { id: progressGoals.length, title: "Sem título", total: 0, value: 0, indice: progressGoals.length }])
+    }
 
-        if (id) {
-            fetchReportData();
-        }
-    }, [id]);
+    async function handleCancel(force: boolean) {
+        await setForceCancel(force)
+
+        if (isNew)
+            await router.push('/home')
+        else
+            await router.push('/list-reports')
+    }
 
     async function handleSaveReport() {
-        try {
-            const docRef = doc(db, "reports/" + id);
+        let sucess: { data: string; error: string; type: string; }
 
-            await updateDoc(docRef, {
-                username: name,
-                date: selectedDate,
-                checkGoals: checkGoals,
-                progressGoals: progressGoals,
-            });
+        if (isNew)
+            sucess = await CreateReport({ selectedDate, name, progressGoals, checkGoals, userPhotoURL })
+        else
+            sucess = await UpdateReport(id, db, { username: name, date: selectedDate, checkGoals, progressGoals } as IReport)
 
+        if (sucess.type == 'success') {
             setOriginalCheckGoals(checkGoals)
             setOriginalProgressGoals(progressGoals)
-
-            Swal.fire("Relatório atualizado com sucesso!", "", 'success');
-        } catch (error) {
-            Swal.fire("Erro ao salvar o relatório:", String(error), "error");
         }
+
+        await Swal.fire(sucess.data, sucess.error, sucess.error == "" ? 'success' : 'error')
+
+        handleCancel(false)
     };
 
     async function handleDeleteReport() {
@@ -128,12 +134,18 @@ export default function EditReport() {
         }
     }
 
-    function handleAddCheckGoal() {
-        setCheckGoals([...checkGoals, { id: checkGoals.length, title: "", checked: false, indice: checkGoals.length }])
-    }
+    async function setReportData() {
+        const reportData = await GetReportById(id, db)
 
-    function handleAddProgressGoal() {
-        setProgressGoals([...progressGoals, { id: progressGoals.length, title: "", total: 0, value: 0, indice: progressGoals.length }])
+        if (reportData) {
+            setName(reportData.username);
+            setSelectedDate(reportData.date);
+            setCheckGoals(reportData.checkGoals);
+            setProgressGoals(reportData.progressGoals);
+            setIsOwner(localStorage.getItem('userName') == reportData.username)
+            setOriginalCheckGoals(reportData.checkGoals);
+            setOriginalProgressGoals(reportData.progressGoals);
+        }
     }
 
     return (
@@ -154,10 +166,10 @@ export default function EditReport() {
 
             <div className="h-full flex flex-col justify-between my-12 md:my-16">
                 <div>
-                    <PageHeader IconPage={ReadCvLogo} title="Weekly Report" goBackUrl="/list-reports">
-                        <div id="Header">
+                    <PageHeader IconPage={ReadCvLogo} title={'Week ' + getWeek(stringToDate(selectedDate))} goBackUrl="/list-reports">
+                        <div className="flex flex-col w-full">
+                            <InputField type="text" onChange={() => { }} value={weekInterval} noBackground widhtAuto disabled noPadding />
                             <h2 className="text-xl">{name}</h2>
-                            <InputField onChange={(e) => setSelectedDate(e.target.value)} value={selectedDate} type="date" noBackground widhtAuto disabled noPadding />
                         </div>
                     </PageHeader>
 
@@ -227,7 +239,7 @@ export default function EditReport() {
                         </NoBackgroundButton>
                         {isOwner &&
                             <div className="w-36">
-                                <ConfirmButton onClick={handleSaveReport}>Atualizar</ConfirmButton>
+                                <ConfirmButton onClick={handleSaveReport}>{isNew ? 'Adicionar' : 'Atualizar'}</ConfirmButton>
                             </div>
                         }
                     </div>

@@ -12,7 +12,7 @@ export default function home() {
             </div>
 
             <div className="mt-10 flex gap-1 h-12">
-                <IconButton IconButton={FilePlus} name="Add" route="new-report" />
+                <IconButton IconButton={FilePlus} name="Add" route="report/new" />
                 <IconButton IconButton={ListMagnifyingGlass} name="Listar" route="list-reports" />
             </div>
         </div>
