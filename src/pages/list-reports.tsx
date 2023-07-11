@@ -45,7 +45,7 @@ export default function ListReport() {
                         {
                             reports.map((data) => (
                                 <Link key={data.id} href={`/report/${data.id}`}>
-                                    <li className='mb-10 bg-WHITE_PRINCIPAL rounded-lg p-2 w-full'
+                                    <li className='mb-4 bg-WHITE_PRINCIPAL rounded-lg p-2 w-full'
                                         key={data.id}>
                                         <div className='flex justify-between'>
                                             <div className='ml-4 flex gap-8 items-center'>

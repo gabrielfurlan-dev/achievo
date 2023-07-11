@@ -26,10 +26,11 @@ export default function profile() {
                         goBackUrl="/home"
                         title="Meu perfil"
                         subTitle="Seus dados e resultados"
+                        compact
                     />
 
-                    <div className="flex h-[50%] items-center justify-center">
-                        <div className="flex flex-col md:flex-row gap-4 items-center text-center md:text-left">
+                    <div className="flex h-[80%] md:h-[50%] items-center justify-center">
+                        <div className="flex flex-col md:flex-row gap-6 items-center text-center md:text-left">
                             <img
                                 src={userPhotoURL}
                                 alt="Foto do usuário"

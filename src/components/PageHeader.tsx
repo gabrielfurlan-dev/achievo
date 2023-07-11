@@ -9,9 +9,10 @@ type pageHeaderProps = {
     subTitle?: string;
     children?: ReactNode;
     goBackUrl: "/list-reports" | "/home" | "/login" | "new-report"
+    compact?: boolean
 }
 
-export default function PageHeader({ IconPage, children, title, subTitle,goBackUrl }: pageHeaderProps) {
+export default function PageHeader({ IconPage, children, title, subTitle, goBackUrl, compact }: pageHeaderProps) {
     const router = useRouter()
 
     function goBack() {
@@ -19,7 +20,13 @@ export default function PageHeader({ IconPage, children, title, subTitle,goBackU
     }
 
     return (
-        <div className="flex flex-col gap-2">
+        <div
+            className="flex gap-2"
+            style={{
+                flexDirection: compact ? 'row' : 'column',
+                justifyContent: compact ? 'space-between' : 'normal'
+            }}
+        >
             <div>
                 <NoBackgroundButton onClick={goBack} noHover>
                     <div className="flex items-center gap-4">
@@ -29,11 +36,13 @@ export default function PageHeader({ IconPage, children, title, subTitle,goBackU
                 </NoBackgroundButton>
             </div>
 
-            <div className="flex gap-3 items-center">
-                <IconPage className="text-PRINCIPAL" size={48}/>
+            <div className="flex md:gap-3 items-center" style={{
+                flexDirection: compact ? 'row-reverse' : 'row',
+            }}>
+                <IconPage className="text-PRINCIPAL" size={48} />
                 <div>
-                    <h1 className="text-4xl font-bold text-GRAY_DARK">{title}</h1>
-                    <p className="text-GRAY">{subTitle}</p>
+                    <h1 className="text-xl md:text-4xl font-bold text-GRAY_DARK">{title}</h1>
+                    <p className="text-GRAY hidden md:block">{subTitle}</p>
                     {children}
                 </div>
             </div>
