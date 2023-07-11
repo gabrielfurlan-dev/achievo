@@ -2,6 +2,7 @@ import { IProgressGoal } from "@/Interfaces/report";
 import { InputField } from "@/components/Buttons/InputField";
 import Modal from "@/components/Modal";
 import { SetStateAction, useState } from "react";
+import Swal from "sweetalert2";
 
 type ProgressModalProps = {
     isOpen: boolean;
@@ -17,7 +18,23 @@ export default function ProgressGoalModal({ isOpen, onClose, progressGoal, setPr
     const [editingTotal, setEditingTotal] = useState(progressGoal.total.toString())
     const [editingTitle, setEditingTitle] = useState(progressGoal.title)
 
+    function validate() {
+
+        if (editingTitle.length == 0) {
+            Swal.fire('Ops!', 'É necessário informar o título da meta', 'warning')
+            return false;
+        }
+        if (Number(editingTotal) == 0) {
+            Swal.fire('Ops!', 'É necessário informar o valor de progresso total da meta', 'warning')
+            return false;
+        }
+
+        return true;
+    }
+
     function handleSaveGoal() {
+
+        if (!validate()) return;
 
         let newGoal: IProgressGoal = {
             id: progressGoal.id,

@@ -2,6 +2,7 @@ import { ICheckGoal } from "@/Interfaces/report";
 import { InputField } from "@/components/Buttons/InputField";
 import Modal from "@/components/Modal";
 import { SetStateAction, useState } from "react";
+import Swal from "sweetalert2";
 
 type CheckModalProps = {
     isOpen: boolean;
@@ -11,11 +12,24 @@ type CheckModalProps = {
     deleteGoal: () => void;
 }
 
-export default function CheckGoalModal({ isOpen, onClose,checkGoal, setCheckGoal, deleteGoal }: CheckModalProps) {
+export default function CheckGoalModal({ isOpen, onClose, checkGoal, setCheckGoal, deleteGoal }: CheckModalProps) {
 
     const [editingTitle, setEditingTitle] = useState(checkGoal.title)
 
+
+    function validate() {
+
+        if (editingTitle.length == 0) {
+            Swal.fire('Ops!', 'É necessário informar o título da meta', 'warning')
+            return false;
+        }
+
+        return true;
+    }
+
     function handleSaveGoal() {
+
+        if (!validate()) return;
 
         let newGoal: ICheckGoal = {
             id: checkGoal.id,

@@ -36,7 +36,7 @@ export default function login() {
     const [isLoading, setIsLoading] = useState(true);
 
     async function validateLogin() {
-        if (localStorage.getItem('userEmail') != null) {
+        if (localStorage.getItem('userEmail')) {
             await Router.push('/home')
         }
         setIsLoading(false)

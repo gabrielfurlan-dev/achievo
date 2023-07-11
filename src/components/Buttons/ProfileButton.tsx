@@ -1,63 +1,114 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { useRouter } from "next/router";
-import { CaretDown, UserCircle } from "phosphor-react";
-import { useState } from "react";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { UserCircle } from 'phosphor-react';
+import React, { useEffect, useRef, useState } from 'react';
 
-export function ProfileButton() {
-    const supabase = useSupabaseClient();
-    const router = useRouter();
-    const [dropDownEnable, setDropDownEnable] = useState(false)
+type Props = {
+    photoURL: string;
+    name: string;
+    email: string;
+};
 
-    const handleSignOut = async () => {
-        try {
-            await supabase.auth.signOut();
-            router.push("/login");
-            localStorage.clear();
+export default function ProfileButton({ photoURL, name, email }: Props) {
+    const router = useRouter()
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
-        } catch (error) {
-            console.error("Error signing out");
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const handleClickOutside = (event: MouseEvent) => {
+        if (
+            dropdownRef.current &&
+            buttonRef.current &&
+            !dropdownRef.current.contains(event.target as Node) &&
+            !buttonRef.current.contains(event.target as Node)
+        ) {
+            setIsDropdownOpen(false);
         }
     };
 
-    return (
-        <div className="m">
-            <button
-                id="dropdownAvatarNameButton"
-                data-dropdown-toggle="dropdownAvatarName"
-                className={`
-                        flex items-center transition
-                        text-sm font-medium
-                        text-gray-900 dark:text-white
-                        hover:text-blue-600
-                        hover:bg-LIGHT_THEME_HOVER dark:hover:bg-DARK_THEME_HOVER
-                        px-2 md:mr-2 focus:ring-4 p-2 rounded-lg
-                        focus:ring-gray-100 dark:focus:ring-gray-700`}
+    const handleKeyPress = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+            setIsDropdownOpen(false);
+        }
+    };
 
+    function handleLogout() {
+        localStorage.setItem('userEmail', "");
+        localStorage.setItem('userName', "");
+        localStorage.setItem('userPhotoURL', "");
+        router.push("/login")
+    }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('keydown', handleKeyPress);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('keydown', handleKeyPress);
+        };
+    }, []);
+
+    return (
+        <div className="relative">
+            <button
+                id="dropdownUserAvatarButton"
+                data-dropdown-toggle="dropdownAvatar"
+                className="flex mx-3 text-sm rounded-lg md:mr-0 md:hover:bg-WHITE_PRINCIPAL"
                 type="button"
-                onClick={() => setDropDownEnable(!dropDownEnable)}
+                onClick={toggleDropdown}
+                ref={buttonRef}
             >
-                <UserCircle size={32} className="mr-2" />
-                <span className="sr-only">Open user menu</span>
-                Bonnie Green
-                <CaretDown className="ml-2" />
+                <span className="sr-only">Abrir menu do usuário</span>
+
+                <div className='flex items-center gap-4 px-3 py-1'>
+                    <div className='text-right hidden md:block'>
+                        <p className='text-xl text-GRAY_DARK'>{name}</p>
+                        <p className='text-sm text-GRAY'>{email}</p>
+                    </div>
+                    <span className='block md:hidden w-44'></span>
+                    <div className="w-10 h-10">
+                        {photoURL ? (
+                            <img src={photoURL} className="rounded-full" alt="user photo" />
+                        ) : (
+                            <UserCircle className="h-full w-full" />
+                        )}
+                    </div>
+                </div>
+
             </button>
 
-            {
-                dropDownEnable ? (
-                    <div id="dropdownAvatarName" className="mt-3 dropEnableTransition border z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-DARK_THEME_BACKGROUND dark:divide-gray-600"
-                    >
-                        <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                            <div className="truncate">name@email.com</div>
-                        </div>
-
-                        <div className="py-2">
-                            <button onClick={handleSignOut} className="flex w-40 mx-2 rounded px-4 py-2 text-sm text-gray-700
-                            hover:bg-red-50 dark:hover:bg-DARK_THEME_HOVER_RED transition dark:text-gray-200 dark:hover:text-white">Sair</button>
-                        </div>
-
+            {isDropdownOpen && (
+                <div
+                    id="dropdownAvatar"
+                    className="z-10 absolute top-16 bg-white dark:bg-gray-700 dark:divide-gray-600 divide-gray-100 divide-y rounded-lg shadow w-full"
+                    ref={dropdownRef}
+                >
+                    <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                        <div>{name}</div>
+                        <div className="font-medium truncate">{email}</div>
                     </div>
-                ) : ''
-            }
+                    <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUserAvatarButton">
+                        <li>
+                            <Link href={`/profile/${email}`} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                Meu perfil
+                            </Link>
+                        </li>
+                    </ul>
+                    <div className="py-2">
+                        <button
+                            onClick={() => handleLogout()}
+                            className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                        >
+                            Sair
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

@@ -33,6 +33,7 @@
     "eslint-config-next": "13.1.6",
     "express": "^4.18.2",
     "firebase": "^9.22.1",
+    "flowbite-react": "^0.4.11",
     "http-proxy-middleware": "^2.0.6",
     "next": "13.1.6",
     "next-images": "^1.8.4",
