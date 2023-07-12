@@ -169,7 +169,7 @@ export default function EditReport() {
                 <div>
                     <PageHeader IconPage={ReadCvLogo} title={'Week ' + getWeek(stringToDate(selectedDate))} goBackUrl="/list-reports">
                         <div className="flex flex-col w-full">
-                            <InputField type="text" onChange={() => { }} value={weekInterval} noBackground widhtAuto disabled noPadding />
+                            <InputField type="text" onChange={() => { }} value={weekInterval} noBackground widthAuto disabled noPadding />
                             <h2 className="text-xl">{name}</h2>
                         </div>
                     </PageHeader>

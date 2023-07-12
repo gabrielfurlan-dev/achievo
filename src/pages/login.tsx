@@ -1,45 +1,28 @@
 import { GoogleLogo, ReadCvLogo } from "@phosphor-icons/react";
-import Swal from "sweetalert2";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'; ''
 import Router from "next/router";
-import firebaseConfig from "@/firebaseConfig";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
-
-function handleLoginGoogle() {
-
-    const firebase = firebaseConfig
-
-    const provider = new GoogleAuthProvider();
-
-    const auth = getAuth();
-    signInWithPopup(auth, provider)
-        .then((result) => {
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential?.accessToken;
-            const user = result.user;
-            localStorage.setItem('userEmail', result.user.email ?? "");
-            localStorage.setItem('userName', result.user.displayName ?? "");
-            localStorage.setItem('userPhotoURL', result.user.photoURL ?? "");
-            Router.push("/home")
-        }).catch((error) => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Ocorreu um erro ao fazer login com o Google!',
-            });
-            console.log(error);
-        });
-}
-
+import { handleLoginGoogle } from '@/hooks/LoginService'
+import { getUserData, isUserRegistered } from "@/hooks/UserService";
 export default function login() {
     const [isLoading, setIsLoading] = useState(true);
 
     async function validateLogin() {
-        if (localStorage.getItem('userEmail')) {
-            await Router.push('/home')
-        }
+        const userData = await getUserData()
+
+        if (await userData.userFound)
+            // if (await isUserRegistered(userData.email))
+            //     await Router.push('/home')
+            // else
+                Router.push('/register')
+
         setIsLoading(false)
+    }
+
+    async function handleLogin() {
+        setIsLoading(true)
+        await handleLoginGoogle()
+        await validateLogin()
     }
 
     useEffect(() => {
@@ -65,7 +48,7 @@ export default function login() {
                             text-GRAY_DARK
                             border-PRINCIPAL
                             hover:bg-PRINCIPAL hover:text-WHITE_PRINCIPAL"
-                            onClick={handleLoginGoogle}
+                            onClick={handleLogin}
                         >
                             <GoogleLogo size={24} />
                             <p className="text-lg">Fazer login com Google</p>

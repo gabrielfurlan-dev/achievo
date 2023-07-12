@@ -1,6 +1,6 @@
 import { ICheckGoal, IProgressGoal, IReport } from "@/Interfaces/report";
 import firebaseConfig from "@/firebaseConfig";
-import { collection, addDoc, getDocs, doc, updateDoc, getDoc, Firestore } from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc, getDoc, Firestore } from "firebase/firestore";
 
 type createReportProps = {
     selectedDate: string;
