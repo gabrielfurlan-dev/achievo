@@ -1,37 +1,34 @@
 import { ConfirmButton } from "@/components/Buttons";
 import { InputField } from "@/components/InputField";
 import { ProfileImage } from "@/components/profileImage";
-import { userInfoAtom } from "@/store/userStoreInfo";
-import { useAtom } from "jotai";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
 export default function pages() {
-    const [userInfo, setUserInfo] = useAtom(userInfoAtom)
-    const [username, setUsername] = useState(userInfo.username)
-    const [description, setDescription] = useState(userInfo.description)
+    // const [username, setUsername] = useState(userInfo.username)
+    // const [description, setDescription] = useState(userInfo.description)
 
     function handleSaveUserInfo() {
 
         //must implement method to validate user already exists
 
-        if (username == "" || description == "") {
-            Swal.fire('Dados inválidos', 'É necessário preencher os campos corretamente.', "error")
-            return;
-        }
+        // if (username == "" || description == "") {
+        //     Swal.fire('Dados inválidos', 'É necessário preencher os campos corretamente.', "error")
+        //     return;
+        // }
 
-        setUserInfo((info) => ({
-            ...info,
-            username: username,
-            description: description
-        }))
+        // setUserInfo((info) => ({
+        //     ...info,
+        //     username: username,
+        //     description: description
+        // }))
 
         Swal.fire('Good Job!', 'Dados atualizados com sucesso', "success")
     }
 
     return (
         <div className="flex flex-col h-screen w-full justify-center items-center ">
-            <div className="gap-4 flex flex-col w-3/4 md:w-4/6 lg:w-5/12">
+            {/* <div className="gap-4 flex flex-col w-3/4 md:w-4/6 lg:w-5/12">
                 <InputField
                     type="text"
                     onChange={setUsername}
@@ -54,7 +51,7 @@ export default function pages() {
             </div>
             <div>
                 <ProfileImage/>
-            </div>
+            </div> */}
         </div>
     );
 }
