@@ -8,6 +8,8 @@ export interface IUserInfo {
     description?: string,
     username?: string,
 
+    followers?: number,
+    folloing?: number,
 }
 
 interface IUserInfoStore {

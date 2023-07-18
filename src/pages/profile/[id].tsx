@@ -7,8 +7,11 @@ import { useEffect, useState } from "react";
 export default function profile() {
     const router = useRouter();
     const { id } = router.query;
-
     const { userInfo, setUserInfo } = useUserInfoStore();
+
+    useEffect(() => {
+        useUserInfoStore.persist.rehydrate();
+    }, [])
 
     return (
         <div className='flex h-screen w-full'>

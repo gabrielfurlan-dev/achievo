@@ -1,5 +1,5 @@
 import { IProgressGoal } from "@/Interfaces/report";
-import { InputField } from "@/components/Buttons/InputField";
+import { InputField } from "@/components/InputField";
 import Modal from "@/components/Modal";
 import { SetStateAction, useState } from "react";
 import Swal from "sweetalert2";
