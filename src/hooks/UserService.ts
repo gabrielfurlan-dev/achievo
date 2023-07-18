@@ -4,27 +4,23 @@ import db from '@/firebaseConfig';
 import { IUserInfo } from "@/store/userStoreInfo";
 
 export async function isUserRegistered(email: string) {
-    try {
-        const docRef = doc(db, "users", email);
-        const docSnap = await getDoc(docRef);
-        return docSnap.exists();
-    } catch (error) {
-        console.error("Erro ao buscar os dados do usuário:", error);
-        return false;
-    }
+
+    const data = await getRegisteredData(email)
+
+    return data?.description != ""
 }
 
-export async function getRegisterData(email: string) {
+export async function getRegisteredData(email: string) {
     try {
-
-        const docRef = doc(db, "users", email);
+        const docRef = doc(db, "users/" + email);
         const docSnap = await getDoc(docRef);
-        return docSnap.data() as IUserInfo;
-        console.log(docSnap)
-
+        if (docSnap.exists()) {
+            return docSnap.data() as IUserInfo
+        } else {
+            console.log("Documento não encontrado!");
+        }
     } catch (error) {
         console.error("Erro ao buscar os dados do usuário:", error);
-        return false;
     }
 }
 

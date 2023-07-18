@@ -1,9 +1,8 @@
-import { userInfoAtom } from "@/store/userStoreInfo"
-import { useAtom } from "jotai"
+import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useState } from "react";
 
 export function ProfileImage() {
-    const [userInfo, setUserInfo] = useAtom(userInfoAtom)
+    const { userInfo, setUserInfo } = useUserInfoStore()
 
     const [isEditing, setIsEditing] = useState(false);
     const [newImageURL, setNewImageURL] = useState('');
@@ -22,10 +21,7 @@ export function ProfileImage() {
 
             setIsEditing(false);
 
-            setUserInfo((info) => ({
-                ...info,
-                imageURL: newImageURL
-            }))
+            setUserInfo({ imageURL: newImageURL })
 
             setNewImageURL('');
         }

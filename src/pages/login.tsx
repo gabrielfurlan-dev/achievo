@@ -3,7 +3,7 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { handleLoginGoogle } from '@/hooks/LoginService'
-import { getUserData, isUserRegistered, getRegisterData } from "@/hooks/UserService";
+import { getUserData, isUserRegistered, getRegisteredData } from "@/hooks/UserService";
 import { useUserInfoStore } from '@/store/userStoreInfo';
 
 export default function login() {
@@ -12,9 +12,12 @@ export default function login() {
 
     async function validateLogin() {
         const userData = await getUserData(userInfo)
+
+        console.log(userData.userFound)
+
         if (await userData.userFound)
             if (await isUserRegistered(userData.email)) {
-                await getRegisterData(userData.email);
+                await getRegisteredData(userData.email);
                 await Router.push('/home')
             }
             else
