@@ -32,12 +32,8 @@ export function SimpleButton({ onClick, children }: customButtonProps) {
 
 export function DangerButton({ onClick, children, noBackground }: customButtonProps) {
     return (
-
-
-
         <button
             onClick={onClick}
-
             className={noBackground ? "px-6 py-3 font-semibold text-center text-gray-800 rounded-lg hover:text-WHITE_PRINCIPAL hover:bg-SECONDARY transition-all duration-300" : "px-6 py-3 font-semibold text-center text-gray-800 rounded-lg bg-WHITE_SECONDARY hover:text-WHITE_PRINCIPAL hover:bg-SECONDARY transition-all duration-300"}
         >
             {children}

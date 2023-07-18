@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 export interface IUserInfo {
     name?: string,
@@ -15,14 +16,23 @@ interface IUserInfoStore {
     cleanUserInfo: () => void
 }
 
-export const useUserInfoStore = create<IUserInfoStore>()((set) => ({
-    userInfo: {
-        name: '',
-        description: '',
-        email: '',
-        imageURL: '',
-        username: '',
-    },
-    setUserInfo: (userInfo) => set({ userInfo }),
-    cleanUserInfo: () => set({ userInfo: { description: "", email: "", imageURL: "", name: "", username: "" } as IUserInfo })
-}))
+export const useUserInfoStore = create<IUserInfoStore>()(
+    persist(
+        (set) => ({
+            userInfo: {
+                name: '',
+                description: '',
+                email: '',
+                imageURL: '',
+                username: '',
+            },
+            setUserInfo: (userInfo) => set({ userInfo }),
+            cleanUserInfo: () => set({ userInfo: { description: "", email: "", imageURL: "", name: "", username: "" } as IUserInfo })
+        }),
+        {
+            name: "userInfo",
+            storage: createJSONStorage(() => localStorage),
+            skipHydration: true,
+        }
+    )
+)

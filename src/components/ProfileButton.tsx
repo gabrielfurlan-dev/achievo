@@ -45,6 +45,9 @@ export default function ProfileButton() {
     }
 
     useEffect(() => {
+
+        useUserInfoStore.persist.rehydrate();
+
         document.addEventListener('mousedown', handleClickOutside);
         document.addEventListener('keydown', handleKeyPress);
 

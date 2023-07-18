@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { IReport } from '@/Interfaces/report';
 import db from '@/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
-import { Button } from '@mui/material';
 import { Eye, PencilSimple } from 'phosphor-react';
 import Link from 'next/link';
 import PageHeader from '@/components/PageHeader';
 import { ListMagnifyingGlass } from '@phosphor-icons/react';
-import { NoBackgroundButton } from '@/components/Buttons/Buttons';
-import { getFormatedDate, getFormatedWeekInterval, stringToDate } from '@/hooks/DateService';
+import { NoBackgroundButton } from '@/components/Buttons';
+import { getFormatedWeekInterval, stringToDate } from '@/hooks/DateService';
 import { getWeek } from 'date-fns';
 
 export default function ListReport() {
