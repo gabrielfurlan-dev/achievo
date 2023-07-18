@@ -1,4 +1,4 @@
-import ProfileButton from "@/components/Buttons/ProfileButton";
+import ProfileButton from "@/components/ProfileButton";
 import { ListMagnifyingGlass } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useRouter } from "next/router";

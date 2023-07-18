@@ -1,6 +1,6 @@
 import { Trash, X } from 'phosphor-react';
 import React, { ReactNode } from 'react';
-import { ConfirmButton, DangerButton, NoBackgroundButton } from './Buttons/Buttons';
+import { ConfirmButton, DangerButton, NoBackgroundButton } from './Buttons';
 
 interface ModalProps {
     isOpen: boolean;

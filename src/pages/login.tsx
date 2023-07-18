@@ -4,24 +4,27 @@ import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { handleLoginGoogle } from '@/hooks/LoginService'
 import { getUserData, isUserRegistered } from "@/hooks/UserService";
+import { useUserInfoStore } from '@/store/userStoreInfo';
+
 export default function login() {
     const [isLoading, setIsLoading] = useState(true);
+    const { userInfo, setUserInfo } = useUserInfoStore();
 
     async function validateLogin() {
-        const userData = await getUserData()
+        const userData = await getUserData(userInfo)
 
         if (await userData.userFound)
-            // if (await isUserRegistered(userData.email))
-            //     await Router.push('/home')
-            // else
-                Router.push('/register')
+            if (await isUserRegistered(userData.email))
+                await Router.push('/home')
+            else
+            Router.push('/register')
 
         setIsLoading(false)
     }
 
     async function handleLogin() {
         setIsLoading(true)
-        await handleLoginGoogle()
+        await handleLoginGoogle(setUserInfo)
         await validateLogin()
     }
 

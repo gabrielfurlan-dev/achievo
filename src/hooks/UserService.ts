@@ -1,6 +1,7 @@
 
 import { Firestore, doc, getDoc } from "firebase/firestore";
 import db from '@/firebaseConfig';
+import { IUserInfo } from "@/store/userStoreInfo";
 
 export async function isUserRegistered(email: string) {
     try {
@@ -13,11 +14,11 @@ export async function isUserRegistered(email: string) {
     }
 }
 
-export async function getUserData() {
+export async function getUserData(userInfo: IUserInfo) {
 
-    const email = localStorage.getItem('userEmail') ?? ""
-    const name = localStorage.getItem('userName') ?? ""
-    const photoUrl = localStorage.getItem('userPhotoURL') ?? ""
+    const email = userInfo.email ?? ""
+    const name = userInfo.name ?? ""
+    const imageURL = userInfo.imageURL ?? ""
 
-    return { userFound:name != "", email, name, photoUrl }
+    return { userFound: name != "", email, name, imageURL }
 }

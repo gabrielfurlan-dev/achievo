@@ -1,9 +1,33 @@
-import { InputField } from "@/components/Buttons/InputField";
+import { ConfirmButton } from "@/components/Buttons";
+import { InputField } from "@/components/InputField";
+import { ProfileImage } from "@/components/profileImage";
+import { userInfoAtom } from "@/store/userStoreInfo";
+import { useAtom } from "jotai";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function pages() {
-    const [username, setUsername] = useState("")
-    const [description, setDescription] = useState("")
+    const [userInfo, setUserInfo] = useAtom(userInfoAtom)
+    const [username, setUsername] = useState(userInfo.username)
+    const [description, setDescription] = useState(userInfo.description)
+
+    function handleSaveUserInfo() {
+
+        //must implement method to validate user already exists
+
+        if (username == "" || description == "") {
+            Swal.fire('Dados inválidos', 'É necessário preencher os campos corretamente.', "error")
+            return;
+        }
+
+        setUserInfo((info) => ({
+            ...info,
+            username: username,
+            description: description
+        }))
+
+        Swal.fire('Good Job!', 'Dados atualizados com sucesso', "success")
+    }
 
     return (
         <div className="flex flex-col h-screen w-full justify-center items-center ">
@@ -24,8 +48,12 @@ export default function pages() {
                         label="Descrição"
                     />
                 </div>
+                <div className="flex w-full justify-end">
+                    <div><ConfirmButton onClick={handleSaveUserInfo}>Salvar</ConfirmButton></div>
+                </div>
             </div>
             <div>
+                <ProfileImage/>
             </div>
         </div>
     );

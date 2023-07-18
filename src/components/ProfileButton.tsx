@@ -1,3 +1,4 @@
+import { useUserInfoStore } from '@/store/userStoreInfo';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { UserCircle } from 'phosphor-react';
@@ -9,11 +10,13 @@ type Props = {
     email: string;
 };
 
-export default function ProfileButton({ photoURL, name, email }: Props) {
+export default function ProfileButton() {
     const router = useRouter()
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const { userInfo, cleanUserInfo } = useUserInfoStore();
+
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -37,10 +40,8 @@ export default function ProfileButton({ photoURL, name, email }: Props) {
     };
 
     function handleLogout() {
-        localStorage.setItem('userEmail', "");
-        localStorage.setItem('userName', "");
-        localStorage.setItem('userPhotoURL', "");
-        router.push("/login")
+        cleanUserInfo();
+        router.push("/login");
     }
 
     useEffect(() => {
@@ -67,13 +68,13 @@ export default function ProfileButton({ photoURL, name, email }: Props) {
 
                 <div className='flex items-center gap-4 px-3 py-1'>
                     <div className='text-right hidden md:block'>
-                        <p className='text-xl text-GRAY_DARK'>{name}</p>
-                        <p className='text-sm text-GRAY'>{email}</p>
+                        <p className='text-xl text-GRAY_DARK'>{userInfo.name}</p>
+                        <p className='text-sm text-GRAY'>{userInfo.email}</p>
                     </div>
                     <span className='block md:hidden w-44'></span>
                     <div className="w-10 h-10">
-                        {photoURL ? (
-                            <img src={photoURL} className="rounded-full" alt="user photo" />
+                        {userInfo.imageURL ? (
+                            <img src={userInfo.imageURL} className="rounded-full" alt="user photo" />
                         ) : (
                             <UserCircle className="h-full w-full" />
                         )}
@@ -89,12 +90,12 @@ export default function ProfileButton({ photoURL, name, email }: Props) {
                     ref={dropdownRef}
                 >
                     <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                        <div>{name}</div>
-                        <div className="font-medium truncate">{email}</div>
+                        <div>{userInfo.name}</div>
+                        <div className="font-medium truncate">{userInfo.email}</div>
                     </div>
                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUserAvatarButton">
                         <li>
-                            <Link href={`/profile/${email}`} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                            <Link href={`/profile/${userInfo.email}`} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                 Meu perfil
                             </Link>
                         </li>

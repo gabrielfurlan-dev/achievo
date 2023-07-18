@@ -1,7 +1,6 @@
 interface ListItemProps{
     text: string,
     key?: number,
-
 }
 
 export default function ListItem({text, key}: ListItemProps) {

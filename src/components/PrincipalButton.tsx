@@ -9,8 +9,8 @@ const PrincipalButton: React.FC<ButtonProps> = ({ title }) => {
         <div>
             <button
                 type="button"
-                className="bg-LIGHT_BLUE 
-                            p-2 
+                className="bg-LIGHT_BLUE
+                            p-2
                             text-base
                             font-semibold
                           text-WHITE
