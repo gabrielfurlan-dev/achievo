@@ -1,22 +1,20 @@
-
-import ProgressGoal from "../../components/Buttons/LoginButton/goals/ProgressGoal/ProgressGoal";
-import CheckInput from "../../components/Buttons/LoginButton/goals/CheckGoal/CheckInput";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ICheckGoal, IProgressGoal, IReport } from "@/Interfaces/report";
-import { InputField } from "@/components/Buttons/InputField";
 import { doc, deleteDoc } from "firebase/firestore";
 import db from "@/firebaseConfig";
 import Swal from "sweetalert2";
 import { ReadCvLogo } from "@phosphor-icons/react";
 import { Plus } from "phosphor-react";
-import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons/Buttons";
 import PageHeader from "@/components/PageHeader";
 import Modal from "@/components/Modal";
 import { GetReportById, UpdateReport, CreateReport } from '@/hooks/ReportService'
-import { getCurrentDate, getWeekInterval, stringToDate, getFormatedWeekInterval } from "@/hooks/DateService";
+import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/hooks/DateService";
 import { getWeek } from "date-fns";
-
+import { InputField } from "@/components/InputField";
+import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons";
+import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
+import CheckInput from "@/components/goals/CheckGoal/CheckInput";
 
 export default function EditReport() {
     const router = useRouter();
