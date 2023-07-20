@@ -2,6 +2,8 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
 export interface IUserInfo {
+    loggedIn?: boolean
+
     name?: string,
     email?: string,
     imageURL?: string,
@@ -22,6 +24,7 @@ export const useUserInfoStore = create<IUserInfoStore>()(
     persist(
         (set) => ({
             userInfo: {
+                loggedIn: false,
                 name: '',
                 description: '',
                 email: '',

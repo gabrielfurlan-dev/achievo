@@ -3,38 +3,41 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { handleLoginGoogle } from '@/hooks/LoginService'
-import { getUserData, isUserRegistered, getRegisteredData } from "@/hooks/UserService";
-import { useUserInfoStore } from '@/store/userStoreInfo';
+import { getUserData, isUserRegistered } from "@/hooks/UserService";
+import db from '@/firebaseConfig';
+import { useUserInfoStore } from "@/store/userStoreInfo";
 
 export default function login() {
     const [isLoading, setIsLoading] = useState(true);
-    const { userInfo, setUserInfo } = useUserInfoStore();
+    const { userInfo, setUserInfo } = useUserInfoStore()
 
-    async function validateLogin() {
-        const userData = await getUserData(userInfo)
-
-        console.log(userData.userFound)
-
-        if (await userData.userFound)
-            if (await isUserRegistered(userData.email)) {
-                await getRegisteredData(userData.email);
-                await Router.push('/home')
-            }
-            else
-                Router.push('/register')
-
-        setIsLoading(false)
-    }
+    const firebase = db;
 
     async function handleLogin() {
         setIsLoading(true)
-        await handleLoginGoogle(setUserInfo)
-        await validateLogin()
+        const user = await handleLoginGoogle()
+
+        if (user?.sucess) {
+            setUserInfo({
+                loggedIn: true,
+                email: user.data.userEmail,
+                name: user.data.userName,
+                imageURL: user.data.imageURL
+            })
+        }
     }
 
     useEffect(() => {
-        validateLogin()
-    }, [])
+        if (userInfo.loggedIn)
+            // if (await isUserRegistered(userData.email))
+            //     await Router.push('/home')
+            // else
+            // Router.push('/register')
+            Router.push("/home");
+
+        setIsLoading(false)
+
+    }, [userInfo])
 
     return (
         <div className="items-center h-screen w-screen justify-center flex flex-col">

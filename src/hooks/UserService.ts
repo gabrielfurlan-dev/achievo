@@ -1,34 +1,23 @@
 
-import { doc, getDoc } from "firebase/firestore";
+import { Firestore, doc, getDoc } from "firebase/firestore";
 import db from '@/firebaseConfig';
-import { IUserInfo } from "@/store/userStoreInfo";
 
 export async function isUserRegistered(email: string) {
-
-    const data = await getRegisteredData(email)
-
-    return data?.description != ""
-}
-
-export async function getRegisteredData(email: string) {
     try {
-        const docRef = doc(db, "users/" + email);
+        const docRef = doc(db, "users", email);
         const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            return docSnap.data() as IUserInfo
-        } else {
-            console.log("Documento não encontrado!");
-        }
+        return docSnap.exists();
     } catch (error) {
         console.error("Erro ao buscar os dados do usuário:", error);
+        return false;
     }
 }
 
-export async function getUserData(userInfo: IUserInfo) {
+export async function getUserData() {
 
-    const email = userInfo.email ?? ""
-    const name = userInfo.name ?? ""
-    const imageURL = userInfo.imageURL ?? ""
+    const email = localStorage.getItem('userEmail') ?? ""
+    const name = localStorage.getItem('userName') ?? ""
+    const photoUrl = localStorage.getItem('userPhotoURL') ?? ""
 
-    return { userFound: name != "", email, name, imageURL }
+    return { userFound:name != "", email, name, photoUrl }
 }

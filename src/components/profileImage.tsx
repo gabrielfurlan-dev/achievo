@@ -21,7 +21,7 @@ export function ProfileImage() {
 
             setIsEditing(false);
 
-            setUserInfo({ imageURL: newImageURL })
+            setUserInfo({imageURL: newImageURL})
 
             setNewImageURL('');
         }

@@ -19,7 +19,7 @@ export default function home() {
     return (
         <div className="w-full h-full">
             <div className="flex w-full justify-end absolute mt-4 right-2 md:right-8 md:mt-10">
-                <ProfileButton email={userEmail} name={userName} photoURL={userPhotoURL}/>
+                <ProfileButton />
             </div>
 
             <div className="flex flex-col justify-center items-center text-center h-screen w-full">
