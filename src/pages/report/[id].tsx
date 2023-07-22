@@ -6,7 +6,7 @@ import db from "@/firebaseConfig";
 import Swal from "sweetalert2";
 import { ReadCvLogo } from "@phosphor-icons/react";
 import { Plus } from "phosphor-react";
-import PageHeader from "@/components/PageHeader";
+import NavBar from "@/components/NavBar/NavBar";
 import Modal from "@/components/Modal";
 import { GetReportById, UpdateReport, CreateReport } from '@/hooks/ReportService'
 import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/hooks/DateService";
@@ -15,6 +15,7 @@ import { InputField } from "@/components/InputField";
 import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons";
 import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
+import PageLayout from "@/layouts/PageLayout";
 
 export default function EditReport() {
     const router = useRouter();
@@ -148,7 +149,7 @@ export default function EditReport() {
     }
 
     return (
-        <div className="w-5/6 md:w-4/6 mx-auto flex flex-col justify-between min-h-screen">
+        <PageLayout>
             <Modal
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
@@ -162,88 +163,85 @@ export default function EditReport() {
                 <p>Deseja mesmo descartá-las?</p>
             </Modal>
 
+            <div className="h-full">
+                <NavBar IconPage={ReadCvLogo} title={'Week ' + getWeek(stringToDate(selectedDate))} goBackUrl="/list-reports">
+                    <div className="flex flex-col w-full">
+                        <InputField type="text" onChange={() => { }} value={weekInterval} noBackground widthAuto disabled noPadding />
+                        <h2 className="text-xl">{name}</h2>
+                    </div>
+                </NavBar>
 
-            <div className="h-full flex flex-col justify-between my-12 md:my-16">
-                <div>
-                    <PageHeader IconPage={ReadCvLogo} title={'Week ' + getWeek(stringToDate(selectedDate))} goBackUrl="/list-reports">
-                        <div className="flex flex-col w-full">
-                            <InputField type="text" onChange={() => { }} value={weekInterval} noBackground widthAuto disabled noPadding />
-                            <h2 className="text-xl">{name}</h2>
-                        </div>
-                    </PageHeader>
-
-                    <div id="Goals">
-                        <div className="mt-12">
-                            <div className="flex flex-col gap-10 mt-2">
-                                <div className="rounded-md p-4">
-                                    <div className="flex justify-between mb-2">
-                                        <p className="text-2xl font-bold">Progresso</p>
-                                        {isOwner && <NoBackgroundButton onClick={handleAddProgressGoal} className="w-full"><Plus /></NoBackgroundButton>}
-                                    </div>
-                                    <div className="flex flex-col gap-4">
-                                        {
-                                            progressGoals.length ?
-                                                Array.isArray(progressGoals) && progressGoals.map((goal) => (
-                                                    <ProgressGoal
-                                                        key={goal.id}
-                                                        progressGoal={goal}
-                                                        setProgressGoals={setProgressGoals}
-                                                        disabled={!isOwner}
-                                                    />
-                                                )) :
-                                                <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL">
-                                                    <div className="flex items-center">
-                                                        {isOwner ? (<p className="flex">Adicione um progresso no icone"<Plus className="text-GRAY_DARK" />"</p>)
-                                                            : <p>Sem metas de progresso</p>
-                                                        }
-                                                    </div>
-                                                </div>
-                                        }
-                                    </div>
+                <div id="Goals">
+                    <div className="mt-12">
+                        <div className="flex flex-col gap-10 mt-2">
+                            <div className="rounded-md p-4">
+                                <div className="flex justify-between mb-2">
+                                    <p className="text-2xl font-bold text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">Progresso</p>
+                                    {isOwner && <NoBackgroundButton onClick={handleAddProgressGoal} className="w-full"><Plus /></NoBackgroundButton>}
                                 </div>
-
-                                <div className="  rounded-md p-4">
-                                    <div className="flex justify-between mb-2">
-                                        <p className="text-2xl font-bold">Check List</p>
-                                        {isOwner && <NoBackgroundButton onClick={handleAddCheckGoal} className="w-full"><Plus /></NoBackgroundButton>}
-                                    </div>
-                                    <div className="flex flex-col gap-4">
-                                        {
-                                            checkGoals.length ?
-                                                Array.isArray(checkGoals) && checkGoals.map((goal) => (
-                                                    <CheckInput
-                                                        key={goal.id}
-                                                        checkGoal={goal}
-                                                        setCheckGoals={setCheckGoals}
-                                                        disabled={!isOwner}
-                                                    />
-                                                )) :
-                                                <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL">
-                                                    {isOwner ? (<p className="flex">Adicione um <i>check goal&nbsp;</i> no icone "<Plus className="text-GRAY_DARK" />"</p>)
-                                                        : <p>Sem metas de <i>check</i></p>
+                                <div className="flex flex-col gap-4">
+                                    {
+                                        progressGoals.length ?
+                                            Array.isArray(progressGoals) && progressGoals.map((goal) => (
+                                                <ProgressGoal
+                                                    key={goal.id}
+                                                    progressGoal={goal}
+                                                    setProgressGoals={setProgressGoals}
+                                                    disabled={!isOwner}
+                                                />
+                                            )) :
+                                            <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL dark:bg-DARK_BACKGROUND_SECONDARY">
+                                                <div className="flex items-center text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
+                                                    {isOwner ? (<p className="flex">Adicione um progresso no icone"<Plus />"</p>)
+                                                        : <p>Sem metas de progresso</p>
                                                     }
                                                 </div>
-                                        }
-                                    </div>
+                                            </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <div className="  rounded-md p-4">
+                                <div className="flex justify-between mb-2">
+                                    <p className="text-2xl font-bold text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">Check List</p>
+                                    {isOwner && <NoBackgroundButton onClick={handleAddCheckGoal} className="w-full"><Plus /></NoBackgroundButton>}
+                                </div>
+                                <div className="flex flex-col gap-4">
+                                    {
+                                        checkGoals.length ?
+                                            Array.isArray(checkGoals) && checkGoals.map((goal) => (
+                                                <CheckInput
+                                                    key={goal.id}
+                                                    checkGoal={goal}
+                                                    setCheckGoals={setCheckGoals}
+                                                    disabled={!isOwner}
+                                                />
+                                            )) :
+                                            <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL dark:bg-DARK_BACKGROUND_SECONDARY ">
+                                                {isOwner ? (<p className="flex text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">Adicione um <i>check goal&nbsp;</i> no icone "<Plus />"</p>)
+                                                    : <p>Sem metas de <i>check</i></p>
+                                                }
+                                            </div>
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div className="flex justify-end mt-10">
-                    <div className="flex gap-2 px-4">
-                        <NoBackgroundButton onClick={() => handleCancel(false)} >
-                            <p>Cancelar</p>
-                        </NoBackgroundButton>
-                        {isOwner &&
-                            <div className="w-36">
-                                <ConfirmButton onClick={handleSaveReport}>{isNew ? 'Adicionar' : 'Atualizar'}</ConfirmButton>
-                            </div>
-                        }
-                    </div>
+            <div className="flex justify-end mt-10">
+                <div className="flex gap-2 px-4">
+                    <NoBackgroundButton onClick={() => handleCancel(false)} >
+                        <p>Cancelar</p>
+                    </NoBackgroundButton>
+                    {isOwner &&
+                        <div className="w-36">
+                            <ConfirmButton onClick={handleSaveReport}>{isNew ? 'Adicionar' : 'Atualizar'}</ConfirmButton>
+                        </div>
+                    }
                 </div>
             </div >
-        </div >
+        </PageLayout>
     );
 }

@@ -1,7 +1,8 @@
-import { ArrowLeft, Icon, ReadCvLogo } from "@phosphor-icons/react"
-import { NoBackgroundButton } from "./Buttons"
+import { ArrowLeft, Icon } from "@phosphor-icons/react"
+import { NoBackgroundButton } from "../Buttons"
 import { ReactNode } from "react";
 import { useRouter } from "next/router";
+import { NavBarControls } from "../NavBarControls";
 
 type pageHeaderProps = {
     IconPage: Icon;
@@ -9,10 +10,10 @@ type pageHeaderProps = {
     subTitle?: string;
     children?: ReactNode;
     goBackUrl: "/list-reports" | "/home" | "/login" | "new-report"
-    compact?: boolean
+    compact?: boolean,
 }
 
-export default function PageHeader({ IconPage, children, title, subTitle, goBackUrl, compact }: pageHeaderProps) {
+export default function NavBar({ IconPage, children, title, subTitle, goBackUrl, compact }: pageHeaderProps) {
     const router = useRouter()
 
     function goBack() {
@@ -27,22 +28,24 @@ export default function PageHeader({ IconPage, children, title, subTitle, goBack
                 justifyContent: compact ? 'space-between' : 'normal'
             }}
         >
-            <div>
+            <div className="flex justify-between items-center">
                 <NoBackgroundButton onClick={goBack} noHover>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 text-LIGHT_TEXT dark:text-DARK_TEXT_SECONDARY">
                         <ArrowLeft size={24} />
                         <p>Voltar</p>
                     </div>
                 </NoBackgroundButton>
+
+                <NavBarControls />
             </div>
 
             <div className="flex md:gap-3 items-center" style={{
                 flexDirection: compact ? 'row-reverse' : 'row',
             }}>
                 <IconPage className="text-PRINCIPAL" size={48} />
-                <div>
-                    <h1 className="text-xl md:text-4xl font-bold text-GRAY_DARK">{title}</h1>
-                    <p className="text-GRAY hidden md:block">{subTitle}</p>
+                <div className="text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">
+                    <h1 className="text-xl md:text-4xl font-bold text-LIGHT_TEXT dark:text-DARK_TEXT">{title}</h1>
+                    <p className="hidden md:block text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">{subTitle}</p>
                     {children}
                 </div>
             </div>

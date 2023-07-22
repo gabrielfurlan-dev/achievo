@@ -54,15 +54,13 @@ export default function CheckGoalModal({ isOpen, onClose, checkGoal, setCheckGoa
                 cancelText="Cancelar"
                 confirmText="Adicionar"
             >
-                <div className="flex flex-col gap-2">
-                    <p>Meta</p>
-                    <InputField
-                        onChange={setEditingTitle}
-                        value={editingTitle}
-                        placeHolder="Concluir curso de programação."
-                        type="text"
-                    />
-                </div>
+                <InputField
+                    onChange={setEditingTitle}
+                    value={editingTitle}
+                    placeHolder="Concluir curso de programação."
+                    type="text"
+                    label="Meta"
+                />
             </Modal>
         </div>
     )

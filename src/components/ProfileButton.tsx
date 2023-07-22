@@ -62,7 +62,7 @@ export default function ProfileButton() {
             <button
                 id="dropdownUserAvatarButton"
                 data-dropdown-toggle="dropdownAvatar"
-                className="flex mx-3 text-sm rounded-lg md:mr-0 md:hover:bg-WHITE_PRINCIPAL"
+                className="flex mx-3 text-sm rounded-lg md:mr-0 md:hover:bg-WHITE_PRINCIPAL hover:dark:bg-DARK_BACKGROUND_SECONDARY"
                 type="button"
                 onClick={toggleDropdown}
                 ref={buttonRef}
@@ -71,8 +71,8 @@ export default function ProfileButton() {
 
                 <div className='flex items-center gap-4 px-3 py-1'>
                     <div className='text-right hidden md:block'>
-                        <p className='text-xl text-GRAY_DARK'>{userInfo.name}</p>
-                        <p className='text-sm text-GRAY'>{userInfo.email}</p>
+                        <p className='text-xl text-GRAY_DARK dark:text-DARK_TEXT'>{userInfo.name}</p>
+                        <p className='text-sm text-GRAY dark:text-DARK_TEXT_SECONDARY'>{userInfo.email}</p>
                     </div>
                     <span className='block md:hidden w-44'></span>
                     <div className="w-10 h-10">
@@ -89,10 +89,10 @@ export default function ProfileButton() {
             {isDropdownOpen && (
                 <div
                     id="dropdownAvatar"
-                    className="z-10 absolute top-16 bg-white dark:bg-gray-700 dark:divide-gray-600 divide-gray-100 divide-y rounded-lg shadow w-full"
+                    className="z-10 absolute top-16 bg-white dark:bg-DARK_BACKGROUND_SECONDARY dark:divide-DARK_BACKGROUND divide-gray-100 divide-y rounded-lg shadow w-full"
                     ref={dropdownRef}
                 >
-                    <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                    <div className="px-4 py-3 text-sm text-gray-900 dark:text-DARK_TEXT">
                         <div>{userInfo.name}</div>
                         <div className="font-medium truncate">{userInfo.email}</div>
                     </div>

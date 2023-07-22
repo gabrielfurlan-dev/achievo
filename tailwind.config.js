@@ -22,8 +22,23 @@ module.exports = {
 
                 GRAY: '#808080',
                 GRAY_SECONDARY: '#595959',
-                GRAY_DARK: '#1C1C1C'
+                GRAY_DARK: '#1C1C1C',
 
+
+
+
+                LIGHT_BACKGROUND: '#F5F5F5',
+                LIGHT_BACKGROUND_SECONDARY: '#EAEAEA',
+                LIGHT_BACKGROUND_TERTIARY: '#DADADA',
+
+                LIGHT_TEXT: "#1C1C1C",
+                LIGHT_TEXT_SECONDARY: "#595959",
+
+                DARK_BACKGROUND: "#000000",
+                DARK_BACKGROUND_SECONDARY: "#1C1C1C",
+
+                DARK_TEXT:"#DADADA",
+                DARK_TEXT_SECONDARY:"#808080"
             },
             fontFamily: {
                 'sans': ['Montserrat', 'sans-serif']

@@ -63,33 +63,27 @@ export default function ProgressGoalModal({ isOpen, onClose, progressGoal, setPr
 
                 <div className="">
                     <div>
-                        <div className="flex flex-col gap-2">
-                            <p>Título</p>
-                            <InputField
-                                onChange={setEditingTitle}
-                                value={editingTitle}
-                                placeHolder="Levar a vó no judô."
-                            />
-                        </div>
+                        <InputField
+                            onChange={setEditingTitle}
+                            value={editingTitle}
+                            placeHolder="Levar a vó no judô."
+                            label="Título"
+                        />
                         <div className="flex flex-col gap-4 md:flex-row mt-4 md:mt-8">
-                            <div className="flex flex-col gap-2">
-                                <p>Progresso Atual</p>
-                                <InputField
-                                    onChange={setEditingValue}
-                                    value={editingValue}
-                                    placeHolder="4"
-                                    type="number"
-                                />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <p>Progresso Total</p>
-                                <InputField
-                                    onChange={setEditingTotal}
-                                    value={editingTotal}
-                                    placeHolder="10"
-                                    type="number"
-                                />
-                            </div>
+                            <InputField
+                                onChange={setEditingValue}
+                                value={editingValue}
+                                placeHolder="4"
+                                type="number"
+                                label="Progresso Atual"
+                            />
+                            <InputField
+                                onChange={setEditingTotal}
+                                value={editingTotal}
+                                placeHolder="10"
+                                type="number"
+                                label="Progresso Total"
+                            />
                         </div>
                     </div>
                 </div>

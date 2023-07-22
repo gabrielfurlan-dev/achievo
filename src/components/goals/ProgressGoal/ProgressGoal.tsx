@@ -14,7 +14,7 @@ export default function ProgressGoal({ progressGoal, setProgressGoals, disabled 
 
     let progressoAtual = ((Number(progressGoal.value) / Number(progressGoal.total)) * 100).toFixed();
     let completou = Number(progressoAtual) >= 100
-    let corDeFundo = completou ? "#5C8A74" : "#F5F5F5";
+    let corDeFundo = completou ? "#5C8A74" : "";
 
     useEffect(() => {
 
@@ -57,9 +57,16 @@ export default function ProgressGoal({ progressGoal, setProgressGoals, disabled 
 
     return (
         <div>
-            <button disabled={disabled} className="flex w-full normal-case" onClick={openModal} style={{ color: completou ? '#EAEAEA' : '#1C1C1C' }}>
-                <div className="flex flex-col gap-1 items-start  p-2 px-4 rounded-md  w-full" style={{ backgroundColor: corDeFundo }}>
-                    <div className="flex w-full justify-between items-center">
+            <button
+                disabled={disabled}
+                className="flex w-full normal-case bg-LIGHT_BACKGROUND dark:bg-DARK_BACKGROUND_SECONDARY"
+                onClick={openModal}
+                style={{ color: completou ? '#EAEAEA' : '' }}
+            >
+                <div className="flex flex-col gap-1 items-start  p-2 px-4 rounded-md  w-full bg-LIGHT_BACKGROUND dark:bg-DARK_BACKGROUND_SECONDARY"
+                    style={{ backgroundColor: corDeFundo }}
+                >
+                    <div className="flex w-full justify-between items-center text-LIGHT_TEXT dark:text-DARK_TEXT">
                         <p className="mt-2 text-lg" style={{ textDecoration: completou ? "line-through" : "none" }}>
                             {goal.title}
                         </p>
@@ -69,7 +76,7 @@ export default function ProgressGoal({ progressGoal, setProgressGoals, disabled 
                     </div>
 
                     <div className="w-full flex gap-2 items-center pb-2">
-                        <div id="progress-bar" className="w-full bg-gray-300 h-3 rounded-md">
+                        <div id="progress-bar" className="w-full bg-LIGHT_BACKGROUND_TERTIARY dark:bg-DARK_BACKGROUND h-3 rounded-md">
                             <div id="progress"
                                 className={`h-full rounded-md`}
                                 style={{

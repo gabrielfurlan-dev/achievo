@@ -7,7 +7,7 @@ import { DarkThemeProvider } from "@/context/ThemeContext";
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     return (
-        <div className="flex col">
+        <div className="flex col bg-WHITE dark:bg-DARK_BACKGROUND">
             <ThemeProvider theme={theme}>
                 <DarkThemeProvider>
                     <Component {...pageProps} />
