@@ -1,17 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Moon, Sun } from 'phosphor-react';
-import { useTheme } from '@/context/ThemeContext';
+import { useThemeStore } from '@/store/themeStore';
 
 export const ThemeToggleButton: React.FC = () => {
 
     const [isHovering, setIsHovering] = useState(false);
-    const { theme, setTheme } = useTheme();
+    const { theme, setTheme } = useThemeStore();
 
     function onToggle() {
-        document.body.classList.toggle('dark');
-        const newTheme = theme === 'light' ? 'dark' : 'light';
-        setTheme(newTheme);
+
+        if (theme == "light") {
+            document.body.classList.add("dark");
+            setTheme("dark");
+        }
+        else {
+            document.body.classList.remove("dark");
+            setTheme("light");
+        }
     }
+
+    useEffect(() => {
+        useThemeStore.persist.rehydrate();
+    }, [])
 
     return (
         <button

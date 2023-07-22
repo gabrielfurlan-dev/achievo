@@ -1,26 +1,20 @@
-import { createContext, useContext, useState } from 'react';
-
-interface ThemeContextData {
-  theme: 'light' | 'dark';
-  setTheme: (theme: 'light' | 'dark') => void;
-}
-
-const ThemeContext = createContext<ThemeContextData>({
-  theme: 'light',
-  setTheme: () => {},
-});
-
-export function useTheme() {
-  return useContext(ThemeContext);
-}
+import { useThemeStore } from "@/store/themeStore";
+import { useEffect } from "react";
 
 export function DarkThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
-  const value = {
-    theme,
-    setTheme,
-  };
+    const { theme } = useThemeStore()
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+    useEffect(() => {
+
+        if (theme == "dark") {
+            document.body.classList.add("dark");
+        }
+        else {
+            document.body.classList.remove("dark");
+        }
+
+    }, [theme])
+
+    return <>{children}</>;
 }

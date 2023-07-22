@@ -1,5 +1,5 @@
-import ProfileButton from "./ProfileButton";
-import { ThemeToggleButton } from "./ThemeToggleButton";
+import ProfileButton from "../ProfileButton";
+import { ThemeToggleButton } from "../ThemeToggleButton";
 
 export function NavBarControls() {
     return (

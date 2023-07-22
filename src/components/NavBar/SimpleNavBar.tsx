@@ -1,9 +1,7 @@
 import { Icon } from "@phosphor-icons/react"
 import { ReactNode } from "react";
 import { useRouter } from "next/router";
-import ProfileButton from "../ProfileButton";
-import { ThemeToggleButton } from "../ThemeToggleButton";
-import { NavBarControls } from "../NavBarControls";
+import { NavBarControls } from "./NavBarControls";
 
 type pageHeaderProps = {
     IconPage: Icon;
