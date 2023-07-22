@@ -10,10 +10,12 @@ import { NoBackgroundButton } from '@/components/Buttons';
 import { getFormatedWeekInterval, stringToDate } from '@/hooks/DateService';
 import { getWeek } from 'date-fns';
 import PageLayout from '@/layouts/PageLayout';
+import { useUserInfoStore } from '@/store/userStoreInfo';
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);
-    const [name, setName] = useState("")
+
+    const { userInfo } = useUserInfoStore()
 
     useEffect(() => {
         const fetchReports = async () => {
@@ -32,10 +34,6 @@ export default function ListReport() {
         fetchReports();
     }, []);
 
-    useEffect(() => {
-        setName(localStorage.getItem('userName') ?? "")
-    }, [])
-
     return (
         <PageLayout>
             <NavBar IconPage={ListMagnifyingGlass} title='Relatórios' subTitle='Todos os Reports aqui' goBackUrl='/home' />
@@ -46,16 +44,16 @@ export default function ListReport() {
                             <li className='mb-4 bg-WHITE_PRINCIPAL dark:bg-DARK_BACKGROUND_SECONDARY rounded-lg p-2 w-full'
                                 key={data.id}>
                                 <div className='flex justify-between'>
-                                    <div className='ml-4 flex gap-8 items-center'>
+                                    <div className='ml-4 flex gap-8 items-center  text-LIGHT_TEXT dark:text-DARK_TEXT'>
                                         <img src={data.userPhotoURL} className='w-10 h-10 rounded-full' />
                                         <div>
-                                            <p className='font-bold text-xl text-LIGHT_TEXT dark:text-DARK_TEXT'>Week {getWeek(stringToDate(data.date))}</p>
-                                            <p className='text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY text-s'>{getFormatedWeekInterval(data.date)}</p>
+                                            <p className='font-bold text-xl'>Week {getWeek(stringToDate(data.date))}</p>
+                                            <p>{getFormatedWeekInterval(data.date)}</p>
                                             <p>{data.username}</p>
                                         </div>
                                     </div>
                                     <div className='flex items-center'>
-                                        {name == data.username ?
+                                        {userInfo.name == data.username ?
                                             <NoBackgroundButton>
                                                 <PencilSimple size={24} className='text-PRINCIPAL' />
                                             </NoBackgroundButton>

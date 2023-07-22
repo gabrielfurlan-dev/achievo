@@ -16,9 +16,11 @@ import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons";
 import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
 import PageLayout from "@/layouts/PageLayout";
+import { useUserInfoStore } from "@/store/userStoreInfo";
 
 export default function EditReport() {
     const router = useRouter();
+    const { userInfo } = useUserInfoStore()
 
     const { id } = router.query;
     const [name, setName] = useState("");
@@ -142,7 +144,7 @@ export default function EditReport() {
             setSelectedDate(reportData.date);
             setCheckGoals(reportData.checkGoals);
             setProgressGoals(reportData.progressGoals);
-            setIsOwner(localStorage.getItem('userName') == reportData.username)
+            setIsOwner(userInfo.name == reportData.username)
             setOriginalCheckGoals(reportData.checkGoals);
             setOriginalProgressGoals(reportData.progressGoals);
         }
