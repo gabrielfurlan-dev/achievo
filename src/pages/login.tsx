@@ -3,7 +3,6 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { handleLoginGoogle } from '@/hooks/LoginService'
-import { getUserData, isUserRegistered } from "@/hooks/UserService";
 import db from '@/firebaseConfig';
 import { useUserInfoStore } from "@/store/userStoreInfo";
 

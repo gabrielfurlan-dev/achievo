@@ -59,7 +59,7 @@ export default function ProgressGoal({ progressGoal, setProgressGoals, disabled 
         <div>
             <button
                 disabled={disabled}
-                className="flex w-full normal-case bg-LIGHT_BACKGROUND dark:bg-DARK_BACKGROUND_SECONDARY"
+                className="flex w-full normal-case bg-LIGHT_BACKGROUND dark:bg-DARK_BACKGROUND_SECONDARY rounded-md"
                 onClick={openModal}
                 style={{ color: completou ? '#EAEAEA' : '' }}
             >
