@@ -161,7 +161,7 @@ export default function EditReport() {
                 cancelText="Não"
                 confirmText="Sim"
             >
-                <p>Você possuí alterações não salvas.</p>
+                <p>Você possui alterações não salvas.</p>
                 <p>Deseja mesmo descartá-las?</p>
             </Modal>
 
