@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Moon, Sun } from 'phosphor-react';
-import { useTheme } from '@/context/ThemeContext';
+import { useThemeStore } from '@/store/themeStore';
 
 const ToggleButton: React.FC = () => {
 
     const [isHovering, setIsHovering] = useState(false);
-    const { theme, setTheme } = useTheme();
+    const { theme, setTheme } = useThemeStore();
 
     function onToggle() {
         document.body.classList.toggle('dark');
