@@ -1,6 +1,8 @@
 
-import { Firestore, doc, getDoc } from "firebase/firestore";
+import { Firestore, addDoc, collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import db from '@/firebaseConfig';
+import firebaseConfig from "@/firebaseConfig";
+import { IUserInfo } from "@/store/userStoreInfo";
 
 export async function isUserRegistered(email: string) {
     try {
@@ -13,11 +15,35 @@ export async function isUserRegistered(email: string) {
     }
 }
 
-export async function getUserData() {
+export async function getUserData(email: string) {
+    try {
+        const docRef = doc(db, "users", email);
+        const docSnap = await getDoc(docRef);
+        const id = docSnap.id;
+        const userData = await docSnap.data() as IUserInfo;
 
-    const email = localStorage.getItem('userEmail') ?? ""
-    const name = localStorage.getItem('userName') ?? ""
-    const photoUrl = localStorage.getItem('userPhotoURL') ?? ""
+        return {
+            success: true, data: {
+                id: id,
+                description: userData.description
+            } as IUserInfo
+        };
 
-    return { userFound:name != "", email, name, photoUrl }
+    } catch (error) {
+        console.error("Erro ao buscar os dados do usuário:", error);
+        return { success: false, data: null };
+    }
+}
+
+export async function registerUser(userData: IUserInfo) {
+    try {
+        const docId = userData.email ?? "none";
+
+        await setDoc(doc(db, "users", docId), userData);
+        await setDoc(doc(db, "user_notifications", docId), { readNotifications: [] });
+
+        return { data: "Usuário registrado com sucesso!", error: "", type: 'success' };
+    } catch (error) {
+        return { data: "Erro ao registrar o usuário", error: String(error), type: "error" };
+    }
 }

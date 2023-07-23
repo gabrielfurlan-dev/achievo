@@ -5,6 +5,7 @@ import { CircularProgress } from "@mui/material";
 import { handleLoginGoogle } from '@/hooks/LoginService'
 import db from '@/firebaseConfig';
 import { useUserInfoStore } from "@/store/userStoreInfo";
+import { getUserData, isUserRegistered, registerUser } from "@/hooks/UserService";
 
 export default function login() {
     const [isLoading, setIsLoading] = useState(true);
@@ -17,22 +18,44 @@ export default function login() {
         const user = await handleLoginGoogle()
 
         if (user?.sucess) {
-            setUserInfo({
-                loggedIn: true,
-                email: user.data.userEmail,
-                name: user.data.userName,
-                imageURL: user.data.imageURL
-            })
+
+            if (await isUserRegistered(user.data.userEmail ?? "")) {
+
+                const userData = await getUserData(user.data.userEmail ?? "")
+
+                if (userData.success) {
+
+                    setUserInfo({
+                        id: userData.data?.id,
+                        registered: true,
+                        email: user.data.userEmail,
+                        name: user.data.userName,
+                        imageURL: user.data.imageURL
+                    })
+                }
+            }
+            else {
+                await setUserInfo({
+                    registered: false,
+                    email: user.data.userEmail,
+                    name: user.data.userName,
+                    imageURL: user.data.imageURL
+                })
+
+                await registerUser({email: user.data.userEmail, registered: true})
+
+                await setUserInfo({ registered: true })
+            }
         }
     }
 
     useEffect(() => {
-        if (userInfo.loggedIn)
-            // if (await isUserRegistered(userData.email))
-            //     await Router.push('/home')
-            // else
+        if (userInfo.registered) {
+            Router.push('/home')
+        }
+        else {
             // Router.push('/register')
-            Router.push("/home");
+        }
 
         setIsLoading(false)
 

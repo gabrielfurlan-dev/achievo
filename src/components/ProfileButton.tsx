@@ -17,7 +17,6 @@ export default function ProfileButton() {
     const buttonRef = useRef<HTMLButtonElement>(null);
     const { userInfo, cleanUserInfo } = useUserInfoStore();
 
-
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };

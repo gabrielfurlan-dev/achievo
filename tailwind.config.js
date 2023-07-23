@@ -11,7 +11,6 @@ module.exports = {
                 CINZA: '#f3f4f6',
                 VERDE_CLARO: '#c3ffc9',
 
-                PRINCIPAL: '#5C8A74',
                 PRINCIPAL_DARK: '#3b4a3c',
 
                 SECONDARY: '#D97251',
@@ -25,8 +24,6 @@ module.exports = {
                 GRAY_DARK: '#1C1C1C',
 
 
-
-
                 LIGHT_BACKGROUND: '#F5F5F5',
                 LIGHT_BACKGROUND_SECONDARY: '#EAEAEA',
                 LIGHT_BACKGROUND_TERTIARY: '#DADADA',
@@ -36,9 +33,14 @@ module.exports = {
 
                 DARK_BACKGROUND: "#000000",
                 DARK_BACKGROUND_SECONDARY: "#1C1C1C",
+                DARK_BACKGROUND_TERTIARY: "#2b2b2b",
 
                 DARK_TEXT:"#DADADA",
-                DARK_TEXT_SECONDARY:"#808080"
+                DARK_TEXT_SECONDARY:"#808080",
+
+                PRINCIPAL: '#5C8A74',
+                LIGHT_PRINCIPAL_SECONDARY: "#5C8A7457",
+                DARK_PRINCIPAL_SECONDARY: "#5C8A7457",
             },
             fontFamily: {
                 'sans': ['Montserrat', 'sans-serif']

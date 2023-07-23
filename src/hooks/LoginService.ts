@@ -1,5 +1,4 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import Router from "next/router";
 import Swal from 'sweetalert2';
 
 export async function handleLoginGoogle() {

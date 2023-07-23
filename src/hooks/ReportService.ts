@@ -36,7 +36,6 @@ export async function CreateReport({ selectedDate, name, progressGoals, checkGoa
 }
 
 export async function ListReportService({ selectedDate, name: title, progressGoals, checkGoals }: createReportProps) {
-
     try {
         let docRef = await addDoc(collection(firebaseConfig, "reports"), { date: selectedDate, title, progresGoals: progressGoals, checkGoal: checkGoals })
         return docRef.id
