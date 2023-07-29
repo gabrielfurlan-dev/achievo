@@ -3,28 +3,15 @@ import { useUserInfoStore } from "@/store/userStoreInfo";
 import { Bell } from "phosphor-react";
 import React, { useEffect, useRef, useState } from "react";
 import { NotificationItem } from "./NotificationItem";
+import useNotificationStore from "@/store/notificationsStore";
 
 export function NotificationDropdown() {
     const { userInfo } = useUserInfoStore();
-    const [unread, setUnreadNotifications] = useState<INotification[]>([]);
-    const [read, setReadNotifications] = useState<INotification[]>([]);
+    const {readNotifications, unreadNotifications} = useNotificationStore()
+
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
-
-    getNotifications();
-
-    async function getNotifications() {
-        try {
-            const { unreadNotifications, readNotifications } = await fetchNotifications(userInfo.id ?? "none");
-
-            setReadNotifications(readNotifications);
-            setUnreadNotifications(unreadNotifications);
-
-        } catch (error) {
-            console.error("Error fetching notifications:", error);
-        }
-    }
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -89,11 +76,11 @@ export function NotificationDropdown() {
 
                             <div className="mt-2">
                                 <div>
-                                    {unread.length > 0 && (
+                                    {unreadNotifications.length > 0 && (
                                         <div>
                                             <h3 className="text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">Não lidos</h3>
                                             <div className="py-2">
-                                                {unread.map((notification) => (
+                                                {unreadNotifications.map((notification) => (
                                                     <NotificationItem
                                                         wikiURL={notification.wikiURL}
                                                         id={notification.id}
@@ -101,27 +88,25 @@ export function NotificationDropdown() {
                                                         message={notification.message}
                                                         isUnred
                                                         key={notification.id}
-                                                        updateNotifications={getNotifications}
                                                     />
                                                 ))}
                                             </div>
                                         </div>
                                     )}
                                 </div>
-                                {read.length > 0 && unread.length > 0 && <hr className="opacity-25 m-2 border-LIGHT_TEXT dark:border-DARK_TEXT" />}
+                                {readNotifications.length > 0 && unreadNotifications.length > 0 && <hr className="opacity-25 m-2 border-LIGHT_TEXT dark:border-DARK_TEXT" />}
                                 <div>
-                                    {read.length > 0 && (
+                                    {readNotifications.length > 0 && (
                                         <div>
                                             <h3 className="text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY mt-4">Lidas</h3>
                                             <div className="py-2 px-2">
-                                                {read.map((notification) => (
+                                                {readNotifications.map((notification) => (
                                                     <NotificationItem
                                                         wikiURL={notification.wikiURL}
                                                         id={notification.id}
                                                         title={notification.title}
                                                         message={notification.message}
                                                         key={notification.id}
-                                                        updateNotifications={getNotifications}
                                                     />
                                                 ))}
                                             </div>

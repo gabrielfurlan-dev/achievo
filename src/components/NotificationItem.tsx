@@ -1,4 +1,5 @@
-import { setNotificationRead } from "@/hooks/NotificationsService";
+import { fetchNotifications, setNotificationRead } from "@/hooks/NotificationsService";
+import useNotificationStore from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 
 type NotificationProps = {
@@ -7,16 +8,30 @@ type NotificationProps = {
     message: string,
     wikiURL: string,
     isUnred?: boolean,
-    updateNotifications: () => void
 }
 
 
-export function NotificationItem({ id, title, message, isUnred, wikiURL, updateNotifications }: NotificationProps) {
+export function NotificationItem({ id, title, message, isUnred, wikiURL }: NotificationProps) {
     const { userInfo } = useUserInfoStore()
+    const { setReadNotifications, setUnreadNotifications} = useNotificationStore()
 
     async function setReadNotification(idNotification: string) {
         await setNotificationRead(idNotification, userInfo.email ?? "none");
-        updateNotifications();
+        getNotifications();
+    }
+
+    getNotifications();
+
+    async function getNotifications() {
+        try {
+            const { unreadNotifications, readNotifications } = await fetchNotifications(userInfo.id ?? "none");
+
+            setReadNotifications(readNotifications);
+            setUnreadNotifications(unreadNotifications);
+
+        } catch (error) {
+            console.error("Error fetching notifications:", error);
+        }
     }
 
     return (

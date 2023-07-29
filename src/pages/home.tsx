@@ -1,19 +1,26 @@
 import { SimpleNavBar } from "@/components/NavBar/SimpleNavBar";
+import { fetchNotifications } from "@/hooks/NotificationsService";
 import PageLayout from "@/layouts/PageLayout";
+import useNotificationStore from "@/store/notificationsStore";
+import { useUserInfoStore } from "@/store/userStoreInfo";
 import { ListMagnifyingGlass } from "@phosphor-icons/react";
 import { useRouter } from "next/router";
 import { FilePlus, House, Icon } from "phosphor-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-export default function home() {
-    const [userName, setUserName] = useState("")
-    const [userPhotoURL, setUserPhotoURL] = useState("")
-    const [userEmail, setUserEmail] = useState("")
+export  default function home() {
+    const { userInfo } = useUserInfoStore()
+    const { setReadNotifications, setUnreadNotifications } = useNotificationStore();
+
+    async function getNotifications(){
+        const { unreadNotifications, readNotifications } = await fetchNotifications(userInfo.id ?? "none");
+        setReadNotifications(readNotifications);
+        setUnreadNotifications(unreadNotifications);
+        console.log("Lendo notificações. . .")
+    }
 
     useEffect(() => {
-        setUserName(localStorage.getItem('userName') ?? "")
-        setUserPhotoURL(localStorage.getItem('userPhotoURL') ?? "")
-        setUserEmail(localStorage.getItem('userEmail') ?? "")
+        getNotifications()
     }, [])
 
     return (
