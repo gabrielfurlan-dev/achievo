@@ -1,6 +1,7 @@
 import { fetchNotifications, setNotificationRead } from "@/hooks/NotificationsService";
 import useNotificationStore from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
+import { useEffect } from "react";
 
 type NotificationProps = {
     id: string,
@@ -13,14 +14,16 @@ type NotificationProps = {
 
 export function NotificationItem({ id, title, message, isUnred, wikiURL }: NotificationProps) {
     const { userInfo } = useUserInfoStore()
-    const { setReadNotifications, setUnreadNotifications} = useNotificationStore()
+    const { setReadNotifications, setUnreadNotifications } = useNotificationStore()
 
     async function setReadNotification(idNotification: string) {
         await setNotificationRead(idNotification, userInfo.email ?? "none");
         getNotifications();
     }
 
-    getNotifications();
+    useEffect(() => {
+        getNotifications();
+    }, [])
 
     async function getNotifications() {
         try {
