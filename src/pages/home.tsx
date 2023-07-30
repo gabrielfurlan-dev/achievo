@@ -16,7 +16,6 @@ export  default function home() {
         const { unreadNotifications, readNotifications } = await fetchNotifications(userInfo.id ?? "none");
         setReadNotifications(readNotifications);
         setUnreadNotifications(unreadNotifications);
-        console.log("Lendo notificações. . .")
     }
 
     useEffect(() => {

@@ -1,7 +1,6 @@
 
-import { Firestore, addDoc, collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import db from '@/firebaseConfig';
-import firebaseConfig from "@/firebaseConfig";
 import { IUserInfo } from "@/store/userStoreInfo";
 
 export async function isUserRegistered(email: string) {
@@ -24,9 +23,9 @@ export async function getUserData(email: string) {
 
         return {
             success: true, data: {
-                id: id,
-                description: userData.description
-            } as IUserInfo
+                ...userData,
+                id: id
+            }
         };
 
     } catch (error) {

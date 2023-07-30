@@ -23,8 +23,8 @@ export default function login() {
 
                 const userData = await getUserData(user.data.userEmail ?? "")
 
-                if (userData.success) {
 
+                if (userData.success) {
                     setUserInfo({
                         id: userData.data?.id,
                         registered: true,
@@ -35,16 +35,17 @@ export default function login() {
                 }
             }
             else {
+                await registerUser({
+                    email: user.data.userEmail,
+                    registered: true
+                })
+
                 await setUserInfo({
-                    registered: false,
+                    registered: true,
                     email: user.data.userEmail,
                     name: user.data.userName,
                     imageURL: user.data.imageURL
                 })
-
-                await registerUser({email: user.data.userEmail, registered: true})
-
-                await setUserInfo({ registered: true })
             }
         }
     }
