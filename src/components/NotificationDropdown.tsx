@@ -1,13 +1,10 @@
-import { INotification, fetchNotifications } from "@/hooks/NotificationsService";
-import { useUserInfoStore } from "@/store/userStoreInfo";
+import { useNotificationStore } from "@/store/notificationsStore";
 import { Bell } from "phosphor-react";
 import React, { useEffect, useRef, useState } from "react";
 import { NotificationItem } from "./NotificationItem";
-import useNotificationStore from "@/store/notificationsStore";
 
 export function NotificationDropdown() {
-    const { userInfo } = useUserInfoStore();
-    const {readNotifications, unreadNotifications} = useNotificationStore()
+    const { readNotifications, unreadNotifications } = useNotificationStore()
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -35,7 +32,6 @@ export function NotificationDropdown() {
     };
 
     useEffect(() => {
-        useUserInfoStore.persist.rehydrate();
         document.addEventListener("mousedown", handleClickOutside);
         document.addEventListener("keydown", handleKeyPress);
 
@@ -55,7 +51,10 @@ export function NotificationDropdown() {
                 onClick={toggleDropdown}
                 ref={buttonRef}
             >
-                <Bell size={32} className="text-LIGHT_TEXT dark:text-DARK_TEXT" />
+                <div className="flex flex-row-reverse">
+                    {unreadNotifications.length > 0 && < div className="absolute bg-red-600 w-2 h-2 rounded-full right-4" />}
+                    <Bell size={32} className="text-LIGHT_TEXT dark:text-DARK_TEXT" />
+                </div>
             </button>
 
             {isDropdownOpen && (

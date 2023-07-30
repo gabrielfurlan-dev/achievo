@@ -1,7 +1,7 @@
 import { SimpleNavBar } from "@/components/NavBar/SimpleNavBar";
 import { fetchNotifications } from "@/hooks/NotificationsService";
 import PageLayout from "@/layouts/PageLayout";
-import useNotificationStore from "@/store/notificationsStore";
+import {useNotificationStore} from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { ListMagnifyingGlass } from "@phosphor-icons/react";
 import { useRouter } from "next/router";

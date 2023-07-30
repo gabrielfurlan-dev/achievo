@@ -1,5 +1,5 @@
 import { fetchNotifications, setNotificationRead } from "@/hooks/NotificationsService";
-import useNotificationStore from "@/store/notificationsStore";
+import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useEffect } from "react";
 
@@ -10,7 +10,6 @@ type NotificationProps = {
     wikiURL: string,
     isUnred?: boolean,
 }
-
 
 export function NotificationItem({ id, title, message, isUnred, wikiURL }: NotificationProps) {
     const { userInfo } = useUserInfoStore()
