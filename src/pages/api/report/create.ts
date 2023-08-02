@@ -24,6 +24,17 @@ export async function CreateReport({ selectedDate, userRef, progressGoals, check
             })
         });
 
+        progressGoals.forEach(async goal => {
+            await prisma.progressGoal.create({
+                data: {
+                    index: goal.indice,
+                    title: goal.title,
+                    total: goal.total,
+                    value: goal.value,
+                }
+            })
+        });
+
         const report = await prisma.report.create({
             data: {
                 user: {

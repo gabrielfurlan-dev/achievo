@@ -2,11 +2,9 @@ import { GoogleLogo, ReadCvLogo } from "@phosphor-icons/react";
 import Router from "next/router";
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
-import { handleLoginGoogle } from '@/hooks/LoginService'
+import { handleLoginGoogle } from '@/services/LoginService'
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { getUserData } from "@/hooks/UserService";
 import Swal from "sweetalert2";
-import api from "@/lib/api";
 
 export default function login() {
     const [isLoading, setIsLoading] = useState(false);
@@ -16,44 +14,22 @@ export default function login() {
 
         setIsLoading(true)
 
-        const user = await handleLoginGoogle()
+        const loginData = await handleLoginGoogle();
 
-        if (user?.sucess) {
-
-            const userData = await getUserData(user.data.userEmail ?? "")
-
-            if (userData.success) {
-
-                setUserInfo({
-                    registered: true,
-                    id: userData.data?.id,
-                    email: user.data.userEmail ?? "",
-                    name: user.data.userName ?? "",
-                    imageURL: user.data.imageURL ?? ""
-                })
-
-                const response = await fetch(api.concat("/api/user/register"), {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        email: user.data.userEmail,
-                        name: user.data.userName,
-                        imageURL: user.data.imageURL
-                    }),
-                    headers: { 'Content-Type': 'application/json' }
-                })
-
-                if (response.ok) {
-                    Router.push('/home')
-                } else {
-                    Swal.fire('Oops!', "Não foi possível realizar o login.")
-                }
-
-                setIsLoading(false)
-            }
-        }
-        else {
+        if (loginData.success) {
+            setUserInfo({
+                registered: true,
+                id: loginData.data.id,
+                email: loginData.data.email,
+                name: loginData.data.name,
+                imageURL: loginData.data.imageURL
+            })
+            Router.push('/home')
+        } else {
             Swal.fire('Oops!', "Não foi possível realizar o login.")
         }
+
+        setIsLoading(false)
     }
 
     return (

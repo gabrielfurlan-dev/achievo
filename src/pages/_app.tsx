@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import GlobalStyle from "../styles/globals";
 import { ThemeProvider } from "styled-components";
 import theme from "@/styles/theme";
-import { DarkThemeProvider } from "@/context/ThemeContext";
+import { DarkThemeProvider } from "@/contexts/ThemeContext";
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     return (

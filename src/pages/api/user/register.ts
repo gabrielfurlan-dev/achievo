@@ -1,3 +1,4 @@
+import { IResponseData } from '@/Interfaces/IResponseData'
 import { PrismaClient } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -22,16 +23,26 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         const userFind = await prisma.user.findFirst({ where: { email: userData.email } })
 
         if (!userFind) {
-            await prisma.user.create({
+            const user = await prisma.user.create({
                 data: {
                     name: userData.name,
                     email: userData.email,
                     imageURL: userData.imageURL
                 },
             })
+            return res.status(201).json({
+                success: true,
+                data: user,
+                message: "Usuário registrado com sucesso!",
+            } as IResponseData);
         }
-        return res.status(201).json({ data: "Usuário registrado com sucesso!", error: "", type: 'success' });
+
     } catch (error) {
-        return res.status(500).json({ data: "Erro ao registrar o usuário", error: String(error), type: "error" });
+        return res.status(500).json({
+            success: false,
+            data: null,
+            message: "Erro ao registrar o usuário",
+            error: String(error)
+        } as IResponseData);
     }
 }
