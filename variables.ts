@@ -8,6 +8,8 @@ const envSchema = z.object({
     FIREBASE_MESSAGING_SENDER_ID: z.string(),
     FIREBASE_API_ID: z.string(),
     FIREBASE_MEASUREMENT_ID: z.string(),
+    SUPABASE_URL: z.string(),
+    SUPABASE_ANON_KEY: z.string()
 })
 
 const variables = envSchema.parse({
@@ -18,6 +20,8 @@ const variables = envSchema.parse({
     FIREBASE_MESSAGING_SENDER_ID: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
     FIREBASE_API_ID: process.env.NEXT_PUBLIC_FIREBASE_API_ID,
     FIREBASE_MEASUREMENT_ID: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+    SUPABASE_URL:process.env.NEXT_PUBLIC_SUPABASE_URL,
+    SUPABASE_ANON_KEY:process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
 })
 
 export default variables;

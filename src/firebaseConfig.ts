@@ -3,7 +3,6 @@ import env from "variables";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
-
 const firebaseConfig = {
     apiKey: env.FIREBASE_APIKEY,
     authDomain: env.FIREBASE_AUTH_DOMAIN,

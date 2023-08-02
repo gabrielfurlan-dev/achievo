@@ -1,66 +1,60 @@
 import { GoogleLogo, ReadCvLogo } from "@phosphor-icons/react";
 import Router from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { handleLoginGoogle } from '@/hooks/LoginService'
-import db from '@/firebaseConfig';
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { getUserData, isUserRegistered, registerUser } from "@/hooks/UserService";
+import { getUserData } from "@/hooks/UserService";
+import Swal from "sweetalert2";
+import api from "@/lib/api";
 
 export default function login() {
-    const [isLoading, setIsLoading] = useState(true);
-    const { userInfo, setUserInfo } = useUserInfoStore()
-
-    const firebase = db;
+    const [isLoading, setIsLoading] = useState(false);
+    const { setUserInfo } = useUserInfoStore()
 
     async function handleLogin() {
+
         setIsLoading(true)
+
         const user = await handleLoginGoogle()
 
         if (user?.sucess) {
 
-            if (await isUserRegistered(user.data.userEmail ?? "")) {
+            const userData = await getUserData(user.data.userEmail ?? "")
 
-                const userData = await getUserData(user.data.userEmail ?? "")
+            if (userData.success) {
 
+                setUserInfo({
+                    registered: true,
+                    id: userData.data?.id,
+                    email: user.data.userEmail ?? "",
+                    name: user.data.userName ?? "",
+                    imageURL: user.data.imageURL ?? ""
+                })
 
-                if (userData.success) {
-                    setUserInfo({
-                        id: userData.data?.id,
-                        registered: true,
+                const response = await fetch(api.concat("/api/user/register"), {
+                    method: 'POST',
+                    body: JSON.stringify({
                         email: user.data.userEmail,
                         name: user.data.userName,
                         imageURL: user.data.imageURL
-                    })
+                    }),
+                    headers: { 'Content-Type': 'application/json' }
+                })
+
+                if (response.ok) {
+                    Router.push('/home')
+                } else {
+                    Swal.fire('Oops!', "Não foi possível realizar o login.")
                 }
-            }
-            else {
-                await registerUser({
-                    email: user.data.userEmail,
-                    registered: true
-                })
 
-                await setUserInfo({
-                    registered: true,
-                    email: user.data.userEmail,
-                    name: user.data.userName,
-                    imageURL: user.data.imageURL
-                })
+                setIsLoading(false)
             }
-        }
-    }
-
-    useEffect(() => {
-        if (userInfo.registered) {
-            Router.push('/home')
         }
         else {
-            // Router.push('/register')
+            Swal.fire('Oops!', "Não foi possível realizar o login.")
         }
-
-        setIsLoading(false)
-
-    }, [userInfo])
+    }
 
     return (
         <div className="items-center h-screen w-screen justify-center flex flex-col">

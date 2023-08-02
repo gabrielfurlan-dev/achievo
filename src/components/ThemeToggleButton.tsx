@@ -31,7 +31,7 @@ export const ThemeToggleButton: React.FC = () => {
             className="bg-transparent focus:outline-none"
         >
             {theme == 'dark' ? (
-                <Sun size={32} color={isHovering ? 'yellow' : 'white'} />
+                <Sun size={32} color={isHovering ? '#F1E57A' : 'white'} />
             ) : (
                 <Moon size={32} color={isHovering ? 'gray' : 'black'} />
             )}

@@ -41,6 +41,9 @@ module.exports = {
                 PRINCIPAL: '#5C8A74',
                 LIGHT_PRINCIPAL_SECONDARY: "#5C8A7457",
                 DARK_PRINCIPAL_SECONDARY: "#5C8A7457",
+
+                //AUXILIAR
+                YELLOW: "#F1E57A"
             },
             fontFamily: {
                 'sans': ['Montserrat', 'sans-serif']
