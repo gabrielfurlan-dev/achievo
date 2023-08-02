@@ -23,6 +23,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         const userFind = await prisma.user.findFirst({ where: { email: userData.email } })
 
         if (!userFind) {
+
             const user = await prisma.user.create({
                 data: {
                     name: userData.name,
@@ -30,6 +31,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
                     imageURL: userData.imageURL
                 },
             })
+
+            await prisma.user_Notification.create({ data: { userId: user.id }})
+
             return res.status(201).json({
                 success: true,
                 data: user,
