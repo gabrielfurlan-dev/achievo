@@ -1,4 +1,4 @@
-import { ICheckGoal, IProgressGoal, IReport } from "@/Interfaces/report";
+import { ICheckGoal, IProgressGoal, IReport } from "@/Interfaces/Reports/IReport";
 import firebaseConfig from "@/firebaseConfig";
 import { collection, addDoc, doc, updateDoc, getDoc, Firestore } from "firebase/firestore";
 

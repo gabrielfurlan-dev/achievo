@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { ICheckGoal, IProgressGoal, IReport } from "@/Interfaces/report";
 import { doc, deleteDoc } from "firebase/firestore";
 import db from "@/firebaseConfig";
 import Swal from "sweetalert2";
@@ -17,6 +16,9 @@ import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
+import { IReport } from "@/Interfaces/Reports/IReport";
+import { ICheckGoal } from "@/Interfaces/Goals/CheckGoals/ICheckGoal";
+import { IProgressGoal } from "@/Interfaces/Goals/ProgressGoals/IProgressGoal";
 
 export default function EditReport() {
     const router = useRouter();
@@ -91,11 +93,11 @@ export default function EditReport() {
     }, [modified, router, forceCancel]);
 
     function handleAddCheckGoal() {
-        setCheckGoals([...checkGoals, { id: checkGoals.length, title: "Sem título", checked: false, index: checkGoals.length }])
+        setCheckGoals([...checkGoals, { id: checkGoals.length, reportId: 0, title: "Sem título", checked: false, index: checkGoals.length }])
     }
 
     function handleAddProgressGoal() {
-        setProgressGoals([...progressGoals, { id: progressGoals.length, title: "Sem título", total: 0, value: 0, index: progressGoals.length }])
+        setProgressGoals([...progressGoals, { id: progressGoals.length, reportId: 0, title: "Sem título", total: 0, value: 0, index: progressGoals.length }])
     }
 
     async function handleCancel(force: boolean) {

@@ -1,5 +1,5 @@
 import { IResponseData } from "@/Interfaces/IResponseData";
-import { ICheckGoalRaw, IProgressGoalRaw } from "@/Interfaces/report";
+import { ICheckGoalRaw, IProgressGoalRaw } from "@/Interfaces/Reports/IReport";
 import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
 

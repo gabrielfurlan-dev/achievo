@@ -1,4 +1,4 @@
-import { ICheckGoal } from "@/Interfaces/report";
+import { ICheckGoal } from "@/Interfaces/Reports/IReport";
 import { InputField } from "@/components/InputField";
 import Modal from "@/components/Modal";
 import { SetStateAction, useState } from "react";

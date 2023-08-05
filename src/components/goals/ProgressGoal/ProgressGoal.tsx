@@ -1,5 +1,5 @@
 import { SetStateAction, useEffect, useState } from "react";
-import { IProgressGoal } from "@/Interfaces/report";
+import { IProgressGoal } from "@/Interfaces/Reports/IReport";
 import React from "react";
 import ProgressGoalModal from "./ProgressGoalModal";
 

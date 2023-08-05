@@ -1,4 +1,4 @@
-import { ICheckGoalRaw, IProgressGoalRaw } from "@/Interfaces/report";
+import { ICheckGoalRaw, IProgressGoalRaw } from "@/Interfaces/Reports/IReport";
 import { ICreateCheckGoalCommand } from "@/pages/api/goals/check/create";
 import { ICreateProgressGoalCommand } from "@/pages/api/goals/progress/create";
 import { IResponseData } from "@/Interfaces/IResponseData";

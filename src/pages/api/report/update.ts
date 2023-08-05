@@ -1,5 +1,6 @@
+import { ICheckGoal } from "@/Interfaces/Goals/CheckGoals/ICheckGoal";
+import { IProgressGoal } from "@/Interfaces/Goals/ProgressGoals/IProgressGoal";
 import { IResponseData } from "@/Interfaces/IResponseData";
-import { ICheckGoal, IProgressGoal } from "@/Interfaces/report";
 import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -21,6 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { reportId, checkGoals, progressGoals }: IUpdateReportCommand = req.body;
 
         const report = await db.$transaction(async (transaction) => {
+
             const report = await transaction.report.update({
                 where: { id: reportId },
                 data: {
@@ -29,30 +31,66 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             });
 
             const progressUpdates = progressGoals.map(async (goal) => {
-                return transaction.progressGoal.update({
-                    data: {
-                        title: goal.title,
-                        index: goal.index,
-                        total: goal.total,
-                        value: goal.value,
-                    },
+
+                const goalFinded = await transaction.progressGoal.findFirst({
                     where: {
                         id: goal.id
                     }
-                });
+                })
+
+                if (goalFinded) {
+                    return transaction.progressGoal.update({
+                        data: {
+                            title: goal.title,
+                            index: goal.index,
+                            total: goal.total,
+                            value: goal.value,
+                        },
+                        where: {
+                            id: goal.id
+                        }
+                    });
+                } else {
+                    return transaction.progressGoal.create({
+                        data: {
+                            title: goal.title,
+                            index: goal.index,
+                            total: goal.total,
+                            value: goal.value,
+                            reportId: reportId
+                        },
+                    });
+                }
             });
 
             const checkUpdates = checkGoals.map(async (goal) => {
-                return transaction.checkGoal.update({
-                    data: {
-                        title: goal.title,
-                        index: goal.index,
-                        checked: goal.checked,
-                    },
+                const goalFinded = await transaction.checkGoal.findFirst({
                     where: {
                         id: goal.id
                     }
-                });
+                })
+
+                if (goalFinded) {
+                    return transaction.checkGoal.update({
+                        data: {
+                            title: goal.title,
+                            index: goal.index,
+                            checked: goal.checked,
+                        },
+                        where: {
+                            id: goal.id
+                        }
+                    });
+                } else {
+                    return transaction.checkGoal.create({
+                        data: {
+                            title: goal.title,
+                            index: goal.index,
+                            checked: goal.checked,
+                            reportId: reportId
+                        },
+                    });
+                }
             });
 
             await Promise.all([...progressUpdates, ...checkUpdates]);

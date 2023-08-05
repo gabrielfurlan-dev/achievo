@@ -1,5 +1,5 @@
 import { SetStateAction, useEffect, useState } from "react";
-import { ICheckGoal } from "@/Interfaces/report";
+import { ICheckGoal } from "@/Interfaces/Reports/IReport";
 import { CheckSquare, Square } from "phosphor-react";
 import CheckGoalModal from "./CheckGoalModal";
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IReport } from '@/Interfaces/report';
+import { IReport } from '@/Interfaces/Reports/IReport';
 import db from '@/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import { Eye, PencilSimple } from 'phosphor-react';
