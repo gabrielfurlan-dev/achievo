@@ -33,7 +33,7 @@ export default function CheckGoalModal({ isOpen, onClose, checkGoal, setCheckGoa
 
         let newGoal: ICheckGoal = {
             id: checkGoal.id,
-            indice: checkGoal.indice,
+            index: checkGoal.index,
             title: editingTitle,
             checked: checkGoal.checked
         };

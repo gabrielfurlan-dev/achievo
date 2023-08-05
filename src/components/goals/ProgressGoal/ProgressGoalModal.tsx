@@ -38,7 +38,7 @@ export default function ProgressGoalModal({ isOpen, onClose, progressGoal, setPr
 
         let newGoal: IProgressGoal = {
             id: progressGoal.id,
-            indice: progressGoal.indice,
+            index: progressGoal.index,
             title: editingTitle,
             value: Number(editingValue),
             total: Number(editingTotal)

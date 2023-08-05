@@ -1,51 +1,67 @@
-import { ICheckGoal, IProgressGoal, IReport } from "@/Interfaces/report";
-import { PrismaClient, Prisma } from '@prisma/client'
+import { IResponseData } from "@/Interfaces/IResponseData";
+import { ICheckGoalRaw, IProgressGoalRaw } from "@/Interfaces/report";
+import { db } from "@/db";
+import { NextApiRequest, NextApiResponse } from "next";
 
-const prisma = new PrismaClient()
-
-type createReportProps = {
-    selectedDate: string;
-    userRef: string;
-    progressGoals: IProgressGoal[];
-    checkGoals: ICheckGoal[];
-    userPhotoURL: string;
+export interface ICreateReportCommand {
+    userRef: number,
+    progressGoals: IProgressGoalRaw[];
+    checkGoals: ICheckGoalRaw[];
 }
 
-export async function CreateReport({ selectedDate, userRef, progressGoals, checkGoals, userPhotoURL }: createReportProps) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+    if (req.method !== 'POST') {
+        res.status(405).send({ message: 'Somente métodos POST são permitidos' })
+        return
+    }
+
     try {
 
-        checkGoals.forEach(async goal => {
-            await prisma.checkGoal.create({
+        const { userRef, checkGoals, progressGoals }: ICreateReportCommand = req.body;
+
+        const report = await db.$transaction(async (transaction) => {
+
+            const report = await transaction.report.create({
                 data: {
-                    index: goal.indice,
-                    title: goal.title,
-                    checked: goal.checked,
+                    userId: userRef,
                 }
             })
-        });
 
-        progressGoals.forEach(async goal => {
-            await prisma.progressGoal.create({
-                data: {
-                    index: goal.indice,
+            await transaction.progressGoal.createMany({
+                data: progressGoals.map((goal) => ({
                     title: goal.title,
+                    index: goal.index,
                     total: goal.total,
                     value: goal.value,
-                }
+                    reportId: report.id
+                }))
             })
-        });
 
-        const report = await prisma.report.create({
-            data: {
-                user: {
+            await transaction.checkGoal.createMany({
+                data: checkGoals.map((goal) => ({
+                    title: goal.title,
+                    index: goal.index,
+                    checked: goal.checked,
+                    reportId: report.id
+                }))
+            })
 
-                }
-            }
+            return report;
         })
 
-        return { data: "Relatório adicionado com sucesso!", error: "", type: 'success' };
-
-    } catch (error) {
-        return { data: "Erro ao adicionar o relatório:", error: String(error), type: "error" };
+        return res.status(201).json({
+            success: true,
+            data: report,
+            message: "Relatório registrado com sucesso!",
+        } as IResponseData);
+    }
+    catch (error) {
+        return res.status(500).json({
+            success: false,
+            data: null,
+            message: "Erro ao registrar o relatório",
+            error: String(error)
+        } as IResponseData);
     }
 }

@@ -91,11 +91,11 @@ export default function EditReport() {
     }, [modified, router, forceCancel]);
 
     function handleAddCheckGoal() {
-        setCheckGoals([...checkGoals, { id: checkGoals.length, title: "Sem título", checked: false, indice: checkGoals.length }])
+        setCheckGoals([...checkGoals, { id: checkGoals.length, title: "Sem título", checked: false, index: checkGoals.length }])
     }
 
     function handleAddProgressGoal() {
-        setProgressGoals([...progressGoals, { id: progressGoals.length, title: "Sem título", total: 0, value: 0, indice: progressGoals.length }])
+        setProgressGoals([...progressGoals, { id: progressGoals.length, title: "Sem título", total: 0, value: 0, index: progressGoals.length }])
     }
 
     async function handleCancel(force: boolean) {

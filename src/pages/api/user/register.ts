@@ -1,8 +1,6 @@
 import { IResponseData } from '@/Interfaces/IResponseData'
-import { PrismaClient } from '@prisma/client'
+import { db } from '@/db'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-const prisma = new PrismaClient()
 
 type CreateUserProps = {
     name: string,
@@ -10,29 +8,28 @@ type CreateUserProps = {
     imageURL: string,
 }
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     if (req.method !== 'POST') {
         res.status(405).send({ message: 'Somente métodos POST são permitidos' })
         return
     }
 
-    const userData: CreateUserProps = req.body;
-
     try {
-        const userFind = await prisma.user.findFirst({ where: { email: userData.email } })
+
+        const userData: CreateUserProps = req.body;
+
+        const userFind = await db.user.findFirst({ where: { email: userData.email } })
 
         if (!userFind) {
 
-            const user = await prisma.user.create({
+            const user = await db.user.create({
                 data: {
                     name: userData.name,
                     email: userData.email,
                     imageURL: userData.imageURL
                 },
             })
-
-            await prisma.user_Notification.create({ data: { userId: user.id }})
 
             return res.status(201).json({
                 success: true,

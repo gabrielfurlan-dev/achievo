@@ -7,33 +7,25 @@ export interface IReport {
     userPhotoURL?: string;
 }
 
-export interface IProgressGoal {
-    id: number;
-    title: string;
-    total: number;
-    value: number;
-    indice: number
+export interface IProgressGoal extends IProgressGoalRaw {
+    reportId: number,
+    id: number
 }
 
-export interface ICheckGoal {
-    id: number;
-    title: string;
-    checked: boolean;
-    indice: number;
+export interface IProgressGoalRaw {
+    title: string,
+    total: number,
+    value: number,
+    index: number
 }
 
-export interface IHit {
-    id: number;
-    text: string;
+export interface ICheckGoal extends ICheckGoalRaw {
+    reportId: number,
+    id: number
 }
 
-export interface IMiss {
-    id: number;
-    text: string;
+export interface ICheckGoalRaw {
+    title: string,
+    checked: boolean,
+    index: number
 }
-
-export interface ILearned {
-    id: number;
-    text: string;
-}
-

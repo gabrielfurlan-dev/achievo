@@ -9,7 +9,9 @@ const envSchema = z.object({
     FIREBASE_API_ID: z.string(),
     FIREBASE_MEASUREMENT_ID: z.string(),
     SUPABASE_URL: z.string(),
-    SUPABASE_ANON_KEY: z.string()
+    SUPABASE_ANON_KEY: z.string(),
+    JWT_WEBTOKEN: z.string(),
+    BASE_URL: z.string()
 })
 
 const variables = envSchema.parse({
@@ -22,6 +24,8 @@ const variables = envSchema.parse({
     FIREBASE_MEASUREMENT_ID: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
     SUPABASE_URL:process.env.NEXT_PUBLIC_SUPABASE_URL,
     SUPABASE_ANON_KEY:process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    JWT_WEBTOKEN:process.env.NEXT_PUBLIC_JWT_WEBTOKEN,
+    BASE_URL:process.env.NEXT_PUBLIC_BASE_URL,
 })
 
 export default variables;

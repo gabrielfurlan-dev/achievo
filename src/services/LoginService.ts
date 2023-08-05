@@ -1,7 +1,7 @@
 import { IResponseData } from "@/Interfaces/IResponseData";
 import { getUserData } from "@/hooks/UserService";
-import api from "@/lib/api";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import api from "@/lib/api";
 
 async function callGoogleAuth() {
     try {
@@ -34,7 +34,7 @@ export async function handleLoginGoogle() {
 
         if (userData.success) {
 
-            const response = await fetch(api.concat("/api/user/register"), {
+            const response = await fetch(api.concat('/api/user/register'), {
                 method: 'POST',
                 body: JSON.stringify({
                     email: user.email,
