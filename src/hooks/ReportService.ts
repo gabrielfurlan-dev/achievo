@@ -14,7 +14,7 @@ export async function CreateReport({ selectedDate, name, progressGoals, checkGoa
     try {
         const reportData: IReport = {
             id: Date.now().toString(),
-            date: selectedDate,
+            createdDate: selectedDate,
             username: name,
             progressGoals,
             checkGoals,
@@ -64,7 +64,7 @@ export async function UpdateReport(id: String | string[] | undefined, db: Firest
 
         await updateDoc(docRef, {
             username: report.username,
-            date: report.date,
+            date: report.createdDate,
             checkGoals: report.checkGoals,
             progressGoals: report.progressGoals,
         });

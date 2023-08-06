@@ -1,30 +1,40 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "imageURL" TEXT NOT NULL,
+    "username" TEXT,
+    "description" TEXT,
 
-  - Added the required column `imageURL` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Made the column `name` on table `User` required. This step will fail if there are existing NULL values in that column.
-
-*/
--- AlterTable
-ALTER TABLE "User" ADD COLUMN     "description" TEXT,
-ADD COLUMN     "imageURL" TEXT NOT NULL,
-ADD COLUMN     "username" TEXT,
-ALTER COLUMN "name" SET NOT NULL;
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
-CREATE TABLE "Notifications" (
+CREATE TABLE "Notification" (
     "id" SERIAL NOT NULL,
     "message" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "wikiURL" TEXT NOT NULL,
 
-    CONSTRAINT "Notifications_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Notification_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ReadNotifications" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "notificationId" INTEGER NOT NULL,
+
+    CONSTRAINT "ReadNotifications_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Report" (
     "id" SERIAL NOT NULL,
-    "createdDate" TIMESTAMP(3) NOT NULL,
+    "createdDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "enable" BOOLEAN NOT NULL DEFAULT true,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Report_pkey" PRIMARY KEY ("id")
@@ -76,14 +86,23 @@ CREATE TABLE "Color" (
     CONSTRAINT "Color_pkey" PRIMARY KEY ("id")
 );
 
--- AddForeignKey
-ALTER TABLE "Report" ADD CONSTRAINT "Report_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
-ALTER TABLE "ProgressGoal" ADD CONSTRAINT "ProgressGoal_reportId_fkey" FOREIGN KEY ("reportId") REFERENCES "Report"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "ReadNotifications" ADD CONSTRAINT "ReadNotifications_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "CheckGoal" ADD CONSTRAINT "CheckGoal_reportId_fkey" FOREIGN KEY ("reportId") REFERENCES "Report"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "ReadNotifications" ADD CONSTRAINT "ReadNotifications_notificationId_fkey" FOREIGN KEY ("notificationId") REFERENCES "Notification"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Report" ADD CONSTRAINT "Report_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProgressGoal" ADD CONSTRAINT "ProgressGoal_reportId_fkey" FOREIGN KEY ("reportId") REFERENCES "Report"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CheckGoal" ADD CONSTRAINT "CheckGoal_reportId_fkey" FOREIGN KEY ("reportId") REFERENCES "Report"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Tag" ADD CONSTRAINT "Tag_colorId_fkey" FOREIGN KEY ("colorId") REFERENCES "Color"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

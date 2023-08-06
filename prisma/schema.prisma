@@ -38,7 +38,7 @@ model ReadNotifications {
 model Report {
     id          Int      @id @default(autoincrement())
     createdDate DateTime @default(now())
-    updatedDate DateTime @updatedAt
+    updatedDate DateTime @default(now()) @updatedAt
     enable      Boolean  @default(true)
 
     checkGoals    CheckGoal[]

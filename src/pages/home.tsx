@@ -13,7 +13,8 @@ export  default function home() {
     const { setReadNotifications, setUnreadNotifications } = useNotificationStore();
 
     async function getNotifications(){
-        const { unreadNotifications, readNotifications } = await fetchNotifications(userInfo.id ?? "none");
+        // const { unreadNotifications, readNotifications } = await fetchNotifications(userInfo.id ?? "none");
+        const { unreadNotifications, readNotifications } = await fetchNotifications("none");
         setReadNotifications(readNotifications);
         setUnreadNotifications(unreadNotifications);
     }

@@ -7,7 +7,6 @@ import { ReadCvLogo } from "@phosphor-icons/react";
 import { Plus } from "phosphor-react";
 import NavBar from "@/components/NavBar/NavBar";
 import Modal from "@/components/Modal";
-import { GetReportById, UpdateReport, CreateReport } from '@/hooks/ReportService'
 import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/hooks/DateService";
 import { getWeek } from "date-fns";
 import { InputField } from "@/components/InputField";
@@ -16,17 +15,18 @@ import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { IReport } from "@/Interfaces/Reports/IReport";
 import { ICheckGoal } from "@/Interfaces/Goals/CheckGoals/ICheckGoal";
 import { IProgressGoal } from "@/Interfaces/Goals/ProgressGoals/IProgressGoal";
+import { CreateReport, getReport, updateReport } from "@/services/Reports/ReportService";
+import { IResponseData } from "@/Interfaces/IResponseData";
+import { IReport } from "@/Interfaces/Reports/IReport";
 
 export default function EditReport() {
     const router = useRouter();
     const { userInfo } = useUserInfoStore()
-
     const { id } = router.query;
+
     const [name, setName] = useState("");
-    const [userPhotoURL, setUserPhotoURL] = useState("")
     const [isOwner, setIsOwner] = useState(true)
     const [isNew, setIsNew] = useState(false)
     const [modified, setModified] = useState(false);
@@ -45,8 +45,6 @@ export default function EditReport() {
     useEffect(() => {
         if (id == 'new') {
             setIsNew(true)
-            setName(localStorage.getItem('userName') ?? "")
-            setUserPhotoURL(localStorage.getItem('userPhotoURL') ?? "")
             setSelectedDate(getCurrentDate())
         }
         else {
@@ -111,19 +109,22 @@ export default function EditReport() {
 
     async function handleSaveReport() {
 
-        let sucess: { data: string; error: string; type: string; }
+        let result: IResponseData;
 
-        if (isNew)
-            sucess = await CreateReport({ selectedDate, name, progressGoals, checkGoals, userPhotoURL })
+        if (isNew) {
+            result = await CreateReport({ userRef: userInfo.id, progressGoals, checkGoals })
+        }
         else
-            sucess = await UpdateReport(id, db, { username: name, date: selectedDate, checkGoals, progressGoals } as IReport)
+            console.log({ reportId: Number(id), progressGoals, checkGoals })
 
-        if (sucess.type == 'success') {
+            result = await updateReport({ reportId: Number(id), progressGoals, checkGoals })
+
+        if (result.success) {
             setOriginalCheckGoals(checkGoals)
             setOriginalProgressGoals(progressGoals)
         }
 
-        await Swal.fire(sucess.data, sucess.error, sucess.error == "" ? 'success' : 'error')
+        await Swal.fire(result.data, result.error, result.error == "" ? 'success' : 'error')
 
         handleCancel(false)
     };
@@ -139,16 +140,23 @@ export default function EditReport() {
     }
 
     async function setReportData() {
-        const reportData = await GetReportById(id, db)
 
-        if (reportData) {
-            setName(reportData.username);
-            setSelectedDate(reportData.date);
-            setCheckGoals(reportData.checkGoals);
-            setProgressGoals(reportData.progressGoals);
-            setIsOwner(userInfo.name == reportData.username)
-            setOriginalCheckGoals(reportData.checkGoals);
-            setOriginalProgressGoals(reportData.progressGoals);
+        const reportId = Number(id)
+
+        if (!reportId) return;
+
+        const result = await getReport(reportId)
+
+        const report: IReport = result.data
+
+        if (report) {
+            setName(report.user.name);
+            setSelectedDate(report.createdDate);
+            setCheckGoals(report.checkGoals);
+            setProgressGoals(report.progressGoals);
+            setIsOwner(userInfo.id == report.user.id)
+            setOriginalCheckGoals(report.checkGoals);
+            setOriginalProgressGoals(report.progressGoals);
         }
     }
 

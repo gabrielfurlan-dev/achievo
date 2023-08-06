@@ -1,11 +1,12 @@
-import { ICheckGoal } from "../Goals/CheckGoals/ICheckGoal";
-import { IProgressGoal } from "../Goals/ProgressGoals/IProgressGoal";
+import { IProgressGoal } from "@/Interfaces/Goals/ProgressGoals/IProgressGoal";
+import { ICheckGoal } from "@/Interfaces/Goals/CheckGoals/ICheckGoal";
+import { IUser } from "@/Interfaces/IUser";
 
 export interface IReport {
     id: string;
-    date: string;
+    createdDate: string;
     username: string;
     progressGoals: IProgressGoal[];
     checkGoals: ICheckGoal[];
-    userPhotoURL?: string;
+    user: IUser;
 }

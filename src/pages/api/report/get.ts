@@ -17,37 +17,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return
     }
 
-    const id: number = req.body;
+    const reportId: number = Number(req.query.reportId as string);
+
+    console.log(reportId)
 
     try {
 
-        return await db.$transaction(async (transaction) => {
+        const report = await db.report.findFirst({
+            include: {
+                checkGoals: true,
+                progressGoals: true,
+                user: true
+            },
+            where: {
+                id: reportId
+            }
+        });
 
-            const report = await transaction.report.findFirst({
-                include: {
-                    checkGoals: true,
-                    progressGoals: true,
-                    user: true
-                },
-                where: {
-                    id: id
-                }
-            });
-
-            return res.status(201).json({
-                success: true,
-                data: report,
-                message: "Relatório obtido com sucesso!",
-            } as IResponseData);
-        })
+        return res.status(201).json({
+            success: true,
+            data: report,
+            message: "Relatório obtido com sucesso!",
+        } as IResponseData);
 
     }
     catch (error) {
         return res.status(500).json({
             success: false,
             data: null,
-            message: "Erro ao obter o relatório",
-            error: String(error)
+            message: "Erro ao obter o relatório, " + String(error),
         } as IResponseData);
     }
 }
