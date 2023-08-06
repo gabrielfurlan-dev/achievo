@@ -124,7 +124,7 @@ export default function EditReport() {
             setOriginalProgressGoals(progressGoals)
         }
 
-        await Swal.fire(result.data, result.error, result.error == "" ? 'success' : 'error')
+        await Swal.fire(result.success ? "Good Job!" : "Oops!", result.message, result.success ? 'success' : 'error')
 
         handleCancel(false)
     };

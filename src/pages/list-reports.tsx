@@ -50,7 +50,7 @@ export default function ListReport() {
                                         </div>
                                     </div>
                                     <div className='flex items-center'>
-                                        {userInfo.name == data.username ?
+                                        {userInfo.id == data.user.id ?
                                             <NoBackgroundButton>
                                                 <PencilSimple size={24} className='text-PRINCIPAL' />
                                             </NoBackgroundButton>
