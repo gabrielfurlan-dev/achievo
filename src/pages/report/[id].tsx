@@ -19,7 +19,7 @@ import { ICheckGoal } from "@/Interfaces/Goals/CheckGoals/ICheckGoal";
 import { IProgressGoal } from "@/Interfaces/Goals/ProgressGoals/IProgressGoal";
 import { CreateReport, getReport, updateReport } from "@/services/Reports/ReportService";
 import { IResponseData } from "@/Interfaces/IResponseData";
-import { IReport } from "@/Interfaces/Reports/IReport";
+import { IReport } from "@/Interfaces/reports/IReport";
 
 export default function EditReport() {
     const router = useRouter();

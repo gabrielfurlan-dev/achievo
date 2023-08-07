@@ -1,27 +1,33 @@
 import { SimpleNavBar } from "@/components/NavBar/SimpleNavBar";
-import { fetchNotifications } from "@/hooks/NotificationsService";
+import { fetchNotifications } from "@/services/NotificationsService";
 import PageLayout from "@/layouts/PageLayout";
-import {useNotificationStore} from "@/store/notificationsStore";
+import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { ListMagnifyingGlass } from "@phosphor-icons/react";
 import { useRouter } from "next/router";
 import { FilePlus, House, Icon } from "phosphor-react";
 import { useEffect } from "react";
+import { INotificationData } from "@/Interfaces/notifications/INotificationData";
 
-export  default function home() {
+export default function home() {
     const { userInfo } = useUserInfoStore()
     const { setReadNotifications, setUnreadNotifications } = useNotificationStore();
 
-    async function getNotifications(){
-        // const { unreadNotifications, readNotifications } = await fetchNotifications(userInfo.id ?? "none");
-        const { unreadNotifications, readNotifications } = await fetchNotifications("none");
+    async function getNotifications() {
+
+        if (userInfo.id == 0) return;
+
+        const result = await fetchNotifications(userInfo.id);
+
+        const { unreadNotifications, readNotifications } = result.data as INotificationData
+
         setReadNotifications(readNotifications);
         setUnreadNotifications(unreadNotifications);
     }
 
     useEffect(() => {
         getNotifications()
-    }, [])
+    }, [userInfo])
 
     return (
         <PageLayout>

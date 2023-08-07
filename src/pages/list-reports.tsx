@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IReport } from '@/Interfaces/Reports/IReport';
+import { IReport } from '@/Interfaces/reports/IReport';
 import { Eye, PencilSimple } from 'phosphor-react';
 import Link from 'next/link';
 import NavBar from '@/components/NavBar/NavBar';

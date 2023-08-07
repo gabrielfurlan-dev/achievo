@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { NotificationItem } from "./NotificationItem";
 
 export function NotificationDropdown() {
+
     const { readNotifications, unreadNotifications } = useNotificationStore()
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);

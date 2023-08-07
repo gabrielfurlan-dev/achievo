@@ -1,19 +1,13 @@
+import { INotification } from '@/Interfaces/notifications/INotification';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-export interface Notification {
-    id: string;
-    title: string;
-    message: string;
-    wikiURL: string;
-    timestamp: number;
-}
 
 interface NotificationStore {
-    unreadNotifications: Notification[];
-    readNotifications: Notification[];
-    setUnreadNotifications: (notifications: Notification[]) => void;
-    setReadNotifications: (notifications: Notification[]) => void;
+    unreadNotifications: INotification[];
+    readNotifications: INotification[];
+    setUnreadNotifications: (notifications: INotification[]) => void;
+    setReadNotifications: (notifications: INotification[]) => void;
 }
 
 export const useNotificationStore = create<NotificationStore>()(

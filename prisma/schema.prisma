@@ -19,17 +19,18 @@ model User {
 }
 
 model Notification {
-    id                Int                 @id @default(autoincrement())
-    message           String
-    title             String
-    wikiURL           String
-    ReadNotifications ReadNotifications[]
+    id                  Int         @id @default(autoincrement())
+    createdDate         DateTime    @default(now())
+    message             String
+    title               String
+    wikiURL             String
+    ReadNotifications   ReadNotifications[]
 }
 
 model ReadNotifications {
-    id             Int          @id @default(autoincrement())
-    User           User         @relation(fields: [userId], references: [id])
-    userId         Int
+    id     Int  @id @default(autoincrement())
+    User   User @relation(fields: [userId], references: [id])
+    userId Int
 
     Notification   Notification @relation(fields: [notificationId], references: [id])
     notificationId Int
