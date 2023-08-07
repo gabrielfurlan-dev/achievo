@@ -1,4 +1,4 @@
-import { IProgressGoal } from "@/Interfaces/reports/IReport";
+import { IProgressGoal } from "@/Interfaces/Goals/progressGoals/IProgressGoal";
 import { InputField } from "@/components/InputField";
 import Modal from "@/components/Modal";
 import { SetStateAction, useState } from "react";
@@ -41,7 +41,8 @@ export default function ProgressGoalModal({ isOpen, onClose, progressGoal, setPr
             index: progressGoal.index,
             title: editingTitle,
             value: Number(editingValue),
-            total: Number(editingTotal)
+            total: Number(editingTotal),
+            reportId: progressGoal.id
         };
 
         setProgressGoal(newGoal);

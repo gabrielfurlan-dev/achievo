@@ -4,3 +4,4 @@ export interface ICheckGoal extends ICheckGoalRaw {
     reportId: number,
     id: number
 }
+2

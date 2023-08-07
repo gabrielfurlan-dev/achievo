@@ -1,7 +1,7 @@
 import { SetStateAction, useEffect, useState } from "react";
-import { ICheckGoal } from "@/Interfaces/reports/IReport";
 import { CheckSquare, Square } from "phosphor-react";
 import CheckGoalModal from "./CheckGoalModal";
+import { ICheckGoal } from "@/Interfaces/Goals/checkGoals/ICheckGoal";
 
 type CheckProps = {
     checkGoal: ICheckGoal;
@@ -56,7 +56,13 @@ export default function CheckInput({ checkGoal, setCheckGoals, disabled }: Check
                     <button onClick={() => setIsModalOpen(true)} className="w-full" disabled={disabled}>
                         <p className="ml-4 text-start w-full  dark:text-DARK_TEXT">{checkGoal.title}</p>
                     </button>
-                    <button onClick={() => setGoal({ checked: !goal.checked, id: goal.id, index: goal.index, title: goal.title })} className="mr-5" disabled={disabled}>
+                    <button onClick={() => setGoal({
+                        checked: !goal.checked,
+                        id: goal.id,
+                        index: goal.index,
+                        title: goal.title,
+                        reportId: goal.reportId
+                    })} className="mr-5" disabled={disabled}>
                         {goal.checked ?
                             <CheckSquare size={26} className="text-DARK_TEXT" />
                             : <Square size={26} className="text-LIGHT_TEXT dark:text-DARK_TEXT" />}

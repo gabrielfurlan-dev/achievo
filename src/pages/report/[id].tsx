@@ -7,7 +7,7 @@ import { ReadCvLogo } from "@phosphor-icons/react";
 import { Plus } from "phosphor-react";
 import NavBar from "@/components/NavBar/NavBar";
 import Modal from "@/components/Modal";
-import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/hooks/DateService";
+import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/services/DateService";
 import { getWeek } from "date-fns";
 import { InputField } from "@/components/InputField";
 import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons";
@@ -15,8 +15,8 @@ import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { ICheckGoal } from "@/Interfaces/Goals/CheckGoals/ICheckGoal";
-import { IProgressGoal } from "@/Interfaces/Goals/ProgressGoals/IProgressGoal";
+import { ICheckGoal } from "@/Interfaces/Goals/checkGoals/ICheckGoal";
+import { IProgressGoal } from "@/Interfaces/Goals/progressGoals/IProgressGoal";
 import { CreateReport, getReport, updateReport } from "@/services/Reports/ReportService";
 import { IResponseData } from "@/Interfaces/IResponseData";
 import { IReport } from "@/Interfaces/reports/IReport";
@@ -91,11 +91,11 @@ export default function EditReport() {
     }, [modified, router, forceCancel]);
 
     function handleAddCheckGoal() {
-        setCheckGoals([...checkGoals, { id: checkGoals.length, reportId: 0, title: "Sem título", checked: false, index: checkGoals.length }])
+        setCheckGoals([...checkGoals, { id: checkGoals.length + 1, reportId: 0, title: "Sem título", checked: false, index: checkGoals.length + 1 }])
     }
 
     function handleAddProgressGoal() {
-        setProgressGoals([...progressGoals, { id: progressGoals.length, reportId: 0, title: "Sem título", total: 0, value: 0, index: progressGoals.length }])
+        setProgressGoals([...progressGoals, { id: progressGoals.length + 1, reportId: 0, title: "Sem título", total: 0, value: 0, index: progressGoals.length + 1 }])
     }
 
     async function handleCancel(force: boolean) {
@@ -115,8 +115,6 @@ export default function EditReport() {
             result = await CreateReport({ userRef: userInfo.id, progressGoals, checkGoals })
         }
         else
-            console.log({ reportId: Number(id), progressGoals, checkGoals })
-
             result = await updateReport({ reportId: Number(id), progressGoals, checkGoals })
 
         if (result.success) {

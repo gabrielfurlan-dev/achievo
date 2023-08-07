@@ -1,8 +1,8 @@
 import { IResponseData } from "@/Interfaces/IResponseData";
 import api from "@/lib/api";
 import { ICreateReportCommand } from "@/pages/api/report/create";
-import { IProgressGoalRaw } from "@/Interfaces/Goals/ProgressGoals/IProgressGoalRaw";
-import { ICheckGoalRaw } from "@/Interfaces/Goals/CheckGoals/ICheckGoalRaw";
+import { IProgressGoalRaw } from "@/Interfaces/Goals/progressGoals/IProgressGoalRaw";
+import { ICheckGoalRaw } from "@/Interfaces/Goals/checkGoals/ICheckGoalRaw";
 import { IUpdateReportCommand } from "@/pages/api/report/update";
 
 interface ICreateReport {

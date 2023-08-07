@@ -1,4 +1,4 @@
-import { ICheckGoal } from "@/Interfaces/reports/IReport";
+import { ICheckGoal } from "@/Interfaces/Goals/checkGoals/ICheckGoal";
 import { InputField } from "@/components/InputField";
 import Modal from "@/components/Modal";
 import { SetStateAction, useState } from "react";
@@ -35,7 +35,8 @@ export default function CheckGoalModal({ isOpen, onClose, checkGoal, setCheckGoa
             id: checkGoal.id,
             index: checkGoal.index,
             title: editingTitle,
-            checked: checkGoal.checked
+            checked: checkGoal.checked,
+            reportId: checkGoal.id
         };
 
         setCheckGoal(newGoal)

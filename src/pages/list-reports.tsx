@@ -5,11 +5,11 @@ import Link from 'next/link';
 import NavBar from '@/components/NavBar/NavBar';
 import { ListMagnifyingGlass } from '@phosphor-icons/react';
 import { NoBackgroundButton } from '@/components/Buttons';
-import { getFormatedWeekInterval, stringToDate } from '@/hooks/DateService';
 import { getWeek } from 'date-fns';
 import PageLayout from '@/layouts/PageLayout';
 import { useUserInfoStore } from '@/store/userStoreInfo';
 import { getAllReports } from '@/services/Reports/ReportService';
+import { getFormatedWeekInterval, stringToDate } from '@/services/DateService';
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);
