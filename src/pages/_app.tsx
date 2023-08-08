@@ -4,6 +4,8 @@ import GlobalStyle from "../styles/globals";
 import { ThemeProvider } from "styled-components";
 import theme from "@/styles/theme";
 import { DarkThemeProvider } from "@/contexts/ThemeContext";
+import { useSession } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     return (

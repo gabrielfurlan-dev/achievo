@@ -2,6 +2,8 @@ import { IResponseData } from "@/Interfaces/IResponseData";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import api from "@/lib/api";
 import { getUserData } from "./UserService";
+import { supabase } from "@/supabaseClient";
+
 
 async function callGoogleAuth() {
     try {
@@ -26,27 +28,11 @@ async function callGoogleAuth() {
 
 export async function handleLoginGoogle() {
 
-    const user = await callGoogleAuth();
+    const {data, error} = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+    })
 
-    if (user?.success) {
 
-        const userData = await getUserData(user.email)
-
-        if (userData.success) {
-
-            const response = await fetch(api.concat('/api/user/register'), {
-                method: 'POST',
-                body: JSON.stringify({
-                    email: user.email,
-                    name: user.name,
-                    imageURL: user.photoURL
-                }),
-                headers: { 'Content-Type': 'application/json' }
-            })
-
-            return await response.json() as IResponseData;
-        }
-    }
 
     return { success: false, message: "Não foi possível realizar o login.", data: null } as IResponseData
 }
