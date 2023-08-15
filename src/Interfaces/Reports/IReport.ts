@@ -1,6 +1,6 @@
-import { IProgressGoal } from "@/Interfaces/Goals/progressGoals/IProgressGoal";
-import { ICheckGoal } from "@/Interfaces/Goals/checkGoals/ICheckGoal";
-import { IUser } from "@/Interfaces/IUser";
+import { ICheckGoal } from "../Goals/checkGoals/ICheckGoal";
+import { IProgressGoal } from "../Goals/progressGoals/IProgressGoal";
+import { IUser } from "../IUser";
 
 export interface IReport {
     id: string;
