@@ -17,21 +17,21 @@ import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import IProgressGoal from "@/Interfaces/goals/progressGoals/IProgressGoal";
+import { IProgressGoal } from "@/interfaces/goals/progressGoals/IProgressGoal";
+import { ICheckGoal } from "@/interfaces/goals/checkGoals/ICheckGoal";
 import {
     CreateReport,
     IUpdateReport,
     getReport,
     updateReport,
 } from "@/services/Reports/ReportService";
-import { IResponseData } from "@/Interfaces/IResponseData";
-import { IReport } from "@/Interfaces/IReport";
+import { IResponseData } from "@/interfaces/IResponseData";
+import { IReport } from "@/interfaces/IReport";
 import { generateInvalidUniqueID } from "@/helpers/uniqueIdHelper";
 import {
     getCheckGoalsModified,
     getProgressGoalsModified,
 } from "@/helpers/reportHelper";
-import ICheckGoal from "@/Interfaces/goals/checkGoals/ICheckGoal";
 
 export default function EditReport() {
     const router = useRouter();

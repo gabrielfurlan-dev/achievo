@@ -1,4 +1,4 @@
-import { INotificationData } from "@/Interfaces/notifications/INotificationData";
+import { INotificationData } from "@/interfaces/notifications/INotificationData";
 import {
     fetchNotifications,
     setNotificationRead,

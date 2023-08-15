@@ -1,4 +1,4 @@
-import { IResponseData } from "@/Interfaces/IResponseData";
+import { IResponseData } from "@/interfaces/IResponseData";
 import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
 

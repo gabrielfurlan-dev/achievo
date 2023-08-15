@@ -1,5 +1,5 @@
-import ICheckGoal from "@/Interfaces/goals/checkGoals/ICheckGoal";
-import IProgressGoal from "@/Interfaces/goals/progressGoals/IProgressGoal";
+import { ICheckGoal } from "@/interfaces/goals/checkGoals/ICheckGoal";
+import { IProgressGoal } from "@/interfaces/goals/progressGoals/IProgressGoal";
 
 export function getCheckGoalsModified(
     originalGoals: ICheckGoal[],
