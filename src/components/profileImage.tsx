@@ -19,9 +19,7 @@ export function ProfileImage() {
     const handleSaveClick = () => {
         if (newImageURL) {
             setIsEditing(false);
-
             // setUserInfo({imageURL: newImageURL})
-
             setNewImageURL("");
         }
     };
