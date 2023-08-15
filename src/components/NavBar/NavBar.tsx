@@ -1,5 +1,5 @@
-import { ArrowLeft, Icon } from "@phosphor-icons/react"
-import { NoBackgroundButton } from "../Buttons"
+import { ArrowLeft, Icon } from "@phosphor-icons/react";
+import { NoBackgroundButton } from "../Buttons";
 import { ReactNode } from "react";
 import { useRouter } from "next/router";
 import { NavBarControls } from "./NavBarControls";
@@ -9,23 +9,30 @@ type pageHeaderProps = {
     title: string;
     subTitle?: string;
     children?: ReactNode;
-    goBackUrl: "/list-reports" | "/home" | "/login" | "new-report"
-    compact?: boolean,
-}
+    goBackUrl: "/list-reports" | "/home" | "/login" | "new-report";
+    compact?: boolean;
+};
 
-export default function NavBar({ IconPage, children, title, subTitle, goBackUrl, compact }: pageHeaderProps) {
-    const router = useRouter()
+export default function NavBar({
+    IconPage,
+    children,
+    title,
+    subTitle,
+    goBackUrl,
+    compact,
+}: pageHeaderProps) {
+    const router = useRouter();
 
     function goBack() {
-        router.push(goBackUrl)
+        router.push(goBackUrl);
     }
 
     return (
         <div
             className="flex gap-2"
             style={{
-                flexDirection: compact ? 'row' : 'column',
-                justifyContent: compact ? 'space-between' : 'normal'
+                flexDirection: compact ? "row" : "column",
+                justifyContent: compact ? "space-between" : "normal",
             }}
         >
             <div className="flex justify-between items-center">
@@ -39,16 +46,23 @@ export default function NavBar({ IconPage, children, title, subTitle, goBackUrl,
                 <NavBarControls />
             </div>
 
-            <div className="flex md:gap-3 items-center" style={{
-                flexDirection: compact ? 'row-reverse' : 'row',
-            }}>
+            <div
+                className="flex md:gap-3 items-center"
+                style={{
+                    flexDirection: compact ? "row-reverse" : "row",
+                }}
+            >
                 <IconPage className="text-PRINCIPAL" size={48} />
                 <div className="text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">
-                    <h1 className="text-xl md:text-4xl font-bold text-LIGHT_TEXT dark:text-DARK_TEXT">{title}</h1>
-                    <p className="hidden md:block text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">{subTitle}</p>
+                    <h1 className="text-xl md:text-4xl font-bold text-LIGHT_TEXT dark:text-DARK_TEXT">
+                        {title}
+                    </h1>
+                    <p className="hidden md:block text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">
+                        {subTitle}
+                    </p>
                     {children}
                 </div>
             </div>
         </div>
-    )
+    );
 }

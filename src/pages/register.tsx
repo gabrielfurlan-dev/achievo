@@ -9,7 +9,6 @@ export default function pages() {
     // const [description, setDescription] = useState(userInfo.description)
 
     function handleSaveUserInfo() {
-
         //must implement method to validate user already exists
 
         // if (username == "" || description == "") {
@@ -23,7 +22,7 @@ export default function pages() {
         //     description: description
         // }))
 
-        Swal.fire('Good Job!', 'Dados atualizados com sucesso', "success")
+        Swal.fire("Good Job!", "Dados atualizados com sucesso", "success");
     }
 
     return (

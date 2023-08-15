@@ -1,8 +1,8 @@
-import { useUserInfoStore } from '@/store/userStoreInfo';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { UserCircle } from 'phosphor-react';
-import React, { useEffect, useRef, useState } from 'react';
+import { useUserInfoStore } from "@/store/userStoreInfo";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { UserCircle } from "phosphor-react";
+import React, { useEffect, useRef, useState } from "react";
 
 type Props = {
     photoURL: string;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function ProfileButton() {
-    const router = useRouter()
+    const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
@@ -33,7 +33,7 @@ export default function ProfileButton() {
     };
 
     const handleKeyPress = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
+        if (event.key === "Escape") {
             setIsDropdownOpen(false);
         }
     };
@@ -44,15 +44,14 @@ export default function ProfileButton() {
     }
 
     useEffect(() => {
-
         useUserInfoStore.persist.rehydrate();
 
-        document.addEventListener('mousedown', handleClickOutside);
-        document.addEventListener('keydown', handleKeyPress);
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("keydown", handleKeyPress);
 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            document.removeEventListener('keydown', handleKeyPress);
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("keydown", handleKeyPress);
         };
     }, []);
 
@@ -68,21 +67,28 @@ export default function ProfileButton() {
             >
                 <span className="sr-only">Abrir menu do usuário</span>
 
-                <div className='flex items-center gap-4 px-3 py-1'>
-                    <div className='text-right hidden md:block'>
-                        <p className='text-xl text-GRAY_DARK dark:text-DARK_TEXT'>{userInfo.name}</p>
-                        <p className='text-sm text-GRAY dark:text-DARK_TEXT_SECONDARY'>{userInfo.email}</p>
+                <div className="flex items-center gap-4 px-3 py-1">
+                    <div className="text-right hidden md:block">
+                        <p className="text-xl text-GRAY_DARK dark:text-DARK_TEXT">
+                            {userInfo.name}
+                        </p>
+                        <p className="text-sm text-GRAY dark:text-DARK_TEXT_SECONDARY">
+                            {userInfo.email}
+                        </p>
                     </div>
-                    <span className='block md:hidden w-44'></span>
+                    <span className="block md:hidden w-44"></span>
                     <div className="w-10 h-10">
                         {userInfo.imageURL ? (
-                            <img src={userInfo.imageURL} className="rounded-full" alt="user photo" />
+                            <img
+                                src={userInfo.imageURL}
+                                className="rounded-full"
+                                alt="user photo"
+                            />
                         ) : (
                             <UserCircle className="h-full w-full" />
                         )}
                     </div>
                 </div>
-
             </button>
 
             {isDropdownOpen && (
@@ -93,11 +99,19 @@ export default function ProfileButton() {
                 >
                     <div className="px-4 py-3 text-sm text-gray-900 dark:text-DARK_TEXT">
                         <div>{userInfo.name}</div>
-                        <div className="font-medium truncate">{userInfo.email}</div>
+                        <div className="font-medium truncate">
+                            {userInfo.email}
+                        </div>
                     </div>
-                    <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUserAvatarButton">
+                    <ul
+                        className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                        aria-labelledby="dropdownUserAvatarButton"
+                    >
                         <li>
-                            <Link href={`/profile/${userInfo.email}`} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                            <Link
+                                href={`/profile/${userInfo.email}`}
+                                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                            >
                                 Meu perfil
                             </Link>
                         </li>

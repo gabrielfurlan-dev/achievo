@@ -4,8 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { NotificationItem } from "./NotificationItem";
 
 export function NotificationDropdown() {
-
-    const { readNotifications, unreadNotifications } = useNotificationStore()
+    const { readNotifications, unreadNotifications } = useNotificationStore();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -53,8 +52,13 @@ export function NotificationDropdown() {
                 ref={buttonRef}
             >
                 <div className="flex flex-row-reverse">
-                    {unreadNotifications.length > 0 && < div className="absolute bg-red-600 w-2 h-2 rounded-full right-4" />}
-                    <Bell size={32} className="text-LIGHT_TEXT dark:text-DARK_TEXT" />
+                    {unreadNotifications.length > 0 && (
+                        <div className="absolute bg-red-600 w-2 h-2 rounded-full right-4" />
+                    )}
+                    <Bell
+                        size={32}
+                        className="text-LIGHT_TEXT dark:text-DARK_TEXT"
+                    />
                 </div>
             </button>
 
@@ -78,37 +82,64 @@ export function NotificationDropdown() {
                                 <div>
                                     {unreadNotifications.length > 0 && (
                                         <div>
-                                            <h3 className="text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">Não lidos</h3>
+                                            <h3 className="text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">
+                                                Não lidos
+                                            </h3>
                                             <div className="py-2">
-                                                {unreadNotifications.map((notification) => (
-                                                    <NotificationItem
-                                                        wikiURL={notification.wikiURL}
-                                                        id={notification.id}
-                                                        title={notification.title}
-                                                        message={notification.message}
-                                                        isUnred
-                                                        key={notification.id}
-                                                    />
-                                                ))}
+                                                {unreadNotifications.map(
+                                                    notification => (
+                                                        <NotificationItem
+                                                            wikiURL={
+                                                                notification.wikiURL
+                                                            }
+                                                            id={notification.id}
+                                                            title={
+                                                                notification.title
+                                                            }
+                                                            message={
+                                                                notification.message
+                                                            }
+                                                            isUnred
+                                                            key={
+                                                                notification.id
+                                                            }
+                                                        />
+                                                    )
+                                                )}
                                             </div>
                                         </div>
                                     )}
                                 </div>
-                                {readNotifications.length > 0 && unreadNotifications.length > 0 && <hr className="opacity-25 m-2 border-LIGHT_TEXT dark:border-DARK_TEXT" />}
+                                {readNotifications.length > 0 &&
+                                    unreadNotifications.length > 0 && (
+                                        <hr className="opacity-25 m-2 border-LIGHT_TEXT dark:border-DARK_TEXT" />
+                                    )}
                                 <div>
                                     {readNotifications.length > 0 && (
                                         <div>
-                                            <h3 className="text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY mt-4">Lidas</h3>
+                                            <h3 className="text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY mt-4">
+                                                Lidas
+                                            </h3>
                                             <div className="py-2 px-2">
-                                                {readNotifications.map((notification) => (
-                                                    <NotificationItem
-                                                        wikiURL={notification.wikiURL}
-                                                        id={notification.id}
-                                                        title={notification.title}
-                                                        message={notification.message}
-                                                        key={notification.id}
-                                                    />
-                                                ))}
+                                                {readNotifications.map(
+                                                    notification => (
+                                                        <NotificationItem
+                                                            wikiURL={
+                                                                notification.wikiURL
+                                                            }
+                                                            id={notification.id}
+                                                            title={
+                                                                notification.title
+                                                            }
+                                                            message={
+                                                                notification.message
+                                                            }
+                                                            key={
+                                                                notification.id
+                                                            }
+                                                        />
+                                                    )
+                                                )}
                                             </div>
                                         </div>
                                     )}

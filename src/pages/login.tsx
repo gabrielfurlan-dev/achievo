@@ -2,17 +2,16 @@ import { GoogleLogo, ReadCvLogo } from "@phosphor-icons/react";
 import Router from "next/router";
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
-import { handleLoginGoogle } from '@/services/LoginService'
+import { handleLoginGoogle } from "@/services/LoginService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import Swal from "sweetalert2";
 
 export default function login() {
     const [isLoading, setIsLoading] = useState(false);
-    const { setUserInfo } = useUserInfoStore()
+    const { setUserInfo } = useUserInfoStore();
 
     async function handleLogin() {
-
-        setIsLoading(true)
+        setIsLoading(true);
 
         const loginData = await handleLoginGoogle();
 
@@ -22,14 +21,14 @@ export default function login() {
                 id: loginData.data.id,
                 email: loginData.data.email,
                 name: loginData.data.name,
-                imageURL: loginData.data.imageURL
-            })
-            Router.push('/home')
+                imageURL: loginData.data.imageURL,
+            });
+            Router.push("/home");
         } else {
-            Swal.fire('Oops!', "Não foi possível realizar o login.")
+            Swal.fire("Oops!", "Não foi possível realizar o login.");
         }
 
-        setIsLoading(false)
+        setIsLoading(false);
     }
 
     return (

@@ -1,27 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { IReport } from '@/Interfaces/reports/IReport';
-import { Eye, PencilSimple } from 'phosphor-react';
-import Link from 'next/link';
-import NavBar from '@/components/NavBar/NavBar';
-import { ListMagnifyingGlass } from '@phosphor-icons/react';
-import { NoBackgroundButton } from '@/components/Buttons';
-import { getWeek } from 'date-fns';
-import PageLayout from '@/layouts/PageLayout';
-import { useUserInfoStore } from '@/store/userStoreInfo';
-import { getAllReports } from '@/services/Reports/ReportService';
-import { stringToDate, getFormatedWeekInterval } from '@/helpers/dateHelper';
+import React, { useEffect, useState } from "react";
+import { IReport } from "@/Interfaces/reports/IReport";
+import { Eye, PencilSimple } from "phosphor-react";
+import Link from "next/link";
+import NavBar from "@/components/NavBar/NavBar";
+import { ListMagnifyingGlass } from "@phosphor-icons/react";
+import { NoBackgroundButton } from "@/components/Buttons";
+import { getWeek } from "date-fns";
+import PageLayout from "@/layouts/PageLayout";
+import { useUserInfoStore } from "@/store/userStoreInfo";
+import { getAllReports } from "@/services/Reports/ReportService";
+import { stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);
-    const { userInfo } = useUserInfoStore()
+    const { userInfo } = useUserInfoStore();
 
     useEffect(() => {
         const fetchReports = async () => {
             try {
-
-                const result = await getAllReports()
-                setReports(result.data)
-
+                const result = await getAllReports();
+                setReports(result.data);
             } catch (error) {
                 console.error("Error fetching reports:", error);
             }
@@ -32,40 +30,62 @@ export default function ListReport() {
 
     return (
         <PageLayout>
-            <NavBar IconPage={ListMagnifyingGlass} title='Relatórios' subTitle='Todos os Reports aqui' goBackUrl='/home' />
-            <ul className='mt-10 w-full'>
-                {
-
-                    reports.map((data) => (
-                        <Link key={data.id} href={`/report/${data.id}`}>
-                            <li className='mb-4 bg-WHITE_PRINCIPAL dark:bg-DARK_BACKGROUND_SECONDARY rounded-lg p-2 w-full'
-                                key={data.id}>
-                                <div className='flex justify-between'>
-                                    <div className='ml-4 flex gap-8 items-center  text-LIGHT_TEXT dark:text-DARK_TEXT'>
-                                        <img src={data.user.imageURL} className='w-10 h-10 rounded-full' />
-                                        <div>
-                                            <p className='font-bold text-xl'>Week {getWeek(stringToDate(data.createdDate))}</p>
-                                            <p>{getFormatedWeekInterval(data.createdDate)}</p>
-                                            <p>{data.username}</p>
-                                        </div>
-                                    </div>
-                                    <div className='flex items-center'>
-                                        {userInfo.id == data.user.id ?
-                                            <NoBackgroundButton>
-                                                <PencilSimple size={24} className='text-PRINCIPAL' />
-                                            </NoBackgroundButton>
-                                            :
-                                            <NoBackgroundButton>
-                                                <Eye size={24} className='text-PRINCIPAL' />
-                                            </NoBackgroundButton>
-                                        }
+            <NavBar
+                IconPage={ListMagnifyingGlass}
+                title="Relatórios"
+                subTitle="Todos os Reports aqui"
+                goBackUrl="/home"
+            />
+            <ul className="mt-10 w-full">
+                {reports.map(data => (
+                    <Link key={data.id} href={`/report/${data.id}`}>
+                        <li
+                            className="mb-4 bg-WHITE_PRINCIPAL dark:bg-DARK_BACKGROUND_SECONDARY rounded-lg p-2 w-full"
+                            key={data.id}
+                        >
+                            <div className="flex justify-between">
+                                <div className="ml-4 flex gap-8 items-center  text-LIGHT_TEXT dark:text-DARK_TEXT">
+                                    <img
+                                        src={data.user.imageURL}
+                                        className="w-10 h-10 rounded-full"
+                                    />
+                                    <div>
+                                        <p className="font-bold text-xl">
+                                            Week{" "}
+                                            {getWeek(
+                                                stringToDate(data.createdDate)
+                                            )}
+                                        </p>
+                                        <p>
+                                            {getFormatedWeekInterval(
+                                                data.createdDate
+                                            )}
+                                        </p>
+                                        <p>{data.username}</p>
                                     </div>
                                 </div>
-                            </li>
-                        </Link>
-                    ))
-                }
+                                <div className="flex items-center">
+                                    {userInfo.id == data.user.id ? (
+                                        <NoBackgroundButton>
+                                            <PencilSimple
+                                                size={24}
+                                                className="text-PRINCIPAL"
+                                            />
+                                        </NoBackgroundButton>
+                                    ) : (
+                                        <NoBackgroundButton>
+                                            <Eye
+                                                size={24}
+                                                className="text-PRINCIPAL"
+                                            />
+                                        </NoBackgroundButton>
+                                    )}
+                                </div>
+                            </div>
+                        </li>
+                    </Link>
+                ))}
             </ul>
         </PageLayout>
     );
-};
+}

@@ -1,4 +1,3 @@
-
 import env from "variables";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
@@ -10,7 +9,7 @@ const firebaseConfig = {
     storageBucket: env.FIREBASE_STORAGE_BUCKET,
     messagingSenderId: env.FIREBASE_MESSAGING_SENDER_ID,
     appId: env.FIREBASE_API_ID,
-    measurementId: env.FIREBASE_MEASUREMENT_ID
+    measurementId: env.FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);

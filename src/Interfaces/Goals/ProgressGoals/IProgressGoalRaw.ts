@@ -1,7 +1,6 @@
-
 export interface IProgressGoalRaw {
-    title: string,
-    total: number,
-    value: number,
-    index: number
+    title: string;
+    total: number;
+    value: number;
+    index: number;
 }

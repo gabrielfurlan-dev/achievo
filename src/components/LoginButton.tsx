@@ -3,7 +3,9 @@ import { MouseEventHandler } from "react";
 
 export interface ButtonProps {
     metodo: MouseEventHandler<HTMLButtonElement>;
-    icon: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<SVGSVGElement>>;
+    icon: React.ForwardRefExoticComponent<
+        IconProps & React.RefAttributes<SVGSVGElement>
+    >;
 }
 
 export function LoginButton({ metodo, icon: Icon }: ButtonProps) {

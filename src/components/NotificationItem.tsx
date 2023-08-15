@@ -1,43 +1,49 @@
 import { INotificationData } from "@/Interfaces/notifications/INotificationData";
-import { fetchNotifications, setNotificationRead } from "@/services/NotificationsService";
+import {
+    fetchNotifications,
+    setNotificationRead,
+} from "@/services/NotificationsService";
 import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useEffect } from "react";
 
 type NotificationProps = {
-    id: number,
-    title: string,
-    message: string,
-    wikiURL: string,
-    isUnred?: boolean,
-}
+    id: number;
+    title: string;
+    message: string;
+    wikiURL: string;
+    isUnred?: boolean;
+};
 
-export function NotificationItem({ id, title, message, isUnred, wikiURL }: NotificationProps) {
-    const { userInfo } = useUserInfoStore()
-    const { setReadNotifications, setUnreadNotifications } = useNotificationStore()
+export function NotificationItem({
+    id,
+    title,
+    message,
+    isUnred,
+    wikiURL,
+}: NotificationProps) {
+    const { userInfo } = useUserInfoStore();
+    const { setReadNotifications, setUnreadNotifications } =
+        useNotificationStore();
 
     async function setReadNotification(notificationId: number) {
-
-
         const result = await setNotificationRead(notificationId, userInfo.id);
 
         getNotifications();
-
     }
 
     useEffect(() => {
         getNotifications();
-    }, [])
+    }, []);
 
     async function getNotifications() {
         try {
-
             const result = await fetchNotifications(userInfo.id);
-            const { unreadNotifications, readNotifications } = result.data as INotificationData
+            const { unreadNotifications, readNotifications } =
+                result.data as INotificationData;
 
             setReadNotifications(readNotifications);
             setUnreadNotifications(unreadNotifications);
-
         } catch (error) {
             console.error("Error fetching notifications:", error);
         }
@@ -46,7 +52,13 @@ export function NotificationItem({ id, title, message, isUnred, wikiURL }: Notif
     return (
         <div className="w-full">
             {isUnred ? (
-                <a href={wikiURL} onClick={() => setReadNotification(id)} target="_blank" className="pointer">
+                <a
+                    href={wikiURL}
+                    onClick={() => setReadNotification(id)}
+                    target="_blank"
+                    className="pointer"
+                    rel="noreferrer"
+                >
                     <div
                         key={id}
                         className=" bg-LIGHT_PRINCIPAL_SECONDARY dark:bg-DARK_PRINCIPAL_SECONDARY
@@ -59,10 +71,13 @@ export function NotificationItem({ id, title, message, isUnred, wikiURL }: Notif
                         <p>{message}</p>
                     </div>
                 </a>
-
             ) : (
-
-                <a href={wikiURL} target="_blank" className="pointer">
+                <a
+                    href={wikiURL}
+                    target="_blank"
+                    className="pointer"
+                    rel="noreferrer"
+                >
                     <div
                         key={id}
                         className=" bg-LIGHT_BACKGROUND_SECONDARY dark:bg-DARK_BACKGROUND
@@ -75,8 +90,7 @@ export function NotificationItem({ id, title, message, isUnred, wikiURL }: Notif
                         <p>{message}</p>
                     </div>
                 </a>
-            )
-            }
+            )}
         </div>
     );
 }

@@ -1,8 +1,8 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 type LayoutProps = {
     children: ReactNode;
-}
+};
 const PageLayout = ({ children }: LayoutProps) => (
     <>
         <div className="w-5/6 md:w-11/12 mx-auto flex flex-col min-h-screen">

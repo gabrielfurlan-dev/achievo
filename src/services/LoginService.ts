@@ -16,37 +16,37 @@ async function callGoogleAuth() {
             success: true,
             email: user.email ?? "",
             name: user.displayName ?? "",
-            photoURL: user.photoURL ?? ""
+            photoURL: user.photoURL ?? "",
         };
-
     } catch (error) {
         return { success: false, email: "", name: "", photoURL: "" };
     }
 }
 
 export async function handleLoginGoogle() {
-
     const user = await callGoogleAuth();
 
     if (user?.success) {
-
-        const userData = await getUserData(user.email)
+        const userData = await getUserData(user.email);
 
         if (userData.success) {
-
-            const response = await fetch(api.concat('/api/user/register'), {
-                method: 'POST',
+            const response = await fetch(api.concat("/api/user/register"), {
+                method: "POST",
                 body: JSON.stringify({
                     email: user.email,
                     name: user.name,
-                    imageURL: user.photoURL
+                    imageURL: user.photoURL,
                 }),
-                headers: { 'Content-Type': 'application/json' }
-            })
+                headers: { "Content-Type": "application/json" },
+            });
 
-            return await response.json() as IResponseData;
+            return (await response.json()) as IResponseData;
         }
     }
 
-    return { success: false, message: "Não foi possível realizar o login.", data: null } as IResponseData
+    return {
+        success: false,
+        message: "Não foi possível realizar o login.",
+        data: null,
+    } as IResponseData;
 }

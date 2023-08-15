@@ -5,16 +5,20 @@ import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export interface ICreateReportCommand {
-    userRef: number,
+    userRef: number;
     progressGoals: IProgressGoalRaw[];
     checkGoals: ICheckGoalRaw[];
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-
-    if (req.method !== 'DELETE') {
-        res.status(405).send({ message: 'Somente métodos DELETE são permitidos' })
-        return
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse
+) {
+    if (req.method !== "DELETE") {
+        res.status(405).send({
+            message: "Somente métodos DELETE são permitidos",
+        });
+        return;
     }
 
     const id: number = req.body;
@@ -22,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         const report = await db.report.update({
             where: { id: id },
-            data: { enable: false }
+            data: { enable: false },
         });
 
         return res.status(201).json({
@@ -30,13 +34,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             data: report,
             message: "Relatório eliminado com sucesso!",
         } as IResponseData);
-    }
-    catch (error) {
+    } catch (error) {
         return res.status(500).json({
             success: false,
             data: null,
             message: "Erro ao eliminar o relatório",
-            error: String(error)
+            error: String(error),
         } as IResponseData);
     }
 }

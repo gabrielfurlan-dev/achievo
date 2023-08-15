@@ -1,10 +1,12 @@
-interface ListItemProps{
-    text: string,
-    key?: number,
+interface ListItemProps {
+    text: string;
+    key?: number;
 }
 
-export default function ListItem({text, key}: ListItemProps) {
-  return (
-    <li style={{listStyleType: 'circle'}} key={key}>{text}</li>
-  );
+export default function ListItem({ text, key }: ListItemProps) {
+    return (
+        <li style={{ listStyleType: "circle" }} key={key}>
+            {text}
+        </li>
+    );
 }

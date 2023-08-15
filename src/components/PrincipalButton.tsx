@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 interface ButtonProps {
     title: string;
@@ -21,7 +21,7 @@ const PrincipalButton: React.FC<ButtonProps> = ({ title }) => {
                 {title}
             </button>
         </div>
-    )
-}
+    );
+};
 
 export default PrincipalButton;

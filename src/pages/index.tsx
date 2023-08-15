@@ -2,12 +2,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function Index() {
-    const router = useRouter()
+    const router = useRouter();
 
     useEffect(() => {
         async function fetchData() {
-            router.push('/login')
+            router.push("/login");
         }
         fetchData();
     }, []);
-};
+}

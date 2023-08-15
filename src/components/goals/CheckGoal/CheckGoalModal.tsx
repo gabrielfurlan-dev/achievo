@@ -10,17 +10,24 @@ type CheckModalProps = {
     checkGoal: ICheckGoal;
     setCheckGoal: (value: SetStateAction<ICheckGoal>) => void;
     deleteGoal: () => void;
-}
+};
 
-export default function CheckGoalModal({ isOpen, onClose, checkGoal, setCheckGoal, deleteGoal }: CheckModalProps) {
-
-    const [editingTitle, setEditingTitle] = useState(checkGoal.title)
-
+export default function CheckGoalModal({
+    isOpen,
+    onClose,
+    checkGoal,
+    setCheckGoal,
+    deleteGoal,
+}: CheckModalProps) {
+    const [editingTitle, setEditingTitle] = useState(checkGoal.title);
 
     function validate() {
-
         if (editingTitle.length == 0) {
-            Swal.fire('Ops!', 'É necessário informar o título da meta', 'warning')
+            Swal.fire(
+                "Ops!",
+                "É necessário informar o título da meta",
+                "warning"
+            );
             return false;
         }
 
@@ -28,19 +35,18 @@ export default function CheckGoalModal({ isOpen, onClose, checkGoal, setCheckGoa
     }
 
     function handleSaveGoal() {
-
         if (!validate()) return;
 
-        let newGoal: ICheckGoal = {
+        const newGoal: ICheckGoal = {
             id: checkGoal.id,
             index: checkGoal.index,
             title: editingTitle,
             checked: checkGoal.checked,
-            reportId: checkGoal.id
+            reportId: checkGoal.id,
         };
 
-        setCheckGoal(newGoal)
-        onClose()
+        setCheckGoal(newGoal);
+        onClose();
     }
 
     return (
@@ -64,5 +70,5 @@ export default function CheckGoalModal({ isOpen, onClose, checkGoal, setCheckGoa
                 />
             </Modal>
         </div>
-    )
+    );
 }

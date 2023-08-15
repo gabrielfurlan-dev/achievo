@@ -2,10 +2,10 @@ import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useState } from "react";
 
 export function ProfileImage() {
-    const { userInfo, setUserInfo } = useUserInfoStore()
+    const { userInfo, setUserInfo } = useUserInfoStore();
 
     const [isEditing, setIsEditing] = useState(false);
-    const [newImageURL, setNewImageURL] = useState('');
+    const [newImageURL, setNewImageURL] = useState("");
 
     const handleEditClick = () => {
         setIsEditing(true);
@@ -13,17 +13,16 @@ export function ProfileImage() {
 
     const handleCancelClick = () => {
         setIsEditing(false);
-        setNewImageURL('');
+        setNewImageURL("");
     };
 
     const handleSaveClick = () => {
         if (newImageURL) {
-
             setIsEditing(false);
 
             // setUserInfo({imageURL: newImageURL})
 
-            setNewImageURL('');
+            setNewImageURL("");
         }
     };
 
@@ -34,7 +33,7 @@ export function ProfileImage() {
                     <input
                         type="text"
                         value={newImageURL}
-                        onChange={(e) => setNewImageURL(e.target.value)}
+                        onChange={e => setNewImageURL(e.target.value)}
                         placeholder="Insira a URL da nova imagem"
                     />
                     <button onClick={handleSaveClick}>Salvar</button>
@@ -47,5 +46,5 @@ export function ProfileImage() {
                 </>
             )}
         </div>
-    )
+    );
 }

@@ -1,5 +1,5 @@
 export interface ICheckGoalRaw {
-    title: string,
-    checked: boolean,
-    index: number
+    title: string;
+    checked: boolean;
+    index: number;
 }

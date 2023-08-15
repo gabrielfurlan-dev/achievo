@@ -12,7 +12,7 @@ export default function profile() {
 
     useEffect(() => {
         useUserInfoStore.persist.rehydrate();
-    }, [])
+    }, []);
 
     return (
         <PageLayout>
@@ -31,9 +31,19 @@ export default function profile() {
                         className="rounded-full w-44 h-44"
                     />
                     <div className="flex flex-col">
-                        <p className="text-4xl text-LIGHT_TEXT dark:text-DARK_TEXT">{userInfo.username}</p>
-                        <p className="text-xl text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">{userInfo.email}</p>
-                        <p className="max-w-lg mt-4 text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus ipsa vel eos, iure culpa earum modi assumenda nemo perferendis consectetur obcaecati quia, tenetur explicabo? Sed ratione velit debitis voluptates qui?</p>
+                        <p className="text-4xl text-LIGHT_TEXT dark:text-DARK_TEXT">
+                            {userInfo.username}
+                        </p>
+                        <p className="text-xl text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">
+                            {userInfo.email}
+                        </p>
+                        <p className="max-w-lg mt-4 text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">
+                            Lorem ipsum, dolor sit amet consectetur adipisicing
+                            elit. Doloribus ipsa vel eos, iure culpa earum modi
+                            assumenda nemo perferendis consectetur obcaecati
+                            quia, tenetur explicabo? Sed ratione velit debitis
+                            voluptates qui?
+                        </p>
                     </div>
                 </div>
             </div>

@@ -10,22 +10,38 @@ type ProgressModalProps = {
     progressGoal: IProgressGoal;
     setProgressGoal: (value: SetStateAction<IProgressGoal>) => void;
     deleteGoal: () => void;
-}
+};
 
-export default function ProgressGoalModal({ isOpen, onClose, progressGoal, setProgressGoal, deleteGoal }: ProgressModalProps) {
-
-    const [editingValue, setEditingValue] = useState(progressGoal.value.toString())
-    const [editingTotal, setEditingTotal] = useState(progressGoal.total.toString())
-    const [editingTitle, setEditingTitle] = useState(progressGoal.title)
+export default function ProgressGoalModal({
+    isOpen,
+    onClose,
+    progressGoal,
+    setProgressGoal,
+    deleteGoal,
+}: ProgressModalProps) {
+    const [editingValue, setEditingValue] = useState(
+        progressGoal.value.toString()
+    );
+    const [editingTotal, setEditingTotal] = useState(
+        progressGoal.total.toString()
+    );
+    const [editingTitle, setEditingTitle] = useState(progressGoal.title);
 
     function validate() {
-
         if (editingTitle.length == 0) {
-            Swal.fire('Ops!', 'É necessário informar o título da meta', 'warning')
+            Swal.fire(
+                "Ops!",
+                "É necessário informar o título da meta",
+                "warning"
+            );
             return false;
         }
         if (Number(editingTotal) == 0) {
-            Swal.fire('Ops!', 'É necessário informar o valor de progresso total da meta', 'warning')
+            Swal.fire(
+                "Ops!",
+                "É necessário informar o valor de progresso total da meta",
+                "warning"
+            );
             return false;
         }
 
@@ -33,20 +49,19 @@ export default function ProgressGoalModal({ isOpen, onClose, progressGoal, setPr
     }
 
     function handleSaveGoal() {
-
         if (!validate()) return;
 
-        let newGoal: IProgressGoal = {
+        const newGoal: IProgressGoal = {
             id: progressGoal.id,
             index: progressGoal.index,
             title: editingTitle,
             value: Number(editingValue),
             total: Number(editingTotal),
-            reportId: progressGoal.id
+            reportId: progressGoal.id,
         };
 
         setProgressGoal(newGoal);
-        onClose()
+        onClose();
     }
 
     return (
@@ -61,7 +76,6 @@ export default function ProgressGoalModal({ isOpen, onClose, progressGoal, setPr
                 cancelText="Cancelar"
                 confirmText="Adicionar"
             >
-
                 <div className="">
                     <div>
                         <InputField
