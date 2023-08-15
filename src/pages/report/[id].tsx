@@ -17,7 +17,7 @@ import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { IProgressGoal } from "@/Interfaces/goals/progressGoals/IProgressGoal";
+import IProgressGoal from "@/Interfaces/goals/progressGoals/IProgressGoal";
 import {
     CreateReport,
     IUpdateReport,

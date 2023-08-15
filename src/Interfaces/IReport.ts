@@ -1,4 +1,4 @@
-import { IProgressGoal } from '@/Interfaces/goals/progressGoals/IProgressGoal';
+import IProgressGoal from '@/Interfaces/goals/progressGoals/IProgressGoal';
 import { IUser } from '@/Interfaces/IUser';
 import ICheckGoal from './goals/checkGoals/ICheckGoal';
 

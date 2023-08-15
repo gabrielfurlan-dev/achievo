@@ -1,4 +1,4 @@
-import { IProgressGoal } from "@/Interfaces/goals/progressGoals/IProgressGoal";
+import IProgressGoal from "@/Interfaces/goals/progressGoals/IProgressGoal";
 import { InputField } from "@/components/InputField";
 import Modal from "@/components/Modal";
 import { SetStateAction, useState } from "react";
