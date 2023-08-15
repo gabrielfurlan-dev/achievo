@@ -1,11 +1,11 @@
-import { IResponseData } from "@/interfaces/IResponseData";
+import { IResponseData } from "@/interfaces/iResponseData";
 import api from "@/lib/api";
 import { ICreateReportCommand } from "@/pages/api/report/create";
-import { IProgressGoalRaw } from "@/interfaces/goals/progressGoals/IProgressGoalRaw";
-import { ICheckGoalRaw } from "@/interfaces/goals/checkGoals/ICheckGoalRaw";
+import { IProgressGoalRaw } from "@/interfaces/goals/progressGoals/iProgressGoalRaw";
+import { ICheckGoalRaw } from "@/interfaces/goals/checkGoals/iCheckGoalRaw";
 import { IUpdateReportCommand } from "@/pages/api/report/update";
-import { IProgressGoal } from "@/interfaces/goals/progressGoals/IProgressGoal";
-import { ICheckGoal } from "@/interfaces/goals/checkGoals/ICheckGoal";
+import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
+import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
 
 interface ICreateReport {
     userRef: number;

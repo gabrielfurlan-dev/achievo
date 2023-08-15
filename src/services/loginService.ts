@@ -1,4 +1,4 @@
-import { IResponseData } from "@/interfaces/IResponseData";
+import { IResponseData } from "@/interfaces/iResponseData";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import api from "@/lib/api";
 import { getUserData } from "./userService";

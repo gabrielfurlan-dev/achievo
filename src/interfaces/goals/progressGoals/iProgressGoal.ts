@@ -1,4 +1,4 @@
-import { IProgressGoalRaw } from "./IProgressGoalRaw";
+import { IProgressGoalRaw } from "./iProgressGoalRaw";
 
 export interface IProgressGoal extends IProgressGoalRaw {
     reportId: number;

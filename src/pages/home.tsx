@@ -1,5 +1,5 @@
 import { SimpleNavBar } from "@/components/NavBar/SimpleNavBar";
-import { fetchNotifications } from "@/services/anotificationsService";
+import { fetchNotifications } from "@/services/notificationsService";
 import PageLayout from "@/layouts/PageLayout";
 import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
@@ -7,7 +7,7 @@ import { ListMagnifyingGlass } from "@phosphor-icons/react";
 import { useRouter } from "next/router";
 import { FilePlus, House, Icon } from "phosphor-react";
 import { useEffect } from "react";
-import { INotificationData } from "@/interfaces/notifications/aiNotificationData";
+import { INotificationData } from "@/interfaces/notifications/iNotificationData";
 
 export default function home() {
     const { userInfo } = useUserInfoStore();

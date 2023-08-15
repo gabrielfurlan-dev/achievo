@@ -17,16 +17,16 @@ import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { IProgressGoal } from "@/interfaces/goals/progressGoals/IProgressGoal";
-import { ICheckGoal } from "@/interfaces/goals/checkGoals/ICheckGoal";
+import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
+import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
 import {
     createReport,
     IUpdateReport,
     getReport,
     updateReport,
 } from "@/services/reports/reportService";
-import { IResponseData } from "@/interfaces/IResponseData";
-import { IReport } from "@/interfaces/aiReport";
+import { IResponseData } from "@/interfaces/iResponseData";
+import { IReport } from "@/interfaces/iReport";
 import { generateInvalidUniqueID } from "@/helpers/uniqueIdHelper";
 import {
     getCheckGoalsModified,

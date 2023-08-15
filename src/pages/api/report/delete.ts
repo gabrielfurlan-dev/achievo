@@ -1,6 +1,6 @@
-import { ICheckGoalRaw } from "@/interfaces/goals/checkGoals/ICheckGoalRaw";
-import { IProgressGoalRaw } from "@/interfaces/goals/progressGoals/IProgressGoalRaw";
-import { IResponseData } from "@/interfaces/IResponseData";
+import { ICheckGoalRaw } from "@/interfaces/goals/checkGoals/iCheckGoalRaw";
+import { IProgressGoalRaw } from "@/interfaces/goals/progressGoals/iProgressGoalRaw";
+import { IResponseData } from "@/interfaces/iResponseData";
 import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
 

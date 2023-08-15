@@ -1,8 +1,8 @@
-import { INotificationData } from "@/interfaces/notifications/aiNotificationData";
+import { INotificationData } from "@/interfaces/notifications/iNotificationData";
 import {
     fetchNotifications,
     setNotificationRead,
-} from "@/services/anotificationsService";
+} from "@/services/notificationsService";
 import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useEffect } from "react";

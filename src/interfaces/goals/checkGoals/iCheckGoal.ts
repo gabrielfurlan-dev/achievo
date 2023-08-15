@@ -1,4 +1,4 @@
-import { ICheckGoalRaw } from "./ICheckGoalRaw";
+import { ICheckGoalRaw } from "./iCheckGoalRaw";
 
 export interface ICheckGoal extends ICheckGoalRaw {
     reportId: number;

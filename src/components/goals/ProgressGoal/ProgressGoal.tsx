@@ -1,7 +1,7 @@
 import { SetStateAction, useEffect, useState } from "react";
 import React from "react";
 import ProgressGoalModal from "./ProgressGoalModal";
-import { IProgressGoal } from "@/interfaces/goals/progressGoals/IProgressGoal";
+import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
 
 type ProgressGoalProps = {
     progressGoal: IProgressGoal;

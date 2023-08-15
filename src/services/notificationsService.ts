@@ -1,4 +1,4 @@
-import { IResponseData } from "@/interfaces/IResponseData";
+import { IResponseData } from "@/interfaces/iResponseData";
 import api from "@/lib/api";
 import { IMarkNotificationAsReadCommand } from "@/pages/api/notification/mark-as-read";
 
