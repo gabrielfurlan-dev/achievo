@@ -1,4 +1,4 @@
-import api from "@/lib/api";
+import apiUrlBase from "@/lib/api";
 // import { generateToken } from "./jwt";
 
 interface IfetchData {
@@ -9,7 +9,7 @@ interface IfetchData {
 export async function fetchData({ method, path, jsonData }: IfetchData) {
     // const token = generateToken(jsonData);
 
-    return await fetch(api.concat(path), {
+    return await fetch(apiUrlBase.concat(path), {
         method: method,
         body: JSON.stringify(jsonData),
         headers: {

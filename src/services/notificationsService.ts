@@ -1,11 +1,11 @@
 import { IResponseData } from "@/interfaces/iResponseData";
-import api from "@/lib/api";
+import { apiUrlBase } from "@/lib/api";
 import { IMarkNotificationAsReadCommand } from "@/pages/api/notification/mark-as-read";
 
 export async function fetchNotifications(userId: number) {
     try {
         const report = await fetch(
-            api.concat("/api/notification/get-all?userId=" + userId),
+            apiUrlBase().concat("/api/notification/get-all?userId=" + userId),
             {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
@@ -34,7 +34,7 @@ export async function setNotificationRead(
 ) {
     try {
         const report = await fetch(
-            api.concat("/api/notification/mark-as-read"),
+            apiUrlBase().concat("/api/notification/mark-as-read"),
             {
                 method: "PUT",
                 body: JSON.stringify({

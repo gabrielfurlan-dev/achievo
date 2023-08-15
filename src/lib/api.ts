@@ -1,4 +1,4 @@
-export default function () {
+export function apiUrlBase() {
     if (process.env.NODE_ENV === "production") {
         return "https://weeklyreport-preview.vercel.app";
     }
@@ -6,3 +6,4 @@ export default function () {
         return "http://localhost:3000";
     }
 }
+
