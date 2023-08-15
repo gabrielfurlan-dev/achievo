@@ -13,7 +13,7 @@ interface ICreateReport {
     checkGoals: ICheckGoalRaw[];
 }
 
-export async function CreateReport({
+export async function createReport({
     userRef,
     progressGoals,
     checkGoals,

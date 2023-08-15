@@ -1,5 +1,5 @@
 import { SimpleNavBar } from "@/components/NavBar/SimpleNavBar";
-import { fetchNotifications } from "@/services/NotificationsService";
+import { fetchNotifications } from "@/services/anotificationsService";
 import PageLayout from "@/layouts/PageLayout";
 import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";

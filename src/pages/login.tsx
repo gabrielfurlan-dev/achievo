@@ -2,7 +2,7 @@ import { GoogleLogo, ReadCvLogo } from "@phosphor-icons/react";
 import Router from "next/router";
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
-import { handleLoginGoogle } from "@/services/LoginService";
+import { handleLoginGoogle } from "@/services/aloginService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import Swal from "sweetalert2";
 

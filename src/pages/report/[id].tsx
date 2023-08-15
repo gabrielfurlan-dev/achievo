@@ -20,11 +20,11 @@ import { useUserInfoStore } from "@/store/userStoreInfo";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/IProgressGoal";
 import { ICheckGoal } from "@/interfaces/goals/checkGoals/ICheckGoal";
 import {
-    CreateReport,
+    createReport,
     IUpdateReport,
     getReport,
     updateReport,
-} from "@/services/Reportss/ReportService";
+} from "@/services/reports/reportService";
 import { IResponseData } from "@/interfaces/IResponseData";
 import { IReport } from "@/interfaces/IReport";
 import { generateInvalidUniqueID } from "@/helpers/uniqueIdHelper";
@@ -145,7 +145,7 @@ export default function EditReport() {
         let result: IResponseData;
 
         if (isNew) {
-            result = await CreateReport({
+            result = await createReport({
                 userRef: userInfo.id,
                 progressGoals,
                 checkGoals,

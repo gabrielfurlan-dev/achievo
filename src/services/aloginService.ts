@@ -1,7 +1,7 @@
 import { IResponseData } from "@/interfaces/IResponseData";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import api from "@/lib/api";
-import { getUserData } from "./UserService";
+import { getUserData } from "./auserService";
 
 async function callGoogleAuth() {
     try {
