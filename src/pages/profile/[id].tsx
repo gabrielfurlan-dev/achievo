@@ -3,7 +3,7 @@ import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
 import { User } from "phosphor-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function profile() {
     const router = useRouter();

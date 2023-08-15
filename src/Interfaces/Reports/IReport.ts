@@ -1,5 +1,5 @@
-import { ICheckGoal } from "../Goals/checkGoals/ICheckGoal";
-import { IProgressGoal } from "../Goals/progressGoals/IProgressGoal";
+import { ICheckGoal } from "../goals/checkGoals/ICheckGoal";
+import { IProgressGoal } from "../goals/progressGoals/IProgressGoal";
 import { IUser } from "../IUser";
 
 export interface IReport {
