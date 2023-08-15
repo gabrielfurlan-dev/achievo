@@ -8,7 +8,7 @@ import { NoBackgroundButton } from "@/components/Buttons";
 import { getWeek } from "date-fns";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { getAllReports } from "@/services/Reports/ReportService";
+import { getAllReports } from "@/services/reports/ReportService";
 import { stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 
 export default function ListReport() {
