@@ -1,4 +1,4 @@
-import { ICheckGoal } from "@/Interfaces/goals/checkGoals/ICheckGoal";
+import ICheckGoal from "@/Interfaces/goals/checkGoals/ICheckGoal";
 import { IProgressGoal } from "@/Interfaces/goals/progressGoals/IProgressGoal";
 import { IResponseData } from "@/Interfaces/IResponseData";
 import { db } from "@/db";

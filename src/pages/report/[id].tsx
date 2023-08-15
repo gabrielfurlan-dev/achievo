@@ -17,7 +17,6 @@ import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { ICheckGoal } from "@/Interfaces/goals/checkGoals/ICheckGoal";
 import { IProgressGoal } from "@/Interfaces/goals/progressGoals/IProgressGoal";
 import {
     CreateReport,
@@ -32,6 +31,7 @@ import {
     getCheckGoalsModified,
     getProgressGoalsModified,
 } from "@/helpers/reportHelper";
+import ICheckGoal from "@/Interfaces/goals/checkGoals/ICheckGoal";
 
 export default function EditReport() {
     const router = useRouter();
@@ -225,7 +225,7 @@ export default function EditReport() {
                     <div className="flex flex-col w-full">
                         <InputField
                             type="text"
-                            onChange={() => {}}
+                            onChange={() => { }}
                             value={weekInterval}
                             noBackground
                             widthAuto
