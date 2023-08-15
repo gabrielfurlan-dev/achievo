@@ -4,8 +4,8 @@ import { ICreateReportCommand } from "@/pages/api/report/create";
 import { IProgressGoalRaw } from "@/Interfaces/goals/progressGoals/IProgressGoalRaw";
 import { ICheckGoalRaw } from "@/Interfaces/goals/checkGoals/ICheckGoalRaw";
 import { IUpdateReportCommand } from "@/pages/api/report/update";
-import { IProgressGoal } from "@/Interfaces/goals/progressGoals/IProgressGoal";
-import { ICheckGoal } from "@/Interfaces/goals/checkGoals/ICheckGoal";
+import IProgressGoal from "@/Interfaces/goals/progressGoals/IProgressGoal";
+import ICheckGoal from "@/Interfaces/goals/checkGoals/ICheckGoal";
 
 interface ICreateReport {
     userRef: number;
