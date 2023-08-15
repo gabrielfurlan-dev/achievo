@@ -8,8 +8,8 @@ import { NoBackgroundButton } from "@/components/Buttons";
 import { getWeek } from "date-fns";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { getAllReports } from "@/services/reports/reportService";
 import { stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
+import { getAllReports } from "@/services/reports/areportService";
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);
@@ -18,7 +18,8 @@ export default function ListReport() {
     useEffect(() => {
         const fetchReports = async () => {
             try {
-                const result = await getAllReports();
+                const result = await getAllReports
+                ();
                 setReports(result.data);
             } catch (error) {
                 console.error("Error fetching reports:", error);
