@@ -1,4 +1,4 @@
-import { INotification } from "@/interfaces/notifications/INotification";
+import { INotification } from "@/interfaces/notifications/aiNotification";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 

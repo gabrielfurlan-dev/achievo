@@ -1,4 +1,4 @@
-import { INotification } from "./INotification";
+import { INotification } from "./aiNotification";
 
 export interface INotificationData {
     readNotifications: INotification[];

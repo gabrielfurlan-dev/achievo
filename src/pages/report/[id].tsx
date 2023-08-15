@@ -24,9 +24,9 @@ import {
     IUpdateReport,
     getReport,
     updateReport,
-} from "@/services/reports/areportService";
+} from "@/services/reports/reportService";
 import { IResponseData } from "@/interfaces/IResponseData";
-import { IReport } from "@/interfaces/IReport";
+import { IReport } from "@/interfaces/aiReport";
 import { generateInvalidUniqueID } from "@/helpers/uniqueIdHelper";
 import {
     getCheckGoalsModified,

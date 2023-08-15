@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IReport } from "@/interfaces/IReport";
+import { IReport } from "@/interfaces/aiReport";
 import { Eye, PencilSimple } from "phosphor-react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar/NavBar";
@@ -9,7 +9,7 @@ import { getWeek } from "date-fns";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
-import { getAllReports } from "@/services/reports/areportService";
+import { getAllReports } from "@/services/reports/reportService";
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);

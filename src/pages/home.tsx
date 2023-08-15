@@ -7,7 +7,7 @@ import { ListMagnifyingGlass } from "@phosphor-icons/react";
 import { useRouter } from "next/router";
 import { FilePlus, House, Icon } from "phosphor-react";
 import { useEffect } from "react";
-import { INotificationData } from "@/interfaces/notifications/INotificationData";
+import { INotificationData } from "@/interfaces/notifications/aiNotificationData";
 
 export default function home() {
     const { userInfo } = useUserInfoStore();
