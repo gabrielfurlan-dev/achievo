@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { doc, deleteDoc } from "firebase/firestore";
-import db from "@/firebaseConfig";
 import Swal from "sweetalert2";
 import { ReadCvLogo } from "@phosphor-icons/react";
 import { Plus } from "phosphor-react";
 import NavBar from "@/components/NavBar/NavBar";
 import Modal from "@/components/Modal";
-import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/services/DateService";
+import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getWeek } from "date-fns";
 import { InputField } from "@/components/InputField";
 import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons";
@@ -17,9 +15,11 @@ import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { ICheckGoal } from "@/Interfaces/Goals/checkGoals/ICheckGoal";
 import { IProgressGoal } from "@/Interfaces/Goals/progressGoals/IProgressGoal";
-import { CreateReport, getReport, updateReport } from "@/services/Reports/ReportService";
+import { CreateReport, IUpdateReport, getReport, updateReport } from "@/services/Reports/ReportService";
 import { IResponseData } from "@/Interfaces/IResponseData";
 import { IReport } from "@/Interfaces/reports/IReport";
+import { generateInvalidUniqueID } from "@/helpers/uniqueIdHelper";
+import { getCheckGoalsModified, getProgressGoalsModified } from "@/helpers/reportHelper";
 
 export default function EditReport() {
     const router = useRouter();
@@ -91,11 +91,11 @@ export default function EditReport() {
     }, [modified, router, forceCancel]);
 
     function handleAddCheckGoal() {
-        setCheckGoals([...checkGoals, { id: checkGoals.length + 1, reportId: 0, title: "Sem título", checked: false, index: checkGoals.length + 1 }])
+        setCheckGoals([...checkGoals, { id: generateInvalidUniqueID(), reportId: 0, title: "Sem título", checked: false, index: checkGoals.length + 1 }])
     }
 
     function handleAddProgressGoal() {
-        setProgressGoals([...progressGoals, { id: progressGoals.length + 1, reportId: 0, title: "Sem título", total: 0, value: 0, index: progressGoals.length + 1 }])
+        setProgressGoals([...progressGoals, { id: generateInvalidUniqueID(), reportId: 0, title: "Sem título", total: 0, value: 0, index: progressGoals.length + 1 }])
     }
 
     async function handleCancel(force: boolean) {
@@ -114,8 +114,16 @@ export default function EditReport() {
         if (isNew) {
             result = await CreateReport({ userRef: userInfo.id, progressGoals, checkGoals })
         }
-        else
-            result = await updateReport({ reportId: Number(id), progressGoals, checkGoals })
+        else {
+            const modifiedCheckGoals = getCheckGoalsModified(originalCheckGoals, checkGoals)
+            const modifiedProgressGoals = getProgressGoalsModified(originalProgressGoals, progressGoals)
+
+            result = await updateReport({
+                reportId: Number(id),
+                progressGoals: modifiedProgressGoals,
+                checkGoals: modifiedCheckGoals
+            } as IUpdateReport)
+        }
 
         if (result.success) {
             setOriginalCheckGoals(checkGoals)
@@ -126,16 +134,6 @@ export default function EditReport() {
 
         handleCancel(false)
     };
-
-    async function handleDeleteReport() {
-        try {
-            await deleteDoc(doc(db, "reports/" + id));
-            Swal.fire("Relatório deletado com sucesso!");
-            router.push('/list-reports')
-        } catch (error) {
-            Swal.fire("Erro ao deletar o relatório", String(error), 'error');
-        }
-    }
 
     async function setReportData() {
 

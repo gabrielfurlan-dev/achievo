@@ -9,7 +9,7 @@ import { getWeek } from 'date-fns';
 import PageLayout from '@/layouts/PageLayout';
 import { useUserInfoStore } from '@/store/userStoreInfo';
 import { getAllReports } from '@/services/Reports/ReportService';
-import { getFormatedWeekInterval, stringToDate } from '@/services/DateService';
+import { stringToDate, getFormatedWeekInterval } from '@/helpers/dateHelper';
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);

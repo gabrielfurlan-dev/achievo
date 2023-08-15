@@ -4,6 +4,8 @@ import { ICreateReportCommand } from "@/pages/api/report/create";
 import { IProgressGoalRaw } from "@/Interfaces/Goals/progressGoals/IProgressGoalRaw";
 import { ICheckGoalRaw } from "@/Interfaces/Goals/checkGoals/ICheckGoalRaw";
 import { IUpdateReportCommand } from "@/pages/api/report/update";
+import { IProgressGoal } from "@/Interfaces/Goals/progressGoals/IProgressGoal";
+import { ICheckGoal } from "@/Interfaces/Goals/checkGoals/ICheckGoal";
 
 interface ICreateReport {
     userRef: number,
@@ -31,15 +33,22 @@ export async function CreateReport({ userRef, progressGoals, checkGoals }: ICrea
     }
 }
 
-interface IUpdateReport {
+export interface IUpdateReport {
     reportId: number,
-    progressGoals: IProgressGoalRaw[];
-    checkGoals: ICheckGoalRaw[];
+    progressGoals: {
+        deleted: IProgressGoal[],
+        inserted: IProgressGoal[],
+        modified: IProgressGoal[],
+    },
+    checkGoals: {
+        deleted: ICheckGoal[],
+        inserted: ICheckGoal[],
+        modified: ICheckGoal[],
+    }
 }
 
 export async function updateReport({ reportId, progressGoals, checkGoals }: IUpdateReport) {
     try {
-
         const report = await fetch(api.concat('/api/report/update'), {
             method: 'PUT',
             body: JSON.stringify({
