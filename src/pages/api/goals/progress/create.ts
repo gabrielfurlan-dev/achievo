@@ -12,7 +12,7 @@ export interface ICreateProgressGoalCommand {
     ];
 }
 
-export async function Create({ goals }: ICreateProgressGoalCommand) {
+export default async function handler({ goals }: ICreateProgressGoalCommand) {
     try {
         await db.progressGoal.createMany({
             data: goals.map(goal => ({

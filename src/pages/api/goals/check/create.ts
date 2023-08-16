@@ -11,7 +11,7 @@ export interface ICreateCheckGoalCommand {
     ];
 }
 
-export async function Create({ goals }: ICreateCheckGoalCommand) {
+export default async function handler({ goals }: ICreateCheckGoalCommand) {
     try {
         await db.checkGoal.createMany({
             data: goals.map(goal => ({
