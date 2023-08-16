@@ -22,25 +22,26 @@ export default async function handler(
     try {
         const userData: CreateUserProps = req.body;
 
-        const userFind = await db.user.findFirst({
+        let user = await db.user.findFirst({
             where: { email: userData.email },
         });
 
-        if (!userFind) {
-            const user = await db.user.create({
+        if (!user) {
+            user = await db.user.create({
                 data: {
                     name: userData.name,
                     email: userData.email,
                     imageURL: userData.imageURL,
                 },
             });
-
-            return res.status(201).json({
-                success: true,
-                data: user,
-                message: "Usuário registrado com sucesso!",
-            } as IResponseData);
         }
+
+        return res.status(201).json({
+            success: true,
+            data: user,
+            message: "Usuário registrado com sucesso!",
+        } as IResponseData);
+
     } catch (error) {
         return res.status(500).json({
             success: false,
