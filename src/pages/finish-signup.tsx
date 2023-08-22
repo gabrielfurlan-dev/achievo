@@ -5,20 +5,24 @@ import { ProfileImage } from "@/components/profileImage";
 import PageLayout from "@/layouts/PageLayout";
 import { updateUser } from "@/services/userService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
+import { useRouter } from "next/router";
 import { AddressBook } from "phosphor-react";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 export default function pages() {
     const { userInfo, setUserInfo } = useUserInfoStore()
-
+    const router = useRouter()
     const [name, setName] = useState<string>("")
     const [username, setUsername] = useState<string>("")
     const [description, setDescription] = useState<string>("")
 
 
     async function handleUpdateUser() {
-        if(await updateUser(userInfo.id, name, username, description)){
+        if (await updateUser(userInfo.id, name, username, description)) {
             setUserInfo({ ...userInfo, name: name, username: username, description: description });
+            Swal.fire("Login finalizado com sucesso!")
+            router.push("/home")
         };
     }
 
