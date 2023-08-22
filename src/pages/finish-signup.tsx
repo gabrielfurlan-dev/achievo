@@ -18,10 +18,25 @@ export default function pages() {
     const [description, setDescription] = useState<string>("")
 
 
+    function validateIfHasUpdate() {
+        if (userInfo.name != name) return true;
+        if (userInfo.username != username) return true;
+        if (userInfo.description != description) return true;
+
+        return false;
+    }
+
     async function handleUpdateUser() {
+        console.log(validateIfHasUpdate())
+        if (!validateIfHasUpdate()) {
+            await Swal.fire("", "Nenhum dado foi alterado.")
+            router.push("/home")
+            return;
+        }
+
         if (await updateUser(userInfo.id, name, username, description)) {
             setUserInfo({ ...userInfo, name: name, username: username, description: description });
-            Swal.fire("Login finalizado com sucesso!")
+            await Swal.fire("Good Job!", "Cadastro finalizado com sucesso.")
             router.push("/home")
         };
     }
@@ -35,7 +50,7 @@ export default function pages() {
     return (
         <PageLayout>
             <SimpleNavBar IconPage={AddressBook} title="Finalizar Cadastro" subTitle="" />
-            <div className="h-full w-full md:w-2/3 mt-24 md:mt-0 flex flex-col md:flex-row m-auto md:gap-24 items-center">
+            <div className="h-full w-full md:w-4/5 lg:w-2/3 mt-24 md:mt-0 flex flex-col md:flex-row m-auto md:gap-24 items-center">
                 <div className="w-52 md:w-96">
                     <ProfileImage rounded />
                 </div>

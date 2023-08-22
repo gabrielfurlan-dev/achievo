@@ -12,7 +12,7 @@ model User {
     email             String              @unique
     name              String
     imageURL          String
-    username          String?
+    username          String?             @unique
     description       String?
     Reports           Report[]
     ReadNotifications ReadNotifications[]

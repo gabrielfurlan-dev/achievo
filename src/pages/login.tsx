@@ -21,6 +21,7 @@ export default function login() {
                 id: loginData.data.id,
                 email: loginData.data.email,
                 name: loginData.data.name,
+                username: loginData.data.username,
                 imageURL: loginData.data.imageURL,
             });
             Router.push("/home");

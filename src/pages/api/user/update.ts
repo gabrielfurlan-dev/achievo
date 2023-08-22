@@ -18,6 +18,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
 
     const userInfo = req.body as IUpdateUserCommand;
+
     try {
         db.user.update({
             data: {

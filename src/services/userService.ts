@@ -60,6 +60,7 @@ export async function registerUser(userData: IUserInfo) {
 }
 
 export async function updateUser(id: number, name: string, username: string, description: string) {
+
     const responseData = await fetch(
         apiUrlBase().concat("/api/user/update"),
         {
@@ -75,6 +76,7 @@ export async function updateUser(id: number, name: string, username: string, des
     )
 
     const response = await responseData.json();
+    console.log(response)
 
     return response.success;
 }
