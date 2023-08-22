@@ -203,18 +203,21 @@ export default function EditReport() {
 
     return (
         <PageLayout>
-            <Modal
-                isOpen={showModal}
-                onClose={() => setShowModal(false)}
-                handleSaveButton={() => handleCancel(true)}
-                title="Alterações não salvas"
-                hideDelete
-                cancelText="Não"
-                confirmText="Sim"
-            >
-                <p>Você possui alterações não salvas.</p>
-                <p>Deseja mesmo descartá-las?</p>
-            </Modal>
+            {isOwner && (
+                <Modal
+                    isOpen={showModal}
+                    onClose={() => setShowModal(false)}
+                    handleSaveButton={() => handleCancel(true)}
+                    title="Alterações não salvas"
+                    hideDelete
+                    cancelText="Não"
+                    confirmText="Sim"
+                >
+                    <p>Você possui alterações não salvas.</p>
+                    <p>Deseja mesmo descartá-las?</p>
+                </Modal>
+            )
+            }
 
             <div className="h-full">
                 <NavBar
