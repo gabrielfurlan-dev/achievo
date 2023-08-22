@@ -38,11 +38,7 @@ export default function profile() {
                             {userInfo.email}
                         </p>
                         <p className="max-w-lg mt-4 text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">
-                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                            elit. Doloribus ipsa vel eos, iure culpa earum modi
-                            assumenda nemo perferendis consectetur obcaecati
-                            quia, tenetur explicabo? Sed ratione velit debitis
-                            voluptates qui?
+                            {userInfo.description}
                         </p>
                     </div>
                 </div>
