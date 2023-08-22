@@ -24,7 +24,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
             data: {
                 name: userInfo.name,
                 username: userInfo.username,
-                description: userInfo.description
+                description: userInfo.description,
+                alreadyRegistered: true
             },
             where: {
                 id: userInfo.id
