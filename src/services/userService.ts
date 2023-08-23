@@ -1,9 +1,7 @@
-import { apiUrlBase } from "@/lib/api";
 import { IUpdateUserCommand } from "@/pages/api/user/update";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import db from "@/firebaseConfig";
 import { IUserInfo } from "@/store/userStoreInfo";
-import { IResponseData } from "@/interfaces/iResponseData";
 
 export async function isUserRegistered(email: string) {
     try {
@@ -60,8 +58,7 @@ export async function registerUser(userData: IUserInfo) {
 }
 
 export async function updateUser(id: number, name: string, username: string, description: string) {
-    const responseData = await fetch(
-        apiUrlBase().concat("/api/user/update"),
+    const responseData = await fetch("/api/user/update",
         {
             method: "PUT",
             body: JSON.stringify({
