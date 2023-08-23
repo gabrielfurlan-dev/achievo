@@ -1,6 +1,7 @@
 import { ConfirmButton } from "@/components/Buttons";
-import { InputField } from "@/components/InputField";
+import { InputField } from "@/components/Inputs/InputField";
 import { ProfileImage } from "@/components/profileImage";
+import { TextareaField } from "@/components/Inputs/TextareaField";
 import { updateUser } from "@/services/userService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
@@ -90,11 +91,10 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
                         disabled
                     />
 
-                    <InputField
+                    <TextareaField
                         label="Descrição"
                         onChange={setDescription}
                         value={description}
-                        type="textarea"
                         placeHolder={"Sua descrição aqui..."}
                     />
 
