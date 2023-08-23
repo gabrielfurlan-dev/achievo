@@ -18,13 +18,14 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
 
     const userInfo = req.body as IUpdateUserCommand;
+
     try {
-        db.user.update({
+        const user = await db.user.update({
             data: {
                 name: userInfo.name,
                 username: userInfo.username,
-                description: userInfo.description
-                // imageURL: userInfo.imageURL,
+                description: userInfo.description,
+                alreadyRegistered: true
             },
             where: {
                 id: userInfo.id
@@ -33,7 +34,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
         return res.status(201).json({
             success: true,
-            data: null,
+            data: user,
             message: "Usuário atualizado com sucesso!",
         } as IResponseData);
 

@@ -72,6 +72,7 @@ export async function updateUser(id: number, name: string, username: string, des
     )
 
     const response = await responseData.json();
+    console.log(response)
 
     return response.success;
 }
