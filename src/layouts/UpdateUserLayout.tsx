@@ -53,17 +53,51 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
 
     return (
         <>
-            <div className="h-full w-full md:w-4/5 lg:w-2/3 mt-24 md:mt-0 flex flex-col md:flex-row m-auto md:gap-24 items-center">
-                <div className="w-52 md:w-96">
+            <div className="h-full w-full md:w-8/12 lg:w-10/12 mt-24 lg:mt-0 flex flex-col lg:flex-row m-auto lg:gap-24 items-center">
+                <div className="w-52 lg:w-72">
                     <ProfileImage rounded />
                 </div>
                 <div className="flex flex-col gap-4 w-full">
-                    <div className="grid md:grid-cols-2 gap-2">
-                        <InputField label="Nome" onChange={setName} value={name} type="text" placeHolder={"Jhon Doe"} />
-                        <InputField label="Nome de usuário" onChange={setUsername} value={username} type="text" placeHolder={"@jhondoe"} />
+                    <div className="grid lg:grid-cols-2 gap-2">
+                        <InputField
+                            label="Nome"
+                            onChange={setName}
+                            value={name}
+                            type="text"
+                            placeHolder={"Jhon Doe"}
+                            required
+                            error={{ mustShowError: name.length == 0, errorMessage: "campo obrigatório" }}
+                        />
+
+                        <InputField
+                            label="Nome de usuário"
+                            onChange={setUsername}
+                            value={username}
+                            type="text"
+                            placeHolder={"@jhondoe"}
+                            required
+                            error={{ mustShowError: username.length == 0, errorMessage: "campo obrigatório" }}
+                        />
                     </div>
-                    <InputField label="Email" onChange={() => { }} value={userInfo.email} type="text" placeHolder={"jhondoe@email.com"} disabled />
-                    <InputField label="Descrição" onChange={setDescription} value={description} type="textarea" placeHolder={"Sua descrição aqui..."} />
+
+                    <InputField
+                        label="Email"
+                        onChange={() => { }}
+                        value={userInfo.email}
+                        type="text"
+                        placeHolder={"jhondoe@email.com"}
+                        required
+                        disabled
+                    />
+
+                    <InputField
+                        label="Descrição"
+                        onChange={setDescription}
+                        value={description}
+                        type="textarea"
+                        placeHolder={"Sua descrição aqui..."}
+                    />
+
                 </div>
             </div>
             <div className="flex justify-end mt-10">

@@ -11,6 +11,11 @@ type InputFieldProps = {
     disabled?: boolean;
     noPadding?: boolean;
     label?: string;
+    required?:boolean;
+    error?: {
+        mustShowError: boolean,
+        errorMessage?: string,
+    }
 };
 
 export function InputField({
@@ -24,16 +29,18 @@ export function InputField({
     disabled,
     noPadding,
     label,
+    required,
+    error
 }: InputFieldProps) {
     return (
         <div className="flex flex-col h-full">
             {label && (
-                <label
-                    className=" m-2 text-xl text-LIGHT_TEXT dark:text-DARK_TEXT
-                               placeholder:text-LIGHT_TEXT_SECONDARY placeholder:dark:text-DARK_TEXT_SECONDARY"
-                >
-                    {label}
-                </label>
+                <div>
+                    <label className=" m-2 text-xl text-LIGHT_TEXT dark:text-DARK_TEXT placeholder:text-LIGHT_TEXT_SECONDARY placeholder:dark:text-DARK_TEXT_SECONDARY">
+                        {label}
+                    </label>
+                    {error?.mustShowError && <label className="text-SECONDARY text-xs">* {error.errorMessage}</label>}
+                </div>
             )}
 
             {type != "textarea" ? (
@@ -54,6 +61,7 @@ export function InputField({
                         width: widthAuto ? "" : "100%",
                         padding: noPadding ? "0" : "",
                     }}
+                    required={required}
                 />
             ) : (
                 <textarea
@@ -71,6 +79,7 @@ export function InputField({
                         padding: noPadding ? "0" : "",
                         height: "200px",
                     }}
+                    required={required}
                 />
             )}
         </div>
