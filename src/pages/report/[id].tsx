@@ -32,6 +32,7 @@ import {
     getCheckGoalsModified,
     getProgressGoalsModified,
 } from "@/helpers/reportHelper";
+import { elapsedTime } from "@/helpers/elapsedTime";
 
 export default function EditReport() {
     const router = useRouter();
@@ -39,6 +40,7 @@ export default function EditReport() {
     const { id } = router.query;
 
     const [name, setName] = useState("");
+    const [asUpdatedReport, setAsUpdatedReport] = useState<string>("");
     const [isOwner, setIsOwner] = useState(true);
     const [isNew, setIsNew] = useState(false);
     const [modified, setModified] = useState(false);
@@ -135,7 +137,7 @@ export default function EditReport() {
     }
 
     async function handleCancel(force: boolean) {
-        await setForceCancel(force);
+        setForceCancel(force);
 
         if (isNew) await router.push("/home");
         else await router.push("/list-reports");
@@ -189,6 +191,9 @@ export default function EditReport() {
         const result = await getReport(reportId);
 
         const report: IReport = result.data;
+
+        setAsUpdatedReport(elapsedTime(String(report.progressGoals[0].updatedDate)))
+        console.log(asUpdatedReport);
 
         if (report) {
             setName(report.user.name);
@@ -263,6 +268,7 @@ export default function EditReport() {
                                                 setProgressGoals={
                                                     setProgressGoals
                                                 }
+                                                updatedDate={asUpdatedReport}
                                                 disabled={!isOwner}
                                             />
                                         ))

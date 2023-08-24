@@ -5,6 +5,7 @@ import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
 
 type ProgressGoalProps = {
     progressGoal: IProgressGoal;
+    updatedDate: string;
     setProgressGoals: (value: SetStateAction<IProgressGoal[]>) => void;
     disabled?: boolean;
 };
@@ -12,9 +13,12 @@ type ProgressGoalProps = {
 export default function ProgressGoal({
     progressGoal,
     setProgressGoals,
+    updatedDate,
     disabled,
 }: ProgressGoalProps) {
     const [goal, setGoal] = useState(progressGoal);
+
+    const [dataAtualizacao, setDataAtualizacao] = useState(updatedDate);
 
     const progressoAtual = (
         (Number(progressGoal.value) / Number(progressGoal.total)) *
@@ -24,6 +28,7 @@ export default function ProgressGoal({
     const corDeFundo = completou ? "#5C8A74" : "";
 
     useEffect(() => {
+        console.log(dataAtualizacao);
         setProgressGoals(prevProgressGoals => {
             const newProgress = prevProgressGoals.map(x => {
                 if (x.id === goal.id) {
@@ -37,7 +42,6 @@ export default function ProgressGoal({
                     return x;
                 }
             });
-
             return newProgress;
         });
     }, [goal]);
@@ -66,28 +70,19 @@ export default function ProgressGoal({
                 disabled={disabled}
                 className="flex w-full normal-case bg-LIGHT_BACKGROUND dark:bg-DARK_BACKGROUND_SECONDARY rounded-md"
                 onClick={openModal}
-                style={{ color: completou ? "#EAEAEA" : "" }}
+                style={{ color: completou ? "#EAEAEA" : "#000" }}
             >
                 <div
                     className="flex flex-col gap-1 items-start  p-2 px-4 rounded-md  w-full bg-LIGHT_BACKGROUND dark:bg-DARK_BACKGROUND_SECONDARY"
                     style={{ backgroundColor: corDeFundo }}
                 >
-                    <div className="flex w-full justify-between items-center text-LIGHT_TEXT dark:text-DARK_TEXT">
-                        <p
-                            className="mt-2 text-lg"
-                            style={{
-                                textDecoration: completou
-                                    ? "line-through"
-                                    : "none",
-                            }}
-                        >
-                            {goal.title}
-                        </p>
-                        <span className="flex items-center">
-                            {goal.value}/{goal.total}
-                        </span>
+                    <div className="flex w-full justify-between items-center  dark:text-DARK_TEXT">
+                        <p className={`mt-2 text-lg text-[${completou}]`}>{goal.title}</p>
+                        <span className="flex items-center">{goal.value}/{goal.total}</span>
                     </div>
-
+                    <div className="text-xs font-normal" style={{ color: completou ? "#ffff" : "#000" }}>
+                        <p>Atualizado hà {dataAtualizacao}</p>
+                    </div>
                     <div className="w-full flex gap-2 items-center pb-2">
                         <div
                             id="progress-bar"
@@ -97,9 +92,8 @@ export default function ProgressGoal({
                                 id="progress"
                                 className={`h-full rounded-md`}
                                 style={{
-                                    width: `${
-                                        completou ? "100" : progressoAtual
-                                    }%`,
+                                    width: `${completou ? "100" : progressoAtual
+                                        }%`,
                                     backgroundColor: completou
                                         ? "#232F24"
                                         : "#5C8A74",
