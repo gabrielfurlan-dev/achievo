@@ -323,8 +323,8 @@ export default function EditReport() {
                                                     icone "<Plus />"
                                                 </p>
                                             ) : (
-                                                <p>
-                                                    Sem metas de <i>check</i>
+                                                <p className="flex text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
+                                                    Sem metas de <i className="pl-2"> check</i>
                                                 </p>
                                             )}
                                         </div>
