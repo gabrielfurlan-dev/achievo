@@ -40,7 +40,7 @@ export default function login() {
 
     return (
         <div className="items-center h-screen w-screen justify-center flex flex-col">
-            <div className="text-center items-center justify-center flex flex-col gap-2">
+            <div className="text-center items-center justify-center flex flex-col gap-2 dark:text-WHITE_PRINCIPAL">
                 <ReadCvLogo size={64} className="text-PRINCIPAL" />
                 <p className="text-xl">Bem vindo ao </p>
                 <span className="text-4xl font-semibold">Weekly Report</span>
@@ -56,7 +56,9 @@ export default function login() {
                             bg-none
                             text-GRAY_DARK
                             border-PRINCIPAL
-                            hover:bg-PRINCIPAL hover:text-WHITE_PRINCIPAL"
+                            hover:bg-PRINCIPAL hover:text-WHITE_PRINCIPAL
+                             dark:text-WHITE_PRINCIPAL
+                            "
                             onClick={handleLogin}
                         >
                             <GoogleLogo size={24} />
