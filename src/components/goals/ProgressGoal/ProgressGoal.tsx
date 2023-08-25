@@ -78,7 +78,7 @@ export default function ProgressGoal({
                         <span className="flex items-center">{goal.value}/{goal.total}</span>
                     </div>
                     <div className="text-xs font-normal" style={{ color: completou ? "#ffff" : "#000" }}>
-                        <p>Atualizado hà { 
+                        <p className="dark: text-WHITE_TERTIARY">{ 
                              elapsedTime(String(goal.updatedDate))
                         }</p>
                     </div>

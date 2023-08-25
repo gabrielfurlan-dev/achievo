@@ -10,6 +10,7 @@ import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getAllReports } from "@/services/reports/reportService";
+import { elapsedTime } from "@/helpers/tempUpdated";
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);
@@ -19,7 +20,8 @@ export default function ListReport() {
         const fetchReports = async () => {
             try {
                 const result = await getAllReports
-                ();
+                    ();
+
                 setReports(result.data);
             } catch (error) {
                 console.error("Error fetching reports:", error);
@@ -61,6 +63,8 @@ export default function ListReport() {
                                                 data.createdDate
                                             )}
                                         </p>
+                                        <p className="text-xs font-normal">
+                                            {`${elapsedTime(data.updatedDate)}`}</p>
                                         <p>{data.username}</p>
                                     </div>
                                 </div>

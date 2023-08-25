@@ -6,6 +6,7 @@ export interface IReport {
     id: string;
     createdDate: string;
     username: string;
+    updatedDate: string;
     progressGoals: IProgressGoal[];
     checkGoals: ICheckGoal[];
     user: IUser;
