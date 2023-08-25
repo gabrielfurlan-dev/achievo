@@ -25,7 +25,6 @@ export default function ListReport() {
                 console.error("Error fetching reports:", error);
             }
         };
-
         fetchReports();
     }, []);
 

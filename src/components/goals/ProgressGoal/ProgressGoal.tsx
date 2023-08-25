@@ -2,10 +2,10 @@ import { SetStateAction, useEffect, useState } from "react";
 import React from "react";
 import ProgressGoalModal from "./ProgressGoalModal";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
+import { elapsedTime } from "@/helpers/tempUpdated";
 
 type ProgressGoalProps = {
     progressGoal: IProgressGoal;
-    updatedDate: string;
     setProgressGoals: (value: SetStateAction<IProgressGoal[]>) => void;
     disabled?: boolean;
 };
@@ -13,12 +13,10 @@ type ProgressGoalProps = {
 export default function ProgressGoal({
     progressGoal,
     setProgressGoals,
-    updatedDate,
     disabled,
 }: ProgressGoalProps) {
     const [goal, setGoal] = useState(progressGoal);
 
-    const [dataAtualizacao, setDataAtualizacao] = useState(updatedDate);
 
     const progressoAtual = (
         (Number(progressGoal.value) / Number(progressGoal.total)) *
@@ -28,7 +26,6 @@ export default function ProgressGoal({
     const corDeFundo = completou ? "#5C8A74" : "";
 
     useEffect(() => {
-        console.log(dataAtualizacao);
         setProgressGoals(prevProgressGoals => {
             const newProgress = prevProgressGoals.map(x => {
                 if (x.id === goal.id) {
@@ -81,7 +78,9 @@ export default function ProgressGoal({
                         <span className="flex items-center">{goal.value}/{goal.total}</span>
                     </div>
                     <div className="text-xs font-normal" style={{ color: completou ? "#ffff" : "#000" }}>
-                        <p>Atualizado hà {dataAtualizacao}</p>
+                        <p>Atualizado hà { 
+                             elapsedTime(String(goal.updatedDate))
+                        }</p>
                     </div>
                     <div className="w-full flex gap-2 items-center pb-2">
                         <div

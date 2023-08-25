@@ -32,7 +32,7 @@ import {
     getCheckGoalsModified,
     getProgressGoalsModified,
 } from "@/helpers/reportHelper";
-import { elapsedTime } from "@/helpers/elapsedTime";
+import { elapsedTime } from "@/helpers/tempUpdated";
 
 export default function EditReport() {
     const router = useRouter();
@@ -192,10 +192,7 @@ export default function EditReport() {
 
         const report: IReport = result.data;
 
-        setAsUpdatedReport(elapsedTime(String(report.progressGoals[0].updatedDate)))
-        console.log(asUpdatedReport);
-
-        if (report) {
+         if (report) {
             setName(report.user.name);
             setSelectedDate(report.createdDate);
             setCheckGoals(report.checkGoals);
@@ -268,7 +265,6 @@ export default function EditReport() {
                                                 setProgressGoals={
                                                     setProgressGoals
                                                 }
-                                                updatedDate={asUpdatedReport}
                                                 disabled={!isOwner}
                                             />
                                         ))
