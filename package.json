@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
@@ -69,6 +70,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
+    "jest": "^29.6.4",
     "postcss": "^8.4.21",
     "prettier": "^2.8.3",
     "prisma": "^5.0.0",
