@@ -2,13 +2,9 @@ export function elapsedTime(dataAtualizacao: string): string {
     const agora = new Date();
     const dataAtualizacaoObj = new Date(dataAtualizacao);
 
-
     const diferencaMilissegundos = agora.getTime() - dataAtualizacaoObj.getTime();
     const segundos = Math.floor(diferencaMilissegundos / 1000);
 
-    if (isNaN(segundos)) {
-        return 'Criado agora';
-    }
 
     if (segundos < 60) {
         return `Atualizado há ${segundos} segundo${segundos !== 1 ? 's' : ''} atrás`;
@@ -25,7 +21,15 @@ export function elapsedTime(dataAtualizacao: string): string {
     }
 
     const dias = Math.floor(horas / 24);
-    return `Atualizado há ${dias} dia${dias !== 1 ? 's' : ''} atrás`;
+    if (dias < 30) {
+        return `Atualizado há ${dias} dia${dias !== 1 ? 's' : ''} atrás`;
+    }
+
+    const meses = Math.floor(dias / 30);
+    if (meses < 12) {
+        return `Atualizado há ${meses} mês${meses !== 1 ? 'es' : ''} atrás`;
+    }
+
+    const anos = Math.floor(meses / 12);
+    return `Atualizado há ${anos} ano${anos !== 1 ? 's' : ''} atrás`;
 }
-
-

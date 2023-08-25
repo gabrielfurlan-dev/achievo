@@ -10,7 +10,7 @@ import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getAllReports } from "@/services/reports/reportService";
-import { elapsedTime } from "@/helpers/tempUpdated";
+import { elapsedTime } from "@/helpers/elapsedTime";
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);

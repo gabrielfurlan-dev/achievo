@@ -32,7 +32,7 @@ import {
     getCheckGoalsModified,
     getProgressGoalsModified,
 } from "@/helpers/reportHelper";
-import { elapsedTime } from "@/helpers/tempUpdated";
+import { elapsedTime } from "@/helpers/elapsedTime";
 
 export default function EditReport() {
     const router = useRouter();
