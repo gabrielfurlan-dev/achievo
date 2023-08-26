@@ -5,7 +5,7 @@ import { TextareaField } from "@/components/Inputs/TextareaField";
 import { updateUser } from "@/services/userService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 interface updateUserLayoutProps {
@@ -29,7 +29,9 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
         return false;
     }
 
-    async function handleUpdateUser() {
+    async function handleUpdateUser(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+
         const successMessage = isFinishingRegister ? "Cadastro finalizado com sucesso." : "Cadastro atualizado com sucesso"
         const failMessage = isFinishingRegister ? "Não foi possível finalizar o cadastro." : "Não foi possível atualizar o cadastro"
 
@@ -54,59 +56,55 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
 
     return (
         <>
-            <div className="h-full w-full md:w-8/12 lg:w-10/12 mt-24 lg:mt-0 flex flex-col lg:flex-row m-auto lg:gap-24 items-center">
-                <div className="w-52 lg:w-72">
-                    <ProfileImage rounded />
-                </div>
-                <div className="flex flex-col gap-4 w-full">
-                    <div className="grid lg:grid-cols-2 gap-2">
+            <form className="h-full lg:mt-0 flex flex-col justify-between " onSubmit={(event) => handleUpdateUser(event)}>
+                <div className="h-full w-full mt-24 flex flex-col lg:flex-row m-auto lg:gap-24 items-center">
+                    <div className="w-52 lg:w-72">
+                        <ProfileImage rounded />
+                    </div>
+                    <div className="flex flex-col gap-4 w-full">
+                        <div className="grid lg:grid-cols-2 gap-2">
+                            <InputField
+                                label="Nome"
+                                onChange={setName}
+                                value={name}
+                                type="text"
+                                placeHolder={"Jhon Doe"}
+                                required
+                                error={{ mustShowError: name.length == 0, errorMessage: "campo obrigatório" }}
+                            />
+                            <InputField
+                                label="Nome de usuário"
+                                onChange={setUsername}
+                                value={username}
+                                type="text"
+                                placeHolder={"@jhondoe"}
+                                required
+                                error={{ mustShowError: username.length == 0, errorMessage: "campo obrigatório" }}
+                            />
+                        </div>
                         <InputField
-                            label="Nome"
-                            onChange={setName}
-                            value={name}
+                            label="Email"
+                            onChange={() => { }}
+                            value={userInfo.email}
                             type="text"
-                            placeHolder={"Jhon Doe"}
+                            placeHolder={"jhondoe@email.com"}
                             required
-                            error={{ mustShowError: name.length == 0, errorMessage: "campo obrigatório" }}
+                            disabled
                         />
-
-                        <InputField
-                            label="Nome de usuário"
-                            onChange={setUsername}
-                            value={username}
-                            type="text"
-                            placeHolder={"@jhondoe"}
-                            required
-                            error={{ mustShowError: username.length == 0, errorMessage: "campo obrigatório" }}
+                        <TextareaField
+                            label="Descrição"
+                            onChange={setDescription}
+                            value={description}
+                            placeHolder={"Sua descrição aqui..."}
                         />
                     </div>
-
-                    <InputField
-                        label="Email"
-                        onChange={() => { }}
-                        value={userInfo.email}
-                        type="text"
-                        placeHolder={"jhondoe@email.com"}
-                        required
-                        disabled
-                    />
-
-                    <TextareaField
-                        label="Descrição"
-                        onChange={setDescription}
-                        value={description}
-                        placeHolder={"Sua descrição aqui..."}
-                    />
-
                 </div>
-            </div>
-            <div className="flex justify-end mt-10">
-                <div className="w-36">
-                    <ConfirmButton onClick={handleUpdateUser}>
-                        Confirmar
-                    </ConfirmButton>
+                <div className="flex justify-end mt-10">
+                    <div className="w-36">
+                        <ConfirmButton type="submit">Confirmar</ConfirmButton>
+                    </div>
                 </div>
-            </div>
+            </form>
         </>
     );
 }
