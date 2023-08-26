@@ -2,12 +2,17 @@ export function elapsedTime(dataAtualizacao: string): string {
     const agora = new Date();
     const dataAtualizacaoObj = new Date(dataAtualizacao);
 
+
     const diferencaMilissegundos = agora.getTime() - dataAtualizacaoObj.getTime();
     const segundos = Math.floor(diferencaMilissegundos / 1000);
 
 
+
+
     if (segundos < 60) {
-        return `Atualizado há ${segundos} segundo${segundos !== 1 ? 's' : ''} atrás`;
+        return segundos < 5
+            ? 'Criado agora'
+            : `Atualizado há ${segundos} segundo${segundos !== 1 ? 's' : ''} atrás`;
     }
 
     const minutos = Math.floor(segundos / 60);

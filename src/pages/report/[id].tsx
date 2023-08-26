@@ -131,6 +131,7 @@ export default function EditReport() {
                 title: "Sem título",
                 total: 0,
                 value: 0,
+                updatedDate: String(new Date()),
                 index: progressGoals.length + 1,
             },
         ]);

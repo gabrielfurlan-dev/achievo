@@ -2,6 +2,6 @@ import { IProgressGoalRaw } from "./iProgressGoalRaw";
 
 export interface IProgressGoal extends IProgressGoalRaw {
     reportId: number;
-    updatedDate?: string;
+    updatedDate: string;
     id: number;
 }
