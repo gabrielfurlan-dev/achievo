@@ -31,4 +31,8 @@ test('Should return updated elapsed time in days', () => {
     currentMonth.setMonth(currentMonth.getMonth() - 6);
     result = elapsedTime(currentMonth.toISOString());
     expect(result).toBe(`Atualizado há 6 mêses atrás`);
+
+    const currenteTime = new Date();
+    result = elapsedTime(currenteTime.toISOString());
+    expect(result).toBe(`Criado agora`);
 });
