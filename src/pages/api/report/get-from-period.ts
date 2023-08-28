@@ -19,20 +19,20 @@ export default async function handler(
         const report = await db.report.findFirst({
             where: {
                 userId: userId,
-                //     // updatedDate: {
-                //     //     gte: beginDateOfWeek,
-                //     //     lte: endDateOfWeek,
-                //     // },
+                createdDate: {
+                    gte: beginDateOfWeek,
+                    lte: endDateOfWeek,
+                },
             },
             select: {
-                createdDate: true,
+                id: true,
             },
         });
 
         if (report) {
             return res.status(201).json({
                 success: true,
-                data: report,
+                data: report.id,
                 message: "Existe um relatório adicionado na semana atual.",
             } as IResponseData);
         } else {

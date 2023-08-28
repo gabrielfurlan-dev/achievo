@@ -1,11 +1,26 @@
 import { IResponseData } from "@/interfaces/iResponseData";
-import {apiUrlBase} from "@/lib/api";
+import { apiUrlBase } from "@/lib/api";
 import { ICreateReportCommand } from "@/pages/api/report/create";
 import { IProgressGoalRaw } from "@/interfaces/goals/progressGoals/iProgressGoalRaw";
 import { ICheckGoalRaw } from "@/interfaces/goals/checkGoals/iCheckGoalRaw";
 import { IUpdateReportCommand } from "@/pages/api/report/update";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
 import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
+import { getWeekInterval } from "@/helpers/dateHelper";
+
+export interface IUpdateReport {
+    reportId: number;
+    progressGoals: {
+        deleted: IProgressGoal[];
+        inserted: IProgressGoal[];
+        modified: IProgressGoal[];
+    };
+    checkGoals: {
+        deleted: ICheckGoal[];
+        inserted: ICheckGoal[];
+        modified: ICheckGoal[];
+    };
+}
 
 interface ICreateReport {
     userRef: number;
@@ -41,20 +56,6 @@ export async function createReport({
             data: null,
         } as IResponseData;
     }
-}
-
-export interface IUpdateReport {
-    reportId: number;
-    progressGoals: {
-        deleted: IProgressGoal[];
-        inserted: IProgressGoal[];
-        modified: IProgressGoal[];
-    };
-    checkGoals: {
-        deleted: ICheckGoal[];
-        inserted: ICheckGoal[];
-        modified: ICheckGoal[];
-    };
 }
 
 export async function updateReport({
@@ -126,7 +127,31 @@ export async function getReport(reportId: number) {
             success: true,
             message: "Relatório obtido com sucesso.",
             data: data.data,
-         } as IResponseData;
+        } as IResponseData;
+    } catch (error) {
+        return {
+            success: false,
+            message: "Erro ao obter o relatório.",
+            data: null,
+        } as IResponseData;
+    }
+}
+
+export async function validateReportFromWeek(userId: number) {
+    try {
+        const { firstDayOfWeek, lastDayOfWeek } = getWeekInterval(new Date())
+
+        const queryParams = new URLSearchParams({
+            userId: userId.toString(),
+            beginDateOfWeek: firstDayOfWeek.toString(),
+            endDateOfWeek: lastDayOfWeek.toString(),
+        });
+
+        const apiUrl = `/api/report/get-from-period?${queryParams.toString()}`;
+        const response = await fetch(apiUrl);
+
+        return await response.json() as IResponseData;
+
     } catch (error) {
         return {
             success: false,
