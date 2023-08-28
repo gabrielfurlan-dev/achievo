@@ -33,6 +33,7 @@ import {
     getProgressGoalsModified,
 } from "@/helpers/reportHelper";
 import { GetServerSideProps } from "next";
+import { ConfirmToReload } from "@/components/ConfirmtoReload";
 
 
 interface PageProps {
@@ -225,6 +226,11 @@ export default function EditReport({ id }: PageProps) {
                 </Modal>
             )
             }
+
+            {modified && (
+                <>
+                    <ConfirmToReload />
+                </>)}
 
 
             <div className="h-full">
