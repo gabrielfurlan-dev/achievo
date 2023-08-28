@@ -32,11 +32,16 @@ import {
     getCheckGoalsModified,
     getProgressGoalsModified,
 } from "@/helpers/reportHelper";
+import { GetServerSideProps } from "next";
 
-export default function EditReport() {
+
+interface PageProps {
+    id: String;
+}
+
+export default function EditReport({ id }: PageProps) {
     const router = useRouter();
     const { userInfo } = useUserInfoStore();
-    const { id } = router.query;
 
     const [name, setName] = useState("");
     const [isOwner, setIsOwner] = useState(true);
@@ -58,6 +63,7 @@ export default function EditReport() {
         IProgressGoal[]
     >([]);
 
+
     useEffect(() => {
         if (id == "new") {
             setIsNew(true);
@@ -71,15 +77,15 @@ export default function EditReport() {
         setWeekInterval(getFormatedWeekInterval(selectedDate));
     }, [selectedDate]);
 
+
     useEffect(() => {
         const checkGoalsIsChanged =
             JSON.stringify(checkGoals) !== JSON.stringify(originalCheckGoals);
         const progressGoalsIsChanged =
             JSON.stringify(progressGoals) !==
             JSON.stringify(originalProgressGoals);
-
         setModified(checkGoalsIsChanged || progressGoalsIsChanged);
-    }, [progressGoals, checkGoals, originalProgressGoals, originalCheckGoals]);
+    }, [progressGoals, checkGoals]);
 
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -135,7 +141,7 @@ export default function EditReport() {
     }
 
     async function handleCancel(force: boolean) {
-        await setForceCancel(force);
+        setForceCancel(force);
 
         if (isNew) await router.push("/home");
         else await router.push("/list-reports");
@@ -198,6 +204,7 @@ export default function EditReport() {
             setIsOwner(userInfo.id == report.user.id);
             setOriginalCheckGoals(report.checkGoals);
             setOriginalProgressGoals(report.progressGoals);
+
         }
     }
 
@@ -218,6 +225,7 @@ export default function EditReport() {
                 </Modal>
             )
             }
+
 
             <div className="h-full">
                 <NavBar
@@ -353,3 +361,15 @@ export default function EditReport() {
         </PageLayout>
     );
 }
+
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({ query }) => {
+    const id = String(query.id);
+
+    console.log("id da Rota: " + id)
+    return {
+        props: {
+            id,
+        },
+    };
+};
