@@ -24,9 +24,7 @@ export default async function handler(
                     lte: endDateOfWeek,
                 },
             },
-            select: {
-                id: true,
-            },
+            select: { id: true },
         });
 
         if (report) {
