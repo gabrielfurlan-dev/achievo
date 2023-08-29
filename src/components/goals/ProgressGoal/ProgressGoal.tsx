@@ -2,7 +2,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import React from "react";
 import ProgressGoalModal from "./ProgressGoalModal";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
-import { elapsedTime } from "@/helpers/elapsedTime";
+import { getUpdatedTimeElapsed } from "@/helpers/elapsedTime";
 
 type ProgressGoalProps = {
     progressGoal: IProgressGoal;
@@ -78,8 +78,8 @@ export default function ProgressGoal({
                         <span className="flex items-center">{goal.value}/{goal.total}</span>
                     </div>
                     <div className="text-xs font-normal" style={{ color: completou ? "#ffff" : "#000" }}>
-                        <p className="dark: text-WHITE_TERTIARY">{ 
-                             elapsedTime(String(goal.updatedDate))
+                        <p className={`dark:text-WHITE_TERTIARY  text-[${completou}]`}>{
+                            getUpdatedTimeElapsed(String(goal.updatedDate))
                         }</p>
                     </div>
                     <div className="w-full flex gap-2 items-center pb-2">

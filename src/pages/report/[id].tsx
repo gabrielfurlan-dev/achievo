@@ -32,7 +32,6 @@ import {
     getCheckGoalsModified,
     getProgressGoalsModified,
 } from "@/helpers/reportHelper";
-import { elapsedTime } from "@/helpers/elapsedTime";
 
 export default function EditReport() {
     const router = useRouter();
@@ -116,6 +115,7 @@ export default function EditReport() {
                 id: generateInvalidUniqueID(),
                 reportId: 0,
                 title: "Sem título",
+                updatedDate: String(new Date()),
                 checked: false,
                 index: checkGoals.length + 1,
             },

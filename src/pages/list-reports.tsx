@@ -10,7 +10,7 @@ import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getAllReports } from "@/services/reports/reportService";
-import { elapsedTime } from "@/helpers/elapsedTime";
+import { getTimeElapsed } from "@/helpers/elapsedTime";
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);
@@ -64,7 +64,7 @@ export default function ListReport() {
                                             )}
                                         </p>
                                         <p className="text-xs font-normal">
-                                            {`${elapsedTime(data.updatedDate)}`}</p>
+                                            {`${getTimeElapsed(data.updatedDate)}`}</p>
                                         <p>{data.username}</p>
                                     </div>
                                 </div>
