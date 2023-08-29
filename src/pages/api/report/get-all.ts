@@ -14,9 +14,11 @@ export default async function handler(
     try {
         const reports = await db.report.findMany({
             include: {
-                checkGoals: true,
-                progressGoals: true,
-                user: true,
+                user: {
+                    select: {
+                        imageURL: true
+                    }
+                }
             },
             orderBy: {
                 createdDate: "asc",
