@@ -1,38 +1,75 @@
-import { elapsedTime } from "../src/helpers/elapsedTime";
+import { getCreatedTimeElapsed, getUpdatedTimeElapsed } from "../src/helpers/elapsedTime";
 
-test('Should return updated elapsed time in days', () => {
+test('Should return updated elapsed time', () => {
     let currentDate = new Date();
     currentDate.setDate(currentDate.getDate() - 3);
 
-    let result = elapsedTime(currentDate.toISOString());
+    let result = getUpdatedTimeElapsed(currentDate.toISOString());
     expect(result).toBe(`Atualizado há 3 dias atrás`);
 
     currentDate = new Date();
-    result = elapsedTime(currentDate.toISOString());
+    result = getUpdatedTimeElapsed(currentDate.toISOString());
     expect(result).toBe(`Atualizado agora mesmo`);
-    
+
     currentDate = new Date();
     currentDate.setHours(currentDate.getHours() - 2);
-    result = elapsedTime(currentDate.toISOString());
+    result = getUpdatedTimeElapsed(currentDate.toISOString());
     expect(result).toBe(`Atualizado há 2 horas atrás`);
 
     currentDate = new Date();
     currentDate.setMinutes(currentDate.getMinutes() - 30);
-    result = elapsedTime(currentDate.toISOString());
+    result = getUpdatedTimeElapsed(currentDate.toISOString());
     expect(result).toBe(`Atualizado há 30 minutos atrás`);
 
     currentDate = new Date();
     currentDate.setSeconds(currentDate.getSeconds() - 15);
-    result = elapsedTime(currentDate.toISOString());
+    result = getUpdatedTimeElapsed(currentDate.toISOString());
     expect(result).toBe(`Atualizado há 15 segundos atrás`);
-    
+
     currentDate = new Date();
     currentDate.setMonth(currentDate.getMonth() - 6);
-    result = elapsedTime(currentDate.toISOString());
+    result = getUpdatedTimeElapsed(currentDate.toISOString());
     expect(result).toBe(`Atualizado há 6 mêses atrás`);
 
     currentDate = new Date();
     currentDate.setFullYear(currentDate.getFullYear() - 1);
-    result = elapsedTime(currentDate.toISOString());
+    result = getUpdatedTimeElapsed(currentDate.toISOString());
     expect(result).toBe(`Atualizado há 1 ano atrás`);
+});
+
+test('Should return created elapsed time', () => {
+    let currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() - 3);
+
+    let result = getCreatedTimeElapsed(currentDate.toISOString());
+    expect(result).toBe(`Criado há 3 dias atrás`);
+
+    currentDate = new Date();
+    result = getCreatedTimeElapsed(currentDate.toISOString());
+    expect(result).toBe(`Criado agora mesmo`);
+
+    currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() - 2);
+    result = getCreatedTimeElapsed(currentDate.toISOString());
+    expect(result).toBe(`Criado há 2 horas atrás`);
+
+    currentDate = new Date();
+    currentDate.setMinutes(currentDate.getMinutes() - 30);
+    result = getCreatedTimeElapsed(currentDate.toISOString());
+    expect(result).toBe(`Criado há 30 minutos atrás`);
+
+    currentDate = new Date();
+    currentDate.setSeconds(currentDate.getSeconds() - 15);
+    result = getCreatedTimeElapsed(currentDate.toISOString());
+    expect(result).toBe(`Criado há 15 segundos atrás`);
+
+    currentDate = new Date();
+    currentDate.setMonth(currentDate.getMonth() - 6);
+    result = getCreatedTimeElapsed(currentDate.toISOString());
+    expect(result).toBe(`Criado há 6 mêses atrás`);
+
+    currentDate = new Date();
+    currentDate.setFullYear(currentDate.getFullYear() - 1);
+    result = getCreatedTimeElapsed(currentDate.toISOString());
+    expect(result).toBe(`Criado há 1 ano atrás`);
 });
