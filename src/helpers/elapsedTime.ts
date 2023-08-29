@@ -1,40 +1,36 @@
 export function elapsedTime(dataAtualizacao: string): string {
-    const agora = new Date();
-    const dataAtualizacaoObj = new Date(dataAtualizacao);
+    const now = new Date();
+    const updateDate = new Date(dataAtualizacao);
+    const  differenceMilliseconds = now.getTime() - updateDate.getTime();
+    const seconds = Math.floor( differenceMilliseconds / 1000);
 
-
-    const diferencaMilissegundos = agora.getTime() - dataAtualizacaoObj.getTime();
-    const segundos = Math.floor(diferencaMilissegundos / 1000);
-
-
-
-
-    if (segundos < 60) {
-        return segundos < 5
-            ? 'Criado agora'
-            : `Atualizado há ${segundos} segundo${segundos !== 1 ? 's' : ''} atrás`;
+    
+    if (seconds < 60) {
+        return seconds < 5
+            ? 'Atualizado agora mesmo'
+            : `Atualizado há ${seconds} segundo${seconds !== 1 ? 's' : ''} atrás`;
     }
 
-    const minutos = Math.floor(segundos / 60);
-    if (minutos < 60) {
-        return `Atualizado há ${minutos} minuto${minutos !== 1 ? 's' : ''} atrás`;
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) {
+        return `Atualizado há ${minutes} minuto${minutes !== 1 ? 's' : ''} atrás`;
     }
 
-    const horas = Math.floor(minutos / 60);
-    if (horas < 24) {
-        return `Atualizado há ${horas} hora${horas !== 1 ? 's' : ''} atrás`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) {
+        return `Atualizado há ${hours} hora${hours !== 1 ? 's' : ''} atrás`;
     }
 
-    const dias = Math.floor(horas / 24);
-    if (dias < 30) {
-        return `Atualizado há ${dias} dia${dias !== 1 ? 's' : ''} atrás`;
+    const days = Math.floor(hours / 24);
+    if (days < 30) {
+        return `Atualizado há ${days} dia${days !== 1 ? 's' : ''} atrás`;
     }
 
-    const meses = Math.floor(dias / 30);
-    if (meses < 12) {
-        return `Atualizado há ${meses} mês${meses !== 1 ? 'es' : ''} atrás`;
+    const months = Math.floor(days / 30);
+    if (months < 12) {
+        return `Atualizado há ${months} mês${months !== 1 ? 'es' : ''} atrás`;
     }
 
-    const anos = Math.floor(meses / 12);
+    const anos = Math.floor(months / 12);
     return `Atualizado há ${anos} ano${anos !== 1 ? 's' : ''} atrás`;
 }
