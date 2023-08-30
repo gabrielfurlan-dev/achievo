@@ -2,6 +2,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import { CheckSquare, Square } from "phosphor-react";
 import CheckGoalModal from "./CheckGoalModal";
 import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
+import { getUpdatedTimeElapsed } from "@/helpers/elapsedTime";
 
 type CheckProps = {
     checkGoal: ICheckGoal;
@@ -52,7 +53,7 @@ export default function CheckInput({
                 className=" rounded-md h-auto py-2 bg-LIGHT_BACKGROUND dark:bg-DARK_BACKGROUND_SECONDARY"
                 style={{
                     backgroundColor: corDeFundo,
-                    textDecoration: goal.checked ? "line-through" : "none",
+                    transition: "background-color 0.3s ease",
                     color: goal.checked ? "white" : "",
                 }}
             >
@@ -62,10 +63,15 @@ export default function CheckInput({
                         className="w-full"
                         disabled={disabled}
                     >
-                        <p className="ml-4 text-start w-full  dark:text-DARK_TEXT">
-                            {checkGoal.title}
-                        </p>
+                        <div className="flex flex-col items-start">
+                            <p className="ml-4 text-start w-full  dark:text-DARK_TEXT" style={{textDecoration: goal.checked ? "line-through" : "none"}}>
+                                {checkGoal.title}
+                            </p>
+                            <p className="ml-4 text-start dark:text-DARK_TEXT text-xs font-normal ">{getUpdatedTimeElapsed(String(goal.updatedDate))}</p>
+
+                        </div>
                     </button>
+
                     <button
                         onClick={() =>
                             setGoal({
@@ -73,6 +79,7 @@ export default function CheckInput({
                                 id: goal.id,
                                 index: goal.index,
                                 title: goal.title,
+                                updatedDate: String(new Date()),
                                 reportId: goal.reportId,
                             })
                         }
