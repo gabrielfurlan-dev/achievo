@@ -1,4 +1,4 @@
-import env from "variables";
+import env from "./schemas/env-variables";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
