@@ -6,7 +6,7 @@ import { AddressBook } from "phosphor-react";
 export default function pages() {
     return (
         <PageLayout>
-            <SimpleNavBar IconPage={AddressBook} title="Finalizar Cadastro" subTitle="" />
+            <SimpleNavBar IconPage={AddressBook} title="Editar perfil" subTitle="" />
             <UpdateUserLayout destinationPathOnUpdate="/home" isFinishingRegister />
         </PageLayout>
     );
