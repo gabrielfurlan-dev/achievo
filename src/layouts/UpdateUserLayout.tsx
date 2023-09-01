@@ -92,6 +92,7 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
                             disabled
                         />
                         <TextareaField
+                            style={{minHeight: '100px'}}
                             label="Descrição"
                             onChange={setDescription}
                             value={description}
