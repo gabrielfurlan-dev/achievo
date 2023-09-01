@@ -5,9 +5,6 @@ export function getCheckGoalsModified(
     originalGoals: ICheckGoal[],
     newGoals: ICheckGoal[]
 ) {
-    console.log(originalGoals);
-    console.log(newGoals);
-
     const inserted: ICheckGoal[] = newGoals.filter(goal => goal.id < 0);
     const deleted: ICheckGoal[] = [];
     const modified: ICheckGoal[] = [];

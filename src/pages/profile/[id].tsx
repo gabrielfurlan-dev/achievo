@@ -1,3 +1,4 @@
+import { SimpleButton } from "@/components/Buttons";
 import { CompactNavBar } from "@/components/NavBar/CompactNavBar";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
@@ -8,7 +9,7 @@ import { useEffect } from "react";
 export default function profile() {
     const router = useRouter();
     const { id } = router.query;
-    const { userInfo, setUserInfo } = useUserInfoStore();
+    const { userInfo } = useUserInfoStore();
 
     useEffect(() => {
         useUserInfoStore.persist.rehydrate();
@@ -38,12 +39,9 @@ export default function profile() {
                             {userInfo.email}
                         </p>
                         <p className="max-w-lg mt-4 text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">
-                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                            elit. Doloribus ipsa vel eos, iure culpa earum modi
-                            assumenda nemo perferendis consectetur obcaecati
-                            quia, tenetur explicabo? Sed ratione velit debitis
-                            voluptates qui?
+                            {userInfo.description}
                         </p>
+                        <SimpleButton onClick={() => { router.push("/update-profile") }}>Editar Perfil</SimpleButton>
                     </div>
                 </div>
             </div>

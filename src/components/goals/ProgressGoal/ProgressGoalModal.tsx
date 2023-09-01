@@ -1,5 +1,5 @@
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
-import { InputField } from "@/components/InputField";
+import { InputField } from "@/components/Inputs/InputField";
 import Modal from "@/components/Modal";
 import { SetStateAction, useState } from "react";
 import Swal from "sweetalert2";
@@ -55,6 +55,7 @@ export default function ProgressGoalModal({
             id: progressGoal.id,
             index: progressGoal.index,
             title: editingTitle,
+            updatedDate: String(new Date()),
             value: Number(editingValue),
             total: Number(editingTotal),
             reportId: progressGoal.id,
