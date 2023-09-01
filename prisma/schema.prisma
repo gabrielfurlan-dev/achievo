@@ -8,23 +8,26 @@ datasource db {
 }
 
 model User {
-    id                Int                 @id @default(autoincrement())
-    email             String              @unique
+    id                Int     @id @default(autoincrement())
+    email             String  @unique
     name              String
     imageURL          String
-    username          String?
+    username          String? @unique
     description       String?
+    enable            Boolean @default(true)
+    alreadyRegistered Boolean @default(false)
+
     Reports           Report[]
     ReadNotifications ReadNotifications[]
 }
 
 model Notification {
-    id                  Int         @id @default(autoincrement())
-    createdDate         DateTime    @default(now())
-    message             String
-    title               String
-    wikiURL             String
-    ReadNotifications   ReadNotifications[]
+    id                Int                 @id @default(autoincrement())
+    createdDate       DateTime            @default(now())
+    message           String
+    title             String
+    wikiURL           String
+    ReadNotifications ReadNotifications[]
 }
 
 model ReadNotifications {

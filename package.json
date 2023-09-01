@@ -27,7 +27,6 @@
     "@types/react-dom": "18.0.10",
     "@types/react-input-autosize": "^2.2.1",
     "@types/signalr": "^2.4.0",
-    "axios": "^1.4.0",
     "babel-plugin-styled-components": "^2.0.7",
     "date-fns": "^2.30.0",
     "dotenv": "^16.0.3",

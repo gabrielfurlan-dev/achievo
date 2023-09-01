@@ -11,7 +11,7 @@ import {
     getFormatedWeekInterval,
 } from "@/helpers/dateHelper";
 import { getWeek } from "date-fns";
-import { InputField } from "@/components/InputField";
+import { InputField } from "@/components/Inputs/InputField";
 import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons";
 import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";

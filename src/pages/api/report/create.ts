@@ -32,24 +32,28 @@ export default async function handler(
                 },
             });
 
-            await transaction.progressGoal.createMany({
-                data: progressGoals.map(goal => ({
-                    title: goal.title,
-                    index: goal.index,
-                    total: goal.total,
-                    value: goal.value,
-                    reportId: report.id,
-                })),
-            });
+            for (const goal of progressGoals) {
+                await transaction.progressGoal.create({
+                    data: {
+                        title: goal.title,
+                        index: goal.index,
+                        total: goal.total,
+                        value: goal.value,
+                        reportId: report.id,
+                    },
+                });
+            }
 
-            await transaction.checkGoal.createMany({
-                data: checkGoals.map(goal => ({
-                    title: goal.title,
-                    index: goal.index,
-                    checked: goal.checked,
-                    reportId: report.id,
-                })),
-            });
+            for (const goal of checkGoals) {
+                await transaction.checkGoal.create({
+                    data: {
+                        title: goal.title,
+                        index: goal.index,
+                        checked: goal.checked,
+                        reportId: report.id,
+                    },
+                });
+            }
 
             return report;
         });

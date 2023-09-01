@@ -1,7 +1,11 @@
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useState } from "react";
 
-export function ProfileImage() {
+interface profileImageProps {
+    rounded?: boolean
+}
+
+export function ProfileImage({ rounded }: profileImageProps) {
     const { userInfo, setUserInfo } = useUserInfoStore();
 
     const [isEditing, setIsEditing] = useState(false);
@@ -39,7 +43,12 @@ export function ProfileImage() {
                 </>
             ) : (
                 <>
-                    <img src={userInfo.imageURL} alt="Imagem de perfil" />
+                    <img
+                        className="w-full h-full"
+                        src={userInfo.imageURL}
+                        alt="Imagem de perfil"
+                        style={{borderRadius: rounded ? "100%" : "0px"}}
+                    />
                     {/* <button onClick={handleEditClick}>Editar</button> */}
                 </>
             )}
