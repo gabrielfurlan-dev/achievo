@@ -1,8 +1,7 @@
 import { Check } from "phosphor-react";
-import { ReactNode } from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 
-type CustomButtonProps = {
-    onClick?: (() => void) | undefined;
+interface CustomButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children?: ReactNode;
     className?: string;
     noBackground?: boolean;
@@ -10,9 +9,10 @@ type CustomButtonProps = {
     noHover?: boolean;
 };
 
-export function ConfirmButton({ onClick, children }: CustomButtonProps) {
+export function ConfirmButton({ children, onClick, ...props }: CustomButtonProps) {
     return (
         <button
+            {...props}
             onClick={onClick}
             className="relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-WHITE_PRINCIPAL bg-PRINCIPAL transition duration-400 ease-out rounded-lg group w-full"
         >

@@ -1,5 +1,5 @@
 import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
-import { InputField } from "@/components/InputField";
+import { InputField } from "@/components/Inputs/InputField";
 import Modal from "@/components/Modal";
 import { SetStateAction, useState } from "react";
 import Swal from "sweetalert2";
@@ -41,6 +41,7 @@ export default function CheckGoalModal({
             id: checkGoal.id,
             index: checkGoal.index,
             title: editingTitle,
+            updatedDate: String(new Date()),
             checked: checkGoal.checked,
             reportId: checkGoal.id,
         };

@@ -11,7 +11,7 @@ import {
     getFormatedWeekInterval,
 } from "@/helpers/dateHelper";
 import { getWeek } from "date-fns";
-import { InputField } from "@/components/InputField";
+import { InputField } from "@/components/Inputs/InputField";
 import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons";
 import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
@@ -45,6 +45,7 @@ export default function EditReport({ id }: PageProps) {
     const { userInfo } = useUserInfoStore();
 
     const [name, setName] = useState("");
+    const [asUpdatedReport, setAsUpdatedReport] = useState<string>("");
     const [isOwner, setIsOwner] = useState(true);
     const [isNew, setIsNew] = useState(false);
     const [modified, setModified] = useState(false);
@@ -121,6 +122,7 @@ export default function EditReport({ id }: PageProps) {
                 id: generateInvalidUniqueID(),
                 reportId: 0,
                 title: "Sem título",
+                updatedDate: String(new Date()),
                 checked: false,
                 index: checkGoals.length + 1,
             },
@@ -136,6 +138,7 @@ export default function EditReport({ id }: PageProps) {
                 title: "Sem título",
                 total: 0,
                 value: 0,
+                updatedDate: String(new Date()),
                 index: progressGoals.length + 1,
             },
         ]);
@@ -197,7 +200,7 @@ export default function EditReport({ id }: PageProps) {
 
         const report: IReport = result.data;
 
-        if (report) {
+         if (report) {
             setName(report.user.name);
             setSelectedDate(report.createdDate);
             setCheckGoals(report.checkGoals);

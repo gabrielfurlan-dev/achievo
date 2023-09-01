@@ -13,23 +13,26 @@ export interface ICreateCheckGoalCommand {
 
 export default async function handler({ goals }: ICreateCheckGoalCommand) {
     try {
-        await db.checkGoal.createMany({
-            data: goals.map(goal => ({
-                title: goal.title,
-                index: goal.index,
-                checked: goal.checked,
-                reportId: goal.reportId,
-            })),
-        });
+
+        for (const goal of goals) {
+            await db.checkGoal.create({
+                data: {
+                    title: goal.title,
+                    index: goal.index,
+                    checked: goal.checked,
+                    reportId: goal.reportId,
+                },
+            });
+        }
 
         return {
-            data: "Relatório adicionado com sucesso!",
+            data: "Meta adicionada com sucesso!",
             error: "",
             type: "success",
         };
     } catch (error) {
         return {
-            data: "Erro ao adicionar o relatório:",
+            data: "Erro ao adicionar a Meta:",
             error: String(error),
             type: "error",
         };
