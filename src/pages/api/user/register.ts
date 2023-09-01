@@ -34,15 +34,6 @@ export default async function (
                     imageURL: userData.imageURL,
                 },
             });
-
-            user = await db.user.update({
-                data:{
-                    username: `guest${user.id}`
-                },
-                where: {
-                    id: user.id
-                }
-            })
         }
 
         return res.status(201).json({
