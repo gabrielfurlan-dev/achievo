@@ -33,7 +33,7 @@ import {
     getProgressGoalsModified,
 } from "@/helpers/reportHelper";
 import { GetServerSideProps } from "next";
-import { ConfirmToReload } from "@/components/ConfirmtoReload";
+import { ConfirmToReload } from "@/components/ConfirmToReload";
 
 
 interface PageProps {
