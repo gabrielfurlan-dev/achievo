@@ -1,5 +1,4 @@
 import { IResponseData } from "@/interfaces/iResponseData";
-import { apiUrlBase } from "@/lib/api";
 import { ICreateReportCommand } from "@/pages/api/report/create";
 import { IProgressGoalRaw } from "@/interfaces/goals/progressGoals/iProgressGoalRaw";
 import { ICheckGoalRaw } from "@/interfaces/goals/checkGoals/iCheckGoalRaw";
