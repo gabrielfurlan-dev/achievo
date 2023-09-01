@@ -17,19 +17,12 @@ export default function login() {
 
         if (loginData.success) {
             setUserInfo({
-                alreadyRegistered: loginData.data.alreadyRegistered,
+                registered: true,
                 id: loginData.data.id,
                 email: loginData.data.email,
                 name: loginData.data.name,
-                username: loginData.data.username,
                 imageURL: loginData.data.imageURL,
             });
-
-            if (!loginData.data.alreadyRegistered) {
-                Router.push("/finish-signup");
-                return;
-            }
-
             Router.push("/home");
         } else {
             Swal.fire("Oops!", "Não foi possível realizar o login.");

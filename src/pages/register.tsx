@@ -1,5 +1,5 @@
 import { ConfirmButton } from "@/components/Buttons";
-import { InputField } from "@/components/Inputs/InputField";
+import { InputField } from "@/components/InputField";
 import { ProfileImage } from "@/components/profileImage";
 import { useState } from "react";
 import Swal from "sweetalert2";

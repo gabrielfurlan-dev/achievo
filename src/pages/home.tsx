@@ -69,12 +69,6 @@ type props = {
 function IconButton({ name, route, IconButton }: props) {
     const router = useRouter();
 
-    if(route == "/report/new"){
-        //select no banco pra ver se existe algum report
-        //exibir aviso
-            //caso sim, redirecionar o maluco pro repor criado
-    }
-
     return (
         <div className="">
             <button

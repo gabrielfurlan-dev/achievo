@@ -1,4 +1,5 @@
 import { IResponseData } from "@/interfaces/iResponseData";
+import {apiUrlBase} from "@/lib/api";
 import { ICreateReportCommand } from "@/pages/api/report/create";
 import { IProgressGoalRaw } from "@/interfaces/goals/progressGoals/iProgressGoalRaw";
 import { ICheckGoalRaw } from "@/interfaces/goals/checkGoals/iCheckGoalRaw";
@@ -18,7 +19,7 @@ export async function createReport({
     checkGoals,
 }: ICreateReport) {
     try {
-        const report = await fetch("/api/report/create", {
+        const report = await fetch(apiUrlBase().concat("/api/report/create"), {
             method: "POST",
             body: JSON.stringify({
                 userRef,
@@ -62,7 +63,7 @@ export async function updateReport({
     checkGoals,
 }: IUpdateReport) {
     try {
-        const report = await fetch("/api/report/update", {
+        const report = await fetch(apiUrlBase().concat("/api/report/update"), {
             method: "PUT",
             body: JSON.stringify({
                 reportId,
@@ -88,7 +89,7 @@ export async function updateReport({
 
 export async function getAllReports() {
     try {
-        const report = await fetch("/api/report/get-all", {
+        const report = await fetch(apiUrlBase().concat("/api/report/get-all"), {
             method: "GET",
             headers: { "Content-Type": "application/json" },
         });
@@ -111,7 +112,8 @@ export async function getAllReports() {
 
 export async function getReport(reportId: number) {
     try {
-        const report = await fetch("/api/report/get?reportId=" + reportId,
+        const report = await fetch(
+            apiUrlBase().concat("/api/report/get?reportId=" + reportId),
             {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
@@ -124,7 +126,7 @@ export async function getReport(reportId: number) {
             success: true,
             message: "Relatório obtido com sucesso.",
             data: data.data,
-        } as IResponseData;
+         } as IResponseData;
     } catch (error) {
         return {
             success: false,

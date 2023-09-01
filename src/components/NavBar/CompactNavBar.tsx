@@ -8,7 +8,7 @@ type pageHeaderProps = {
     title: string;
     subTitle?: string;
     children?: ReactNode;
-    goBackUrl: "/list-reports" | "/home" | "/login" | "new-report" | string;
+    goBackUrl: "/list-reports" | "/home" | "/login" | "new-report";
 };
 
 export function CompactNavBar({
