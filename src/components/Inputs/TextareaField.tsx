@@ -1,7 +1,7 @@
 import { InputLayout } from "@/layouts/InputLayout";
-import type { ButtonHTMLAttributes, SetStateAction } from "react";
+import type { SetStateAction, TextareaHTMLAttributes } from "react";
 
-interface InputFieldProps extends ButtonHTMLAttributes<HTMLTextAreaElement> {
+interface InputFieldProps extends TextareaHTMLAttributes<HTMLInputElement> {
     value?: string;
     placeHolder?: string;
     onChange: (value: SetStateAction<any>) => void;
