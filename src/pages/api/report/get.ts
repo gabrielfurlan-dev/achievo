@@ -21,8 +21,6 @@ export default async function handler(
 
     const reportId: number = Number(req.query.reportId as string);
 
-    console.log(reportId);
-
     try {
         const report = await db.report.findFirst({
             include: {

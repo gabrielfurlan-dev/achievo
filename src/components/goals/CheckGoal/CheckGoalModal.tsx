@@ -41,6 +41,7 @@ export default function CheckGoalModal({
             id: checkGoal.id,
             index: checkGoal.index,
             title: editingTitle,
+            updatedDate: String(new Date()),
             checked: checkGoal.checked,
             reportId: checkGoal.id,
         };
