@@ -1,10 +1,9 @@
 import { InputLayout } from "@/layouts/InputLayout";
-import type { HTMLInputTypeAttribute, SetStateAction } from "react";
+import type { ButtonHTMLAttributes, InputHTMLAttributes, SetStateAction } from "react";
 
-type InputFieldProps = {
+interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     value?: string;
     placeHolder?: string;
-    type?: HTMLInputTypeAttribute;
     onChange: (value: SetStateAction<any>) => void;
     noBackground?: boolean;
     alignRight?: boolean;
@@ -31,8 +30,10 @@ export function InputField({
     noPadding,
     label,
     required,
-    error
+    error,
+    ...style
 }: InputFieldProps) {
+
     return (
         <InputLayout error={error} label={label}>
             <input
@@ -45,6 +46,8 @@ export function InputField({
                 type={type}
                 onChange={e => method(e.target.value)}
                 style={{
+                    ...style,
+                    opacity: disabled ? "50%" : "100%",
                     borderColor: noBackground ? "transparent" : "",
                     outline: "none",
                     backgroundColor: noBackground ? "transparent" : "",

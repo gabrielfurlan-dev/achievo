@@ -1,7 +1,7 @@
 import { InputLayout } from "@/layouts/InputLayout";
-import type {  SetStateAction } from "react";
+import type { SetStateAction, TextareaHTMLAttributes } from "react";
 
-type InputFieldProps = {
+interface InputFieldProps extends TextareaHTMLAttributes<HTMLInputElement> {
     value?: string;
     placeHolder?: string;
     onChange: (value: SetStateAction<any>) => void;
@@ -18,7 +18,7 @@ type InputFieldProps = {
     }
 };
 
-export function  TextareaField({
+export function TextareaField({
     value,
     placeHolder,
     onChange: method,
@@ -29,7 +29,8 @@ export function  TextareaField({
     noPadding,
     label,
     required,
-    error
+    error,
+    style
 }: InputFieldProps) {
     return (
         <InputLayout error={error} label={label}>
@@ -40,6 +41,7 @@ export function  TextareaField({
                 value={value}
                 onChange={e => method(e.target.value)}
                 style={{
+                    ...style,
                     borderColor: noBackground ? "transparent" : "",
                     outline: "none",
                     backgroundColor: noBackground ? "transparent" : "",

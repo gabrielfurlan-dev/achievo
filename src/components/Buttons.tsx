@@ -13,6 +13,7 @@ export function ConfirmButton({ children, onClick, ...props }: CustomButtonProps
     return (
         <button
             {...props}
+            onClick={onClick}
             className="relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-WHITE_PRINCIPAL bg-PRINCIPAL transition duration-400 ease-out rounded-lg group w-full"
         >
             <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-PRINCIPAL_DARK group-hover:translate-x-0 ease">

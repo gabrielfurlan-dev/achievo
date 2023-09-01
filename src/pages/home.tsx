@@ -3,24 +3,40 @@ import { fetchNotifications } from "@/services/notificationsService";
 import PageLayout from "@/layouts/PageLayout";
 import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { ListMagnifyingGlass } from "@phosphor-icons/react";
+import { ListMagnifyingGlass, Stairs } from "@phosphor-icons/react";
 import { useRouter } from "next/router";
 import { FilePlus, House, Icon } from "phosphor-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { INotificationData } from "@/interfaces/notifications/iNotificationData";
+import Modal from "@/components/Modal";
+import { validateReportFromWeek } from "@/services/reports/reportService";
 
 export default function home() {
+    const router = useRouter();
     const { userInfo } = useUserInfoStore();
-    const { setReadNotifications, setUnreadNotifications } =
-        useNotificationStore();
+    const { setReadNotifications, setUnreadNotifications } = useNotificationStore();
+    const [mustShowDialog, setMustShowDialog] = useState(false)
+    const [reportIdOfCurrentWeek, setReportIdOfCurrentWeek] = useState<number>(0)
+
+    async function alreadyExistsReportsOnCurrentWeek() {
+        const response = await validateReportFromWeek(userInfo.id)
+
+        if (!response.success) return false;
+
+        if (response.data) {
+            setReportIdOfCurrentWeek(response.data);
+            setMustShowDialog(true);
+            return true;
+        }
+        return false;
+    }
 
     async function getNotifications() {
         if (userInfo.id == 0) return;
 
         const result = await fetchNotifications(userInfo.id);
 
-        const { unreadNotifications, readNotifications } =
-            result.data as INotificationData;
+        const { unreadNotifications, readNotifications } = result.data as INotificationData;
 
         setReadNotifications(readNotifications);
         setUnreadNotifications(unreadNotifications);
@@ -47,14 +63,32 @@ export default function home() {
                     <IconButton
                         IconButton={FilePlus}
                         name="Add"
-                        route="report/new"
+                        method={async () => {
+                            if (!await alreadyExistsReportsOnCurrentWeek())
+                                return router.push("report/new")
+                        }}
                     />
                     <IconButton
                         IconButton={ListMagnifyingGlass}
                         name="Listar"
-                        route="list-reports"
+                        method={() => router.push("list-reports")}
                     />
                 </div>
+                <Modal
+                    isOpen={mustShowDialog}
+                    onClose={() => { setMustShowDialog(false) }}
+                    title={""}
+                    confirmText={"Sim"}
+                    cancelText={"Cancelar"}
+                    handleSaveButton={() => router.push("/report/" + reportIdOfCurrentWeek)}
+                    hideDelete
+                >
+                    <div className="flex flex-col w-full items-center">
+                        <Stairs size={56} className="text-PRINCIPAL"/>
+                        <h2 className="text-xl font-bold mt-10">Editar Meta</h2>
+                        <p className="mt-2">Você já possui um Report essa semana, deseja visualiza-lo?</p>
+                    </div>
+                </Modal>
             </div>
         </PageLayout>
     );
@@ -62,24 +96,16 @@ export default function home() {
 
 type props = {
     name: string;
-    route: string;
+    method: () => void;
     IconButton: Icon;
 };
 
-function IconButton({ name, route, IconButton }: props) {
-    const router = useRouter();
-
-    if(route == "/report/new"){
-        //select no banco pra ver se existe algum report
-        //exibir aviso
-            //caso sim, redirecionar o maluco pro repor criado
-    }
-
+function IconButton({ name, method, IconButton }: props) {
     return (
         <div className="">
             <button
                 className="rounded-xl hover:bg-WHITE_PRINCIPAL dark:hover:bg-DARK_BACKGROUND_SECONDARY w-20 h-20 flex flex-col text-center items-center gap-2 justify-center text-GRAY"
-                onClick={() => router.push(route)}
+                onClick={method}
             >
                 <IconButton className="text-PRINCIPAL" size={32} />
                 <p>{name}</p>
