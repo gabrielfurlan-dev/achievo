@@ -5,11 +5,7 @@ import { ReadCvLogo } from "@phosphor-icons/react";
 import { Plus } from "phosphor-react";
 import NavBar from "@/components/NavBar/NavBar";
 import Modal from "@/components/Modal";
-import {
-    getCurrentDate,
-    stringToDate,
-    getFormatedWeekInterval,
-} from "@/helpers/dateHelper";
+import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getWeek } from "date-fns";
 import { InputField } from "@/components/Inputs/InputField";
 import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons";
@@ -19,22 +15,13 @@ import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
 import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
-import {
-    createReport,
-    IUpdateReport,
-    getReport,
-    updateReport,
-} from "@/services/reports/reportService";
+import { createReport, IUpdateReport, getReport, updateReport } from "@/services/reports/reportService";
 import { IResponseData } from "@/interfaces/iResponseData";
 import { IReport } from "@/interfaces/iReport";
 import { generateInvalidUniqueID } from "@/helpers/uniqueIdHelper";
-import {
-    getCheckGoalsModified,
-    getProgressGoalsModified,
-} from "@/helpers/reportHelper";
+import { getCheckGoalsModified, getProgressGoalsModified } from "@/helpers/reportHelper";
 import { GetServerSideProps } from "next";
 import { ConfirmToReload } from "@/components/ConfirmToReload";
-
 
 interface PageProps {
     id: String;
@@ -45,7 +32,6 @@ export default function EditReport({ id }: PageProps) {
     const { userInfo } = useUserInfoStore();
 
     const [name, setName] = useState("");
-    const [asUpdatedReport, setAsUpdatedReport] = useState<string>("");
     const [isOwner, setIsOwner] = useState(true);
     const [isNew, setIsNew] = useState(false);
     const [modified, setModified] = useState(false);
@@ -58,35 +44,65 @@ export default function EditReport({ id }: PageProps) {
     const [checkGoals, setCheckGoals] = useState<ICheckGoal[]>([]);
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([]);
 
-    const [originalCheckGoals, setOriginalCheckGoals] = useState<ICheckGoal[]>(
-        []
-    );
-    const [originalProgressGoals, setOriginalProgressGoals] = useState<
-        IProgressGoal[]
-    >([]);
-
+    const [originalCheckGoals, setOriginalCheckGoals] = useState<ICheckGoal[]>([]);
+    const [originalProgressGoals, setOriginalProgressGoals] = useState<IProgressGoal[]>([]);
 
     useEffect(() => {
-        if (id == "new") {
-            setIsNew(true);
-            setSelectedDate(getCurrentDate());
-        } else {
-            setReportData();
+
+        async function getReportData(reportId: number) {
+            return (await getReport(reportId)).data as IReport;
         }
-    }, [id]);
+
+        function setReportData(report: IReport) {
+            setIsOwner(userInfo.id == report.user.id);
+            setName(report.user.name);
+            setSelectedDate(report.createdDate);
+            setCheckGoals(report.checkGoals);
+            setProgressGoals(report.progressGoals);
+            setOriginalCheckGoals(report.checkGoals);
+            setOriginalProgressGoals(report.progressGoals);
+            setWeekInterval(getFormatedWeekInterval(selectedDate));
+        }
+
+        function handleNewReport(): boolean {
+            if (id == 'new') {
+                setIsNew(true);
+                setSelectedDate(getCurrentDate());
+                return true;
+            };
+            return false;
+        }
+
+        async function handleReceivedReport(reportId: number) {
+            if (reportId && userInfo) {
+                const report = await getReportData(reportId);
+                if (report) setReportData(report)
+            }
+        }
+
+        const fetchData = async () => {
+            try {
+
+                if (!handleNewReport()) {
+                    handleReceivedReport(Number(id))
+                }
+
+            } catch (error) {
+                Swal.fire("Erro ao buscar o relatório", "error");
+                router.push("/list-reports")
+            }
+        };
+
+        fetchData();
+
+    }, [id, userInfo]);
 
     useEffect(() => {
-        setWeekInterval(getFormatedWeekInterval(selectedDate));
-    }, [selectedDate]);
+        const checkGoalsIsChanged = JSON.stringify(checkGoals) !== JSON.stringify(originalCheckGoals);
+        const progressGoalsIsChanged = JSON.stringify(progressGoals) !== JSON.stringify(originalProgressGoals);
 
-
-    useEffect(() => {
-        const checkGoalsIsChanged =
-            JSON.stringify(checkGoals) !== JSON.stringify(originalCheckGoals);
-        const progressGoalsIsChanged =
-            JSON.stringify(progressGoals) !==
-            JSON.stringify(originalProgressGoals);
         setModified(checkGoalsIsChanged || progressGoalsIsChanged);
+
     }, [progressGoals, checkGoals]);
 
     useEffect(() => {
@@ -152,23 +168,25 @@ export default function EditReport({ id }: PageProps) {
     }
 
     async function handleSaveReport() {
+
+        if (!modified) {
+            return Swal.fire("Oops!", "É necessário inserir ou editar uma meta para que o Report seja salvo.", "warning");
+        }
+
         let result: IResponseData;
 
         if (isNew) {
             result = await createReport({
                 userRef: userInfo.id,
                 progressGoals,
-                checkGoals,
-            });
-        } else {
-            const modifiedCheckGoals = getCheckGoalsModified(
-                originalCheckGoals,
                 checkGoals
-            );
-            const modifiedProgressGoals = getProgressGoalsModified(
-                originalProgressGoals,
-                progressGoals
-            );
+            });
+        }
+
+        else {
+
+            const modifiedCheckGoals = getCheckGoalsModified(originalCheckGoals, checkGoals);
+            const modifiedProgressGoals = getProgressGoalsModified(originalProgressGoals, progressGoals);
 
             result = await updateReport({
                 reportId: Number(id),
@@ -188,28 +206,7 @@ export default function EditReport({ id }: PageProps) {
             result.success ? "success" : "error"
         );
 
-        handleCancel(false);
-    }
-
-    async function setReportData() {
-        const reportId = Number(id);
-
-        if (!reportId) return;
-
-        const result = await getReport(reportId);
-
-        const report: IReport = result.data;
-
-         if (report) {
-            setName(report.user.name);
-            setSelectedDate(report.createdDate);
-            setCheckGoals(report.checkGoals);
-            setProgressGoals(report.progressGoals);
-            setIsOwner(userInfo.id == report.user.id);
-            setOriginalCheckGoals(report.checkGoals);
-            setOriginalProgressGoals(report.progressGoals);
-
-        }
+        handleCancel(true);
     }
 
     return (
@@ -265,10 +262,7 @@ export default function EditReport({ id }: PageProps) {
                                         Progresso
                                     </p>
                                     {isOwner && (
-                                        <NoBackgroundButton
-                                            onClick={handleAddProgressGoal}
-                                            className="w-full"
-                                        >
+                                        <NoBackgroundButton onClick={handleAddProgressGoal} className="w-full" >
                                             <Plus />
                                         </NoBackgroundButton>
                                     )}
@@ -280,9 +274,7 @@ export default function EditReport({ id }: PageProps) {
                                             <ProgressGoal
                                                 key={goal.id}
                                                 progressGoal={goal}
-                                                setProgressGoals={
-                                                    setProgressGoals
-                                                }
+                                                setProgressGoals={setProgressGoals}
                                                 disabled={!isOwner}
                                             />
                                         ))
@@ -290,15 +282,9 @@ export default function EditReport({ id }: PageProps) {
                                         <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL dark:bg-DARK_BACKGROUND_SECONDARY">
                                             <div className="flex items-center text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
                                                 {isOwner ? (
-                                                    <p className="flex">
-                                                        Adicione um progresso no
-                                                        icone"
-                                                        <Plus />"
-                                                    </p>
+                                                    <p className="flex"> Adicione um progresso no icone "<Plus />"</p>
                                                 ) : (
-                                                    <p>
-                                                        Sem metas de progresso
-                                                    </p>
+                                                    <p>Sem metas de progresso</p>
                                                 )}
                                             </div>
                                         </div>
@@ -312,10 +298,7 @@ export default function EditReport({ id }: PageProps) {
                                         Check List
                                     </p>
                                     {isOwner && (
-                                        <NoBackgroundButton
-                                            onClick={handleAddCheckGoal}
-                                            className="w-full"
-                                        >
+                                        <NoBackgroundButton onClick={handleAddCheckGoal} className="w-full">
                                             <Plus />
                                         </NoBackgroundButton>
                                     )}
@@ -335,9 +318,7 @@ export default function EditReport({ id }: PageProps) {
                                         <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL dark:bg-DARK_BACKGROUND_SECONDARY ">
                                             {isOwner ? (
                                                 <p className="flex text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
-                                                    Adicione um{" "}
-                                                    <i>check goal&nbsp;</i> no
-                                                    icone "<Plus />"
+                                                    Adicione um&nbsp;<i>check goal&nbsp;</i> no icone "<Plus />"
                                                 </p>
                                             ) : (
                                                 <p className="flex text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
@@ -371,11 +352,9 @@ export default function EditReport({ id }: PageProps) {
     );
 }
 
-
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({ query }) => {
     const id = String(query.id);
 
-    console.log("id da Rota: " + id)
     return {
         props: {
             id,
