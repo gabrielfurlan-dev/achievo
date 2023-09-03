@@ -14,15 +14,18 @@ export interface ICreateProgressGoalCommand {
 
 export default async function handler({ goals }: ICreateProgressGoalCommand) {
     try {
-        await db.progressGoal.createMany({
-            data: goals.map(goal => ({
-                title: goal.title,
-                index: goal.index,
-                total: goal.total,
-                value: goal.value,
-                reportId: goal.reportId,
-            })),
-        });
+
+        for (const goal of goals) {
+            await db.progressGoal.create({
+                data: {
+                    title: goal.title,
+                    index: goal.index,
+                    total: goal.total,
+                    value: goal.value,
+                    reportId: goal.reportId,
+                },
+            });
+        }
 
         return {
             data: "Relatório adicionado com sucesso!",

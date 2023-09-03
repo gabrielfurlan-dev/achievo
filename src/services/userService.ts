@@ -1,3 +1,4 @@
+import { IUpdateUserCommand } from "@/pages/api/user/update";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import db from "@/firebaseConfig";
 import { IUserInfo } from "@/store/userStoreInfo";
@@ -54,4 +55,24 @@ export async function registerUser(userData: IUserInfo) {
             type: "error",
         };
     }
+}
+
+export async function updateUser(id: number, name: string, username: string, description: string) {
+    const responseData = await fetch("/api/user/update",
+        {
+            method: "PUT",
+            body: JSON.stringify({
+                id: id,
+                name: name,
+                username: username,
+                description: description
+            } as IUpdateUserCommand),
+            headers: { "Content-Type": "application/json" },
+        }
+    )
+
+    const response = await responseData.json();
+    console.log(response)
+
+    return response.success;
 }
