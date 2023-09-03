@@ -20,15 +20,14 @@ import { IResponseData } from "@/interfaces/iResponseData";
 import { IReport } from "@/interfaces/iReport";
 import { generateInvalidUniqueID } from "@/helpers/uniqueIdHelper";
 import { getCheckGoalsModified, getProgressGoalsModified } from "@/helpers/reportHelper";
-import { GetServerSideProps } from "next";
 import { ConfirmToReload } from "@/components/ConfirmToReload";
+import isEqual from 'lodash/isEqual';
+import { normalizeProgressGoals } from "@/helpers/goalHelper";
 
-interface PageProps {
-    id: String;
-}
+export default function EditReport() {
 
-export default function EditReport({ id }: PageProps) {
     const router = useRouter();
+    const { reportId } = router.query;
     const { userInfo } = useUserInfoStore();
 
     const [name, setName] = useState("");
@@ -57,15 +56,18 @@ export default function EditReport({ id }: PageProps) {
             setIsOwner(userInfo.id == report.user.id);
             setName(report.user.name);
             setSelectedDate(report.createdDate);
+
             setCheckGoals(report.checkGoals);
-            setProgressGoals(report.progressGoals);
             setOriginalCheckGoals(report.checkGoals);
-            setOriginalProgressGoals(report.progressGoals);
+
+            setProgressGoals(normalizeProgressGoals(report.progressGoals));
+            setOriginalProgressGoals(normalizeProgressGoals(report.progressGoals));
+
             setWeekInterval(getFormatedWeekInterval(selectedDate));
         }
 
         function handleNewReport(): boolean {
-            if (id == 'new') {
+            if (reportId == 'new') {
                 setIsNew(true);
                 setSelectedDate(getCurrentDate());
                 return true;
@@ -76,7 +78,10 @@ export default function EditReport({ id }: PageProps) {
         async function handleReceivedReport(reportId: number) {
             if (reportId && userInfo) {
                 const report = await getReportData(reportId);
-                if (report) setReportData(report)
+
+                if (report) {
+                    setReportData(report)
+                }
             }
         }
 
@@ -84,7 +89,7 @@ export default function EditReport({ id }: PageProps) {
             try {
 
                 if (!handleNewReport()) {
-                    handleReceivedReport(Number(id))
+                    handleReceivedReport(Number(reportId))
                 }
 
             } catch (error) {
@@ -95,15 +100,21 @@ export default function EditReport({ id }: PageProps) {
 
         fetchData();
 
-    }, [id, userInfo]);
+    }, [reportId, userInfo]);
 
     useEffect(() => {
-        const checkGoalsIsChanged = JSON.stringify(checkGoals) !== JSON.stringify(originalCheckGoals);
-        const progressGoalsIsChanged = JSON.stringify(progressGoals) !== JSON.stringify(originalProgressGoals);
+
+        const checkGoalsIsChanged = !isEqual(checkGoals, originalCheckGoals);
+        const progressGoalsIsChanged = !isEqual(progressGoals, originalProgressGoals);
+
+        console.log("progressGoals")
+        console.log(progressGoals)
+        console.log("originalProgressGoals")
+        console.log(originalProgressGoals)
 
         setModified(checkGoalsIsChanged || progressGoalsIsChanged);
 
-    }, [progressGoals, checkGoals]);
+    }, [checkGoals, originalCheckGoals, progressGoals, originalProgressGoals]);
 
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -189,7 +200,7 @@ export default function EditReport({ id }: PageProps) {
             const modifiedProgressGoals = getProgressGoalsModified(originalProgressGoals, progressGoals);
 
             result = await updateReport({
-                reportId: Number(id),
+                reportId: Number(reportId),
                 progressGoals: modifiedProgressGoals,
                 checkGoals: modifiedCheckGoals,
             } as IUpdateReport);
@@ -351,13 +362,3 @@ export default function EditReport({ id }: PageProps) {
         </PageLayout>
     );
 }
-
-export const getServerSideProps: GetServerSideProps<PageProps> = async ({ query }) => {
-    const id = String(query.id);
-
-    return {
-        props: {
-            id,
-        },
-    };
-};

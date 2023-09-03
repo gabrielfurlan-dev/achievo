@@ -19,6 +19,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/report/[id].tsx", "src/api/auth/route.ts", "src/pages/api/notification"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/report/[reportId].tsx", "src/api/auth/route.ts", "src/pages/api/notification"],
   "exclude": ["node_modules"]
 }

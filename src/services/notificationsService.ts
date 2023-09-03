@@ -1,7 +1,7 @@
 import { IResponseData } from "@/interfaces/iResponseData";
 import { IMarkNotificationAsReadCommand } from "@/pages/api/notification/mark-as-read";
 
-export async function fetchNotifications(userId: number) {
+export async function fetchNotifications(userId: number): Promise<Omit<IResponseData, "error"> > {
     try {
         const report = await fetch("/api/notification/get-all?userId=" + userId,
             {
@@ -16,20 +16,17 @@ export async function fetchNotifications(userId: number) {
             success: true,
             message: "Relatório obtido com sucesso.",
             data: response.data,
-        } as IResponseData;
+        };
     } catch (error) {
         return {
             success: false,
             message: "Erro ao obter o relatório.",
             data: null,
-        } as IResponseData;
+        };
     }
 }
 
-export async function setNotificationRead(
-    notificationId: number,
-    userId: number
-) {
+export async function setNotificationRead(notificationId: number, userId: number): Promise<IResponseData> {
     try {
         const report = await fetch("/api/notification/mark-as-read",
             {

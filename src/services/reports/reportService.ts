@@ -6,6 +6,7 @@ import { IUpdateReportCommand } from "@/pages/api/report/update";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
 import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
 import { getWeekInterval } from "@/helpers/dateHelper";
+import { IReport } from "@/interfaces/iReport";
 
 export interface IUpdateReport {
     reportId: number;
@@ -119,12 +120,12 @@ export async function getReport(reportId: number) {
             }
         );
 
-        const data = await report.json();
+        const response = await report.json() as IResponseData;
 
         return {
             success: true,
             message: "Relatório obtido com sucesso.",
-            data: data.data,
+            data: response.data,
         } as IResponseData;
 
     } catch (error) {
