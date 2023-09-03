@@ -56,14 +56,13 @@ export default function EditReport() {
             setIsOwner(userInfo.id == report.user.id);
             setName(report.user.name);
             setSelectedDate(report.createdDate);
+            setWeekInterval(getFormatedWeekInterval(report.createdDate));
 
             setCheckGoals(report.checkGoals);
             setOriginalCheckGoals(report.checkGoals);
 
             setProgressGoals(normalizeProgressGoals(report.progressGoals));
             setOriginalProgressGoals(normalizeProgressGoals(report.progressGoals));
-
-            setWeekInterval(getFormatedWeekInterval(selectedDate));
         }
 
         function handleNewReport(): boolean {
@@ -230,14 +229,9 @@ export default function EditReport() {
                     <p>Você possui alterações não salvas.</p>
                     <p>Deseja mesmo descartá-las?</p>
                 </Modal>
-            )
-            }
+            )}
 
-            {modified && (
-                <>
-                    <ConfirmToReload />
-                </>)}
-
+            {modified && (<ConfirmToReload />)}
 
             <div className="h-full">
                 <NavBar
@@ -252,8 +246,8 @@ export default function EditReport() {
                             value={weekInterval}
                             noBackground
                             widthAuto
-                            disabled
                             noPadding
+                            disabled
                         />
                         <h2 className="text-xl">{name}</h2>
                     </div>
