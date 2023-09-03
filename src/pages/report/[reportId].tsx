@@ -107,11 +107,6 @@ export default function EditReport() {
         const checkGoalsIsChanged = !isEqual(checkGoals, originalCheckGoals);
         const progressGoalsIsChanged = !isEqual(progressGoals, originalProgressGoals);
 
-        console.log("progressGoals")
-        console.log(progressGoals)
-        console.log("originalProgressGoals")
-        console.log(originalProgressGoals)
-
         setModified(checkGoalsIsChanged || progressGoalsIsChanged);
 
     }, [checkGoals, originalCheckGoals, progressGoals, originalProgressGoals]);
