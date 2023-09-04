@@ -6,7 +6,6 @@ import { IUpdateReportCommand } from "@/pages/api/report/update";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
 import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
 import { getWeekInterval } from "@/helpers/dateHelper";
-import { IReport } from "@/interfaces/iReport";
 
 export interface IUpdateReport {
     reportId: number;
