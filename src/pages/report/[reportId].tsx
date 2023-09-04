@@ -247,7 +247,7 @@ export default function EditReport() {
                     IconPage={ReadCvLogo}
                     title={`${getTitlePage()} Report`}
                     subTitle={`"${motivationalPhrase}"`}
-                    goBackUrl="/list-reports"
+                    goBackUrl={isNew ? "/home" : "/list-reports"}
                 >
                 </CompactNavBar>
 
