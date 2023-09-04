@@ -91,20 +91,12 @@ export function NotificationDropdown() {
                                                 {unreadNotifications.map(
                                                     notification => (
                                                         <NotificationItem
-                                                            wikiURL={
-                                                                notification.wikiURL
-                                                            }
+                                                            wikiURL={notification.wikiURL}
                                                             id={notification.id}
-                                                            title={
-                                                                notification.title
-                                                            }
-                                                            message={
-                                                                notification.message
-                                                            }
+                                                            title={notification.title}
+                                                            message={notification.message}
+                                                            key={notification.id}
                                                             isUnred
-                                                            key={
-                                                                notification.id
-                                                            }
                                                         />
                                                     )
                                                 )}
@@ -126,19 +118,11 @@ export function NotificationDropdown() {
                                                 {readNotifications.map(
                                                     notification => (
                                                         <NotificationItem
-                                                            wikiURL={
-                                                                notification.wikiURL
-                                                            }
+                                                            wikiURL={notification.wikiURL}
                                                             id={notification.id}
-                                                            title={
-                                                                notification.title
-                                                            }
-                                                            message={
-                                                                notification.message
-                                                            }
-                                                            key={
-                                                                notification.id
-                                                            }
+                                                            title={notification.title}
+                                                            message={notification.message}
+                                                            key={notification.id}
                                                         />
                                                     )
                                                 )}

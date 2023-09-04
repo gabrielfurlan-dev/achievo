@@ -19,9 +19,7 @@ export default function ListReport() {
     useEffect(() => {
         const fetchReports = async () => {
             try {
-                const result = await getAllReports
-                    ();
-
+                const result = await getAllReports();
                 setReports(result.data);
             } catch (error) {
                 console.error("Error fetching reports:", error);
@@ -66,26 +64,15 @@ export default function ListReport() {
                                 </div>
                                 <div className="flex items-center">
                                     {userInfo.id == data.user.id ? (
-                                        <NoBackgroundButton>
-                                            <PencilSimple
-                                                size={24}
-                                                className="text-PRINCIPAL"
-                                            />
-                                        </NoBackgroundButton>
+                                        <NoBackgroundButton children={<PencilSimple size={24} className="text-PRINCIPAL" />} />
                                     ) : (
-                                        <NoBackgroundButton>
-                                            <Eye
-                                                size={24}
-                                                className="text-PRINCIPAL"
-                                            />
-                                        </NoBackgroundButton>
-                                    )}
+                                        <NoBackgroundButton children={<Eye size={24} className="text-PRINCIPAL" />} />)}
                                 </div>
                             </div>
                         </li>
                     </Link>
                 ))}
             </ul>
-        </PageLayout>
+        </PageLayout >
     );
 }

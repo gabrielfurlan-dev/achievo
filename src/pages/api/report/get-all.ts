@@ -16,6 +16,7 @@ export default async function handler(
             include: {
                 user: {
                     select: {
+                        id: true,
                         imageURL: true
                     }
                 }
