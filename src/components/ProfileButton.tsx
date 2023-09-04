@@ -73,7 +73,7 @@ export default function ProfileButton() {
                             {userInfo.name}
                         </p>
                         <p className="text-sm text-GRAY dark:text-DARK_TEXT_SECONDARY">
-                            {userInfo.email}
+                            @{userInfo.username}
                         </p>
                     </div>
                     <span className="block md:hidden w-44"></span>
