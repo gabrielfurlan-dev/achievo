@@ -40,7 +40,6 @@ export function CompactNavBar({
                 </button>
 
                 <div className="flex items-center gap-2">
-                    {/* <IconPage className="text-PRINCIPAL" size={32} /> */}
                     <div className="text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">
                         <h1 className="text-xl font-bold text-LIGHT_TEXT dark:text-DARK_TEXT">{title}</h1>
                         <p className="hidden md:block text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">{subTitle}</p>
