@@ -3,11 +3,9 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { ReadCvLogo } from "@phosphor-icons/react";
 import { Plus } from "phosphor-react";
-import NavBar from "@/components/NavBar/NavBar";
 import Modal from "@/components/Modal";
 import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getWeek } from "date-fns";
-import { InputField } from "@/components/Inputs/InputField";
 import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons";
 import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
@@ -19,18 +17,19 @@ import { createReport, IUpdateReport, getReport, updateReport } from "@/services
 import { IResponseData } from "@/interfaces/iResponseData";
 import { IReport } from "@/interfaces/iReport";
 import { generateInvalidUniqueID } from "@/helpers/uniqueIdHelper";
-import { getCheckGoalsModified, getProgressGoalsModified } from "@/helpers/reportHelper";
+import { getCheckGoalsModified, getProgressGoalsModified } from "@/helpers/report/reportHelper";
 import { ConfirmToReload } from "@/components/ConfirmToReload";
 import isEqual from 'lodash/isEqual';
 import { normalizeProgressGoals } from "@/helpers/goalHelper";
 import { CompactNavBar } from "@/components/NavBar/CompactNavBar";
-import { ProfileImage } from "@/components/profileImage";
+import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrasesHelper";
 
 export default function EditReport() {
 
     const router = useRouter();
     const { reportId } = router.query;
     const { userInfo } = useUserInfoStore();
+    const [motivationalPhrase, setMotivationalPhrase] = useState<string>("")
 
     const [name, setName] = useState("");
     const [reportOwnerImageURL, setReportOwnerImageURL] = useState<string>("")
@@ -49,6 +48,8 @@ export default function EditReport() {
     const [originalProgressGoals, setOriginalProgressGoals] = useState<IProgressGoal[]>([]);
 
     useEffect(() => {
+
+        setMotivationalPhrase(getRandomMotivationalPhrase());
 
         async function getReportData(reportId: number) {
             return (await getReport(reportId)).data as IReport;
@@ -245,6 +246,7 @@ export default function EditReport() {
                 <CompactNavBar
                     IconPage={ReadCvLogo}
                     title={`${getTitlePage()} Report`}
+                    subTitle={`"${motivationalPhrase}"`}
                     goBackUrl="/list-reports"
                 >
                 </CompactNavBar>
