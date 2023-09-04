@@ -41,7 +41,6 @@ export default function EditReport() {
     const [showModal, setShowModal] = useState(false);
 
     const [selectedDate, setSelectedDate] = useState<string>("");
-    const [weekInterval, setWeekInterval] = useState<string>("");
 
     const [checkGoals, setCheckGoals] = useState<ICheckGoal[]>([]);
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([]);
@@ -60,7 +59,6 @@ export default function EditReport() {
             setName(report.user.name);
             setReportOwnerImageURL(report.user.imageURL);
             setSelectedDate(report.createdDate);
-            setWeekInterval(getFormatedWeekInterval(report.createdDate));
 
             setCheckGoals(report.checkGoals);
             setOriginalCheckGoals(report.checkGoals);
@@ -218,6 +216,12 @@ export default function EditReport() {
         handleCancel(true);
     }
 
+    function getTitlePage() {
+        if (isNew) return "Adicionar"
+        if (isOwner) return "Editar"
+        return "Visualizar"
+    }
+
     return (
         <PageLayout>
             {isOwner && (
@@ -240,18 +244,22 @@ export default function EditReport() {
             <div className="h-full">
                 <CompactNavBar
                     IconPage={ReadCvLogo}
-                    title={`${isOwner ? "Editar" : "Visualizar"} Report`}
+                    title={`${getTitlePage()} Report`}
                     goBackUrl="/list-reports"
                 >
                 </CompactNavBar>
 
                 <div className="flex flex-col w-full mt-10">
                     <div className="flex gap-4 items-center">
-                        <img className="h-16 w-16 rounded-full" src={reportOwnerImageURL} />
+                        <img className="h-16 w-16 rounded-full" src={isNew ? userInfo.imageURL : reportOwnerImageURL} />
                         <div className="flex flex-col">
-                            <h2 className="text-2xl text-LIGHT_TEXT dark:text-DARK_TEXT font-bold">{"Week " + getWeek(stringToDate(selectedDate))}</h2>
-                            <p className="text-lg text-LIGHT_TEXT_SECONDARY md:text-DARK_TEXT_SECONDARY">{weekInterval}</p>
-                            <p className="text-xl text-LIGHT_TEXT dark:text-DARK_TEXT">{name}</p>
+                            <h2 className="text-2xl text-LIGHT_TEXT dark:text-DARK_TEXT font-bold">
+                                {`Week ${getWeek(stringToDate(isNew ? new Date().toISOString() : selectedDate))}`}
+                            </h2>
+                            <p className="text-lg text-LIGHT_TEXT_SECONDARY md:text-DARK_TEXT_SECONDARY">
+                                {getFormatedWeekInterval(isNew ? new Date().toISOString() : selectedDate)}
+                            </p>
+                            <p className="text-xl text-LIGHT_TEXT dark:text-DARK_TEXT">{isNew ? userInfo.name : name}</p>
                         </div>
                     </div>
                 </div>
