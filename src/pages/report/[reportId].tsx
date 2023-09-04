@@ -23,6 +23,8 @@ import { getCheckGoalsModified, getProgressGoalsModified } from "@/helpers/repor
 import { ConfirmToReload } from "@/components/ConfirmToReload";
 import isEqual from 'lodash/isEqual';
 import { normalizeProgressGoals } from "@/helpers/goalHelper";
+import { CompactNavBar } from "@/components/NavBar/CompactNavBar";
+import { ProfileImage } from "@/components/profileImage";
 
 export default function EditReport() {
 
@@ -31,6 +33,7 @@ export default function EditReport() {
     const { userInfo } = useUserInfoStore();
 
     const [name, setName] = useState("");
+    const [reportOwnerImageURL, setReportOwnerImageURL] = useState<string>("")
     const [isOwner, setIsOwner] = useState(true);
     const [isNew, setIsNew] = useState(false);
     const [modified, setModified] = useState(false);
@@ -55,6 +58,7 @@ export default function EditReport() {
         function setReportData(report: IReport) {
             setIsOwner(userInfo.id == report.user.id);
             setName(report.user.name);
+            setReportOwnerImageURL(report.user.imageURL);
             setSelectedDate(report.createdDate);
             setWeekInterval(getFormatedWeekInterval(report.createdDate));
 
@@ -234,24 +238,24 @@ export default function EditReport() {
             {modified && (<ConfirmToReload />)}
 
             <div className="h-full">
-                <NavBar
+                <CompactNavBar
                     IconPage={ReadCvLogo}
-                    title={"Week " + getWeek(stringToDate(selectedDate))}
+                    title={`${isOwner ? "Editar" : "Visualizar"} Report`}
                     goBackUrl="/list-reports"
                 >
-                    <div className="flex flex-col w-full">
-                        <InputField
-                            type="text"
-                            onChange={() => { }}
-                            value={weekInterval}
-                            noBackground
-                            widthAuto
-                            noPadding
-                            disabled
-                        />
-                        <h2 className="text-xl">{name}</h2>
+                </CompactNavBar>
+
+                <div className="flex flex-col w-full mt-10">
+                    <div className="flex gap-4 items-center">
+                        <img className="h-16 w-16 rounded-full" src={reportOwnerImageURL} />
+                        <div className="flex flex-col">
+                            <h2 className="text-2xl text-LIGHT_TEXT dark:text-DARK_TEXT font-bold">{"Week " + getWeek(stringToDate(selectedDate))}</h2>
+                            <p className="text-lg text-LIGHT_TEXT_SECONDARY md:text-DARK_TEXT_SECONDARY">{weekInterval}</p>
+                            <p className="text-xl text-LIGHT_TEXT dark:text-DARK_TEXT">{name}</p>
+                        </div>
                     </div>
-                </NavBar>
+                </div>
+
 
                 <div id="Goals">
                     <div className="mt-12">
