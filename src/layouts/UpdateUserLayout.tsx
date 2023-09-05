@@ -77,7 +77,7 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
                                 onChange={setUsername}
                                 value={username}
                                 type="text"
-                                placeHolder={"@jhondoe"}
+                                placeHolder={"jhondoe"}
                                 required
                                 error={{ mustShowError: username.length == 0, errorMessage: "campo obrigatório" }}
                             />

@@ -3,11 +3,9 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { ReadCvLogo } from "@phosphor-icons/react";
 import { Plus } from "phosphor-react";
-import NavBar from "@/components/NavBar/NavBar";
 import Modal from "@/components/Modal";
 import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getWeek } from "date-fns";
-import { InputField } from "@/components/Inputs/InputField";
 import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons";
 import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
@@ -19,19 +17,22 @@ import { createReport, IUpdateReport, getReport, updateReport } from "@/services
 import { IResponseData } from "@/interfaces/iResponseData";
 import { IReport } from "@/interfaces/iReport";
 import { generateInvalidUniqueID } from "@/helpers/uniqueIdHelper";
-import { getCheckGoalsModified, getProgressGoalsModified } from "@/helpers/reportHelper";
-import { GetServerSideProps } from "next";
+import { getCheckGoalsModified, getProgressGoalsModified } from "@/helpers/report/reportHelper";
 import { ConfirmToReload } from "@/components/ConfirmToReload";
+import isEqual from 'lodash/isEqual';
+import { normalizeProgressGoals } from "@/helpers/goalHelper";
+import { CompactNavBar } from "@/components/NavBar/CompactNavBar";
+import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrasesHelper";
 
-interface PageProps {
-    id: String;
-}
+export default function EditReport() {
 
-export default function EditReport({ id }: PageProps) {
     const router = useRouter();
+    const { reportId } = router.query;
     const { userInfo } = useUserInfoStore();
+    const [motivationalPhrase, setMotivationalPhrase] = useState<string>("")
 
     const [name, setName] = useState("");
+    const [reportOwnerImageURL, setReportOwnerImageURL] = useState<string>("")
     const [isOwner, setIsOwner] = useState(true);
     const [isNew, setIsNew] = useState(false);
     const [modified, setModified] = useState(false);
@@ -39,7 +40,6 @@ export default function EditReport({ id }: PageProps) {
     const [showModal, setShowModal] = useState(false);
 
     const [selectedDate, setSelectedDate] = useState<string>("");
-    const [weekInterval, setWeekInterval] = useState<string>("");
 
     const [checkGoals, setCheckGoals] = useState<ICheckGoal[]>([]);
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([]);
@@ -49,6 +49,8 @@ export default function EditReport({ id }: PageProps) {
 
     useEffect(() => {
 
+        setMotivationalPhrase(getRandomMotivationalPhrase());
+
         async function getReportData(reportId: number) {
             return (await getReport(reportId)).data as IReport;
         }
@@ -56,16 +58,18 @@ export default function EditReport({ id }: PageProps) {
         function setReportData(report: IReport) {
             setIsOwner(userInfo.id == report.user.id);
             setName(report.user.name);
+            setReportOwnerImageURL(report.user.imageURL);
             setSelectedDate(report.createdDate);
+
             setCheckGoals(report.checkGoals);
-            setProgressGoals(report.progressGoals);
             setOriginalCheckGoals(report.checkGoals);
-            setOriginalProgressGoals(report.progressGoals);
-            setWeekInterval(getFormatedWeekInterval(selectedDate));
+
+            setProgressGoals(normalizeProgressGoals(report.progressGoals));
+            setOriginalProgressGoals(normalizeProgressGoals(report.progressGoals));
         }
 
         function handleNewReport(): boolean {
-            if (id == 'new') {
+            if (reportId == 'new') {
                 setIsNew(true);
                 setSelectedDate(getCurrentDate());
                 return true;
@@ -76,7 +80,10 @@ export default function EditReport({ id }: PageProps) {
         async function handleReceivedReport(reportId: number) {
             if (reportId && userInfo) {
                 const report = await getReportData(reportId);
-                if (report) setReportData(report)
+
+                if (report) {
+                    setReportData(report)
+                }
             }
         }
 
@@ -84,7 +91,7 @@ export default function EditReport({ id }: PageProps) {
             try {
 
                 if (!handleNewReport()) {
-                    handleReceivedReport(Number(id))
+                    handleReceivedReport(Number(reportId))
                 }
 
             } catch (error) {
@@ -95,15 +102,16 @@ export default function EditReport({ id }: PageProps) {
 
         fetchData();
 
-    }, [id, userInfo]);
+    }, [reportId, userInfo]);
 
     useEffect(() => {
-        const checkGoalsIsChanged = JSON.stringify(checkGoals) !== JSON.stringify(originalCheckGoals);
-        const progressGoalsIsChanged = JSON.stringify(progressGoals) !== JSON.stringify(originalProgressGoals);
+
+        const checkGoalsIsChanged = !isEqual(checkGoals, originalCheckGoals);
+        const progressGoalsIsChanged = !isEqual(progressGoals, originalProgressGoals);
 
         setModified(checkGoalsIsChanged || progressGoalsIsChanged);
 
-    }, [progressGoals, checkGoals]);
+    }, [checkGoals, originalCheckGoals, progressGoals, originalProgressGoals]);
 
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -189,7 +197,7 @@ export default function EditReport({ id }: PageProps) {
             const modifiedProgressGoals = getProgressGoalsModified(originalProgressGoals, progressGoals);
 
             result = await updateReport({
-                reportId: Number(id),
+                reportId: Number(reportId),
                 progressGoals: modifiedProgressGoals,
                 checkGoals: modifiedCheckGoals,
             } as IUpdateReport);
@@ -209,6 +217,12 @@ export default function EditReport({ id }: PageProps) {
         handleCancel(true);
     }
 
+    function getTitlePage() {
+        if (isNew) return "Adicionar"
+        if (isOwner) return "Editar"
+        return "Visualizar"
+    }
+
     return (
         <PageLayout>
             {isOwner && (
@@ -224,34 +238,34 @@ export default function EditReport({ id }: PageProps) {
                     <p>Você possui alterações não salvas.</p>
                     <p>Deseja mesmo descartá-las?</p>
                 </Modal>
-            )
-            }
+            )}
 
-            {modified && (
-                <>
-                    <ConfirmToReload />
-                </>)}
-
+            {modified && (<ConfirmToReload />)}
 
             <div className="h-full">
-                <NavBar
+                <CompactNavBar
                     IconPage={ReadCvLogo}
-                    title={"Week " + getWeek(stringToDate(selectedDate))}
-                    goBackUrl="/list-reports"
+                    title={`${getTitlePage()} Report`}
+                    subTitle={`"${motivationalPhrase}"`}
+                    goBackUrl={isNew ? "/home" : "/list-reports"}
                 >
-                    <div className="flex flex-col w-full">
-                        <InputField
-                            type="text"
-                            onChange={() => { }}
-                            value={weekInterval}
-                            noBackground
-                            widthAuto
-                            disabled
-                            noPadding
-                        />
-                        <h2 className="text-xl">{name}</h2>
+                </CompactNavBar>
+
+                <div className="flex flex-col w-full mt-10">
+                    <div className="flex gap-4 items-center">
+                        <img className="h-16 w-16 rounded-full" src={isNew ? userInfo.imageURL : reportOwnerImageURL} />
+                        <div className="flex flex-col">
+                            <h2 className="text-2xl text-LIGHT_TEXT dark:text-DARK_TEXT font-bold">
+                                {`Week ${getWeek(stringToDate(isNew ? new Date().toISOString() : selectedDate))}`}
+                            </h2>
+                            <p className="text-lg text-LIGHT_TEXT_SECONDARY md:text-DARK_TEXT_SECONDARY">
+                                {getFormatedWeekInterval(isNew ? new Date().toISOString() : selectedDate)}
+                            </p>
+                            <p className="text-xl text-LIGHT_TEXT dark:text-DARK_TEXT">{isNew ? userInfo.name : name}</p>
+                        </div>
                     </div>
-                </NavBar>
+                </div>
+
 
                 <div id="Goals">
                     <div className="mt-12">
@@ -351,13 +365,3 @@ export default function EditReport({ id }: PageProps) {
         </PageLayout>
     );
 }
-
-export const getServerSideProps: GetServerSideProps<PageProps> = async ({ query }) => {
-    const id = String(query.id);
-
-    return {
-        props: {
-            id,
-        },
-    };
-};

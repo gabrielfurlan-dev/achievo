@@ -53,7 +53,9 @@ export function NotificationDropdown() {
             >
                 <div className="flex flex-row-reverse">
                     {unreadNotifications.length > 0 && (
-                        <div className="absolute bg-red-600 w-2 h-2 rounded-full right-4" />
+                        <div className="absolute bg-red-600 w-4 h-4 text-[10px] font-bold text-WHITE_PRINCIPAL rounded-full right-2">
+                            {unreadNotifications.length > 9 ? "9+" : unreadNotifications.length}
+                        </div>
                     )}
                     <Bell
                         size={32}
@@ -89,20 +91,12 @@ export function NotificationDropdown() {
                                                 {unreadNotifications.map(
                                                     notification => (
                                                         <NotificationItem
-                                                            wikiURL={
-                                                                notification.wikiURL
-                                                            }
+                                                            wikiURL={notification.wikiURL}
                                                             id={notification.id}
-                                                            title={
-                                                                notification.title
-                                                            }
-                                                            message={
-                                                                notification.message
-                                                            }
+                                                            title={notification.title}
+                                                            message={notification.message}
+                                                            key={notification.id}
                                                             isUnred
-                                                            key={
-                                                                notification.id
-                                                            }
                                                         />
                                                     )
                                                 )}
@@ -124,19 +118,11 @@ export function NotificationDropdown() {
                                                 {readNotifications.map(
                                                     notification => (
                                                         <NotificationItem
-                                                            wikiURL={
-                                                                notification.wikiURL
-                                                            }
+                                                            wikiURL={notification.wikiURL}
                                                             id={notification.id}
-                                                            title={
-                                                                notification.title
-                                                            }
-                                                            message={
-                                                                notification.message
-                                                            }
-                                                            key={
-                                                                notification.id
-                                                            }
+                                                            title={notification.title}
+                                                            message={notification.message}
+                                                            key={notification.id}
                                                         />
                                                     )
                                                 )}

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { IReport } from "@/interfaces/iReport";
 import { Eye, PencilSimple } from "phosphor-react";
 import Link from "next/link";
-import NavBar from "@/components/NavBar/NavBar";
 import { ListMagnifyingGlass } from "@phosphor-icons/react";
 import { NoBackgroundButton } from "@/components/Buttons";
 import { getWeek } from "date-fns";
@@ -11,6 +10,7 @@ import { useUserInfoStore } from "@/store/userStoreInfo";
 import { stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getAllReports } from "@/services/reports/reportService";
 import { getUpdatedTimeElapsed } from "@/helpers/elapsedTime";
+import { CompactNavBar } from "@/components/NavBar/CompactNavBar";
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);
@@ -19,9 +19,7 @@ export default function ListReport() {
     useEffect(() => {
         const fetchReports = async () => {
             try {
-                const result = await getAllReports
-                    ();
-
+                const result = await getAllReports();
                 setReports(result.data);
             } catch (error) {
                 console.error("Error fetching reports:", error);
@@ -32,10 +30,10 @@ export default function ListReport() {
 
     return (
         <PageLayout>
-            <NavBar
+            <CompactNavBar
                 IconPage={ListMagnifyingGlass}
                 title="Relatórios"
-                subTitle="Todos os Reports aqui"
+                subTitle="Todos os Reports estão aqui"
                 goBackUrl="/home"
             />
             <ul className="mt-10 w-full">
@@ -58,11 +56,7 @@ export default function ListReport() {
                                                 stringToDate(data.createdDate)
                                             )}
                                         </p>
-                                        <p>
-                                            {getFormatedWeekInterval(
-                                                data.createdDate
-                                            )}
-                                        </p>
+                                        <p>{getFormatedWeekInterval(data.createdDate)}</p>
                                         <p className="text-xs font-normal">
                                             {`${getUpdatedTimeElapsed(data.updatedDate)}`}</p>
                                         <p>{data.username}</p>
@@ -70,26 +64,15 @@ export default function ListReport() {
                                 </div>
                                 <div className="flex items-center">
                                     {userInfo.id == data.user.id ? (
-                                        <NoBackgroundButton>
-                                            <PencilSimple
-                                                size={24}
-                                                className="text-PRINCIPAL"
-                                            />
-                                        </NoBackgroundButton>
+                                        <NoBackgroundButton children={<PencilSimple size={24} className="text-PRINCIPAL" />} />
                                     ) : (
-                                        <NoBackgroundButton>
-                                            <Eye
-                                                size={24}
-                                                className="text-PRINCIPAL"
-                                            />
-                                        </NoBackgroundButton>
-                                    )}
+                                        <NoBackgroundButton children={<Eye size={24} className="text-PRINCIPAL" />} />)}
                                 </div>
                             </div>
                         </li>
                     </Link>
                 ))}
             </ul>
-        </PageLayout>
+        </PageLayout >
     );
 }
