@@ -119,12 +119,12 @@ export async function getReport(reportId: number) {
             }
         );
 
-        const data = await report.json();
+        const response = await report.json() as IResponseData;
 
         return {
             success: true,
             message: "Relatório obtido com sucesso.",
-            data: data.data,
+            data: response.data,
         } as IResponseData;
 
     } catch (error) {

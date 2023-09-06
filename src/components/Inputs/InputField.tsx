@@ -1,4 +1,5 @@
 import { InputLayout } from "@/layouts/InputLayout";
+import { Icon, LockSimple } from "phosphor-react";
 import type { ButtonHTMLAttributes, InputHTMLAttributes, SetStateAction } from "react";
 
 interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -15,7 +16,7 @@ interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     error?: {
         mustShowError: boolean,
         errorMessage?: string,
-    }
+    },
 };
 
 export function InputField({
@@ -36,27 +37,30 @@ export function InputField({
 
     return (
         <InputLayout error={error} label={label}>
-            <input
-                className="text-md rounded-lg py-2 px-4
-                         bg-LIGHT_BACKGROUND_SECONDARY dark:bg-DARK_BACKGROUND_SECONDARY
-                         text-LIGHT_TEXT dark:text-DARK_TEXT"
-                disabled={disabled}
-                placeholder={placeHolder}
-                value={value}
-                type={type}
-                onChange={e => method(e.target.value)}
-                style={{
-                    ...style,
-                    opacity: disabled ? "50%" : "100%",
-                    borderColor: noBackground ? "transparent" : "",
-                    outline: "none",
-                    backgroundColor: noBackground ? "transparent" : "",
-                    textAlign: alignRight ? "right" : "left",
-                    width: widthAuto ? "" : "100%",
-                    padding: noPadding ? "0" : "",
-                }}
-                required={required}
-            />
+            <div className="bg-LIGHT_BACKGROUND_SECONDARY dark:bg-DARK_BACKGROUND_SECONDARY flex items-center rounded-lg py-2 px-4"
+                style={{ backgroundColor: noBackground ? "transparent" : "" }}>
+                <input
+                    className="text-md text-LIGHT_TEXT dark:text-DARK_TEXT"
+
+                    disabled={disabled}
+                    placeholder={placeHolder}
+                    value={value}
+                    type={type}
+                    onChange={e => method(e.target.value)}
+                    style={{
+                        ...style,
+                        opacity: disabled ? "50%" : "100%",
+                        borderColor: noBackground ? "transparent" : "",
+                        outline: "none",
+                        textAlign: alignRight ? "right" : "left",
+                        width: widthAuto ? "" : "100%",
+                        padding: noPadding ? "0" : "",
+                        backgroundColor: "transparent"
+                    }}
+                    required={required}
+                />
+                {disabled ? <LockSimple className="text-GRAY" size={18} /> : ""}
+            </div>
         </InputLayout>
     );
 }

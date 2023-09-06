@@ -1,5 +1,5 @@
-import { Trash, X } from "phosphor-react";
-import React, { ReactNode } from "react";
+import { Trash, Warning, X } from "phosphor-react";
+import React, { ReactNode, useState } from "react";
 import { ConfirmButton, DangerButton, NoBackgroundButton } from "./Buttons";
 
 interface ModalProps {
@@ -31,6 +31,7 @@ const Modal: React.FC<ModalProps> = ({
     cancelText,
 }) => {
     if (!isOpen) return null;
+    const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black dark:bg-DARK_BACKGROUND_SECONDARY bg-opacity-50 dark:bg-opacity-50 z-50">
@@ -59,7 +60,7 @@ const Modal: React.FC<ModalProps> = ({
                         <div className="mt-10 h-12 flex justify-between">
                             <div className="mr-2">
                                 {!hideDelete && (
-                                    <DangerButton onClick={onDelete}>
+                                    <DangerButton onClick={() => setShowConfirmDelete(true)}>
                                         <div className="flex gap-2">
                                             <Trash size={20} />
                                             <p className="hidden md:block">
@@ -91,6 +92,21 @@ const Modal: React.FC<ModalProps> = ({
                     )}
                 </div>
             </div>
+            <Modal
+                isOpen={showConfirmDelete}
+                onClose={() => setShowConfirmDelete(false)}
+                title={""}
+                confirmText={"Sim"}
+                cancelText={"Cancelar"}
+                handleSaveButton={onDelete}
+                hideDelete
+            >
+                <div className="flex flex-col w-full items-center">
+                    <Warning size={56} className="text-PRINCIPAL" />
+                    <h2 className="text-xl font-bold mt-10">Esta ação não poderá ser desfeita</h2>
+                    <p className="mt-2">Você tem certeza que deseja prosseguir?</p>
+                </div>
+            </Modal>
         </div>
     );
 };

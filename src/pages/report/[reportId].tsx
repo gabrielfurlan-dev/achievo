@@ -3,15 +3,9 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { ReadCvLogo } from "@phosphor-icons/react";
 import { Plus } from "phosphor-react";
-import NavBar from "@/components/NavBar/NavBar";
 import Modal from "@/components/Modal";
-import {
-    getCurrentDate,
-    stringToDate,
-    getFormatedWeekInterval,
-} from "@/helpers/dateHelper";
+import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getWeek } from "date-fns";
-import { InputField } from "@/components/Inputs/InputField";
 import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons";
 import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
@@ -19,27 +13,26 @@ import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
 import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
-import {
-    createReport,
-    IUpdateReport,
-    getReport,
-    updateReport,
-} from "@/services/reports/reportService";
+import { createReport, IUpdateReport, getReport, updateReport } from "@/services/reports/reportService";
 import { IResponseData } from "@/interfaces/iResponseData";
 import { IReport } from "@/interfaces/iReport";
 import { generateInvalidUniqueID } from "@/helpers/uniqueIdHelper";
-import {
-    getCheckGoalsModified,
-    getProgressGoalsModified,
-} from "@/helpers/reportHelper";
+import { getCheckGoalsModified, getProgressGoalsModified } from "@/helpers/report/reportHelper";
+import { ConfirmToReload } from "@/components/ConfirmToReload";
+import isEqual from 'lodash/isEqual';
+import { normalizeProgressGoals } from "@/helpers/goalHelper";
+import { CompactNavBar } from "@/components/NavBar/CompactNavBar";
+import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrasesHelper";
 
 export default function EditReport() {
+
     const router = useRouter();
+    const { reportId } = router.query;
     const { userInfo } = useUserInfoStore();
-    const { id } = router.query;
+    const [motivationalPhrase, setMotivationalPhrase] = useState<string>("")
 
     const [name, setName] = useState("");
-    const [asUpdatedReport, setAsUpdatedReport] = useState<string>("");
+    const [reportOwnerImageURL, setReportOwnerImageURL] = useState<string>("")
     const [isOwner, setIsOwner] = useState(true);
     const [isNew, setIsNew] = useState(false);
     const [modified, setModified] = useState(false);
@@ -47,40 +40,78 @@ export default function EditReport() {
     const [showModal, setShowModal] = useState(false);
 
     const [selectedDate, setSelectedDate] = useState<string>("");
-    const [weekInterval, setWeekInterval] = useState<string>("");
 
     const [checkGoals, setCheckGoals] = useState<ICheckGoal[]>([]);
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([]);
 
-    const [originalCheckGoals, setOriginalCheckGoals] = useState<ICheckGoal[]>(
-        []
-    );
-    const [originalProgressGoals, setOriginalProgressGoals] = useState<
-        IProgressGoal[]
-    >([]);
+    const [originalCheckGoals, setOriginalCheckGoals] = useState<ICheckGoal[]>([]);
+    const [originalProgressGoals, setOriginalProgressGoals] = useState<IProgressGoal[]>([]);
 
     useEffect(() => {
-        if (id == "new") {
-            setIsNew(true);
-            setSelectedDate(getCurrentDate());
-        } else {
-            setReportData();
+
+        setMotivationalPhrase(getRandomMotivationalPhrase());
+
+        async function getReportData(reportId: number) {
+            return (await getReport(reportId)).data as IReport;
         }
-    }, [id]);
+
+        function setReportData(report: IReport) {
+            setIsOwner(userInfo.id == report.user.id);
+            setName(report.user.name);
+            setReportOwnerImageURL(report.user.imageURL);
+            setSelectedDate(report.createdDate);
+
+            setCheckGoals(report.checkGoals);
+            setOriginalCheckGoals(report.checkGoals);
+
+            setProgressGoals(normalizeProgressGoals(report.progressGoals));
+            setOriginalProgressGoals(normalizeProgressGoals(report.progressGoals));
+        }
+
+        function handleNewReport(): boolean {
+            if (reportId == 'new') {
+                setIsNew(true);
+                setSelectedDate(getCurrentDate());
+                return true;
+            };
+            return false;
+        }
+
+        async function handleReceivedReport(reportId: number) {
+            if (reportId && userInfo) {
+                const report = await getReportData(reportId);
+
+                if (report) {
+                    setReportData(report)
+                }
+            }
+        }
+
+        const fetchData = async () => {
+            try {
+
+                if (!handleNewReport()) {
+                    handleReceivedReport(Number(reportId))
+                }
+
+            } catch (error) {
+                Swal.fire("Erro ao buscar o relatório", "error");
+                router.push("/list-reports")
+            }
+        };
+
+        fetchData();
+
+    }, [reportId, userInfo]);
 
     useEffect(() => {
-        setWeekInterval(getFormatedWeekInterval(selectedDate));
-    }, [selectedDate]);
 
-    useEffect(() => {
-        const checkGoalsIsChanged =
-            JSON.stringify(checkGoals) !== JSON.stringify(originalCheckGoals);
-        const progressGoalsIsChanged =
-            JSON.stringify(progressGoals) !==
-            JSON.stringify(originalProgressGoals);
+        const checkGoalsIsChanged = !isEqual(checkGoals, originalCheckGoals);
+        const progressGoalsIsChanged = !isEqual(progressGoals, originalProgressGoals);
 
         setModified(checkGoalsIsChanged || progressGoalsIsChanged);
-    }, [progressGoals, checkGoals, originalProgressGoals, originalCheckGoals]);
+
+    }, [checkGoals, originalCheckGoals, progressGoals, originalProgressGoals]);
 
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -145,26 +176,28 @@ export default function EditReport() {
     }
 
     async function handleSaveReport() {
+
+        if (!modified) {
+            return Swal.fire("Oops!", "É necessário inserir ou editar uma meta para que o Report seja salvo.", "warning");
+        }
+
         let result: IResponseData;
 
         if (isNew) {
             result = await createReport({
                 userRef: userInfo.id,
                 progressGoals,
-                checkGoals,
-            });
-        } else {
-            const modifiedCheckGoals = getCheckGoalsModified(
-                originalCheckGoals,
                 checkGoals
-            );
-            const modifiedProgressGoals = getProgressGoalsModified(
-                originalProgressGoals,
-                progressGoals
-            );
+            });
+        }
+
+        else {
+
+            const modifiedCheckGoals = getCheckGoalsModified(originalCheckGoals, checkGoals);
+            const modifiedProgressGoals = getProgressGoalsModified(originalProgressGoals, progressGoals);
 
             result = await updateReport({
-                reportId: Number(id),
+                reportId: Number(reportId),
                 progressGoals: modifiedProgressGoals,
                 checkGoals: modifiedCheckGoals,
             } as IUpdateReport);
@@ -181,63 +214,58 @@ export default function EditReport() {
             result.success ? "success" : "error"
         );
 
-        handleCancel(false);
+        handleCancel(true);
     }
 
-    async function setReportData() {
-        const reportId = Number(id);
-
-        if (!reportId) return;
-
-        const result = await getReport(reportId);
-
-        const report: IReport = result.data;
-
-         if (report) {
-            setName(report.user.name);
-            setSelectedDate(report.createdDate);
-            setCheckGoals(report.checkGoals);
-            setProgressGoals(report.progressGoals);
-            setIsOwner(userInfo.id == report.user.id);
-            setOriginalCheckGoals(report.checkGoals);
-            setOriginalProgressGoals(report.progressGoals);
-        }
+    function getTitlePage() {
+        if (isNew) return "Adicionar"
+        if (isOwner) return "Editar"
+        return "Visualizar"
     }
 
     return (
         <PageLayout>
-            <Modal
-                isOpen={showModal}
-                onClose={() => setShowModal(false)}
-                handleSaveButton={() => handleCancel(true)}
-                title="Alterações não salvas"
-                hideDelete
-                cancelText="Não"
-                confirmText="Sim"
-            >
-                <p>Você possui alterações não salvas.</p>
-                <p>Deseja mesmo descartá-las?</p>
-            </Modal>
+            {isOwner && (
+                <Modal
+                    isOpen={showModal}
+                    onClose={() => setShowModal(false)}
+                    handleSaveButton={() => handleCancel(true)}
+                    title="Alterações não salvas"
+                    hideDelete
+                    cancelText="Não"
+                    confirmText="Sim"
+                >
+                    <p>Você possui alterações não salvas.</p>
+                    <p>Deseja mesmo descartá-las?</p>
+                </Modal>
+            )}
+
+            {modified && (<ConfirmToReload />)}
 
             <div className="h-full">
-                <NavBar
+                <CompactNavBar
                     IconPage={ReadCvLogo}
-                    title={"Week " + getWeek(stringToDate(selectedDate))}
-                    goBackUrl="/list-reports"
+                    title={`${getTitlePage()} Report`}
+                    subTitle={`"${motivationalPhrase}"`}
+                    goBackUrl={isNew ? "/home" : "/list-reports"}
                 >
-                    <div className="flex flex-col w-full">
-                        <InputField
-                            type="text"
-                            onChange={() => { }}
-                            value={weekInterval}
-                            noBackground
-                            widthAuto
-                            disabled
-                            noPadding
-                        />
-                        <h2 className="text-xl">{name}</h2>
+                </CompactNavBar>
+
+                <div className="flex flex-col w-full mt-10">
+                    <div className="flex gap-4 items-center">
+                        <img className="h-16 w-16 rounded-full" src={isNew ? userInfo.imageURL : reportOwnerImageURL} />
+                        <div className="flex flex-col">
+                            <h2 className="text-2xl text-LIGHT_TEXT dark:text-DARK_TEXT font-bold">
+                                {`Week ${getWeek(stringToDate(isNew ? new Date().toISOString() : selectedDate))}`}
+                            </h2>
+                            <p className="text-lg text-LIGHT_TEXT_SECONDARY md:text-DARK_TEXT_SECONDARY">
+                                {getFormatedWeekInterval(isNew ? new Date().toISOString() : selectedDate)}
+                            </p>
+                            <p className="text-xl text-LIGHT_TEXT dark:text-DARK_TEXT">{isNew ? userInfo.name : name}</p>
+                        </div>
                     </div>
-                </NavBar>
+                </div>
+
 
                 <div id="Goals">
                     <div className="mt-12">
@@ -248,10 +276,7 @@ export default function EditReport() {
                                         Progresso
                                     </p>
                                     {isOwner && (
-                                        <NoBackgroundButton
-                                            onClick={handleAddProgressGoal}
-                                            className="w-full"
-                                        >
+                                        <NoBackgroundButton onClick={handleAddProgressGoal} className="w-full" >
                                             <Plus />
                                         </NoBackgroundButton>
                                     )}
@@ -263,9 +288,7 @@ export default function EditReport() {
                                             <ProgressGoal
                                                 key={goal.id}
                                                 progressGoal={goal}
-                                                setProgressGoals={
-                                                    setProgressGoals
-                                                }
+                                                setProgressGoals={setProgressGoals}
                                                 disabled={!isOwner}
                                             />
                                         ))
@@ -273,15 +296,9 @@ export default function EditReport() {
                                         <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL dark:bg-DARK_BACKGROUND_SECONDARY">
                                             <div className="flex items-center text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
                                                 {isOwner ? (
-                                                    <p className="flex">
-                                                        Adicione um progresso no
-                                                        icone"
-                                                        <Plus />"
-                                                    </p>
+                                                    <p className="flex"> Adicione um progresso no icone "<Plus />"</p>
                                                 ) : (
-                                                    <p>
-                                                        Sem metas de progresso
-                                                    </p>
+                                                    <p>Sem metas de progresso</p>
                                                 )}
                                             </div>
                                         </div>
@@ -295,10 +312,7 @@ export default function EditReport() {
                                         Check List
                                     </p>
                                     {isOwner && (
-                                        <NoBackgroundButton
-                                            onClick={handleAddCheckGoal}
-                                            className="w-full"
-                                        >
+                                        <NoBackgroundButton onClick={handleAddCheckGoal} className="w-full">
                                             <Plus />
                                         </NoBackgroundButton>
                                     )}
@@ -318,9 +332,7 @@ export default function EditReport() {
                                         <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL dark:bg-DARK_BACKGROUND_SECONDARY ">
                                             {isOwner ? (
                                                 <p className="flex text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
-                                                    Adicione um{" "}
-                                                    <i>check goal&nbsp;</i> no
-                                                    icone "<Plus />"
+                                                    Adicione um&nbsp;<i>check goal&nbsp;</i> no icone "<Plus />"
                                                 </p>
                                             ) : (
                                                 <p className="flex text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
