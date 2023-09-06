@@ -5,6 +5,11 @@ type IntervalWeek = {
     lastDayOfWeek: Date
 }
 
+type PeriodReport = {
+    day: string;
+    mounth: string;
+}
+
 export function getCurrentDate() {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -18,7 +23,7 @@ export function getCurrentDate() {
         day = "0" + day;
     }
 
-    return `${month}-${month}-${day}`;
+    return `${year}-${month}-${day}`;
 }
 
 export function getWeekInterval(date: Date) {
@@ -45,7 +50,7 @@ export function getFormatedWeekInterval(date: string) {
 
 
     return getFormatedWeekIntervalOtherCountries(interval);
-    
+
 }
 
 function getFormatedDate(originalDate: Date) {
@@ -64,17 +69,33 @@ export function stringToDate(date: string) {
     return new Date(getFormatedDate(dateReport));
 }
 
-
 function getFormatedWeekIntervalBrazil(interval: IntervalWeek) {
-    const firstDayFormatted = `${interval.firstDayOfWeek.getDate().toString().padStart(2, '0')}/${(interval.firstDayOfWeek.getMonth() + 1).toString().padStart(2, '0')}`;
-    const lastDayFormatted = `${interval.lastDayOfWeek.getDate().toString().padStart(2, '0')}/${(interval.lastDayOfWeek.getMonth() + 1).toString().padStart(2, '0')}`;
+
+    const firstPeriod: PeriodReport = getPeriod(interval.firstDayOfWeek);
+    const lastPeriod: PeriodReport = getPeriod(interval.firstDayOfWeek);
+    const firstDayFormatted = `${firstPeriod.day}/${firstPeriod.mounth}`;
+    const lastDayFormatted = `${lastPeriod.day}/${lastPeriod.mounth}`;
 
     return `${firstDayFormatted} até ${lastDayFormatted} de ${interval.lastDayOfWeek.getFullYear()}`
 }
 
-function getFormatedWeekIntervalOtherCountries(interval: IntervalWeek){
-    const firstDayFormatted = `${(interval.firstDayOfWeek.getMonth() + 1).toString().padStart(2, '0')}/${interval.firstDayOfWeek.getDate().toString().padStart(2, '0')}`;
-    const lastDayFormatted = `${(interval.lastDayOfWeek.getMonth() + 1).toString().padStart(2, '0')}/${interval.lastDayOfWeek.getDate().toString().padStart(2, '0')}`;
+function getFormatedWeekIntervalOtherCountries(interval: IntervalWeek) {
+
+    const firstPeriod: PeriodReport = getPeriod(interval.firstDayOfWeek);
+    const lastPeriod: PeriodReport = getPeriod(interval.lastDayOfWeek);
+
+    const firstDayFormatted = `${firstPeriod.mounth}/${firstPeriod.day}`;
+    const lastDayFormatted = `${lastPeriod.mounth}/${lastPeriod.day}`;
 
     return `${firstDayFormatted} até ${lastDayFormatted} de ${interval.lastDayOfWeek.getFullYear()}`;
+}
+
+
+
+function getPeriod(interval: Date) {
+
+    const day = `${interval.getDate().toString().padStart(2, '0')}`
+    const mounth = `${(interval.getMonth() + 1).toString().padStart(2, '0')}`
+
+    return { day, mounth }
 }
