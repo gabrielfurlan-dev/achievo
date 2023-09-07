@@ -185,7 +185,7 @@ export default function EditReport() {
 
         if (isNew) {
             result = await createReport({
-                userRef: userInfo.id,
+                userId: userInfo.id,
                 progressGoals,
                 checkGoals
             });

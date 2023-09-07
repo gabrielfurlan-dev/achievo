@@ -57,7 +57,7 @@ export async function registerUser(userData: IUserInfo) {
     }
 }
 
-export async function updateUser(id: number, name: string, username: string, description: string) {
+export async function updateUser(id: string, name: string, username: string, description: string) {
     const responseData = await fetch("/api/user/update",
         {
             method: "PUT",

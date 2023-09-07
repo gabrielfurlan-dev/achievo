@@ -12,7 +12,7 @@ export default async function handler(
     }
 
     try {
-        const userId = parseInt(req.query.userId as string);
+        const userId = req.query.userId as string;
         const beginDateOfWeek = new Date(req.query.beginDateOfWeek as string);
         const endDateOfWeek = new Date(req.query.endDateOfWeek as string);
 
