@@ -7,6 +7,10 @@ import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import z from "zod";
+import { updateProfileSchema } from "@/schemas/users/commands/updateProfileSchema";
 
 interface updateUserLayoutProps {
     destinationPathOnUpdate: "/home" | string
@@ -16,10 +20,6 @@ interface updateUserLayoutProps {
 export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister }: updateUserLayoutProps) {
     const { userInfo, setUserInfo } = useUserInfoStore()
     const router = useRouter()
-    const [name, setName] = useState<string>("")
-    const [username, setUsername] = useState<string>("")
-    const [description, setDescription] = useState<string>("")
-
 
     function validateIfHasUpdate() {
         if (userInfo.name != name) return true;
@@ -29,9 +29,7 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
         return false;
     }
 
-    async function handleUpdateUser(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-
+    async function handleUpdateUser() {
         const successMessage = isFinishingRegister ? "Cadastro finalizado com sucesso." : "Cadastro atualizado com sucesso"
         const failMessage = isFinishingRegister ? "Não foi possível finalizar o cadastro." : "Não foi possível atualizar o cadastro"
 
@@ -48,56 +46,111 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
         router.push(destinationPathOnUpdate)
     }
 
+    const {
+        register,
+        setValue,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<updateProfileSchema>({
+        resolver: zodResolver(updateProfileSchema)
+    })
+
+
     useEffect(() => {
-        setName(userInfo.name ?? "")
-        setUsername(userInfo.username ?? "")
-        setDescription(userInfo.description ?? "")
+        setValue("name", userInfo.name ?? "")
+        setValue("username", userInfo.username ?? "")
+        setValue("description", userInfo.description ?? "")
+        setValue("email", userInfo.email ?? "")
     }, [userInfo])
 
     return (
         <>
-            <form className="h-full lg:mt-0 flex flex-col justify-between " onSubmit={(event) => handleUpdateUser(event)}>
+            <form className="h-full lg:mt-0 flex flex-col justify-between " onSubmit={handleSubmit(handleUpdateUser)}>
                 <div className="h-full w-full mt-24 flex flex-col lg:flex-row m-auto lg:gap-24 items-center">
                     <div className="w-52 lg:w-72">
                         <ProfileImage rounded />
                     </div>
                     <div className="flex flex-col gap-4 w-full">
                         <div className="grid lg:grid-cols-2 gap-2">
-                            <InputField
-                                label="Nome"
-                                onChange={setName}
-                                value={name}
+
+                            <div className="flex flex-col">
+                                <div className="flex gap-2 items-center">
+                                    <label className="text-LIGHT_TEXT dark:text-DARK_TEXT" htmlFor="name" children={"Nome"} />
+                                    <span className="text-SECONDARY text-xs">{errors.name && `*${errors.name?.message}`}</span>
+                                </div>
+                                <input
+                                    {...register('name')}
+                                    name="name"
+                                    type="text"
+                                    placeholder="Jhon Doe"
+                                    className="bg-LIGHT_BACKGROUND_SECONDARY
+                                               dark:bg-DARK_BACKGROUND_SECONDARY
+                                               text-LIGHT_TEXT
+                                               dark:text-DARK_TEXT
+                                               rounded-lg
+                                               py-2 px-3"
+                                />
+                            </div>
+
+                            <div className="flex flex-col">
+                                <div className="flex gap-2 items-center">
+                                    <label className="text-LIGHT_TEXT dark:text-DARK_TEXT" htmlFor="username" children={"Nome de usuário"} />
+                                    <span className="text-SECONDARY text-xs">*{errors.username?.message}</span>
+                                </div>
+                                <input
+                                    {...register('username')}
+                                    name="username"
+                                    type="text"
+                                    placeholder="jhondoe"
+                                    className="bg-LIGHT_BACKGROUND_SECONDARY
+                                               dark:bg-DARK_BACKGROUND_SECONDARY
+                                               text-LIGHT_TEXT
+                                               dark:text-DARK_TEXT
+                                               rounded-lg
+                                               py-2 px-3"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col">
+                            <div className="flex gap-2 items-center">
+                                <label className="text-LIGHT_TEXT dark:text-DARK_TEXT" htmlFor="email" children={"Email"} />
+                                <span className="text-SECONDARY text-xs">*{errors.email?.message}</span>
+                            </div>
+                            <input
+                                {...register('email')}
+                                disabled
+                                name="email"
                                 type="text"
-                                placeHolder={"Jhon Doe"}
-                                required
-                                error={{ mustShowError: name.length == 0, errorMessage: "campo obrigatório" }}
-                            />
-                            <InputField
-                                label="Nome de usuário"
-                                onChange={setUsername}
-                                value={username}
-                                type="text"
-                                placeHolder={"jhondoe"}
-                                required
-                                error={{ mustShowError: username.length == 0, errorMessage: "campo obrigatório" }}
+                                placeholder="jhondoe@email.com"
+                                className="bg-LIGHT_BACKGROUND_SECONDARY
+                                               dark:bg-DARK_BACKGROUND_SECONDARY
+                                               text-LIGHT_TEXT
+                                               dark:text-DARK_TEXT
+                                               rounded-lg
+                                               py-2 px-3"
                             />
                         </div>
-                        <InputField
-                            label="Email"
-                            onChange={() => { }}
-                            value={userInfo.email}
-                            type="text"
-                            placeHolder={"jhondoe@email.com"}
-                            required
-                            disabled
-                        />
-                        <TextareaField
-                            style={{ minHeight: '100px' }}
-                            label="Descrição"
-                            onChange={setDescription}
-                            value={description}
-                            placeHolder={"Sua descrição aqui..."}
-                        />
+
+                        <div className="flex flex-col">
+                            <div className="flex gap-2 items-center">
+                                <label className="text-LIGHT_TEXT dark:text-DARK_TEXT" htmlFor="description" children={"Descrição"} />
+                                <span className="text-SECONDARY text-xs">*{errors.description?.message}</span>
+                            </div>
+                            <textarea
+                                {...register('description')}
+                                name="description"
+                                placeholder="Sua descrição aqui..."
+                                style={{ minHeight: '100px' }}
+                                className="bg-LIGHT_BACKGROUND_SECONDARY
+                                               dark:bg-DARK_BACKGROUND_SECONDARY
+                                               text-LIGHT_TEXT
+                                               dark:text-DARK_TEXT
+                                               rounded-lg
+                                               py-2 px-3"
+                            />
+                        </div>
+
                     </div>
                 </div>
                 <div className="flex justify-end mt-10">
@@ -105,7 +158,7 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
                         <ConfirmButton type="submit">Confirmar</ConfirmButton>
                     </div>
                 </div>
-            </form>
+            </form >
         </>
     );
 }
