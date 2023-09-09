@@ -13,6 +13,7 @@ const envSchema = z.object({
     JWT_WEBTOKEN: z.string(),
     BASE_URL: z.string(),
     MAIL_SERVICE_URL: z.string(),
+    MAIL_SERVICE_KEY: z.string(),
 });
 
 const variables = envSchema.parse({
@@ -29,6 +30,7 @@ const variables = envSchema.parse({
     JWT_WEBTOKEN: process.env.NEXT_PUBLIC_JWT_WEBTOKEN,
     BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
     MAIL_SERVICE_URL: process.env.NEXT_PUBLIC_MAIL_SERVICE_URL,
+    MAIL_SERVICE_KEY: process.env.NEXT_PUBLIC_MAIL_SERVICE_KEY,
 });
 
 export default variables;

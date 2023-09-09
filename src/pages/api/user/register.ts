@@ -44,12 +44,12 @@ export default async function (
                 }
             })
 
-            const teste = await fetch(variables.MAIL_SERVICE_URL.concat("/api/send-mail/welcome-user"), {
+            await fetch(variables.MAIL_SERVICE_URL.concat("/api/send-mail/welcome-user"), {
                 method: "POST",
                 body: JSON.stringify({
-                    name: userData.name,
-                    email: userData.email,
-                    key: 'bananinha123'
+                    name: user.name,
+                    email: user.email,
+                    key: variables.MAIL_SERVICE_KEY
                 }),
                 headers: { "Content-Type": "application/json" }
             })
