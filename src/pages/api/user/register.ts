@@ -22,38 +22,23 @@ export default async function (
     try {
         const userData: CreateUserProps = req.body;
 
-        let user = await db.user.findFirst({
-            where: { email: userData.email },
+        let user = await db.user.create({
+            data: {
+                name: userData.name,
+                email: userData.email,
+                imageURL: userData.imageURL,
+            },
         });
 
-        if (!user) {
-            user = await db.user.create({
-                data: {
-                    name: userData.name,
-                    email: userData.email,
-                    imageURL: userData.imageURL,
-                },
-            });
+        user = await db.user.update({
+            data: {
+                username: `guest${user.id}`
+            },
+            where: {
+                id: user.id
+            }
+        });
 
-            user = await db.user.update({
-                data: {
-                    username: `guest${user.id}`
-                },
-                where: {
-                    id: user.id
-                }
-            })
-
-            await fetch(variables.MAIL_SERVICE_URL.concat("/api/send-mail/welcome-user"), {
-                method: "POST",
-                body: JSON.stringify({
-                    name: user.name,
-                    email: user.email,
-                    key: variables.MAIL_SERVICE_KEY
-                }),
-                headers: { "Content-Type": "application/json" }
-            })
-        }
 
         return res.status(201).json({
             success: true,

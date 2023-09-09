@@ -1,18 +1,9 @@
 import { IUpdateUserCommand } from "@/pages/api/user/update";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import db from "@/firebaseConfig";
 import { IUserInfo } from "@/store/userStoreInfo";
-
-export async function isUserRegistered(email: string) {
-    try {
-        const docRef = doc(db, "users", email);
-        const docSnap = await getDoc(docRef);
-        return docSnap.exists();
-    } catch (error) {
-        console.error("Erro ao buscar os dados do usuário:", error);
-        return false;
-    }
-}
+import { IResponseData } from "@/interfaces/iResponseData";
+import variables from "@/schemas/env-variables";
 
 export async function getUserData(email: string) {
     try {
@@ -34,29 +25,6 @@ export async function getUserData(email: string) {
     }
 }
 
-export async function registerUser(userData: IUserInfo) {
-    try {
-        const docId = userData.email ?? "none";
-
-        await setDoc(doc(db, "users", docId), userData);
-        await setDoc(doc(db, "user_notifications", docId), {
-            readNotifications: [],
-        });
-
-        return {
-            data: "Usuário registrado com sucesso!",
-            error: "",
-            type: "success",
-        };
-    } catch (error) {
-        return {
-            data: "Erro ao registrar o usuário",
-            error: String(error),
-            type: "error",
-        };
-    }
-}
-
 export async function updateUser(id: string, name: string, username: string, description: string) {
     const responseData = await fetch("/api/user/update",
         {
@@ -75,4 +43,27 @@ export async function updateUser(id: string, name: string, username: string, des
     console.log(response)
 
     return response.success;
+}
+
+export async function registerUser(name: string, email: string, photoURL: string) {
+    const response = await fetch("/api/user/register", {
+        method: "POST",
+        body: JSON.stringify({
+            name: name,
+            email: email,
+            imageURL: photoURL,
+        }),
+        headers: { "Content-Type": "application/json" },
+    });
+
+    return (await response.json()) as IResponseData;
+}
+
+export async function userExists(email: string) {
+    const response = await fetch(`api/user/exists/?email=${email}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    });
+
+    return (await response.json()) as IResponseData;
 }
