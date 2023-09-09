@@ -1,15 +1,12 @@
 import { ConfirmButton } from "@/components/Buttons";
-import { InputField } from "@/components/Inputs/InputField";
 import { ProfileImage } from "@/components/profileImage";
-import { TextareaField } from "@/components/Inputs/TextareaField";
 import { updateUser } from "@/services/userService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import z from "zod";
 import { updateProfileSchema } from "@/schemas/users/commands/updateProfileSchema";
 
 interface updateUserLayoutProps {
@@ -21,21 +18,21 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
     const { userInfo, setUserInfo } = useUserInfoStore()
     const router = useRouter()
 
-    function validateIfHasUpdate() {
-        if (userInfo.name != name) return true;
-        if (userInfo.username != username) return true;
-        if (userInfo.description != description) return true;
+    function validateIfHasUpdate(data: updateProfileSchema) {
+        if (userInfo.name != data.name) return true;
+        if (userInfo.username != data.username) return true;
+        if (userInfo.description != data.description) return true;
 
         return false;
     }
 
-    async function handleUpdateUser() {
+    async function handleUpdateUser(data: updateProfileSchema) {
         const successMessage = isFinishingRegister ? "Cadastro finalizado com sucesso." : "Cadastro atualizado com sucesso"
         const failMessage = isFinishingRegister ? "Não foi possível finalizar o cadastro." : "Não foi possível atualizar o cadastro"
 
-        if (validateIfHasUpdate()) {
-            if (await updateUser(userInfo.id, name, username, description)) {
-                setUserInfo({ ...userInfo, name: name, username: username, description: description, alreadyRegistered: true });
+        if (validateIfHasUpdate(data)) {
+            if (await updateUser(userInfo.id, data.name, data.username, data.description)) {
+                setUserInfo({ ...userInfo, name: data.name, username: data.username, description: data.description, alreadyRegistered: true });
             } else {
                 await Swal.fire("Fail!", failMessage, "error")
                 return;
@@ -65,7 +62,7 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
 
     return (
         <>
-            <form className="h-full lg:mt-0 flex flex-col justify-between " onSubmit={handleSubmit(handleUpdateUser)}>
+            <form className="h-full lg:mt-0 flex flex-col justify-between " onSubmit={handleSubmit((data) => handleUpdateUser(data))}>
                 <div className="h-full w-full mt-24 flex flex-col lg:flex-row m-auto lg:gap-24 items-center">
                     <div className="w-52 lg:w-72">
                         <ProfileImage rounded />
