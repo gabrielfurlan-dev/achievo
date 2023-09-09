@@ -1,7 +1,7 @@
 import { IResponseData } from "@/interfaces/iResponseData";
 import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
-
+import variables from "@/schemas/env-variables";
 type CreateUserProps = {
     name: string;
     email: string;
@@ -36,12 +36,22 @@ export default async function (
             });
 
             user = await db.user.update({
-                data:{
+                data: {
                     username: `guest${user.id}`
                 },
                 where: {
                     id: user.id
                 }
+            })
+
+            const teste = await fetch(variables.MAIL_SERVICE_URL.concat("/api/send-mail/welcome-user"), {
+                method: "POST",
+                body: JSON.stringify({
+                    name: userData.name,
+                    email: userData.email,
+                    key: 'bananinha123'
+                }),
+                headers: { "Content-Type": "application/json" }
             })
         }
 
