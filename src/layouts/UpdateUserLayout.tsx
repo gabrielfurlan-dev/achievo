@@ -1,9 +1,9 @@
 import { ConfirmButton } from "@/components/Buttons";
 import { ProfileImage } from "@/components/profileImage";
-import { updateUser } from "@/services/userService";
+import { updateUser, usernameAlradyTaken } from "@/services/userService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -17,6 +17,37 @@ interface updateUserLayoutProps {
 export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister }: updateUserLayoutProps) {
     const { userInfo, setUserInfo } = useUserInfoStore()
     const router = useRouter()
+    const [existingUser, setExistingUser] = useState(false);
+    const {
+        register,
+        setValue,
+        handleSubmit,
+        getValues,
+        watch,
+        setError,
+        formState: { errors },
+    } = useForm<updateProfileSchema>({
+        resolver: zodResolver(updateProfileSchema)
+    })
+
+    async function validateUsernameAlreadyTaken(username: string) {
+        if (userInfo.username != username) {
+            if ((await usernameAlradyTaken(username)).data.usernameAlredyTaken) {
+                console.log("ta passando aqui")
+                setError('username', { message: 'Usuário não disponível' });
+                return { taken: true };
+            }
+        }
+
+        return { taken: false };
+    }
+
+    useEffect(() => {
+        setValue("name", userInfo.name ?? "")
+        setValue("username", userInfo.username ?? "")
+        setValue("description", userInfo.description ?? "")
+        setValue("email", userInfo.email ?? "")
+    }, [userInfo])
 
     function validateIfHasUpdate(data: updateProfileSchema) {
         if (userInfo.name != data.name) return true;
@@ -27,6 +58,9 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
     }
 
     async function handleUpdateUser(data: updateProfileSchema) {
+
+        if ((await validateUsernameAlreadyTaken(getValues('username'))).taken) return;
+
         const successMessage = isFinishingRegister ? "Cadastro finalizado com sucesso." : "Cadastro atualizado com sucesso"
         const failMessage = isFinishingRegister ? "Não foi possível finalizar o cadastro." : "Não foi possível atualizar o cadastro"
 
@@ -42,23 +76,6 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
         await Swal.fire("Good Job!", successMessage)
         router.push(destinationPathOnUpdate)
     }
-
-    const {
-        register,
-        setValue,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<updateProfileSchema>({
-        resolver: zodResolver(updateProfileSchema)
-    })
-
-
-    useEffect(() => {
-        setValue("name", userInfo.name ?? "")
-        setValue("username", userInfo.username ?? "")
-        setValue("description", userInfo.description ?? "")
-        setValue("email", userInfo.email ?? "")
-    }, [userInfo])
 
     return (
         <>
@@ -95,7 +112,7 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
                                     <span className="text-SECONDARY text-xs">*{errors.username?.message}</span>
                                 </div>
                                 <input
-                                    {...register('username')}
+                                    {...register('username', { onBlur: () => validateUsernameAlreadyTaken(getValues('username')) })}
                                     name="username"
                                     type="text"
                                     placeholder="jhondoe"

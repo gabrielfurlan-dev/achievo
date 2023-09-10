@@ -67,3 +67,13 @@ export async function userExists(email: string) {
 
     return (await response.json()) as IResponseData;
 }
+
+export async function usernameAlradyTaken(username: string) {
+    const response = await fetch(`api/user/username-taken/?username=${username}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    });
+
+    return (await response.json()) as IResponseData;
+}
+
