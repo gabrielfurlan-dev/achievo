@@ -1,39 +1,5 @@
 ## About
 Weekly report is a website to track your week goals by different types of trackers and notes.
 
-## Technologies and Frameworks
-- Firestore
-- Firebase Auth
-- Next js
-- Phosphore Icons
-
-## Getting Started
-
-### Website
-You can access the app by following url: **https://weeklyreport-preview.vercel.app**
-
-### Installing locally
-Install all the dependences:
-```bash
-npm install
-```
-
-Add a file named '.env' and put the following data by your firebase project.
-
-![[Examples]](src/assets/img/dotenv-screenshot.png)
-
-
-Run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000)
-
-And, voilà!
-![[Examples]](src/assets/img/example-screenshots.png)
+## Protótipos
+(View on FIGMA.](https://www.figma.com/file/tes6BXvUFDvJKigv9AkDNs/weekly-report?type=design&node-id=756%3A596&mode=design&t=eeyhyP4W6obZxR4i-1)
