@@ -5,37 +5,46 @@ import { CircularProgress } from "@mui/material";
 import { handleLoginGoogle } from "@/services/loginService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import Swal from "sweetalert2";
+import { signIn, useSession } from "next-auth/react";
 
 export default function login() {
     const [isLoading, setIsLoading] = useState(false);
     const { setUserInfo } = useUserInfoStore();
 
-    async function handleLogin() {
-        setIsLoading(true);
+    // async function handleLogin() {
+    //     setIsLoading(true);
 
-        const loginData = await handleLoginGoogle();
+    //     const loginData = await handleLoginGoogle();
 
-        if (loginData.success) {
-            setUserInfo({
-                alreadyRegistered: loginData.data.alreadyRegistered,
-                id: loginData.data.id,
-                email: loginData.data.email,
-                name: loginData.data.name,
-                username: loginData.data.username,
-                imageURL: loginData.data.imageURL,
-            });
+    //     if (loginData.success) {
+    //         setUserInfo({
+    //             alreadyRegistered: loginData.data.alreadyRegistered,
+    //             id: loginData.data.id,
+    //             email: loginData.data.email,
+    //             name: loginData.data.name,
+    //             username: loginData.data.username,
+    //             imageURL: loginData.data.imageURL,
+    //         });
 
-            if (!loginData.data.alreadyRegistered) {
-                Router.push("/finish-signup");
-                return;
-            }
+    //         if (!loginData.data.alreadyRegistered) {
+    //             Router.push("/finish-signup");
+    //             return;
+    //         }
 
-            Router.push("/home");
-        } else {
-            Swal.fire("Oops!", "Não foi possível realizar o login.");
-        }
+    //         Router.push("/home");
+    //     } else {
+    //         Swal.fire("Oops!", "Não foi possível realizar o login.");
+    //     }
 
-        setIsLoading(false);
+    //     setIsLoading(false);
+    // }
+
+    const { data } = useSession()
+
+    console.log(JSON.stringify(data))
+
+    function handleNextAuthSignIn() {
+        signIn('google')
     }
 
     return (
@@ -59,7 +68,8 @@ export default function login() {
                             hover:bg-PRINCIPAL hover:text-WHITE_PRINCIPAL
                              dark:text-WHITE_PRINCIPAL
                             "
-                            onClick={handleLogin}
+                            // onClick={handleLogin}
+                            onClick={handleNextAuthSignIn}
                         >
                             <GoogleLogo size={24} />
                             <p className="text-lg">Fazer login com Google</p>

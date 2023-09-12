@@ -4,16 +4,20 @@ import GlobalStyle from "../styles/globals";
 import { ThemeProvider } from "styled-components";
 import theme from "@/styles/theme";
 import { DarkThemeProvider } from "@/contexts/ThemeContext";
+import { SessionProvider } from 'next-auth/react'
 
-const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+
+const App: React.FC<AppProps> = ({ Component, pageProps: { session, ...props } }) => {
     return (
         <div className="flex col bg-WHITE dark:bg-DARK_BACKGROUND">
-            <ThemeProvider theme={theme}>
-                <DarkThemeProvider>
-                    <Component {...pageProps} />
-                </DarkThemeProvider>
-                <GlobalStyle />
-            </ThemeProvider>
+            <SessionProvider session={session}>
+                <ThemeProvider theme={theme}>
+                    <DarkThemeProvider>
+                        <Component {...props} />
+                    </DarkThemeProvider>
+                    <GlobalStyle />
+                </ThemeProvider>
+            </SessionProvider>
         </div>
     );
 };
