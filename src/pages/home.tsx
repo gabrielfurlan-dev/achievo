@@ -32,7 +32,7 @@ export default function home() {
     }
 
     async function getNotifications() {
-        if (userInfo.id == 0) return;
+        if (userInfo.id == "") return;
 
         const result = await fetchNotifications(userInfo.id);
 

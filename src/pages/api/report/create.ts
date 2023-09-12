@@ -5,7 +5,7 @@ import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export interface ICreateReportCommand {
-    userRef: number;
+    userId: string;
     progressGoals: IProgressGoalRaw[];
     checkGoals: ICheckGoalRaw[];
 }
@@ -22,13 +22,13 @@ export default async function handler(
     }
 
     try {
-        const { userRef, checkGoals, progressGoals }: ICreateReportCommand =
+        const { userId , checkGoals, progressGoals }: ICreateReportCommand =
             req.body;
 
         const report = await db.$transaction(async transaction => {
             const report = await transaction.report.create({
                 data: {
-                    userId: userRef,
+                    userId: userId,
                 },
             });
 

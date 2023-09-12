@@ -3,7 +3,7 @@ import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export interface IMarkNotificationAsReadCommand {
-    userId: number;
+    userId: string;
     notificationId: number;
 }
 

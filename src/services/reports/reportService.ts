@@ -22,13 +22,13 @@ export interface IUpdateReport {
 }
 
 interface ICreateReport {
-    userRef: number;
+    userId: string;
     progressGoals: IProgressGoalRaw[];
     checkGoals: ICheckGoalRaw[];
 }
 
 export async function createReport({
-    userRef,
+    userId,
     progressGoals,
     checkGoals,
 }: ICreateReport) {
@@ -36,7 +36,7 @@ export async function createReport({
         const report = await fetch("/api/report/create", {
             method: "POST",
             body: JSON.stringify({
-                userRef,
+                userId: userId,
                 checkGoals,
                 progressGoals,
             } as ICreateReportCommand),
@@ -136,12 +136,12 @@ export async function getReport(reportId: number) {
     }
 }
 
-export async function validateReportFromWeek(userId: number) {
+export async function validateReportFromWeek(userId: string) {
     try {
         const { firstDayOfWeek, lastDayOfWeek } = getWeekInterval(new Date())
 
         const queryParams = new URLSearchParams({
-            userId: userId.toString(),
+            userId: userId,
             beginDateOfWeek: firstDayOfWeek.toString(),
             endDateOfWeek: lastDayOfWeek.toString(),
         });

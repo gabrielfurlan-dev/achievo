@@ -10,7 +10,7 @@ export default function pages() {
     return (
         <PageLayout>
             <CompactNavBar goBackUrl={"/profile/" + userInfo.id} IconPage={AddressBook} title="Editar perfil" subTitle="" />
-            <UpdateUserLayout destinationPathOnUpdate="/home" isFinishingRegister />
+            <UpdateUserLayout destinationPathOnUpdate="/home" />
         </PageLayout>
     );
 }

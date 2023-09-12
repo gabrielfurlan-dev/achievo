@@ -11,7 +11,7 @@ export default async function handler(
         return;
     }
 
-    const userId = Number(req.query.userId);
+    const userId = req.query.userId as string;
 
     try {
         const readNotificationIds = await db.readNotifications.findMany({
