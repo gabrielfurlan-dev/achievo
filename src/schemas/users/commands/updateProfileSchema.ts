@@ -9,7 +9,7 @@ export const updateProfileSchema = z.object({
         .nonempty('campo requerido')
         .min(4, 'Deve conter pelo menos 4 caracteres')
         .max(20, 'Deve conter no máximo 20 caracteres')
-        .refine((value) => /^[a-zA-Z0-9_.]+$/.test(value), 'Deve conter apenas letras, números, underscore e pontos'),
+        .refine((value) => /^[a-zA-Z0-9_.]+$/.test(value), 'Permitido apenas caracteres alfanuméricos'),
     description: z.string()
         .max(150, 'Deve conter no máximo 150 caracteres'),
     email: z.string()

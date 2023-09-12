@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { updateProfileSchema } from "@/schemas/users/commands/updateProfileSchema";
+import { InputValidation } from "@/components/Inputs/InputValidation";
+import { TextAreaValidation } from "@/components/Inputs/TextAreaValidation";
 
 interface updateUserLayoutProps {
     destinationPathOnUpdate: "/home" | string
@@ -17,7 +19,7 @@ interface updateUserLayoutProps {
 export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister }: updateUserLayoutProps) {
     const { userInfo, setUserInfo } = useUserInfoStore()
     const router = useRouter()
-    const [existingUser, setExistingUser] = useState(false);
+
     const {
         register,
         setValue,
@@ -30,6 +32,14 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
         resolver: zodResolver(updateProfileSchema)
     })
 
+    useEffect(() => {
+        setValue("name", userInfo.name ?? "")
+        setValue("username", userInfo.username ?? "")
+        setValue("description", userInfo.description ?? "")
+        setValue("email", userInfo.email ?? "")
+    }, [userInfo])
+
+
     async function validateUsernameAlreadyTaken(username: string) {
         if (userInfo.username != username) {
             if ((await usernameAlradyTaken(username)).data.usernameAlredyTaken) {
@@ -41,13 +51,6 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
 
         return { taken: false };
     }
-
-    useEffect(() => {
-        setValue("name", userInfo.name ?? "")
-        setValue("username", userInfo.username ?? "")
-        setValue("description", userInfo.description ?? "")
-        setValue("email", userInfo.email ?? "")
-    }, [userInfo])
 
     function validateIfHasUpdate(data: updateProfileSchema) {
         if (userInfo.name != data.name) return true;
@@ -86,84 +89,39 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
                     </div>
                     <div className="flex flex-col gap-4 w-full">
                         <div className="grid lg:grid-cols-2 gap-2">
-
-                            <div className="flex flex-col">
-                                <div className="flex gap-2 items-center">
-                                    <label className="text-LIGHT_TEXT dark:text-DARK_TEXT" htmlFor="name" children={"Nome"} />
-                                    <span className="text-SECONDARY text-xs">{errors.name && `*${errors.name?.message}`}</span>
-                                </div>
-                                <input
-                                    {...register('name')}
-                                    name="name"
-                                    type="text"
-                                    placeholder="Jhon Doe"
-                                    className="bg-LIGHT_BACKGROUND_SECONDARY
-                                               dark:bg-DARK_BACKGROUND_SECONDARY
-                                               text-LIGHT_TEXT
-                                               dark:text-DARK_TEXT
-                                               rounded-lg
-                                               py-2 px-3"
-                                />
-                            </div>
-
-                            <div className="flex flex-col">
-                                <div className="flex gap-2 items-center">
-                                    <label className="text-LIGHT_TEXT dark:text-DARK_TEXT" htmlFor="username" children={"Nome de usuário"} />
-                                    <span className="text-SECONDARY text-xs">*{errors.username?.message}</span>
-                                </div>
-                                <input
-                                    {...register('username', { onBlur: () => validateUsernameAlreadyTaken(getValues('username')) })}
-                                    name="username"
-                                    type="text"
-                                    placeholder="jhondoe"
-                                    className="bg-LIGHT_BACKGROUND_SECONDARY
-                                               dark:bg-DARK_BACKGROUND_SECONDARY
-                                               text-LIGHT_TEXT
-                                               dark:text-DARK_TEXT
-                                               rounded-lg
-                                               py-2 px-3"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col">
-                            <div className="flex gap-2 items-center">
-                                <label className="text-LIGHT_TEXT dark:text-DARK_TEXT" htmlFor="email" children={"Email"} />
-                                <span className="text-SECONDARY text-xs">*{errors.email?.message}</span>
-                            </div>
-                            <input
-                                {...register('email')}
-                                disabled
-                                name="email"
-                                type="text"
-                                placeholder="jhondoe@email.com"
-                                className="bg-LIGHT_BACKGROUND_SECONDARY
-                                               dark:bg-DARK_BACKGROUND_SECONDARY
-                                               text-LIGHT_TEXT
-                                               dark:text-DARK_TEXT
-                                               rounded-lg
-                                               py-2 px-3"
+                            <InputValidation
+                                title="Nome"
+                                inputName="name"
+                                placeholder="Jhon Doe"
+                                errors={errors.name?.message}
+                                reference={register('name')}
+                            />
+                            <InputValidation
+                                title="Nome de Usuário"
+                                inputName="username"
+                                placeholder="jhondoe"
+                                errors={errors.username?.message}
+                                reference={register('username')}
+                                onBlur={() => validateUsernameAlreadyTaken(getValues('username'))}
                             />
                         </div>
 
-                        <div className="flex flex-col">
-                            <div className="flex gap-2 items-center">
-                                <label className="text-LIGHT_TEXT dark:text-DARK_TEXT" htmlFor="description" children={"Descrição"} />
-                                <span className="text-SECONDARY text-xs">*{errors.description?.message}</span>
-                            </div>
-                            <textarea
-                                {...register('description')}
-                                name="description"
-                                placeholder="Sua descrição aqui..."
-                                style={{ minHeight: '100px' }}
-                                className="bg-LIGHT_BACKGROUND_SECONDARY
-                                               dark:bg-DARK_BACKGROUND_SECONDARY
-                                               text-LIGHT_TEXT
-                                               dark:text-DARK_TEXT
-                                               rounded-lg
-                                               py-2 px-3"
-                            />
-                        </div>
+                        <InputValidation
+                            title="Email"
+                            inputName="email"
+                            placeholder="jhondoe@email.com"
+                            type="email"
+                            errors={errors.email?.message}
+                            reference={register('email')}
+                            disabled
+                        />
+                        <TextAreaValidation
+                            title="Descrição"
+                            inputName="description"
+                            placeholder={`junte-se a mim na jornada de evolução 💪✨\nBe better than yesterday! 🚀\n#LetsGrind #WeeklyReport`}
+                            errors={errors.description?.message}
+                            reference={register('description')}
+                        />
 
                     </div>
                 </div>
