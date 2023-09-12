@@ -1,11 +1,9 @@
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { useRouter } from "next/router";
-import { CaretDown, Gear, PencilSimple, SignOut, UserCircle } from "phosphor-react";
+import { CaretDown, PencilSimple, SignOut, UserCircle } from "phosphor-react";
 import React, { useEffect, useRef, useState } from "react";
 import { ProfileDropdownItem } from "./ProfileDropdownItem";
 
 export default function ProfileDropdown() {
-    const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
@@ -85,7 +83,7 @@ export default function ProfileDropdown() {
                         <div className="flex justify-between items-center">
                             <div className="text-lg font-medium">{userInfo.name}</div>
                             <a
-                                href={`/profile/${userInfo.email}`}
+                                href={`/update-profile`}
                                 className="p-1 rounded-lg
                             hover:bg-NEUTRAL_500
                             hover:text-NEUTRAL_100
@@ -97,16 +95,16 @@ export default function ProfileDropdown() {
                         </div>
                         <div className="text-xs text-NEUTRAL_200 dark:text-NEUTRAL_300"> @{userInfo.username} </div>
                     </div>
-                    {
 
-                    /* UNCOMMENT THIS CODE WHEN INSERT NEW BUTTONS
-                     <hr className="m-auto w-[80%]" />
-                    <ul
-                        className="py-2 text-sm text-NEUTRAL_100 dark:text-NEUTRAL_550"
-                        aria-labelledby="dropdownUserAvatarButton">
-                        PUT NEW ProfileDropdownItem HERE!!!!!
-                    </ul> */}
                     <hr className="m-auto w-[80%]" />
+
+                    <ul className="py-2 text-sm text-NEUTRAL_100 dark:text-NEUTRAL_550"
+                        aria-labelledby="dropdownUserAvatarButton">
+                        <ProfileDropdownItem text={"Meu Perfil"} Icon={UserCircle} url={`/profile/${userInfo.username}`} />
+                    </ul>
+
+                    <hr className="m-auto w-[80%]" />
+
                     <ul className="py-2 text-sm text-NEUTRAL_100 dark:text-NEUTRAL_550"
                         aria-labelledby="dropdownUserAvatarButton" >
                         <ProfileDropdownItem text={"Sair"} Icon={SignOut} onClick={cleanUserInfo} url="/login"
