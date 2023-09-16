@@ -2,12 +2,18 @@ import { useUserInfoStore } from "@/store/userStoreInfo";
 import { CaretDown, PencilSimple, SignOut, UserCircle } from "phosphor-react";
 import React, { useEffect, useRef, useState } from "react";
 import { ProfileDropdownItem } from "./ProfileDropdownItem";
+import { signOut } from "next-auth/react";
 
 export default function ProfileDropdown() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const { userInfo, cleanUserInfo } = useUserInfoStore();
+
+    function handleSignOut() {
+        cleanUserInfo()
+        signOut({ callbackUrl: "/login" })
+    }
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -107,7 +113,7 @@ export default function ProfileDropdown() {
 
                     <ul className="py-2 text-sm text-NEUTRAL_100 dark:text-NEUTRAL_550"
                         aria-labelledby="dropdownUserAvatarButton" >
-                        <ProfileDropdownItem text={"Sair"} Icon={SignOut} onClick={cleanUserInfo} url="/login"
+                        <ProfileDropdownItem text={"Sair"} Icon={SignOut} onClick={handleSignOut} url="/login"
                             className="rounded-lg mx-4 hover:bg-SECONDARY hover:text-NEUTRAL_550 transition hover:duration-200"
                         />
                     </ul>

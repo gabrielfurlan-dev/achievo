@@ -14,7 +14,7 @@ const envSchema = z.object({
     BASE_URL: z.string(),
     MAIL_SERVICE_URL: z.string(),
     MAIL_SERVICE_KEY: z.string(),
-    GOOGLE_CLIEND_ID: z.string(),
+    GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_SECRET_KEY: z.string(),
 });
 
@@ -33,7 +33,7 @@ const variables = envSchema.parse({
     BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
     MAIL_SERVICE_URL: process.env.NEXT_PUBLIC_MAIL_SERVICE_URL,
     MAIL_SERVICE_KEY: process.env.NEXT_PUBLIC_MAIL_SERVICE_KEY,
-    GOOGLE_CLIEND_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIEND_ID,
+    GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
     GOOGLE_SECRET_KEY: process.env.NEXT_PUBLIC_GOOGLE_SECRET_KEY,
 });
 
