@@ -51,6 +51,7 @@
     "supabase": "^1.82.2",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.4.8",
+    "tailwind-variants": "^0.1.14",
     "ts-node": "^10.9.1",
     "uuid": "^9.0.0",
     "zod": "^3.21.4",

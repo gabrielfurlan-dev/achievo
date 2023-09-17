@@ -84,6 +84,10 @@ export default function EditReport() {
                 if (report) {
                     setReportData(report)
                 }
+                else {
+                    await Swal.fire("Erro", "Report não encontrado!", "error")
+                    router.push("/list-reports")
+                }
             }
         }
 
