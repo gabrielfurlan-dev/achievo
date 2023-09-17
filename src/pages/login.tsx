@@ -1,11 +1,7 @@
 import { GoogleLogo, ReadCvLogo } from "@phosphor-icons/react";
-import Router from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CircularProgress } from "@mui/material";
-import { handleLoginGoogle } from "@/services/loginService";
-import { useUserInfoStore } from "@/store/userStoreInfo";
-import Swal from "sweetalert2";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 
@@ -29,16 +25,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
 export default function login() {
     const [isLoading, setIsLoading] = useState(false);
-    const { setUserInfo } = useUserInfoStore();
-
-    const { data: session, status } = useSession();
-
-    // useEffect(() => {
-    //     if (status === "authenticated") {
-    //         const { name, email, image } = session.user;
-    //         setUserInfo({ name, email, image });
-    //     }
-    // }, [status, session]);
 
     function handleNextAuthSignIn() {
         setIsLoading(true);
@@ -64,9 +50,7 @@ export default function login() {
                             text-GRAY_DARK
                             border-PRINCIPAL
                             hover:bg-PRINCIPAL hover:text-WHITE_PRINCIPAL
-                             dark:text-WHITE_PRINCIPAL
-                            "
-                            // onClick={handleLogin}
+                             dark:text-WHITE_PRINCIPAL"
                             onClick={handleNextAuthSignIn}
                         >
                             <GoogleLogo size={24} />

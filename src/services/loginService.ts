@@ -23,28 +23,24 @@ async function callGoogleAuth() {
     }
 }
 
-export async function handleLoginGoogle() {
-    const user = await callGoogleAuth();
+export async function handleLoginGoogle(name: string, email: string, imageURL: string) {
 
-    if (user?.success) {
-        const userData = await getUserData(user.email);
+    try {
 
-        if (userData.success) {
+        let userData = await userExists(email)
 
-            let userData = await userExists(user.email)
-
-            if (!userData.data) {
-                userData = await registerUser(user.name, user.email, user.photoURL);
-                await sendNewUserEmail(user.name, user.email);
-            }
-
-            return userData
+        if (!userData.data) {
+            userData = await registerUser(name, email, imageURL);
+            await sendNewUserEmail(name, email);
         }
-    }
 
-    return {
-        success: false,
-        message: "Não foi possível realizar o login.",
-        data: null,
-    } as IResponseData;
+        return userData
+
+    } catch (error) {
+        return {
+            success: false,
+            message: "Não foi possível realizar o login.",
+            data: null,
+        } as IResponseData;
+    }
 }

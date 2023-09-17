@@ -1,8 +1,9 @@
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { CaretDown, PencilSimple, SignOut, UserCircle } from "phosphor-react";
+import { CaretDown, PencilSimple, SignOut, User } from "phosphor-react";
 import React, { useEffect, useRef, useState } from "react";
 import { ProfileDropdownItem } from "./ProfileDropdownItem";
 import { signOut } from "next-auth/react";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function ProfileDropdown() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -11,6 +12,7 @@ export default function ProfileDropdown() {
     const { userInfo, cleanUserInfo } = useUserInfoStore();
 
     function handleSignOut() {
+        setIsDropdownOpen(false);
         cleanUserInfo()
         signOut({ callbackUrl: "/login" })
     }
@@ -63,7 +65,7 @@ export default function ProfileDropdown() {
                         <div className="w-12 h-12">
                             {userInfo.imageURL ?
                                 (<img src={userInfo.imageURL} className="rounded-full" alt="user photo" />)
-                                : (<UserCircle className="h-full w-full" />)}
+                                : (<CircularProgress color="inherit" />)}
                         </div>
                         <CaretDown size={24} className="text-LIGHT_TEXT dark:text-DARK_TEXT" />
                     </div>
@@ -99,14 +101,14 @@ export default function ProfileDropdown() {
                                 <PencilSimple size={20} />
                             </a>
                         </div>
-                        <div className="text-xs text-NEUTRAL_200 dark:text-NEUTRAL_300"> @{userInfo.username} </div>
+                        <div className="text-xs text-NEUTRAL_200 dark:text-NEUTRAL_300"> {`@${userInfo.username}`} </div>
                     </div>
 
                     <hr className="m-auto w-[80%]" />
 
                     <ul className="py-2 text-sm text-NEUTRAL_100 dark:text-NEUTRAL_550"
                         aria-labelledby="dropdownUserAvatarButton">
-                        <ProfileDropdownItem text={"Meu Perfil"} Icon={UserCircle} url={`/profile/${userInfo.username}`} />
+                        <ProfileDropdownItem text={"Meu Perfil"} Icon={User} url={`/profile/${userInfo.username}`} />
                     </ul>
 
                     <hr className="m-auto w-[80%]" />
