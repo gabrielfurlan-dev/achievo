@@ -1,6 +1,7 @@
 import { IResponseData } from "@/interfaces/iResponseData";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import { getUserData } from "./userService";
+import { getUserData, registerUser, userExists } from "./userService";
+import { sendNewUserEmail } from "./email/newUserEmail";
 
 async function callGoogleAuth() {
     try {
@@ -29,17 +30,15 @@ export async function handleLoginGoogle() {
         const userData = await getUserData(user.email);
 
         if (userData.success) {
-            const response = await fetch("/api/user/register", {
-                method: "POST",
-                body: JSON.stringify({
-                    email: user.email,
-                    name: user.name,
-                    imageURL: user.photoURL,
-                }),
-                headers: { "Content-Type": "application/json" },
-            });
 
-            return (await response.json()) as IResponseData;
+            let userData = await userExists(user.email)
+
+            if (!userData.data) {
+                userData = await registerUser(user.name, user.email, user.photoURL);
+                await sendNewUserEmail(user.name, user.email);
+            }
+
+            return userData
         }
     }
 

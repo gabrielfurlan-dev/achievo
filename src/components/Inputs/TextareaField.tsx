@@ -35,7 +35,7 @@ export function TextareaField({
     return (
         <InputLayout error={error} label={label}>
             <textarea
-                className="flex text-md rounded-lg py-2 px-4 bg-LIGHT_BACKGROUND_SECONDARY dark:bg-DARK_BACKGROUND_SECONDARY"
+                className="flex text-md rounded-lg py-2 px-4 bg-LIGHT_BACKGROUND_SECONDARY dark:bg-DARK_BACKGROUND_SECONDARY text-LIGHT_TEXT dark:text-DARK_TEXT"
                 disabled={disabled}
                 placeholder={placeHolder}
                 value={value}

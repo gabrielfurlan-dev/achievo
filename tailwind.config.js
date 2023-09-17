@@ -35,15 +35,39 @@ module.exports = {
                 DARK_BACKGROUND_SECONDARY: "#1C1C1C",
                 DARK_BACKGROUND_TERTIARY: "#2b2b2b",
 
-                DARK_TEXT:"#DADADA",
-                DARK_TEXT_SECONDARY:"#808080",
+                DARK_TEXT: "#DADADA",
+                DARK_TEXT_SECONDARY: "#808080",
 
                 PRINCIPAL: '#5C8A74',
                 LIGHT_PRINCIPAL_SECONDARY: "#5C8A7457",
                 DARK_PRINCIPAL_SECONDARY: "#5C8A7457",
 
+                PRINCIPAL_HOVER: "#D6E0DB",
+                PRINCIPAL_HOVER_DARK: "#2A3831",
+
                 //AUXILIAR
-                YELLOW: "#F1E57A"
+                YELLOW: "#F1E57A",
+
+                //## ===REORGANIZATION ==##
+                //NEUTRAL COLORS
+                NEUTRAL_600: "#F8F8F8",
+                NEUTRAL_550: "#E7E7E7",
+                NEUTRAL_500: "#EFEFEF",
+                NEUTRAL_400: "#CCCCCC",
+                NEUTRAL_300: "#808080",
+                NEUTRAL_200: "#595959",
+                NEUTRAL_150: "#1D1D1D",
+                NEUTRAL_100: "#1C1C1C",
+
+                //NEUTRAL DARK
+                NEUTRAL_DARK_100: "#0D0D0D",
+                NEUTRAL_DARK_200: "#141414",
+                NEUTRAL_DARK_300: "#1A1A1A",
+
+
+                //AUXILIAR COLORS
+                NEGATIVE: "#F97474",
+
             },
             fontFamily: {
                 'sans': ['Montserrat', 'sans-serif']
