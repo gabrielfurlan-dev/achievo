@@ -26,9 +26,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 export default function login() {
     const [isLoading, setIsLoading] = useState(false);
 
-    function handleNextAuthSignIn() {
+    async function handleNextAuthSignIn() {
         setIsLoading(true);
-        signIn('google')
+        await signIn('google')
     }
 
     return (

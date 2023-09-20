@@ -43,7 +43,6 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
     async function validateUsernameAlreadyTaken(username: string) {
         if (userInfo.username != username) {
             if ((await usernameAlradyTaken(username)).data.usernameAlredyTaken) {
-                console.log("ta passando aqui")
                 setError('username', { message: 'Usuário não disponível' });
                 return { taken: true };
             }

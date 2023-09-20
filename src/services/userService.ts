@@ -1,29 +1,6 @@
 import { IUpdateUserCommand } from "@/pages/api/user/update";
-import { doc, getDoc } from "firebase/firestore";
-import db from "@/firebaseConfig";
-import { IUserInfo } from "@/store/userStoreInfo";
 import { IResponseData } from "@/interfaces/iResponseData";
-import variables from "@/schemas/env-variables";
 
-export async function getUserData(email: string) {
-    try {
-        const docRef = doc(db, "users", email);
-        const docSnap = await getDoc(docRef);
-        const id = docSnap.id;
-        const userData = (await docSnap.data()) as IUserInfo;
-
-        return {
-            success: true,
-            data: {
-                ...userData,
-                id: id,
-            },
-        };
-    } catch (error) {
-        console.error("Erro ao buscar os dados do usuário:", error);
-        return { success: false, data: null };
-    }
-}
 
 export async function updateUser(id: string, name: string, username: string, description: string) {
     const responseData = await fetch("/api/user/update",
@@ -40,7 +17,6 @@ export async function updateUser(id: string, name: string, username: string, des
     )
 
     const response = await responseData.json();
-    console.log(response)
 
     return response.success;
 }
