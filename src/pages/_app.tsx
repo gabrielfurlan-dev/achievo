@@ -4,18 +4,30 @@ import GlobalStyle from "../styles/globals";
 import { ThemeProvider } from "styled-components";
 import theme from "@/styles/theme";
 import { DarkThemeProvider } from "@/contexts/ThemeContext";
-import { SessionProvider } from 'next-auth/react'
+import { SessionProvider, getSession } from 'next-auth/react'
 import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
 
-const App: React.FC<AppProps> = ({ Component, pageProps: { session, ...props } }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+
+    const session = await getSession({ req })
     const router = useRouter()
 
-    useEffect(() => {
-        if (!session && router.pathname !== '/login') {
-            router.push('/login')
-            return;
+    if (!session && router.pathname !== '/login') {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false
+            }
         }
-    }, [session])
+    }
+
+    return {
+        props: {}
+    }
+}
+
+const App: React.FC<AppProps> = ({ Component, pageProps: { session, ...props } }) => {
 
     return (
         <div className="flex col bg-WHITE dark:bg-DARK_BACKGROUND">
