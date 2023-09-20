@@ -270,7 +270,6 @@ export default function EditReport() {
                     </div>
                 </div>
 
-
                 <div id="Goals">
                     <div className="mt-12">
                         <div className="flex flex-col gap-10 mt-2">

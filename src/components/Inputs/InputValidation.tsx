@@ -15,7 +15,7 @@ interface inputValidationProps extends InputHTMLAttributes<HTMLInputElement> {
 export function InputValidation({ title, inputName, placeholder, reference, errors, disabled, ...props }: inputValidationProps) {
 
     const input = tv({
-        base: "w-full bg-transparent",
+        base: "w-full bg-transparent py-2 pl-3",
         variants: {
             color: {
                 enabled: "text-LIGHT_TEXT dark:text-DARK_TEXT",
@@ -33,8 +33,7 @@ export function InputValidation({ title, inputName, placeholder, reference, erro
             <div className="bg-NEUTRAL_500
                             dark:bg-DARK_BACKGROUND_SECONDARY
                             flex items-center
-                            rounded-lg
-                            py-2 px-3">
+                            rounded-lg">
                 <input
                     {...props}
                     {...reference}
@@ -43,7 +42,7 @@ export function InputValidation({ title, inputName, placeholder, reference, erro
                     placeholder={placeholder}
                     className={input({ color: disabled ? "disabled" : "enabled" })}
                 />
-                {disabled ? <LockSimple className="text-GRAY" size={18} /> : ""}
+                {disabled ? <LockSimple className="text-GRAY ml-3 mr-3" size={18} /> : ""}
             </div>
         </div>
     )

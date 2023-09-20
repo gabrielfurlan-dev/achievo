@@ -1,41 +1,33 @@
 import { GoogleLogo, ReadCvLogo } from "@phosphor-icons/react";
-import Router from "next/router";
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
-import { handleLoginGoogle } from "@/services/loginService";
-import { useUserInfoStore } from "@/store/userStoreInfo";
-import Swal from "sweetalert2";
+import { signIn } from "next-auth/react";
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+    const session = await getSession({ req })
+
+    if (session) {
+        return {
+            redirect: {
+                destination: '/home',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
+}
 
 export default function login() {
     const [isLoading, setIsLoading] = useState(false);
-    const { setUserInfo } = useUserInfoStore();
 
-    async function handleLogin() {
+    async function handleNextAuthSignIn() {
         setIsLoading(true);
-
-        const loginData = await handleLoginGoogle();
-
-        if (loginData.success) {
-            setUserInfo({
-                alreadyRegistered: loginData.data.alreadyRegistered,
-                id: loginData.data.id,
-                email: loginData.data.email,
-                name: loginData.data.name,
-                username: loginData.data.username,
-                imageURL: loginData.data.imageURL,
-            });
-
-            if (!loginData.data.alreadyRegistered) {
-                Router.push("/finish-signup");
-                return;
-            }
-
-            Router.push("/home");
-        } else {
-            Swal.fire("Oops!", "Não foi possível realizar o login.");
-        }
-
-        setIsLoading(false);
+        await signIn('google')
     }
 
     return (
@@ -57,9 +49,8 @@ export default function login() {
                             text-GRAY_DARK
                             border-PRINCIPAL
                             hover:bg-PRINCIPAL hover:text-WHITE_PRINCIPAL
-                             dark:text-WHITE_PRINCIPAL
-                            "
-                            onClick={handleLogin}
+                             dark:text-WHITE_PRINCIPAL"
+                            onClick={handleNextAuthSignIn}
                         >
                             <GoogleLogo size={24} />
                             <p className="text-lg">Fazer login com Google</p>
