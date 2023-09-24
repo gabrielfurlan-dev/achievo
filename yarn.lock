@@ -2276,10 +2276,9 @@
   resolved "https://registry.yarnpkg.com/@panva/hkdf/-/hkdf-1.1.1.tgz#ab9cd8755d1976e72fc77a00f7655a64efe6cd5d"
   integrity sha512-dhPeilub1NuIG0X5Kvhh9lH4iW3ZsHlnzwgwbOlgwQ2wG1IqFzsgHqmKPk3WzsdWAeaxKJxgM0+W433RmN45GA==
 
-"@phosphor-icons/react@^2.0.6":
-  version "2.0.10"
-  resolved "https://registry.yarnpkg.com/@phosphor-icons/react/-/react-2.0.10.tgz#dcf2f6dabd42bf9156be38caf59d4c818af2b817"
-  integrity sha512-q5ITPNFhmEiYZLZOvEhjo2phlfxoOmit7vE1tBYMxcMqnZX2vdbMw3deDE7wCegpBKM/q/p39BJmhhoPcjZyCg==
+"@phosphor-icons/react@phosphor-icons/react":
+  version "2.0.13"
+  resolved "https://codeload.github.com/phosphor-icons/react/tar.gz/b4353ac3fd03914b682c0995d1549061cc9a054f"
 
 "@pkgr/utils@^2.3.1":
   version "2.4.2"
