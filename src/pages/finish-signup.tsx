@@ -1,4 +1,4 @@
-import { SimpleNavBar } from "@/components/NavBar/SimpleNavBar";
+import { SimpleNavBar } from "@/layouts/NavBar/SimpleNavBar";
 import PageLayout from "@/layouts/PageLayout";
 import { UpdateUserLayout } from "@/layouts/UpdateUserLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";

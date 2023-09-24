@@ -1,6 +1,6 @@
-import { NotificationDropdown } from "../NotificationDropdown";
-import ProfileDropdown from "../ProfileDropdown/ProfileDropdown";
-import { ThemeToggleButton } from "../ThemeToggleButton";
+import { NotificationDropdown } from "../../components/NotificationDropdown";
+import ProfileDropdown from "../../components/ProfileDropdown/ProfileDropdown";
+import { ThemeToggleButton } from "../../components/ThemeToggleButton";
 
 export function NavBarControls() {
     return (

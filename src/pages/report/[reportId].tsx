@@ -21,7 +21,7 @@ import { getCheckGoalsModified, getProgressGoalsModified } from "@/helpers/repor
 import { ConfirmToReload } from "@/components/ConfirmToReload";
 import isEqual from 'lodash/isEqual';
 import { normalizeProgressGoals } from "@/helpers/goalHelper";
-import { CompactNavBar } from "@/components/NavBar/CompactNavBar";
+import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrasesHelper";
 
 export default function EditReport() {
