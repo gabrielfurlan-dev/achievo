@@ -39,9 +39,7 @@ export default function login() {
             </div>
 
             <div className="flex mt-12">
-                {isLoading ? (
-                    <CircularProgress color="inherit" />
-                ) : (
+                {isLoading ? (<CircularProgress color="inherit" />) : (
                     <div className="flex flex-col items-center gap-4">
                         <button
                             className="flex flex-row items-center  border-[2px] m-auto rounded-xl px-4 py-2 gap-4
