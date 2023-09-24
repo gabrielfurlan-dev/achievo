@@ -1,4 +1,5 @@
-import { ArrowLeft, Icon } from "@phosphor-icons/react";
+import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+import { Icon } from "phosphor-react";
 import { NoBackgroundButton } from "../../components/Buttons";
 import { ReactNode } from "react";
 import { useRouter } from "next/router";

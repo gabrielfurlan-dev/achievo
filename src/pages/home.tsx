@@ -2,7 +2,7 @@ import { SimpleNavBar } from "@/layouts/NavBar/SimpleNavBar";
 import { fetchNotifications } from "@/services/notificationsService";
 import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { ListMagnifyingGlass, Stairs } from "@phosphor-icons/react";
+import { ListMagnifyingGlass, Stairs } from "@phosphor-icons/react/dist/ssr";
 import { useRouter } from "next/router";
 import { FilePlus, House, Icon } from "phosphor-react";
 import { useEffect, useState } from "react";

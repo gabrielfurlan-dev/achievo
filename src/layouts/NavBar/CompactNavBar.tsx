@@ -1,7 +1,8 @@
-import { ArrowLeft, Icon } from "@phosphor-icons/react";
+import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 import { ReactNode } from "react";
 import { useRouter } from "next/router";
 import { NavBarControls } from "./NavBarControls";
+import { Icon } from "phosphor-react";
 
 type pageHeaderProps = {
     IconPage: Icon;
