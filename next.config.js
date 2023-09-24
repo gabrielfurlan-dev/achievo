@@ -4,9 +4,6 @@
 // });
 
 module.exports = {
-    experimental: {
-        optimizePackageImports: ["@phosphor-icons/react"]
-      },
     eslint: { ignoreDuringBuilds: true },
     reactStrictMode: true,
     webpack(config) {
