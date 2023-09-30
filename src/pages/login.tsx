@@ -1,4 +1,4 @@
-import { GoogleLogo, ReadCvLogo } from "@phosphor-icons/react";
+import { GoogleLogo, ReadCvLogo } from "@phosphor-icons/react/dist/ssr";
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { signIn } from "next-auth/react";

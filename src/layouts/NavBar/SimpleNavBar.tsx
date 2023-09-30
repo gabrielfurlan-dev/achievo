@@ -1,4 +1,4 @@
-import { Icon } from "@phosphor-icons/react";
+import { Icon } from "phosphor-react";
 import { ReactNode } from "react";
 import { NavBarControls } from "./NavBarControls";
 

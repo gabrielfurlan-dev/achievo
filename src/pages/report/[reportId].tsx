@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
-import { ReadCvLogo } from "@phosphor-icons/react";
+import { ReadCvLogo } from "@phosphor-icons/react/dist/ssr";
 import { Plus } from "phosphor-react";
 import Modal from "@/components/Modal";
 import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
