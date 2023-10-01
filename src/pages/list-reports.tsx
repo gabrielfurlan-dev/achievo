@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { IReport } from "@/interfaces/iReport";
 import { Eye, PencilSimple } from "phosphor-react";
 import Link from "next/link";
-import { ListMagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
 import { NoBackgroundButton } from "@/components/Buttons";
 import { getWeek } from "date-fns";
 import PageLayout from "@/layouts/PageLayout";
@@ -31,7 +30,6 @@ export default function ListReport() {
     return (
         <PageLayout>
             <CompactNavBar
-                IconPage={ListMagnifyingGlass}
                 title="Relatórios"
                 subTitle="Todos os Reports estão aqui"
                 goBackUrl="/home"

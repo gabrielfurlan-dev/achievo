@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
-import { ReadCvLogo } from "@phosphor-icons/react/dist/ssr";
-import { Plus } from "phosphor-react";
 import Modal from "@/components/Modal";
 import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getWeek } from "date-fns";
@@ -23,6 +21,7 @@ import isEqual from 'lodash/isEqual';
 import { normalizeProgressGoals } from "@/helpers/goalHelper";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrasesHelper";
+import Plus from "phosphor-react/dist/icons/Plus";
 
 export default function EditReport() {
 
@@ -248,7 +247,6 @@ export default function EditReport() {
 
             <div className="h-full">
                 <CompactNavBar
-                    IconPage={ReadCvLogo}
                     title={`${getTitlePage()} Report`}
                     subTitle={`"${motivationalPhrase}"`}
                     goBackUrl={isNew ? "/home" : "/list-reports"}

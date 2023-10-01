@@ -1,9 +1,10 @@
-import { GoogleLogo, ReadCvLogo } from "@phosphor-icons/react/dist/ssr";
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { signIn } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
+import { ReadCVLogo } from "@/assets/icons/ReadCVLogo";
+import GoogleLogo from "phosphor-react/dist/icons/GoogleLogo";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     const session = await getSession({ req })
@@ -33,7 +34,7 @@ export default function login() {
     return (
         <div className="items-center h-screen w-screen justify-center flex flex-col">
             <div className="text-center items-center justify-center flex flex-col gap-2 dark:text-WHITE_PRINCIPAL">
-                <ReadCvLogo size={64} className="text-PRINCIPAL" />
+                <ReadCVLogo size={64} color="#5C8A74" />
                 <p className="text-xl">Bem vindo ao </p>
                 <span className="text-4xl font-semibold">Weekly Report</span>
             </div>

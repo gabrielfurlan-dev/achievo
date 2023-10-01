@@ -2,10 +2,8 @@ import { SimpleNavBar } from "@/layouts/NavBar/SimpleNavBar";
 import { fetchNotifications } from "@/services/notificationsService";
 import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { ListMagnifyingGlass, Stairs } from "@phosphor-icons/react/dist/ssr";
 import { useRouter } from "next/router";
-import { FilePlus, House, Icon } from "phosphor-react";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { INotificationData } from "@/interfaces/notifications/iNotificationData";
 import Modal from "@/components/Modal";
 import { validateReportFromWeek } from "@/services/reports/reportService";
@@ -13,6 +11,10 @@ import { useSession } from "next-auth/react";
 import { handleLoginGoogle } from "@/services/loginService";
 import Swal from "sweetalert2";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
+import { Stairs } from "@/assets/icons/Stairs";
+import { ListMagnifyingGlass } from "@/assets/icons/ListMagnifyingGlass";
+import House from "phosphor-react/dist/icons/House";
+import FilePlus from "phosphor-react/dist/icons/FilePlus";
 
 export default function home() {
     const router = useRouter();
@@ -106,7 +108,7 @@ export default function home() {
 
                 <div className="mt-10 flex gap-1 h-12">
                     <IconButton
-                        IconButton={FilePlus}
+                        IconButton={<FilePlus />}
                         name="Add"
                         method={async () => {
                             if (!await alreadyExistsReportsOnCurrentWeek())
@@ -114,7 +116,7 @@ export default function home() {
                         }}
                     />
                     <IconButton
-                        IconButton={ListMagnifyingGlass}
+                        IconButton={<ListMagnifyingGlass />}
                         name="Listar"
                         method={() => router.push("list-reports")}
                     />
@@ -129,7 +131,7 @@ export default function home() {
                     hideDelete
                 >
                     <div className="flex flex-col w-full items-center">
-                        <Stairs size={56} className="text-PRINCIPAL" />
+                        <Stairs size={56} />
                         <h2 className="text-xl font-bold mt-10">Editar Meta</h2>
                         <p className="mt-2">Você já possui um Report essa semana, deseja visualiza-lo?</p>
                     </div>
@@ -142,7 +144,7 @@ export default function home() {
 type props = {
     name: string;
     method: () => void;
-    IconButton: Icon;
+    IconButton: ReactNode;
 };
 
 function IconButton({ name, method, IconButton }: props) {
@@ -150,10 +152,11 @@ function IconButton({ name, method, IconButton }: props) {
         <div className="">
             <button
                 className="rounded-xl hover:bg-WHITE_PRINCIPAL dark:hover:bg-DARK_BACKGROUND_SECONDARY w-20 h-20 flex flex-col text-center items-center gap-2 justify-center text-GRAY"
-                onClick={method}
-            >
-                <IconButton className="text-PRINCIPAL" size={32} />
+                onClick={method}>
+
+                {IconButton}
                 <p>{name}</p>
+
             </button>
         </div>
     );

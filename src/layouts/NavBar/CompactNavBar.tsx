@@ -1,11 +1,9 @@
-import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 import { ReactNode } from "react";
 import { useRouter } from "next/router";
 import { NavBarControls } from "./NavBarControls";
-import { Icon } from "phosphor-react";
+import ArrowLeft from "phosphor-react/dist/icons/ArrowLeft";
 
 type pageHeaderProps = {
-    IconPage: Icon;
     title: string;
     subTitle?: string;
     children?: ReactNode;
@@ -13,7 +11,6 @@ type pageHeaderProps = {
 };
 
 export function CompactNavBar({
-    IconPage,
     children,
     title,
     subTitle,
