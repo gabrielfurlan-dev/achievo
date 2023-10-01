@@ -21,7 +21,7 @@ import isEqual from 'lodash/isEqual';
 import { normalizeProgressGoals } from "@/helpers/goalHelper";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrasesHelper";
-import Plus from "phosphor-react/dist/icons/Plus";
+import { Plus } from "phosphor-react";
 
 export default function EditReport() {
 

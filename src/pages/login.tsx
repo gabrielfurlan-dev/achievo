@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import { ReadCVLogo } from "@/assets/icons/ReadCVLogo";
-import GoogleLogo from "phosphor-react/dist/icons/GoogleLogo";
+import { GoogleLogo } from "phosphor-react";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     const session = await getSession({ req })

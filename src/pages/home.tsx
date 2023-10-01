@@ -13,8 +13,7 @@ import Swal from "sweetalert2";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 import { Stairs } from "@/assets/icons/Stairs";
 import { ListMagnifyingGlass } from "@/assets/icons/ListMagnifyingGlass";
-import House from "phosphor-react/dist/icons/House";
-import FilePlus from "phosphor-react/dist/icons/FilePlus";
+import { FilePlus, House } from "phosphor-react";
 
 export default function home() {
     const router = useRouter();
