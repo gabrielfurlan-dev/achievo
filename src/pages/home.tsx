@@ -49,6 +49,7 @@ export default function home() {
                 email: loginData.data.email,
                 name: loginData.data.name,
                 username: loginData.data.username,
+                description: loginData.data.description,
                 imageURL: loginData.data.imageURL,
             });
 
