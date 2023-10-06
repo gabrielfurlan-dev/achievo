@@ -1,9 +1,8 @@
 import { SimpleButton } from "@/components/Buttons";
-import { CompactNavBar } from "@/components/NavBar/CompactNavBar";
+import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
-import { User } from "phosphor-react";
 import { useEffect } from "react";
 
 export default function profile() {
@@ -17,7 +16,6 @@ export default function profile() {
     return (
         <PageLayout>
             <CompactNavBar
-                IconPage={User}
                 goBackUrl="/home"
                 title="Meu Perfil"
                 subTitle="Seus dados e resultados"

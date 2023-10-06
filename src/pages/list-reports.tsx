@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { IReport } from "@/interfaces/iReport";
 import { Eye, PencilSimple } from "phosphor-react";
 import Link from "next/link";
-import { ListMagnifyingGlass } from "@phosphor-icons/react";
 import { NoBackgroundButton } from "@/components/Buttons";
 import { getWeek } from "date-fns";
 import PageLayout from "@/layouts/PageLayout";
@@ -10,7 +9,7 @@ import { useUserInfoStore } from "@/store/userStoreInfo";
 import { stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getAllReports } from "@/services/reports/reportService";
 import { getUpdatedTimeElapsed } from "@/helpers/elapsedTime";
-import { CompactNavBar } from "@/components/NavBar/CompactNavBar";
+import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);
@@ -31,7 +30,6 @@ export default function ListReport() {
     return (
         <PageLayout>
             <CompactNavBar
-                IconPage={ListMagnifyingGlass}
                 title="Relatórios"
                 subTitle="Todos os Reports estão aqui"
                 goBackUrl="/home"

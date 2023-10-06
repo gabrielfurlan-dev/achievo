@@ -1,7 +1,7 @@
 import { IResponseData } from "@/interfaces/iResponseData";
 import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
-
+import variables from "@/schemas/env-variables";
 type CreateUserProps = {
     name: string;
     email: string;
@@ -22,28 +22,23 @@ export default async function (
     try {
         const userData: CreateUserProps = req.body;
 
-        let user = await db.user.findFirst({
-            where: { email: userData.email },
+        let user = await db.user.create({
+            data: {
+                name: userData.name,
+                email: userData.email,
+                imageURL: userData.imageURL,
+            },
         });
 
-        if (!user) {
-            user = await db.user.create({
-                data: {
-                    name: userData.name,
-                    email: userData.email,
-                    imageURL: userData.imageURL,
-                },
-            });
+        user = await db.user.update({
+            data: {
+                username: `guest${user.id}`
+            },
+            where: {
+                id: user.id
+            }
+        });
 
-            user = await db.user.update({
-                data:{
-                    username: `guest${user.id}`
-                },
-                where: {
-                    id: user.id
-                }
-            })
-        }
 
         return res.status(201).json({
             success: true,

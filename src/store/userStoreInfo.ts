@@ -4,7 +4,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 export interface IUserInfo {
     alreadyRegistered?: boolean;
 
-    id: number;
+    id: string;
     name?: string;
     email?: string;
     imageURL?: string;
@@ -25,7 +25,7 @@ export const useUserInfoStore = create<IUserInfoStore>()(
     persist(
         set => ({
             userInfo: {
-                id: 0,
+                id: "",
                 alreadyRegistered: false,
                 name: "",
                 description: "",

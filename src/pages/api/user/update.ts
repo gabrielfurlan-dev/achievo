@@ -3,7 +3,7 @@ import { IResponseData } from "@/interfaces/iResponseData";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export interface IUpdateUserCommand {
-    id: number,
+    id: string,
     name: string,
     username: string,
     description: string

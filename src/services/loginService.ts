@@ -1,51 +1,25 @@
 import { IResponseData } from "@/interfaces/iResponseData";
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import { getUserData } from "./userService";
+import { registerUser, userExists } from "./userService";
+import { sendNewUserEmail } from "./email/newUserEmail";
 
-async function callGoogleAuth() {
+export async function handleLoginGoogle(name: string, email: string, imageURL: string) {
+
     try {
-        const auth = getAuth();
-        const provider = new GoogleAuthProvider();
-        const result = await signInWithPopup(auth, provider);
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
-        const user = result.user;
 
-        return {
-            success: true,
-            email: user.email ?? "",
-            name: user.displayName ?? "",
-            photoURL: user.photoURL ?? "",
-        };
-    } catch (error) {
-        return { success: false, email: "", name: "", photoURL: "" };
-    }
-}
+        let userData = await userExists(email)
 
-export async function handleLoginGoogle() {
-    const user = await callGoogleAuth();
-
-    if (user?.success) {
-        const userData = await getUserData(user.email);
-
-        if (userData.success) {
-            const response = await fetch("/api/user/register", {
-                method: "POST",
-                body: JSON.stringify({
-                    email: user.email,
-                    name: user.name,
-                    imageURL: user.photoURL,
-                }),
-                headers: { "Content-Type": "application/json" },
-            });
-
-            return (await response.json()) as IResponseData;
+        if (!userData.data) {
+            userData = await registerUser(name, email, imageURL);
+            await sendNewUserEmail(name, email);
         }
-    }
 
-    return {
-        success: false,
-        message: "Não foi possível realizar o login.",
-        data: null,
-    } as IResponseData;
+        return userData
+
+    } catch (error) {
+        return {
+            success: false,
+            message: "Não foi possível realizar o login.",
+            data: null,
+        } as IResponseData;
+    }
 }

@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
-import { ReadCvLogo } from "@phosphor-icons/react";
-import { Plus } from "phosphor-react";
 import Modal from "@/components/Modal";
 import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getWeek } from "date-fns";
@@ -21,8 +19,9 @@ import { getCheckGoalsModified, getProgressGoalsModified } from "@/helpers/repor
 import { ConfirmToReload } from "@/components/ConfirmToReload";
 import isEqual from 'lodash/isEqual';
 import { normalizeProgressGoals } from "@/helpers/goalHelper";
-import { CompactNavBar } from "@/components/NavBar/CompactNavBar";
+import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrasesHelper";
+import { Plus } from "phosphor-react";
 
 export default function EditReport() {
 
@@ -83,6 +82,10 @@ export default function EditReport() {
 
                 if (report) {
                     setReportData(report)
+                }
+                else {
+                    await Swal.fire("Erro", "Report não encontrado!", "error")
+                    router.push("/list-reports")
                 }
             }
         }
@@ -185,7 +188,7 @@ export default function EditReport() {
 
         if (isNew) {
             result = await createReport({
-                userRef: userInfo.id,
+                userId: userInfo.id,
                 progressGoals,
                 checkGoals
             });
@@ -244,7 +247,6 @@ export default function EditReport() {
 
             <div className="h-full">
                 <CompactNavBar
-                    IconPage={ReadCvLogo}
                     title={`${getTitlePage()} Report`}
                     subTitle={`"${motivationalPhrase}"`}
                     goBackUrl={isNew ? "/home" : "/list-reports"}
@@ -265,7 +267,6 @@ export default function EditReport() {
                         </div>
                     </div>
                 </div>
-
 
                 <div id="Goals">
                     <div className="mt-12">

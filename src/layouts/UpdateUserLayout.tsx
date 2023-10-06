@@ -1,12 +1,15 @@
 import { ConfirmButton } from "@/components/Buttons";
-import { InputField } from "@/components/Inputs/InputField";
 import { ProfileImage } from "@/components/profileImage";
-import { TextareaField } from "@/components/Inputs/TextareaField";
-import { updateUser } from "@/services/userService";
+import { updateUser, usernameAlradyTaken } from "@/services/userService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { updateProfileSchema } from "@/schemas/users/commands/updateProfileSchema";
+import { InputValidation } from "@/components/Inputs/InputValidation";
+import { TextAreaValidation } from "@/components/Inputs/TextAreaValidation";
 
 interface updateUserLayoutProps {
     destinationPathOnUpdate: "/home" | string
@@ -16,28 +19,56 @@ interface updateUserLayoutProps {
 export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister }: updateUserLayoutProps) {
     const { userInfo, setUserInfo } = useUserInfoStore()
     const router = useRouter()
-    const [name, setName] = useState<string>("")
-    const [username, setUsername] = useState<string>("")
-    const [description, setDescription] = useState<string>("")
+
+    const {
+        register,
+        setValue,
+        handleSubmit,
+        getValues,
+        watch,
+        setError,
+        formState: { errors },
+    } = useForm<updateProfileSchema>({
+        resolver: zodResolver(updateProfileSchema)
+    })
+
+    useEffect(() => {
+        setValue("name", userInfo.name ?? "")
+        setValue("username", userInfo.username ?? "")
+        setValue("description", userInfo.description ?? "")
+        setValue("email", userInfo.email ?? "")
+    }, [userInfo])
 
 
-    function validateIfHasUpdate() {
-        if (userInfo.name != name) return true;
-        if (userInfo.username != username) return true;
-        if (userInfo.description != description) return true;
+    async function validateUsernameAlreadyTaken(username: string) {
+        if (userInfo.username != username) {
+            if ((await usernameAlradyTaken(username)).data.usernameAlredyTaken) {
+                setError('username', { message: 'Usuário não disponível' });
+                return { taken: true };
+            }
+        }
+
+        return { taken: false };
+    }
+
+    function validateIfHasUpdate(data: updateProfileSchema) {
+        if (userInfo.name != data.name) return true;
+        if (userInfo.username != data.username) return true;
+        if (userInfo.description != data.description) return true;
 
         return false;
     }
 
-    async function handleUpdateUser(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault()
+    async function handleUpdateUser(data: updateProfileSchema) {
+
+        if ((await validateUsernameAlreadyTaken(getValues('username'))).taken) return;
 
         const successMessage = isFinishingRegister ? "Cadastro finalizado com sucesso." : "Cadastro atualizado com sucesso"
         const failMessage = isFinishingRegister ? "Não foi possível finalizar o cadastro." : "Não foi possível atualizar o cadastro"
 
-        if (validateIfHasUpdate()) {
-            if (await updateUser(userInfo.id, name, username, description)) {
-                setUserInfo({ ...userInfo, name: name, username: username, description: description, alreadyRegistered: true });
+        if (validateIfHasUpdate(data)) {
+            if (await updateUser(userInfo.id, data.name, data.username, data.description)) {
+                setUserInfo({ ...userInfo, name: data.name, username: data.username, description: data.description, alreadyRegistered: true });
             } else {
                 await Swal.fire("Fail!", failMessage, "error")
                 return;
@@ -48,56 +79,49 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
         router.push(destinationPathOnUpdate)
     }
 
-    useEffect(() => {
-        setName(userInfo.name ?? "")
-        setUsername(userInfo.username ?? "")
-        setDescription(userInfo.description ?? "")
-    }, [userInfo])
-
     return (
         <>
-            <form className="h-full lg:mt-0 flex flex-col justify-between " onSubmit={(event) => handleUpdateUser(event)}>
+            <form className="h-full lg:mt-0 flex flex-col justify-between " onSubmit={handleSubmit((data) => handleUpdateUser(data))}>
                 <div className="h-full w-full mt-24 flex flex-col lg:flex-row m-auto lg:gap-24 items-center">
                     <div className="w-52 lg:w-72">
                         <ProfileImage rounded />
                     </div>
                     <div className="flex flex-col gap-4 w-full">
                         <div className="grid lg:grid-cols-2 gap-2">
-                            <InputField
-                                label="Nome"
-                                onChange={setName}
-                                value={name}
-                                type="text"
-                                placeHolder={"Jhon Doe"}
-                                required
-                                error={{ mustShowError: name.length == 0, errorMessage: "campo obrigatório" }}
+                            <InputValidation
+                                title="Nome"
+                                inputName="name"
+                                placeholder="Jhon Doe"
+                                errors={errors.name?.message}
+                                reference={register('name')}
                             />
-                            <InputField
-                                label="Nome de usuário"
-                                onChange={setUsername}
-                                value={username}
-                                type="text"
-                                placeHolder={"jhondoe"}
-                                required
-                                error={{ mustShowError: username.length == 0, errorMessage: "campo obrigatório" }}
+                            <InputValidation
+                                title="Nome de Usuário"
+                                inputName="username"
+                                placeholder="jhondoe"
+                                errors={errors.username?.message}
+                                reference={register('username')}
+                                onBlur={() => validateUsernameAlreadyTaken(getValues('username'))}
                             />
                         </div>
-                        <InputField
-                            label="Email"
-                            onChange={() => { }}
-                            value={userInfo.email}
-                            type="text"
-                            placeHolder={"jhondoe@email.com"}
-                            required
+
+                        <InputValidation
+                            title="Email"
+                            inputName="email"
+                            placeholder="jhondoe@email.com"
+                            type="email"
+                            errors={errors.email?.message}
+                            reference={register('email')}
                             disabled
                         />
-                        <TextareaField
-                            style={{ minHeight: '100px' }}
-                            label="Descrição"
-                            onChange={setDescription}
-                            value={description}
-                            placeHolder={"Sua descrição aqui..."}
+                        <TextAreaValidation
+                            title="Descrição"
+                            inputName="description"
+                            placeholder={`junte-se a mim na jornada de evolução 💪✨\nBe better than yesterday! 🚀\n#LetsGrind #WeeklyReport`}
+                            errors={errors.description?.message}
+                            reference={register('description')}
                         />
+
                     </div>
                 </div>
                 <div className="flex justify-end mt-10">
@@ -105,7 +129,7 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
                         <ConfirmButton type="submit">Confirmar</ConfirmButton>
                     </div>
                 </div>
-            </form>
+            </form >
         </>
     );
 }

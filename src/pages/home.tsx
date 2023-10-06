@@ -1,22 +1,69 @@
-import { SimpleNavBar } from "@/components/NavBar/SimpleNavBar";
+import { SimpleNavBar } from "@/layouts/NavBar/SimpleNavBar";
 import { fetchNotifications } from "@/services/notificationsService";
-import PageLayout from "@/layouts/PageLayout";
 import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { ListMagnifyingGlass, Stairs } from "@phosphor-icons/react";
 import { useRouter } from "next/router";
-import { FilePlus, House, Icon } from "phosphor-react";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { INotificationData } from "@/interfaces/notifications/iNotificationData";
 import Modal from "@/components/Modal";
 import { validateReportFromWeek } from "@/services/reports/reportService";
+import { useSession } from "next-auth/react";
+import { handleLoginGoogle } from "@/services/loginService";
+import Swal from "sweetalert2";
+import { PageLoadLayout } from "@/layouts/PageLoadLayout";
+import { Stairs } from "@/assets/icons/Stairs";
+import { ListMagnifyingGlass } from "@/assets/icons/ListMagnifyingGlass";
+import { FilePlus, House } from "phosphor-react";
 
 export default function home() {
     const router = useRouter();
-    const { userInfo } = useUserInfoStore();
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const { userInfo, setUserInfo } = useUserInfoStore();
     const { setReadNotifications, setUnreadNotifications } = useNotificationStore();
     const [mustShowDialog, setMustShowDialog] = useState(false)
-    const [reportIdOfCurrentWeek, setReportIdOfCurrentWeek] = useState<number>(0)
+    const [reportIdOfCurrentWeek, setReportIdOfCurrentWeek] = useState<number>(0);
+    const { data, status } = useSession();
+
+    useEffect(() => {
+        async function setData() {
+
+            if (status !== "authenticated" || !data || !data.user) {
+                return router.push("/login");
+            }
+
+            const { name, email, image } = data.user;
+
+            if (!name || !email || !image)
+                return;
+
+            const loginData = await handleLoginGoogle(name, email, image);
+
+            if (!loginData.success) {
+                Swal.fire("Oops!", "Não foi possível realizar o login.");
+                return;
+            }
+
+            setUserInfo({
+                alreadyRegistered: loginData.data.alreadyRegistered,
+                id: loginData.data.id,
+                email: loginData.data.email,
+                name: loginData.data.name,
+                username: loginData.data.username,
+                description: loginData.data.description,
+                imageURL: loginData.data.imageURL,
+            });
+
+            if (!loginData.data.alreadyRegistered) {
+                return router.push("/finish-signup");
+            }
+
+            setIsLoading(false);
+
+        }
+
+        setData();
+    }, [data, status]);
+
 
     async function alreadyExistsReportsOnCurrentWeek() {
         const response = await validateReportFromWeek(userInfo.id)
@@ -32,7 +79,7 @@ export default function home() {
     }
 
     async function getNotifications() {
-        if (userInfo.id == 0) return;
+        if (userInfo.id == "") return;
 
         const result = await fetchNotifications(userInfo.id);
 
@@ -47,7 +94,7 @@ export default function home() {
     }, [userInfo]);
 
     return (
-        <PageLayout>
+        <PageLoadLayout isLoading={isLoading}>
             <SimpleNavBar IconPage={House} title="Início" />
             <div className="flex flex-col justify-center items-center text-center h-full">
                 <div>
@@ -61,7 +108,7 @@ export default function home() {
 
                 <div className="mt-10 flex gap-1 h-12">
                     <IconButton
-                        IconButton={FilePlus}
+                        IconButton={<FilePlus />}
                         name="Add"
                         method={async () => {
                             if (!await alreadyExistsReportsOnCurrentWeek())
@@ -69,7 +116,7 @@ export default function home() {
                         }}
                     />
                     <IconButton
-                        IconButton={ListMagnifyingGlass}
+                        IconButton={<ListMagnifyingGlass />}
                         name="Listar"
                         method={() => router.push("list-reports")}
                     />
@@ -84,20 +131,20 @@ export default function home() {
                     hideDelete
                 >
                     <div className="flex flex-col w-full items-center">
-                        <Stairs size={56} className="text-PRINCIPAL"/>
+                        <Stairs size={56} />
                         <h2 className="text-xl font-bold mt-10">Editar Meta</h2>
                         <p className="mt-2">Você já possui um Report essa semana, deseja visualiza-lo?</p>
                     </div>
                 </Modal>
             </div>
-        </PageLayout>
+        </PageLoadLayout>
     );
 }
 
 type props = {
     name: string;
     method: () => void;
-    IconButton: Icon;
+    IconButton: ReactNode;
 };
 
 function IconButton({ name, method, IconButton }: props) {
@@ -105,10 +152,11 @@ function IconButton({ name, method, IconButton }: props) {
         <div className="">
             <button
                 className="rounded-xl hover:bg-WHITE_PRINCIPAL dark:hover:bg-DARK_BACKGROUND_SECONDARY w-20 h-20 flex flex-col text-center items-center gap-2 justify-center text-GRAY"
-                onClick={method}
-            >
-                <IconButton className="text-PRINCIPAL" size={32} />
+                onClick={method}>
+
+                {IconButton}
                 <p>{name}</p>
+
             </button>
         </div>
     );
