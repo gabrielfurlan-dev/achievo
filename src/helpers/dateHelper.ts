@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import LanguageDetector from 'i18next-browser-languagedetector';
 
 type IntervalWeek = {
     firstDayOfWeek: Date,
@@ -40,7 +41,9 @@ export function getWeekInterval(date: Date) {
 
 export function getFormatedWeekInterval(date: string) {
     const interval = getWeekInterval(stringToDate(date));
-    const userLocale = navigator.language;
+
+     const userLocale = navigator.language;
+    console.log(userLocale.toUpperCase())
 
     if (userLocale.toUpperCase() == "PT-BR") {
 
@@ -49,13 +52,14 @@ export function getFormatedWeekInterval(date: string) {
     }
 
 
-    return getFormatedWeekIntervalOtherCountries(interval);
+     return getFormatedWeekIntervalOtherCountries(interval);
 
 }
 
 function getFormatedDate(originalDate: Date) {
-    const formattedDate = format(originalDate, "MM/dd/yyyy");
-    return new Date(formattedDate);
+    console.log(originalDate)
+   const formattedDate = format(originalDate, "MM/dd/yyyy");
+    return new Date(originalDate);
 }
 
 export function stringToDate(date: string) {
@@ -66,7 +70,9 @@ export function stringToDate(date: string) {
 
     const dateReport = new Date(year, month, day);
 
-    return new Date(getFormatedDate(dateReport));
+    console.log(getFormatedDate(dateReport));
+
+     return new Date(dateReport);
 }
 
 function getFormatedWeekIntervalBrazil(interval: IntervalWeek) {
