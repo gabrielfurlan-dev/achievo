@@ -21,6 +21,7 @@ export function NotificationDropdown() {
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     const toggleDropdown = () => {
+        if(isDropdownOpen) getNotifications();
         setIsDropdownOpen(!isDropdownOpen);
     };
 
