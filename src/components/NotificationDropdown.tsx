@@ -21,7 +21,6 @@ export function NotificationDropdown() {
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     const toggleDropdown = () => {
-        if(isDropdownOpen) getNotifications();
         setIsDropdownOpen(!isDropdownOpen);
     };
 
@@ -65,7 +64,7 @@ export function NotificationDropdown() {
             document.removeEventListener("keydown", handleKeyPress);
         };
 
-    }, []);
+    }, [userInfo]);
 
     return (
         <div className="relative">
