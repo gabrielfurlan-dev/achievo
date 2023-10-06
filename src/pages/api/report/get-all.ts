@@ -22,7 +22,7 @@ export default async function handler(
                 }
             },
             orderBy: {
-                createdDate: "asc",
+                createdDate: "desc",
             },
         });
 

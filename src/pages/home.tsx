@@ -19,7 +19,6 @@ export default function home() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const { userInfo, setUserInfo } = useUserInfoStore();
-    const { setReadNotifications, setUnreadNotifications } = useNotificationStore();
     const [mustShowDialog, setMustShowDialog] = useState(false)
     const [reportIdOfCurrentWeek, setReportIdOfCurrentWeek] = useState<number>(0);
     const { data, status } = useSession();
@@ -77,21 +76,6 @@ export default function home() {
         }
         return false;
     }
-
-    async function getNotifications() {
-        if (userInfo.id == "") return;
-
-        const result = await fetchNotifications(userInfo.id);
-
-        const { unreadNotifications, readNotifications } = result.data as INotificationData;
-
-        setReadNotifications(readNotifications);
-        setUnreadNotifications(unreadNotifications);
-    }
-
-    useEffect(() => {
-        getNotifications();
-    }, [userInfo]);
 
     return (
         <PageLoadLayout isLoading={isLoading}>
