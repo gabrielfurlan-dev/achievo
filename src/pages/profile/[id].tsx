@@ -1,4 +1,5 @@
 import { SimpleButton } from "@/components/Buttons";
+import { ProfileImage } from "@/components/profileImage";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
@@ -24,11 +25,9 @@ export default function profile() {
 
             <div className="flex h-[80%] md:h-[50%] items-center justify-center">
                 <div className="flex flex-col md:flex-row gap-6 items-center text-center md:text-left">
-                    <img
-                        src={userInfo.imageURL}
-                        alt="Foto do usuário"
-                        className="rounded-full w-44 h-44"
-                    />
+
+                <ProfileImage imageUrl={userInfo.imageURL} rounded size={180}/>
+
                     <div className="flex flex-col">
                         <p className="text-4xl text-LIGHT_TEXT dark:text-DARK_TEXT">
                             {userInfo.username}

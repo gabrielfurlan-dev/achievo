@@ -84,7 +84,7 @@ export function UpdateUserLayout({ destinationPathOnUpdate, isFinishingRegister 
             <form className="h-full lg:mt-0 flex flex-col justify-between " onSubmit={handleSubmit((data) => handleUpdateUser(data))}>
                 <div className="h-full w-full mt-24 flex flex-col lg:flex-row m-auto lg:gap-24 items-center">
                     <div className="w-52 lg:w-72">
-                        <ProfileImage rounded />
+                        <ProfileImage imageUrl={userInfo.imageURL} rounded />
                     </div>
                     <div className="flex flex-col gap-4 w-full">
                         <div className="grid lg:grid-cols-2 gap-2">

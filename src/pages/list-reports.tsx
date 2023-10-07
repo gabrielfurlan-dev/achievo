@@ -10,6 +10,7 @@ import { stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getAllReports } from "@/services/reports/reportService";
 import { getUpdatedTimeElapsed } from "@/helpers/elapsedTime";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
+import { ProfileImage } from "@/components/profileImage";
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);
@@ -43,10 +44,9 @@ export default function ListReport() {
                         >
                             <div className="flex justify-between">
                                 <div className="ml-4 flex gap-8 items-center  text-LIGHT_TEXT dark:text-DARK_TEXT">
-                                    <img
-                                        src={data.user.imageURL}
-                                        className="w-10 h-10 rounded-full"
-                                    />
+
+                                    <ProfileImage imageUrl={data.user.imageURL} rounded/>
+
                                     <div>
                                         <p className="font-bold text-xl">
                                             Week{" "}
