@@ -65,6 +65,7 @@ export default function home() {
 
 
     async function alreadyExistsReportsOnCurrentWeek() {
+
         const response = await validateReportFromWeek(userInfo.id)
 
         if (!response.success) return false;
@@ -74,7 +75,13 @@ export default function home() {
             setMustShowDialog(true);
             return true;
         }
+
         return false;
+    }
+
+    async function handleAddReport() {
+        if (!await alreadyExistsReportsOnCurrentWeek())
+            return router.push("report/new")
     }
 
     return (
@@ -94,10 +101,7 @@ export default function home() {
                     <IconButton
                         IconButton={<FilePlus />}
                         name="Add"
-                        method={async () => {
-                            if (!await alreadyExistsReportsOnCurrentWeek())
-                                return router.push("report/new")
-                        }}
+                        method={handleAddReport}
                     />
                     <IconButton
                         IconButton={<ListMagnifyingGlass />}

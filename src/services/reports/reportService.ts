@@ -142,9 +142,10 @@ export async function validateReportFromWeek(userId: string) {
 
         const queryParams = new URLSearchParams({
             userId: userId,
-            beginDateOfWeek: firstDayOfWeek.toString(),
-            endDateOfWeek: lastDayOfWeek.toString(),
+            beginDateOfWeek: firstDayOfWeek.toDateString(),
+            endDateOfWeek: lastDayOfWeek.toDateString(),
         });
+        alert(firstDayOfWeek.toDateString())
 
         const apiUrl = `/api/report/get-from-period?${queryParams.toString()}`;
         const response = await fetch(apiUrl);
