@@ -1,4 +1,3 @@
-import { ConfirmButton } from "@/components/Buttons";
 import { ProfileImage } from "@/components/profileImage";
 import { updateUser, usernameAlradyTaken } from "@/services/userService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
@@ -10,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { updateProfileSchema } from "@/schemas/users/commands/updateProfileSchema";
 import { InputValidation } from "@/components/Inputs/InputValidation";
 import { TextAreaValidation } from "@/components/Inputs/TextAreaValidation";
+import { ConfirmButton } from "@/components/Buttons/ConfirmButton";
 
 interface updateUserLayoutProps {
     destinationPathOnUpdate: "/home" | string
