@@ -2,9 +2,19 @@ import { useNotificationStore } from "@/store/notificationsStore";
 import { Bell } from "phosphor-react";
 import React, { useEffect, useRef, useState } from "react";
 import { NotificationItem } from "./NotificationItem";
+import { fetchNotifications } from "@/services/notificationsService";
+import { useUserInfoStore } from "@/store/userStoreInfo";
+import { INotificationData } from "@/interfaces/notifications/iNotificationData";
 
 export function NotificationDropdown() {
-    const { readNotifications, unreadNotifications } = useNotificationStore();
+
+    const { userInfo } = useUserInfoStore();
+    const {
+        readNotifications,
+        unreadNotifications,
+        setReadNotifications,
+        setUnreadNotifications
+    } = useNotificationStore();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -13,6 +23,17 @@ export function NotificationDropdown() {
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
+
+    async function getNotifications() {
+        if (userInfo.id == "") return;
+
+        const result = await fetchNotifications(userInfo.id);
+
+        const { unreadNotifications, readNotifications } = result.data as INotificationData;
+
+        setReadNotifications(readNotifications);
+        setUnreadNotifications(unreadNotifications);
+    }
 
     const handleClickOutside = (event: MouseEvent) => {
         if (
@@ -32,6 +53,9 @@ export function NotificationDropdown() {
     };
 
     useEffect(() => {
+
+        getNotifications();
+
         document.addEventListener("mousedown", handleClickOutside);
         document.addEventListener("keydown", handleKeyPress);
 
@@ -39,7 +63,8 @@ export function NotificationDropdown() {
             document.removeEventListener("mousedown", handleClickOutside);
             document.removeEventListener("keydown", handleKeyPress);
         };
-    }, []);
+
+    }, [userInfo]);
 
     return (
         <div className="relative">

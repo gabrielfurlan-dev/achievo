@@ -1,5 +1,6 @@
+import { CircularProgress } from "@mui/material";
 import { Check } from "phosphor-react";
-import { ButtonHTMLAttributes, ReactNode } from "react";
+import { ButtonHTMLAttributes, ReactNode, useState } from "react";
 
 interface CustomButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children?: ReactNode;
@@ -8,24 +9,6 @@ interface CustomButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     width?: number;
     noHover?: boolean;
 };
-
-export function ConfirmButton({ children, onClick, ...props }: CustomButtonProps) {
-    return (
-        <button
-            {...props}
-            onClick={onClick}
-            className="relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-WHITE_PRINCIPAL bg-PRINCIPAL transition duration-400 ease-out rounded-lg group w-full"
-        >
-            <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-PRINCIPAL_DARK group-hover:translate-x-0 ease">
-                <Check size={28} />
-            </span>
-            <span className="absolute flex items-center justify-center w-full h-full text-WHITE_PRINCIPAL transition-all duration-300 transform group-hover:translate-x-full ease">
-                {children}
-            </span>
-            <span className="relative invisible">{children}</span>
-        </button>
-    );
-}
 
 export function SimpleButton({ onClick, children }: CustomButtonProps) {
     return (

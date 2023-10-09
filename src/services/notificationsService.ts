@@ -1,16 +1,18 @@
 import { IResponseData } from "@/interfaces/iResponseData";
 import { IMarkNotificationAsReadCommand } from "@/pages/api/notification/mark-as-read";
 
-export async function fetchNotifications(userId: string): Promise<Omit<IResponseData, "error"> > {
+export async function fetchNotifications(userId: string): Promise<Omit<IResponseData, "error">> {
     try {
-        const report = await fetch("/api/notification/get-all?userId=" + userId,
-            {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-            }
-        );
 
-        const response = await report.json();
+        const queryParams = new URLSearchParams({
+            userId: userId,
+            take: "5",
+            skip: "0",
+        });
+
+        const notifications = await fetch(`/api/notification/get?${queryParams.toString()}`);
+
+        const response = await notifications.json();
 
         return {
             success: true,

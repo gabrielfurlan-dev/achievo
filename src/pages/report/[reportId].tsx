@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import Modal from "@/components/Modal";
 import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getWeek } from "date-fns";
-import { ConfirmButton, NoBackgroundButton } from "@/components/Buttons";
+import { NoBackgroundButton } from "@/components/Buttons";
 import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
 import PageLayout from "@/layouts/PageLayout";
@@ -22,6 +22,7 @@ import { normalizeProgressGoals } from "@/helpers/goalHelper";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrasesHelper";
 import { Plus } from "phosphor-react";
+import { ConfirmButton } from "@/components/Buttons/ConfirmButton";
 
 export default function EditReport() {
 
@@ -355,7 +356,7 @@ export default function EditReport() {
                         <p>Cancelar</p>
                     </NoBackgroundButton>
                     {isOwner && (
-                        <div className="w-36">
+                        <div className="w-36 h-12">
                             <ConfirmButton onClick={handleSaveReport}>
                                 {isNew ? "Adicionar" : "Atualizar"}
                             </ConfirmButton>

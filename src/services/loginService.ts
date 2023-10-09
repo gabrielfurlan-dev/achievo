@@ -10,7 +10,7 @@ export async function handleLoginGoogle(name: string, email: string, imageURL: s
 
         if (!userData.data) {
             userData = await registerUser(name, email, imageURL);
-            await sendNewUserEmail(name, email);
+            // await sendNewUserEmail(name, email);
         }
 
         return userData

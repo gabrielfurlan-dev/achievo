@@ -19,7 +19,6 @@ export default function home() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const { userInfo, setUserInfo } = useUserInfoStore();
-    const { setReadNotifications, setUnreadNotifications } = useNotificationStore();
     const [mustShowDialog, setMustShowDialog] = useState(false)
     const [reportIdOfCurrentWeek, setReportIdOfCurrentWeek] = useState<number>(0);
     const { data, status } = useSession();
@@ -66,6 +65,7 @@ export default function home() {
 
 
     async function alreadyExistsReportsOnCurrentWeek() {
+
         const response = await validateReportFromWeek(userInfo.id)
 
         if (!response.success) return false;
@@ -75,23 +75,14 @@ export default function home() {
             setMustShowDialog(true);
             return true;
         }
+
         return false;
     }
 
-    async function getNotifications() {
-        if (userInfo.id == "") return;
-
-        const result = await fetchNotifications(userInfo.id);
-
-        const { unreadNotifications, readNotifications } = result.data as INotificationData;
-
-        setReadNotifications(readNotifications);
-        setUnreadNotifications(unreadNotifications);
+    async function handleAddReport() {
+        if (!await alreadyExistsReportsOnCurrentWeek())
+            return router.push("report/new")
     }
-
-    useEffect(() => {
-        getNotifications();
-    }, [userInfo]);
 
     return (
         <PageLoadLayout isLoading={isLoading}>
@@ -106,17 +97,14 @@ export default function home() {
                     </h3>
                 </div>
 
-                <div className="mt-10 flex gap-1 h-12">
+                <div className="mt-10 flex gap-1">
                     <IconButton
-                        IconButton={<FilePlus />}
+                        IconButton={<FilePlus weight="light" color="#5C8A74" size={24} />}
                         name="Add"
-                        method={async () => {
-                            if (!await alreadyExistsReportsOnCurrentWeek())
-                                return router.push("report/new")
-                        }}
+                        method={handleAddReport}
                     />
                     <IconButton
-                        IconButton={<ListMagnifyingGlass />}
+                        IconButton={<ListMagnifyingGlass strokeWidth={1.2} color="#5C8A74" size={28} />}
                         name="Listar"
                         method={() => router.push("list-reports")}
                     />
@@ -131,7 +119,7 @@ export default function home() {
                     hideDelete
                 >
                     <div className="flex flex-col w-full items-center">
-                        <Stairs size={56} />
+                        <Stairs size={56} color="#5C8A74"/>
                         <h2 className="text-xl font-bold mt-10">Editar Meta</h2>
                         <p className="mt-2">Você já possui um Report essa semana, deseja visualiza-lo?</p>
                     </div>
@@ -148,16 +136,25 @@ type props = {
 };
 
 function IconButton({ name, method, IconButton }: props) {
+    const [isHovering, setIsHovering] = useState<boolean>(false)
+
     return (
-        <div className="">
-            <button
-                className="rounded-xl hover:bg-WHITE_PRINCIPAL dark:hover:bg-DARK_BACKGROUND_SECONDARY w-20 h-20 flex flex-col text-center items-center gap-2 justify-center text-GRAY"
-                onClick={method}>
-
-                {IconButton}
-                <p>{name}</p>
-
-            </button>
+        <div>
+            <div className="">
+                <button
+                    className="rounded-xl
+                                border-aanimate-spin text-GRAY
+                                w-20 h-28 py-2 flex flex-col
+                                text-center items-center
+                                gap-2 justify-center"
+                    onMouseEnter={() => setIsHovering(true)}
+                    onMouseLeave={() => setIsHovering(false)}
+                    onClick={method}>
+                    {IconButton}
+                    <p className="text-neutral-800 dark:text-neutral-200 font-medium">{name}</p>
+                    <span className="w-full h-1 bg-PRINCIPAL animate-pulse rounded-lg" style={{ backgroundColor: !isHovering ? "transparent" : "" }} />
+                </button>
+            </div>
         </div>
     );
 }

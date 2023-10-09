@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ProfileDropdownItem } from "./ProfileDropdownItem";
 import { signOut } from "next-auth/react";
 import CircularProgress from "@mui/material/CircularProgress";
+import { ProfileImage } from "../profileImage";
 
 export default function ProfileDropdown() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -63,9 +64,7 @@ export default function ProfileDropdown() {
                 <div>
                     <div className="flex justify-end items-center gap-2 rounded-full">
                         <div className="w-12 h-12">
-                            {userInfo.imageURL ?
-                                (<img src={userInfo.imageURL} className="rounded-full" alt="user photo" />)
-                                : (<CircularProgress color="inherit" />)}
+                            <ProfileImage imageUrl={userInfo.imageURL} rounded />
                         </div>
                         <CaretDown size={24} className="text-LIGHT_TEXT dark:text-DARK_TEXT" />
                     </div>
