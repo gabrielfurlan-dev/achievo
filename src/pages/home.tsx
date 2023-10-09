@@ -97,14 +97,14 @@ export default function home() {
                     </h3>
                 </div>
 
-                <div className="mt-10 flex gap-1 h-12">
+                <div className="mt-10 flex gap-1">
                     <IconButton
-                        IconButton={<FilePlus />}
+                        IconButton={<FilePlus weight="light" color="#5C8A74" size={24} />}
                         name="Add"
                         method={handleAddReport}
                     />
                     <IconButton
-                        IconButton={<ListMagnifyingGlass />}
+                        IconButton={<ListMagnifyingGlass strokeWidth={1.2} color="#5C8A74" size={28} />}
                         name="Listar"
                         method={() => router.push("list-reports")}
                     />
@@ -136,16 +136,26 @@ type props = {
 };
 
 function IconButton({ name, method, IconButton }: props) {
+    const [isHovering, setIsHovering] = useState<boolean>(false)
+
     return (
-        <div className="">
-            <button
-                className="rounded-xl hover:bg-WHITE_PRINCIPAL dark:hover:bg-DARK_BACKGROUND_SECONDARY w-20 h-20 flex flex-col text-center items-center gap-2 justify-center text-GRAY"
-                onClick={method}>
-
-                {IconButton}
-                <p>{name}</p>
-
-            </button>
+        <div>
+            <div className="">
+                <button
+                    className="rounded-xl
+                                border-aanimate-spin
+                               dark:hover:bg-DARK_BACKGROUND_SECONDARY text-GRAY
+                                w-20 h-28 py-2 flex flex-col
+                                text-center items-center
+                                gap-2 justify-center"
+                    onMouseEnter={() => setIsHovering(true)}
+                    onMouseLeave={() => setIsHovering(false)}
+                    onClick={method}>
+                    {IconButton}
+                    <p className="text-neutral-800 dark:text-neutral-200 font-medium">{name}</p>
+                    <span className="w-full h-1 bg-PRINCIPAL animate-pulse rounded-lg" style={{ backgroundColor: !isHovering ? "transparent" : "" }} />
+                </button>
+            </div>
         </div>
     );
 }
