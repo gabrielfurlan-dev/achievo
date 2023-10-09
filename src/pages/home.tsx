@@ -119,7 +119,7 @@ export default function home() {
                     hideDelete
                 >
                     <div className="flex flex-col w-full items-center">
-                        <Stairs size={56} />
+                        <Stairs size={56} color="#5C8A74"/>
                         <h2 className="text-xl font-bold mt-10">Editar Meta</h2>
                         <p className="mt-2">Você já possui um Report essa semana, deseja visualiza-lo?</p>
                     </div>
@@ -143,8 +143,7 @@ function IconButton({ name, method, IconButton }: props) {
             <div className="">
                 <button
                     className="rounded-xl
-                                border-aanimate-spin
-                               dark:hover:bg-DARK_BACKGROUND_SECONDARY text-GRAY
+                                border-aanimate-spin text-GRAY
                                 w-20 h-28 py-2 flex flex-col
                                 text-center items-center
                                 gap-2 justify-center"
