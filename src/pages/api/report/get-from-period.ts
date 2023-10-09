@@ -28,13 +28,13 @@ export default async function handler(
         });
 
         if (report) {
-            return res.status(201).json({
+            return res.status(200).json({
                 success: true,
                 data: report.id,
                 message: "Existe um relatório adicionado na semana atual.",
             } as IResponseData);
         } else {
-            return res.status(201).json({
+            return res.status(200).json({
                 success: true,
                 data: null,
                 message: "Não existe um relatório adicionado na semana atual.",
