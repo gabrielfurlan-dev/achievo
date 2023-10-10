@@ -1,6 +1,3 @@
-import { format } from "date-fns";
-import LanguageDetector from 'i18next-browser-languagedetector';
-
 type IntervalWeek = {
     firstDayOfWeek: Date,
     lastDayOfWeek: Date
@@ -24,6 +21,7 @@ export function getCurrentDate() {
         day = "0" + day;
     }
 
+    console.log(`${year}-${month}-${day}`);
     return `${year}-${month}-${day}`;
 }
 
@@ -41,25 +39,19 @@ export function getWeekInterval(date: Date) {
 
 export function getFormatedWeekInterval(date: string) {
     const interval = getWeekInterval(stringToDate(date));
-
-     const userLocale = navigator.language;
-    console.log(userLocale.toUpperCase())
-
-    if (userLocale.toUpperCase() == "PT-BR") {
-
+    
+    if (typeof navigator == 'undefined') {
         return getFormatedWeekIntervalBrazil(interval);
-
     }
 
+    const userLocale = navigator.language;
+    console.log(userLocale);
 
-     return getFormatedWeekIntervalOtherCountries(interval);
+    if (userLocale.toUpperCase() == "PT-BR") {
+        return getFormatedWeekIntervalBrazil(interval);
+    }
 
-}
-
-function getFormatedDate(originalDate: Date) {
-    console.log(originalDate)
-   const formattedDate = format(originalDate, "MM/dd/yyyy");
-    return new Date(originalDate);
+    return getFormatedWeekIntervalOtherCountries(interval);
 }
 
 export function stringToDate(date: string) {
@@ -67,18 +59,14 @@ export function stringToDate(date: string) {
     const year = parseInt(parts[0], 10);
     const month = parseInt(parts[1], 10) - 1;
     const day = parseInt(parts[2], 10);
-
     const dateReport = new Date(year, month, day);
 
-    console.log(getFormatedDate(dateReport));
-
-     return new Date(dateReport);
+    return new Date(dateReport);
 }
 
 function getFormatedWeekIntervalBrazil(interval: IntervalWeek) {
-
     const firstPeriod: PeriodReport = getPeriod(interval.firstDayOfWeek);
-    const lastPeriod: PeriodReport = getPeriod(interval.firstDayOfWeek);
+    const lastPeriod: PeriodReport = getPeriod(interval.lastDayOfWeek);
     const firstDayFormatted = `${firstPeriod.day}/${firstPeriod.mounth}`;
     const lastDayFormatted = `${lastPeriod.day}/${lastPeriod.mounth}`;
 
@@ -86,7 +74,6 @@ function getFormatedWeekIntervalBrazil(interval: IntervalWeek) {
 }
 
 function getFormatedWeekIntervalOtherCountries(interval: IntervalWeek) {
-
     const firstPeriod: PeriodReport = getPeriod(interval.firstDayOfWeek);
     const lastPeriod: PeriodReport = getPeriod(interval.lastDayOfWeek);
 
@@ -96,12 +83,8 @@ function getFormatedWeekIntervalOtherCountries(interval: IntervalWeek) {
     return `${firstDayFormatted} até ${lastDayFormatted} de ${interval.lastDayOfWeek.getFullYear()}`;
 }
 
-
-
 function getPeriod(interval: Date) {
-
     const day = `${interval.getDate().toString().padStart(2, '0')}`
     const mounth = `${(interval.getMonth() + 1).toString().padStart(2, '0')}`
-
     return { day, mounth }
 }
