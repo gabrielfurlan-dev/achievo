@@ -8,7 +8,6 @@ import { useEffect } from "react";
 
 export default function profile() {
     const router = useRouter();
-    const { id } = router.query;
     const { userInfo } = useUserInfoStore();
 
     useEffect(() => {
