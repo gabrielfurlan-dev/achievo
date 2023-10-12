@@ -20,6 +20,7 @@
     "@supabase/auth-helpers-react": "^0.3.1",
     "@supabase/auth-ui-react": "^0.3.5",
     "@supabase/supabase-js": "^2.31.0",
+    "@svgr/webpack": "^8.1.0",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "express": "^4.18.2",

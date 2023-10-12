@@ -23,6 +23,7 @@ import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrasesHelper";
 import { Plus } from "phosphor-react";
 import { ConfirmButton } from "@/components/Buttons/ConfirmButton";
+import { isNumber } from "lodash";
 
 export default function EditReport() {
 
@@ -78,20 +79,19 @@ export default function EditReport() {
         }
 
         async function handleReceivedReport(reportId: number) {
-            if (reportId && userInfo) {
-                const report = await getReportData(reportId);
 
+            if (isNumber(reportId) && userInfo) {
+                const report = await getReportData(reportId);
                 if (report) {
                     setReportData(report)
                 }
                 else {
-                    await Swal.fire("Erro", "Report não encontrado!", "error")
-                    router.push("/list-reports")
+                    router.push("/404")
                 }
             }
         }
 
-        const fetchData = async () => {
+        const fetchData = () => {
             try {
 
                 if (!handleNewReport()) {
