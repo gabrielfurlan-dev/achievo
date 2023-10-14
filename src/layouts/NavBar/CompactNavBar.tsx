@@ -7,7 +7,7 @@ type pageHeaderProps = {
     title: string;
     subTitle?: string;
     children?: ReactNode;
-    goBackUrl: "/list-reports" | "/home" | "/login" | "new-report" | string;
+    goBackUrl?: "/list-reports" | "/home" | "/login" | "new-report" | string;
 };
 
 export function CompactNavBar({
@@ -19,7 +19,10 @@ export function CompactNavBar({
     const router = useRouter();
 
     function goBack() {
-        router.push(goBackUrl);
+        if (goBackUrl)
+            router.push(goBackUrl);
+        else
+            router.back();
     }
 
     return (

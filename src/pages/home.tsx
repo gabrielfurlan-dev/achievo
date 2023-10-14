@@ -119,7 +119,7 @@ export default function home() {
                     hideDelete
                 >
                     <div className="flex flex-col w-full items-center">
-                        <Stairs size={56} color="#5C8A74"/>
+                        <Stairs size={56} color="#5C8A74" />
                         <h2 className="text-xl font-bold mt-10">Editar Meta</h2>
                         <p className="mt-2">Você já possui um Report essa semana, deseja visualiza-lo?</p>
                     </div>
