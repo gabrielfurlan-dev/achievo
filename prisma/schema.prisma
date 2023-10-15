@@ -19,6 +19,20 @@ model User {
 
     Reports           Report[]
     ReadNotifications ReadNotifications[]
+
+    Following Follow[] @relation("UserFollowing")
+    Followers Follow[] @relation("UserFollowers")
+}
+
+model Follow {
+    id              Int    @id @default(autoincrement())
+    userId          String
+    followingUserId String
+
+    userFollowing User @relation("UserFollowing", fields: [userId], references: [id])
+    userFollowed  User @relation("UserFollowers", fields: [followingUserId], references: [id])
+
+    @@unique([userId, followingUserId])
 }
 
 model Notification {
