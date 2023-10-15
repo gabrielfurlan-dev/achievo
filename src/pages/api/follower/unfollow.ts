@@ -12,13 +12,13 @@ export default async function unfollowUser(
     }
 
     try {
-        const { userId, followingUserId } = req.body;
+        const { userId, userIdToUnfollow } = req.body;
 
         await db.follow.delete({
             where: {
                 userId_followingUserId: {
                     userId,
-                    followingUserId,
+                    followingUserId: userIdToUnfollow,
                 },
             },
         });

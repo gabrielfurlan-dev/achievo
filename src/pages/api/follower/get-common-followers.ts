@@ -1,7 +1,7 @@
-import { db } from "@/db";
+import { getCommonFollowersFunction } from "@/repositories/Followers";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function getAllFollowers(
+export default async function getCommonFollowers(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
@@ -12,27 +12,22 @@ export default async function getAllFollowers(
     }
 
     try {
-        const userId = req.query.userId as string;
 
-        const followers = await db.follow.findMany({
-            where: {
-                followingUserId: String(userId),
-            },
-            include: {
-                userFollowed: true,
-            },
-        });
+        const userId = req.query.userId as string;
+        const userIdToCompare = req.query.userIdToCompare as string;
+
+        const commonFollowers = await getCommonFollowersFunction(userId, userIdToCompare);
 
         return res.status(200).json({
             success: true,
-            data: followers,
-            message: "Seguidores recuperados com sucesso!",
+            data: commonFollowers,
+            message: "Seguidores em comum recuperados com sucesso!",
         });
     } catch (error) {
         return res.status(500).json({
             success: false,
             data: null,
-            message: "Erro ao recuperar seguidores",
+            message: "Erro ao recuperar seguidores em comum",
             error: String(error),
         });
     }

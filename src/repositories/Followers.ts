@@ -1,17 +1,18 @@
 import { db } from "@/db";
 
 export async function getCommonFollowersFunction(userId: string, userIdToCompare: string) {
-    const followersUser1 = await db.follow.findMany({
-        where: { followingUserId: userId },
-        select: { userId: true },
+
+    const followersUser = await db.follow.findMany({
+        where: { userId: userId },
+        select: { followingUserId: true },
     });
 
-    const followersUser2 = await db.follow.findMany({
-        where: { followingUserId: userIdToCompare },
-        select: { userId: true },
+    const followersUserTocompare = await db.follow.findMany({
+        where: { userId: userIdToCompare },
+        select: { followingUserId: true },
     });
 
-    return followersUser1.filter(followerUser =>
-        followersUser2.some(followerToCompare => followerToCompare.userId === followerUser.userId)
+    return followersUser.filter(followerUser =>
+        followersUserTocompare.some(followerToCompare => followerToCompare.followingUserId === followerUser.followingUserId)
     );
 }

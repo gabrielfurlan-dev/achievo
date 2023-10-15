@@ -14,15 +14,17 @@ export default async function getNamesCommonFollowers(
 
     try {
 
-        const userId = req.query.userId1 as string;
-        const userIdToCompare = req.query.userId2 as string;
+        const userId = req.query.userId as string;
+        const userIdToCompare = req.query.userIdToCompare as string;
 
         const commonFollowers = await getCommonFollowersFunction(userId, userIdToCompare);
+
+        console.log(JSON.stringify(commonFollowers))
 
         const commonFollowersNames = await Promise.all(
             commonFollowers.map(async follower => {
                 const user = await db.user.findUnique({
-                    where: { id: follower.userId },
+                    where: { id: follower.followingUserId },
                     select: { name: true },
                 });
                 return user?.name;
