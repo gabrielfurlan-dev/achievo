@@ -12,17 +12,28 @@ export default function findUser() {
 
     const [isFilterByFollowers, setIsFilterByFollowers] = useState<boolean>(true)
     const [isFilterByFollowing, setIsFilterByFollowing] = useState<boolean>(false)
+    const [filterName, setFilterName] = useState<string>("")
     const { userInfo } = useUserInfoStore()
-    const [users, setUsers] = useState<IUserListItem[]>([])
+    const [originalUsers, setOriginalUsers] = useState<IUserListItem[]>([])
+    const [users, setUsers] = useState<IUserListItem[]>(originalUsers)
 
     async function updateUsersList() {
-        const users = (await searchUsers(userInfo.id)).data as IUserListItem[]
-        setUsers(users)
+        const obtainedUsers = (await searchUsers({
+            filter: "none",
+            name: filterName,
+            userId: userInfo.id
+        })).data as IUserListItem[]
+        setOriginalUsers(obtainedUsers);
+        setUsers(obtainedUsers);
     }
 
     useEffect(() => {
         updateUsersList();
     }, [])
+
+    useEffect(() => {
+        setUsers(originalUsers.filter(x => x.name.toLowerCase().includes(filterName.toLowerCase())))
+    }, [filterName])
 
     function getMessageCommonFollowers(user: IUserListItem) {
         if (user.commonFollowers.length > 3)
@@ -40,16 +51,22 @@ export default function findUser() {
                 <div className="flex justify-between">
                     <div id="search" className="bg-NEUTRAL_GRAY_01 dark:bg-NEUTRAL_DARK_300 flex rounded-xl py-2 px-4 items-center gap-4 max-w-sm">
                         <MagnifyingGlass className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_06" size={36} />
-                        <input type="text" className="outline-none w-full bg-transparent" placeholder="Search" />
+                        <input
+                            type="text"
+                            className="outline-none w-full bg-transparent text-NEUTRAL_GRAY_06"
+                            placeholder="Search"
+                            onChange={(e) => setFilterName(e.target.value)}
+                            value={filterName}
+                        />
                     </div>
 
                     <div id="filters" className="flex flex-row gap-6">
                         <ToggleButton
-                            text="followers"
+                            text="Followers"
                             selected={isFilterByFollowers}
                             onChange={() => setIsFilterByFollowers(!isFilterByFollowers)} />
                         <ToggleButton
-                            text="following"
+                            text="Following"
                             selected={isFilterByFollowing}
                             onChange={() => setIsFilterByFollowing(!isFilterByFollowing)} />
                     </div>
@@ -85,7 +102,7 @@ export default function findUser() {
                                         <button className="text-md">Follow</button>
                                     </div>
 
-                                    <DotsThree className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_02" size={24}/>
+                                    <DotsThree className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_02" size={24} />
                                 </div>
                             </div>
                         ))
