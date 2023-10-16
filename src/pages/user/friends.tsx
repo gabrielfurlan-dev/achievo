@@ -27,12 +27,17 @@ export default function findUser() {
         setUsers(obtainedUsers);
     }
 
+    function searchUsersByName(originalUsers: IUserListItem[], filterName: string): IUserListItem[] {
+        const regex = new RegExp(filterName, 'i');
+        return originalUsers.filter(user => regex.test(user.name) || regex.test(user.username));
+    }
+
     useEffect(() => {
         updateUsersList();
     }, [])
 
     useEffect(() => {
-        setUsers(originalUsers.filter(x => x.name.toLowerCase().includes(filterName.toLowerCase())))
+        setUsers(searchUsersByName(originalUsers, filterName))
     }, [filterName])
 
     function getMessageCommonFollowers(user: IUserListItem) {
