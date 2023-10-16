@@ -45,7 +45,7 @@ export default function ListReport() {
                             <div className="flex justify-between">
                                 <div className="ml-4 flex gap-8 items-center  text-LIGHT_TEXT dark:text-DARK_TEXT">
 
-                                    <ProfileImage imageUrl={data.user.imageURL} rounded/>
+                                    <ProfileImage imageUrl={data.user.imageURL} rounded />
 
                                     <div>
                                         <p className="font-bold text-xl">

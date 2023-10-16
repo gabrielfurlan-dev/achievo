@@ -14,8 +14,8 @@ interface ModalProps {
 
     title: string;
     subtitle?: string;
-    confirmText: "Salvar" | "Adicionar" | "Sim";
-    cancelText: "Cancelar" | "Não";
+    confirmText: "Salvar" | "Adicionar" | "Sim" | "Yes";
+    cancelText: "Cancelar" | "Não" | "Cancel";
 }
 
 const Modal: React.FC<ModalProps> = ({

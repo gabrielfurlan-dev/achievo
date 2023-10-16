@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 import { Stairs } from "@/assets/icons/Stairs";
 import { ListMagnifyingGlass } from "@/assets/icons/ListMagnifyingGlass";
-import { FilePlus, House } from "phosphor-react";
+import { FilePlus, House, Users } from "phosphor-react";
 
 export default function home() {
     const router = useRouter();
@@ -86,14 +86,14 @@ export default function home() {
 
     return (
         <PageLoadLayout isLoading={isLoading}>
-            <SimpleNavBar IconPage={House} title="Início" />
+            <SimpleNavBar IconPage={House} title="Home" />
             <div className="flex flex-col justify-center items-center text-center h-full">
                 <div>
                     <h1 className="text-4xl font-medium text-GRAY_DARK dark:text-DARK_TEXT">
                         Weekly Report
                     </h1>
                     <h3 className="text-GRAY_SECONDARY dark:text-DARK_TEXT_SECONDARY">
-                        Um novo passo para seu progresso.
+                        A next step to your progress.
                     </h3>
                 </div>
 
@@ -105,16 +105,21 @@ export default function home() {
                     />
                     <IconButton
                         IconButton={<ListMagnifyingGlass strokeWidth={1.2} color="#5C8A74" size={28} />}
-                        name="Listar"
+                        name="List"
                         method={() => router.push("list-reports")}
+                    />
+                    <IconButton
+                        IconButton={<Users strokeWidth={1.2} color="#5C8A74" size={28} />}
+                        name="Friends"
+                        method={() => router.push("user/friends")}
                     />
                 </div>
                 <Modal
                     isOpen={mustShowDialog}
                     onClose={() => { setMustShowDialog(false) }}
                     title={""}
-                    confirmText={"Sim"}
-                    cancelText={"Cancelar"}
+                    confirmText={"Yes"}
+                    cancelText={"Cancel"}
                     handleSaveButton={() => router.push("/report/" + reportIdOfCurrentWeek)}
                     hideDelete
                 >
