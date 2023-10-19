@@ -9,13 +9,13 @@ import { ButtonHTMLAttributes, useEffect, useState } from "react";
 import { tv } from "tailwind-variants";
 
 export default function findUser() {
-
-    const [isFilterByFollowers, setIsFilterByFollowers] = useState<boolean>(true)
-    const [isFilterByFollowing, setIsFilterByFollowing] = useState<boolean>(false)
     const [filterName, setFilterName] = useState<string>("")
     const { userInfo } = useUserInfoStore()
     const [originalUsers, setOriginalUsers] = useState<IUserListItem[]>([])
     const [users, setUsers] = useState<IUserListItem[]>(originalUsers)
+
+    const [filterFollower, setFilterFollower] = useState(false);
+    const [filterFollowing, setFilterFollowing] = useState(false);
 
     async function updateUsersList() {
         const obtainedUsers = (await searchUsers({
@@ -29,8 +29,14 @@ export default function findUser() {
 
     function searchUsersByName(originalUsers: IUserListItem[], filterName: string): IUserListItem[] {
         const regex = new RegExp(filterName, 'i');
-        return originalUsers.filter(user => regex.test(user.name) || regex.test(user.username));
-    }
+        return originalUsers.filter((user) => {
+          const nameMatch = regex.test(user.name) || regex.test(user.username);
+          const followerMatch = !filterFollower;
+          const followingMatch = !filterFollowing || user.isFollowing;
+          return nameMatch && followerMatch && followingMatch;
+        });
+      }
+
 
     useEffect(() => {
         updateUsersList();
@@ -39,6 +45,27 @@ export default function findUser() {
     useEffect(() => {
         setUsers(searchUsersByName(originalUsers, filterName))
     }, [filterName])
+
+
+    const [selectedButton, setSelectedButton] = useState<string | null>(null);
+
+    const handleButtonClick = (buttonName: string) => {
+        if (selectedButton === buttonName) {
+            setSelectedButton(null);
+        } else {
+            setSelectedButton(buttonName);
+        }
+    };
+
+    const button = tv({
+        base: "w-28 h-10 rounded-full border-2 border-SECONDARY_DEFAULT font-semibold text-sm",
+        variants: {
+            selected: {
+                true: "bg-SECONDARY_DEFAULT text-white",
+                false: "bg-transparent text-SECONDARY_DEFAULT"
+            }
+        }
+    })
 
     function getMessageCommonFollowers(user: IUserListItem) {
         if (user.commonFollowers.length > 3)
@@ -66,14 +93,20 @@ export default function findUser() {
                     </div>
 
                     <div id="filters" className="flex flex-row gap-6">
-                        <ToggleButton
-                            text="Followers"
-                            selected={isFilterByFollowers}
-                            onChange={() => setIsFilterByFollowers(!isFilterByFollowers)} />
-                        <ToggleButton
-                            text="Following"
-                            selected={isFilterByFollowing}
-                            onChange={() => setIsFilterByFollowing(!isFilterByFollowing)} />
+                        <div className="flex space-x-4">
+                            <button
+                                className={button({ selected: selectedButton === 'follower' })}
+                                onClick={() => handleButtonClick('follower')}
+                            >
+                                Follower
+                            </button>
+                            <button
+                                className={button({ selected: selectedButton === 'following' })}
+                                onClick={() => handleButtonClick('following')}
+                            >
+                                Following
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -84,7 +117,7 @@ export default function findUser() {
                 <div id="users">
                     {
                         users && users.map(user => (
-                            <div className="bg-NEUTRAL_GRAY_02 dark:bg-NEUTRAL_DARK_300 flex justify-between py-3 rounded-lg mb-4 pl-6 pr-4 items-center">
+                            <div className="bg-NEUTRAL_GRAY_02 dark:bg-NEUTRAL_DARK_300 flex justify-between py-3 rounded-lg mb-4 pl-6 pr-4 items-center" key={user.id}>
 
                                 <div className="flex gap-3 items-center">
                                     <ProfileImage imageUrl={user.imageURL} rounded className="h-12 w-12" />
@@ -115,28 +148,11 @@ export default function findUser() {
                 </div>
 
             </div>
-        </PageLayout>
+        </PageLayout >
     );
 }
 
-interface toggleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    text: string,
-    selected: boolean
-}
-
-function ToggleButton({ text, selected, ...props }: toggleButtonProps) {
-    //SHOULD TO MOVE THIS CODE TO A SINGLE FILE COMPONENT
-    const button = tv({
-        base: "w-28 h-10 rounded-full border-2 border-SECONDARY_DEFAULT font-semibold text-sm",
-        variants: {
-            selected: {
-                true: "bg-SECONDARY_DEFAULT text-white",
-                false: "bg-transparent text-SECONDARY_DEFAULT"
-            }
-        }
-    })
-
-    return (
-        <button className={button({ selected: selected })} children={text} {...props} />
-    );
+interface ToggleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    label: string;
+    selectedButton: string;
 }
