@@ -2,7 +2,7 @@ import { IResponseData } from "@/interfaces/iResponseData";
 
 export async function unfollowUser(userId: string, userIdToUnfollow: string): Promise<IResponseData> {
     try {
-        const response = await fetch("/api/follower/unfollow", {
+        const response = await fetch("/api/user/unfollow", {
             method: "DELETE",
             body: JSON.stringify({ userId, userIdToUnfollow }),
             headers: { "Content-Type": "application/json" },

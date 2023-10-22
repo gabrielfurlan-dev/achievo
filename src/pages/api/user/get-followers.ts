@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function getAllFollowers(
+export default async function getFollowers(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
@@ -12,27 +12,28 @@ export default async function getAllFollowers(
     }
 
     try {
-        const userId = await req.query.userId as string;
 
-        const followers = await db.follow.findMany({
+        const userId = req.query.userId as string;
+
+        const followersUser = await db.follow.findMany({
             where: {
-                followingUserId: userId,
+               userId : userId
             },
             select: {
-                userId: true
+                followingUserId: true
             }
         });
 
         return res.status(200).json({
             success: true,
-            data: followers,
-            message: "Seguidores recuperados com sucesso!",
+            data: followersUser.map(x => x.followingUserId),
+            message: "Seguidores obtidos com sucesso!",
         });
     } catch (error) {
         return res.status(500).json({
             success: false,
             data: null,
-            message: "Erro ao recuperar seguidores",
+            message: "Erro ao obbter os seguidores",
             error: String(error),
         });
     }

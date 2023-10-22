@@ -3,20 +3,17 @@ import { IResponseData } from "@/interfaces/iResponseData";
 export interface searchUserFilter {
     userId: string,
     name: string,
-    filter: "onlyFollowers"| "onlyFollowing" | "none"
 }
 
 export async function searchUsers({
     userId,
     name,
-    filter
 }: searchUserFilter): Promise<IResponseData> {
 
     try {
         const queryParams = new URLSearchParams({
             userId: userId,
             name: name,
-            onlyFollowers: filter
         });
 
         const response = await fetch(`/api/user/search?${queryParams.toString()}`, {

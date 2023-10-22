@@ -1,6 +1,6 @@
 import { db } from "@/db";
 
-export async function getCommonFollowersFunction(userId: string, userIdToCompare: string) {
+export async function  getCommonFollowersFunction(userId: string, userIdToCompare: string) {
 
     const followersUser = await db.follow.findMany({
         where: { userId: userIdToCompare },

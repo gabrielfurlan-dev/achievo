@@ -1,9 +1,8 @@
 import { IResponseData } from "@/interfaces/iResponseData";
 
-export async function getAllFollowers(userId: string): Promise<IResponseData> {
+export async function getFollowers(userId: string): Promise<IResponseData> {
     try {
-        const queryParams = new URLSearchParams({ userId });
-        const response = await fetch(`/api/follower/get-all-followers?${queryParams.toString()}`);
+        const response = await fetch(`/api/user/get-followers?${userId}`);
 
         if (!response.ok) {
             throw new Error("Failed to get followers");

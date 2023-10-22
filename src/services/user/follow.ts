@@ -2,7 +2,7 @@ import { IResponseData } from "@/interfaces/iResponseData";
 
 export async function followUser(userId: string, userIdToFollow: string): Promise<IResponseData> {
     try {
-        const response = await fetch("/api/follower/follow", {
+        const response = await fetch("/api/user/follow", {
             method: "POST",
             body: JSON.stringify({ userId, userIdToFollow }),
             headers: { "Content-Type": "application/json" },
