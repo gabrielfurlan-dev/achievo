@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { IReport } from "@/interfaces/iReport";
-import { Eye, PencilSimple } from "phosphor-react";
+import { Calendar, Eye, PencilSimple } from "phosphor-react";
 import Link from "next/link";
 import { NoBackgroundButton } from "@/components/Buttons";
 import { getWeek } from "date-fns";
@@ -59,8 +59,12 @@ export default function ListReport() {
             <div className="pt-14 h-full">
                 <div className="bg-NEUTRAL_GRAY_0 w-full dark:bg-NEUTRAL_DARK_100 rounded-3xl pt-14 px-4 md:px-24">
                     <div className="flex w-full justify-between items-center">
-                        <div className="text-NEUTRAL_GRAY_07 dark:text-NEUTRAL_GRAY_04">
-                        //TODO: Barra de filtro por data
+                        <div className="bg-NEUTRAL_GRAY_02 dark:bg-DARK_BACKGROUND_SECONDARY py-3 px-4 rounded-lg text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_06">
+
+                            <div date-rangepicker className="flex gap-2 items-center">
+            //TODO: datetime picker
+                            </div>
+
                         </div>
                         <div className="flex flex-row gap-2">
                             <button
@@ -87,7 +91,7 @@ export default function ListReport() {
                         {reports && reports.map(data => (
                             <Link key={data.id} href={`/report/${data.id}`}>
                                 <li
-                                    className="mb-4 bg-WHITE_PRINCIPAL dark:bg-DARK_BACKGROUND_SECONDARY rounded-lg p-2 w-full"
+                                    className="mb-4 bg-NEUTRAL_GRAY_02 dark:bg-DARK_BACKGROUND_SECONDARY rounded-lg p-2 w-full"
                                     key={data.id}
                                 >
                                     <div className="flex justify-between">
