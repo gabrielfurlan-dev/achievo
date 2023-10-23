@@ -7,8 +7,7 @@ import { getFollowers } from "@/services/user/getFollowers";
 import { searchUsers } from "@/services/user/search";
 import { unfollowUser } from "@/services/user/unfollow";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { CircularProgress } from "@mui/material";
-import { ArrowClockwise, DotsThree, MagnifyingGlass, UserPlus, Users } from "phosphor-react";
+import { Binoculars, DotsThree, MagnifyingGlass, UserPlus, Users } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { tv } from "tailwind-variants";
 
@@ -114,7 +113,6 @@ export default function findUser() {
                                     value={filterName}
                                 />
                             </div>
-                            <button children={<ArrowClockwise className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_06" size={24}/>}/>
                         </div>
                         <div className="flex flex-row gap-6">
                             <div className="flex space-x-4">
@@ -140,10 +138,10 @@ export default function findUser() {
 
                 <div id="users" className="h-2/3">
                     {
-                        //TODO: validate this
-                        !users && (
-                            <div className="w-full h-full flex justify-center items-center">
-                                <CircularProgress className="text-NEUTRAL_GRAY_06 dark:text-NEUTRAL_GRAY_01" />
+                        users.length == 0 && (
+                            <div className="w-full h-full flex flex-col justify-center items-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">
+                                <Binoculars size={56} />
+                                <p>No users found!</p>
                             </div>
                         )
                     }

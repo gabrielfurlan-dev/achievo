@@ -14,6 +14,7 @@ import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 import { Stairs } from "@/assets/icons/Stairs";
 import { ListMagnifyingGlass } from "@/assets/icons/ListMagnifyingGlass";
 import { FilePlus, House, Users } from "phosphor-react";
+import { tv } from "tailwind-variants";
 
 export default function home() {
     const router = useRouter();
@@ -109,9 +110,10 @@ export default function home() {
                         method={() => router.push("list-reports")}
                     />
                     <IconButton
-                        IconButton={<Users strokeWidth={1.2} color="#5C8A74" size={28} />}
+                        IconButton={<Users strokeWidth={1.2} size={28}  className="text-SECONDARY_DEFAULT"/>}
                         name="Friends"
                         method={() => router.push("user/friends")}
+                        newModule
                     />
                 </div>
                 <Modal
@@ -138,14 +140,34 @@ type props = {
     name: string;
     method: () => void;
     IconButton: ReactNode;
+    newModule?: boolean;
 };
 
-function IconButton({ name, method, IconButton }: props) {
+function IconButton({ name, method, IconButton, newModule }: props) {
     const [isHovering, setIsHovering] = useState<boolean>(false)
+
+    const hoverSpan = tv({
+        base: "w-full h-1 animate-pulse rounded-lg",
+        variants: {
+            newModule: {
+                true: "bg-SECONDARY_DEFAULT",
+                false: "bg-PRIMARY_DEFAULT"
+            }
+        }
+    })
 
     return (
         <div>
             <div className="">
+                {
+                    newModule ?
+                    <div className="group top-5 relative flex left-14">
+                        <button className="bg-SECONDARY_DEFAULT p-[6px] animate-pulse rounded-full text-sm text-white shadow-sm" />
+                        <span className="absolute top-5 scale-0 transition-all rounded bg-SECONDARY_DEFAULT p-2 text-xs text-white group-hover:scale-100">✨ New Feature!</span>
+                    </div>
+                    :
+                    <div className="pt-[12px]"/>
+                }
                 <button
                     className="rounded-xl
                                 border-aanimate-spin text-GRAY
@@ -157,7 +179,8 @@ function IconButton({ name, method, IconButton }: props) {
                     onClick={method}>
                     {IconButton}
                     <p className="text-neutral-800 dark:text-neutral-200 font-medium">{name}</p>
-                    <span className="w-full h-1 bg-PRINCIPAL animate-pulse rounded-lg" style={{ backgroundColor: !isHovering ? "transparent" : "" }} />
+                    <span className={hoverSpan({newModule: newModule ? true : false})}
+                        style={{ backgroundColor: !isHovering ? "transparent" : "" }} />
                 </button>
             </div>
         </div>

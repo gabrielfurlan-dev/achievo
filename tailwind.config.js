@@ -52,7 +52,9 @@ module.exports = {
                 NEUTRAL_GRAY_0: "#F8F9FA",
                 NEUTRAL_GRAY_01: "#F1F3F5",
                 NEUTRAL_GRAY_02: "#E9ECEF",
+                NEUTRAL_GRAY_04: "#CED4DA",
                 NEUTRAL_GRAY_06: "#868E96",
+                NEUTRAL_GRAY_07: "#495057",
                 NEUTRAL_GRAY_09: "#212529",
 
                 NEUTRAL_600: "#F8F8F8",
