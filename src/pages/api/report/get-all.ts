@@ -11,8 +11,16 @@ export default async function handler(
         return;
     }
 
+
     try {
+        const IdsToFilter = req.body as string[];
+
         const reports = await db.report.findMany({
+            // where: {
+            //     userId: {
+            //         in: IdsToFilter
+            //     }
+            // },
             include: {
                 user: {
                     select: {

@@ -100,17 +100,17 @@ export default function home() {
 
                 <div className="mt-10 flex gap-1">
                     <IconButton
-                        IconButton={<FilePlus weight="light" color="#5C8A74" size={24} />}
+                        IconButton={<FilePlus weight="regular" color="#5C8A74" size={24}/>}
                         name="Add"
                         method={handleAddReport}
                     />
                     <IconButton
-                        IconButton={<ListMagnifyingGlass strokeWidth={1.2} color="#5C8A74" size={28} />}
+                        IconButton={<ListMagnifyingGlass strokeWidth={1.5} color="#5C8A74" size={28} />}
                         name="List"
                         method={() => router.push("list-reports")}
                     />
                     <IconButton
-                        IconButton={<Users strokeWidth={1.2} size={28}  className="text-SECONDARY_DEFAULT"/>}
+                        IconButton={<Users size={28} className="" />}
                         name="Friends"
                         method={() => router.push("user/friends")}
                         newModule
@@ -156,17 +156,27 @@ function IconButton({ name, method, IconButton, newModule }: props) {
         }
     })
 
+    const iconStyle = tv({
+        base: "",
+        variants: {
+            isHovering: {
+                true: "text-SECONDARY_DEFAULT",
+                false: "text-PRIMARY_DEFAULT"
+            }
+        }
+    })
+
     return (
         <div>
             <div className="">
                 {
                     newModule ?
-                    <div className="group top-5 relative flex left-14">
-                        <button className="bg-SECONDARY_DEFAULT p-[6px] animate-pulse rounded-full text-sm text-white shadow-sm" />
-                        <span className="absolute top-5 scale-0 transition-all rounded bg-SECONDARY_DEFAULT p-2 text-xs text-white group-hover:scale-100">✨ New Feature!</span>
-                    </div>
-                    :
-                    <div className="pt-[12px]"/>
+                        <div className="group top-5 relative flex left-14">
+                            <button className="bg-SECONDARY_DEFAULT p-[6px] animate-pulse rounded-full text-sm text-white shadow-sm" />
+                            <span className="absolute top-5 scale-0 transition-all rounded bg-SECONDARY_DEFAULT p-2 text-xs text-white group-hover:scale-100">✨ New Feature!</span>
+                        </div>
+                        :
+                        <div className="pt-[12px]" />
                 }
                 <button
                     className="rounded-xl
@@ -177,9 +187,11 @@ function IconButton({ name, method, IconButton, newModule }: props) {
                     onMouseEnter={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}
                     onClick={method}>
-                    {IconButton}
+                    <div className={newModule ? iconStyle({isHovering: isHovering ? true : false }) : ""}>
+                        {IconButton}
+                    </div>
                     <p className="text-neutral-800 dark:text-neutral-200 font-medium">{name}</p>
-                    <span className={hoverSpan({newModule: newModule ? true : false})}
+                    <span className={hoverSpan({ newModule: newModule ? true : false })}
                         style={{ backgroundColor: !isHovering ? "transparent" : "" }} />
                 </button>
             </div>

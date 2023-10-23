@@ -87,10 +87,11 @@ export async function updateReport({
     }
 }
 
-export async function getAllReports() {
+export async function getAllReports(IdsToFilter?: string[]) {
     try {
         const report = await fetch("/api/report/get-all", {
             method: "GET",
+            // body: JSON.stringify({IdsToFilter}), //TODO: aplicar esse filtro
             headers: { "Content-Type": "application/json" },
         });
 

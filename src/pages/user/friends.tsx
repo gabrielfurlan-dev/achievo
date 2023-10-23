@@ -19,6 +19,16 @@ export default function findUser() {
     const [selectedButton, setSelectedButton] = useState<"following" | "follower" | "none">("none");
     const [followers, setFollowers] = useState<string[]>([]);
 
+    const button = tv({
+        base: "w-28 h-10 rounded-full border-2 border-SECONDARY_DEFAULT font-semibold text-sm",
+        variants: {
+            selected: {
+                true: "bg-SECONDARY_DEFAULT text-white",
+                false: "bg-transparent text-SECONDARY_DEFAULT"
+            }
+        }
+    })
+
     async function updateUsersList() {
 
         const obtainedUsers = (await searchUsers({
@@ -35,8 +45,6 @@ export default function findUser() {
         const regex = new RegExp(filterName, 'i');
 
         const filteredUsers = originalUsers.filter((user) => {
-            console.log(user.id)
-
             const nameMatch = regex.test(user.name) || regex.test(user.username);
             const followerMatch = !(selectedButton == "follower") || user.commonFollowers.some(x => x == userInfo.username);
             const followingMatch = !(selectedButton == "following") || followers.some(follower => follower == user.id);
@@ -62,16 +70,6 @@ export default function findUser() {
             setSelectedButton(buttonName);
         }
     };
-
-    const button = tv({
-        base: "w-28 h-10 rounded-full border-2 border-SECONDARY_DEFAULT font-semibold text-sm",
-        variants: {
-            selected: {
-                true: "bg-SECONDARY_DEFAULT text-white",
-                false: "bg-transparent text-SECONDARY_DEFAULT"
-            }
-        }
-    })
 
     function getMessageCommonFollowers(user: IUserListItem) {
         if (user.commonFollowers.length > 3)
