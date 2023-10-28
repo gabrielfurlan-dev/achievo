@@ -12,11 +12,14 @@ import { getUpdatedTimeElapsed } from "@/helpers/elapsedTime";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import { ProfileImage } from "@/components/profileImage";
 import { tv } from "tailwind-variants";
+import DatePicker from 'react-datepicker'
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReport[]>([]);
     const { userInfo } = useUserInfoStore();
     const [selectedFilterType, setSelectedFilterType] = useState<"onlyMine" | "WhoDoIFollow" | "everyone" | "none">("none")
+    const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
+    const [startDate, endDate] = dateRange;
 
     const button = tv({
         base: "min-w-28 h-10 rounded-full border-2 px-2 border-SECONDARY_DEFAULT font-semibold text-sm",
@@ -57,12 +60,22 @@ export default function ListReport() {
             />
 
             <div className="pt-14 h-full">
-                <div className="bg-NEUTRAL_GRAY_0 w-full dark:bg-NEUTRAL_DARK_100 rounded-3xl pt-14 px-4 md:px-24">
+                <div className="bg-NEUTRAL_GRAY_0 h-full w-full dark:bg-NEUTRAL_DARK_100 rounded-3xl pt-14 px-4 md:px-24">
                     <div className="flex w-full justify-between items-center">
                         <div className="bg-NEUTRAL_GRAY_02 dark:bg-DARK_BACKGROUND_SECONDARY py-3 px-4 rounded-lg text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_06">
 
                             <div date-rangepicker className="flex gap-2 items-center">
-            //TODO: datetime picker
+                                <DatePicker
+                                    className="outline-none bg-transparent"
+                                    selectsRange={true}
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    onChange={(update) => {
+                                        setDateRange(update);
+                                    }}
+                                    placeholderText={`${new Date().toLocaleDateString()} - ${new Date().toLocaleDateString()}`}
+                                />
+                                <Calendar size={24} className="text-NEUTRAL_GRAY_04 dark:bg-DARK_BACKGROUND_SECONDARY"/>
                             </div>
 
                         </div>

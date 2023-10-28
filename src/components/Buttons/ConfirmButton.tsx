@@ -67,7 +67,7 @@ export function ConfirmButton({ children, onClick, ...props }: CustomButtonProps
 
                         {/*Necessary to don't broke the transition*/}
                         <span className="relative invisible" children={children} />
-
+                    
                     </button>
                 )
             }

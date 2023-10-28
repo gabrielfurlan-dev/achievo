@@ -7,6 +7,7 @@ import { DarkThemeProvider } from "@/contexts/ThemeContext";
 import { SessionProvider, getSession } from 'next-auth/react'
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import 'react-datepicker/dist/react-datepicker.css';
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
