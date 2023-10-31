@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { IReport } from "@/interfaces/iReport";
-import { Calendar, Eye, PencilSimple } from "phosphor-react";
+import { Calendar, Eye, PencilSimple, RocketLaunch } from "phosphor-react";
 import Link from "next/link";
 import { NoBackgroundButton } from "@/components/Buttons";
 import { getWeek } from "date-fns";
@@ -13,9 +13,12 @@ import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import { ProfileImage } from "@/components/profileImage";
 import { tv } from "tailwind-variants";
 import DatePicker from 'react-datepicker'
+import { IReportItem } from "@/interfaces/reports/IReportItem";
+import { Rocket } from "@/assets/icons/Rocket";
+import { getElementStyle } from "@/helpers/ElementHelper";
 
 export default function ListReport() {
-    const [reports, setReports] = useState<IReport[]>([]);
+    const [reports, setReports] = useState<IReportItem[]>([]);
     const { userInfo } = useUserInfoStore();
     const [selectedFilterType, setSelectedFilterType] = useState<"onlyMine" | "WhoDoIFollow" | "everyone" | "none">("none")
     const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
@@ -51,6 +54,26 @@ export default function ListReport() {
         }
     };
 
+    function getWeeklyProgressText(value: number, total: number, reportId: string) {
+        const percentage = ((value / total) * 100).toFixed(0)
+        const style = tv({
+            base: "flex items-center gap-2",
+            variants: {
+                conclued: {
+                    true: "text-PRIMARY_DEFAULT",
+                    false: "text-SECONDARY_DEFAULT"
+                }
+            }
+        })
+
+        return (
+            <div id={reportId} className={style({ conclued: percentage == "100" })}>
+                <Rocket size={24} color={getElementStyle(reportId)?.color} />
+                <span>Weekly Progress {percentage}%</span>
+            </div>
+        )
+    }
+
     return (
         <PageLayout>
             <CompactNavBar
@@ -75,7 +98,7 @@ export default function ListReport() {
                                     }}
                                     placeholderText={`${new Date().toLocaleDateString()} - ${new Date().toLocaleDateString()}`}
                                 />
-                                <Calendar size={24} className="text-NEUTRAL_GRAY_04 dark:bg-DARK_BACKGROUND_SECONDARY"/>
+                                <Calendar size={24} className="text-NEUTRAL_GRAY_06 dark:bg-DARK_BACKGROUND_SECONDARY" />
                             </div>
 
                         </div>
@@ -102,32 +125,33 @@ export default function ListReport() {
                     </div>
                     <ul className="mt-10 w-full">
                         {reports && reports.map(data => (
-                            <Link key={data.id} href={`/report/${data.id}`}>
+                            <Link key={data.reportId} href={`/report/${data.reportId}`}>
                                 <li
                                     className="mb-4 bg-NEUTRAL_GRAY_02 dark:bg-DARK_BACKGROUND_SECONDARY rounded-lg p-2 w-full"
-                                    key={data.id}
+                                    key={data.reportId}
                                 >
                                     <div className="flex justify-between">
-                                        <div className="ml-4 flex gap-8 items-center  text-LIGHT_TEXT dark:text-DARK_TEXT">
-                                            <ProfileImage imageUrl={data.user.imageURL} rounded />
+                                        <div className="ml-4 flex gap-4 items-center  text-LIGHT_TEXT dark:text-DARK_TEXT">
+                                            <ProfileImage imageUrl={data.imageURL} rounded size={48} />
                                             <div>
-                                                <p className="font-bold text-xl">
-                                                    Week{" "}
-                                                    {getWeek(
-                                                        stringToDate(data.createdDate)
-                                                    )}
-                                                </p>
-                                                <p>{getFormatedWeekInterval(data.createdDate)}</p>
-                                                <p className="text-xs font-normal">
-                                                    {`${getUpdatedTimeElapsed(data.updatedDate)}`}</p>
-                                                <p>{data.username}</p>
+                                                <div className="flex flex-row gap-2">
+                                                    <span className="text-lg font-bold text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_WHITE">{data.name}</span>
+                                                    <span className="text-base text-NEUTRAL_GRAY_06">@{data.username}</span>
+                                                </div>
+                                                <p>{data.description}</p>
+                                                <p className="text-NEUTRAL_GRAY_06">{getFormatedWeekInterval(data.createdDate)}</p>
+                                                {getWeeklyProgressText(data.value, data.total, data.reportId.toString())}
                                             </div>
                                         </div>
-                                        <div className="flex items-center">
-                                            {userInfo.id == data.user.id ? (
-                                                <NoBackgroundButton children={<PencilSimple size={24} className="text-PRINCIPAL" />} />
-                                            ) : (
-                                                <NoBackgroundButton children={<Eye size={24} className="text-PRINCIPAL" />} />)}
+                                        <div className="flex flex-col w-[120px] items-center text-center px-6">
+
+                                                {userInfo.id == data.userId ? (
+                                                    <button className="py-2"><PencilSimple size={24} className="text-PRINCIPAL" /></button>)
+                                                    : (<button className="py-2" children={<Eye size={24} className="text-PRINCIPAL" />} />)
+                                                }
+
+                                            <p className="text-xs text-NEUTRAL_GRAY_06 font-normal">
+                                                {`${getUpdatedTimeElapsed(data.updatedDate)}`}</p>
                                         </div>
                                     </div>
                                 </li>

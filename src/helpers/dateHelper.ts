@@ -39,7 +39,7 @@ export function getWeekInterval(date: Date) {
 
 export function getFormatedWeekInterval(date: string) {
     const interval = getWeekInterval(stringToDate(date));
-    
+
     if (typeof navigator == 'undefined') {
         return getFormatedWeekIntervalBrazil(interval);
     }
@@ -70,7 +70,7 @@ function getFormatedWeekIntervalBrazil(interval: IntervalWeek) {
     const firstDayFormatted = `${firstPeriod.day}/${firstPeriod.mounth}`;
     const lastDayFormatted = `${lastPeriod.day}/${lastPeriod.mounth}`;
 
-    return `${firstDayFormatted} até ${lastDayFormatted} de ${interval.lastDayOfWeek.getFullYear()}`
+    return `${firstDayFormatted} until ${lastDayFormatted} de ${interval.lastDayOfWeek.getFullYear()}`
 }
 
 function getFormatedWeekIntervalOtherCountries(interval: IntervalWeek) {
@@ -80,7 +80,7 @@ function getFormatedWeekIntervalOtherCountries(interval: IntervalWeek) {
     const firstDayFormatted = `${firstPeriod.mounth}/${firstPeriod.day}`;
     const lastDayFormatted = `${lastPeriod.mounth}/${lastPeriod.day}`;
 
-    return `${firstDayFormatted} até ${lastDayFormatted} de ${interval.lastDayOfWeek.getFullYear()}`;
+    return `${firstDayFormatted} until ${lastDayFormatted} de ${interval.lastDayOfWeek.getFullYear()}`;
 }
 
 function getPeriod(interval: Date) {

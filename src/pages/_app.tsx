@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 const App: React.FC<AppProps> = ({ Component, pageProps: { session, ...props } }) => {
 
     return (
-        <div className="flex col bg-WHITE dark:bg-DARK_BACKGROUND">
+        <div className="font-sans flex col bg-WHITE dark:bg-DARK_BACKGROUND">
             <SessionProvider session={session}>
                 <ThemeProvider theme={theme}>
                     <DarkThemeProvider>
