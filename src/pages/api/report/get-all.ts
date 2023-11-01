@@ -36,6 +36,7 @@ export default async function handler(
 
         const filterByOption = async () => {
             if (option == "whoDoIFollow") {
+                //FIXME: corrigir busca por seguidores
                 return Prisma.sql`AND "R"."userId" IN (${(await getFollowers(userId)).data as string[]})`
             } else if (option == "onlyMine") {
                 return Prisma.sql`AND "R"."userId" = ${userId}`
