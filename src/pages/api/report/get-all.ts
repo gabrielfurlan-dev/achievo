@@ -5,12 +5,12 @@ import { getFollowers } from "@/services/user/getFollowers";
 import { Prisma } from "@prisma/client";
 import { IReportItem } from "@/interfaces/reports/IReportItem";
 
-interface IFilterReport {
-    userId: string,
-    startDate: string,
-    endDate: string,
-    option: "onlyMine" | "whoDoIFollow" | "everyone",
-}
+// interface IFilterReport {
+//     userId: string,
+//     startDate: string,
+//     endDate: string,
+//     option: "onlyMine" | "whoDoIFollow" | "everyone",
+// }
 
 
 export default async function handler(
@@ -22,55 +22,54 @@ export default async function handler(
         return;
     }
 
-    //FIXME: use this code to convert js date to pgsql date
-    // var userTimezoneOffset = date.getTimezoneOffset() * 60000;
-    // new Date(date.getTime() - userTimezoneOffset);
-
-    // async function getFilter(filter: IFilterReport) {
-    //     if (filter.option == "whoDoIFollow") {
-    //         return `AND "R"."userId" IN (${await getFollowers(filter.userId)})`
-    //     } else if (filter.option == "onlyMine") {
-    //         return `AND "R"."userId" = ${filter.userId}`
-    //     }
-    //     //if (filter.searchName){
-    //     // sql.concat(`AND LOWER("U"."name") LIKE '%${filter.searchName}%'`)
-    //     // }
-    // }
-
     try {
 
         const userId = req.query.userId as string;
-        const startDate = req.query.userId as string;
-        const endDate = req.query.userId as string;
-        const option = req.query.userId as string;
+        const startDate = new Date(req.query.startDate as string)
+        const endDate = new Date(req.query.endDate as string)
+        const option = req.query.option as "onlyMine" | "whoDoIFollow" | "everyone";
+        const searchName = req.query.searchName as string;
 
-        console.clear();
-        console.log(JSON.stringify(filter));
+        if (!userId || !startDate || !endDate || !option) {
+            return res.status(400).send({ message: 'Parâmetros inválidos' });
+        }
 
-        const sql = Prisma.sql`
-            SELECT "R"."id" AS "reportId",
-            "R"."updatedDate",
-            "R"."createdDate",
-            "U"."id" AS "userId",
-            "U"."name",
-            "U"."username",
-            "U"."description",
-            "U"."imageURL",
-            SUM("PG"."total") AS "total",
-            SUM("PG"."value") AS "value"
-            FROM "Report" AS "R"
-            INNER JOIN "User" AS "U" ON "U".id = "R"."userId"
-            LEFT JOIN "ProgressGoal" AS "PG" ON "PG"."reportId" = "R".id
-            WHERE "R"."createdDate" BETWEEN ${filter.startDate} AND ${filter.endDate}
-            GROUP BY "U"."name", "U"."username", "U"."description", "U"."imageURL", "R"."id", "U"."id";`
 
-        // console.log(sql)
+        const filterByName = () => {
+            if (option == "onlyMine" || !searchName || searchName.length == 0)
+                return Prisma.sql``;
+
+            return Prisma.sql`AND LOWER("U"."name") LIKE ${`%${searchName.toLowerCase()}%`}`;
+        }
+
+        const filterByOption = async () => {
+            if (option == "whoDoIFollow") {
+                return Prisma.sql`AND "R"."userId" IN (${(await getFollowers(userId)).data as string[]})`
+            } else if (option == "onlyMine") {
+                return Prisma.sql`AND "R"."userId" = ${userId}`
+            }
+            return Prisma.sql``;
+        }
+
+        const sql = Prisma.sql`SELECT "R"."id" AS "reportId",
+                              "R"."updatedDate",
+                              "R"."createdDate",
+                              "U"."id" AS "userId",
+                              "U"."name",
+                              "U"."username",
+                              "U"."description",
+                              "U"."imageURL",
+                              SUM("PG"."total") AS "total",
+                              SUM("PG"."value") AS "value"
+                              FROM "Report" AS "R"
+                              INNER JOIN "User" AS "U" ON "U".id = "R"."userId"
+                              LEFT JOIN "ProgressGoal" AS "PG" ON "PG"."reportId" = "R".id
+                              WHERE "R"."createdDate" BETWEEN ${startDate} AND ${endDate}
+                              ${filterByName()}
+                              ${await filterByOption()}
+                              GROUP BY "U"."name", "U"."username", "U"."description", "U"."imageURL", "R"."id", "U"."id";`
 
         const reports = await db.$queryRaw(sql) as IReportItem[]
-
-        //TODO: put the where clausule in the query
-        // WHERE "R"."createdDate" BETWEEN
-        // ${new Date(filter.startDate)} AND ${new Date(filter.endDate)}
 
         return res.status(201).json({
             success: true,
