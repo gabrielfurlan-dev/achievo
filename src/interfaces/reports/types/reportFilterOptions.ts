@@ -1,1 +1,1 @@
-export type ReportFilterOptions = "onlyMine" | "whoDoIFollow" | "everyone" | "none"
+export type ReportFilterOptions = "onlyMine" | "whoDoIFollow" | "everyone"

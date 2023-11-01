@@ -16,7 +16,6 @@ export default async function handler(
     }
 
     try {
-
         const userId = req.query.userId as string;
         const startDate = new Date(req.query.startDate as string)
         const endDate = new Date(req.query.endDate as string)
@@ -35,12 +34,23 @@ export default async function handler(
         }
 
         const filterByOption = async () => {
+
             if (option == "whoDoIFollow") {
-                //FIXME: corrigir busca por seguidores
-                return Prisma.sql`AND "R"."userId" IN (${(await getFollowers(userId)).data as string[]})`
+                const followers = await db.follow.findMany({
+                    where: { userId: userId},
+                    select: { followingUserId: true }
+                });
+
+                if (followers.length > 0) {
+                    return Prisma.sql`AND "R"."userId" IN (${Prisma.join(followers.map(x => x.followingUserId))})`
+                }else{
+                    return Prisma.sql`AND "R"."userId" IN (${'0'})`
+                }
+
             } else if (option == "onlyMine") {
                 return Prisma.sql`AND "R"."userId" = ${userId}`
             }
+
             return Prisma.sql``;
         }
 
@@ -61,8 +71,6 @@ export default async function handler(
                               ${filterByName()}
                               ${await filterByOption()}
                               GROUP BY "U"."name", "U"."username", "U"."description", "U"."imageURL", "R"."id", "U"."id";`
-
-        console.log(sql)
 
         const reports = await db.$queryRaw(sql) as IReportItem[]
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Calendar, Eye, PencilSimple } from "phosphor-react";
+import { Binoculars, Calendar, Eye, PencilSimple } from "phosphor-react";
 import Link from "next/link";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
@@ -21,7 +21,7 @@ const defaultEndDate = new Date();
 export default function ListReport() {
     const [reports, setReports] = useState<IReportItem[]>([]);
     const { userInfo } = useUserInfoStore();
-    const [selectedFilterType, setSelectedFilterType] = useState<"onlyMine" | "whoDoIFollow" | "everyone" | "none">("none")
+    const [selectedFilterType, setSelectedFilterType] = useState<ReportFilterOptions>("everyone")
     const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([defaultStartDate, defaultEndDate]);
     const [startDate, endDate] = dateRange;
 
@@ -42,8 +42,6 @@ export default function ListReport() {
                 return;
             }
 
-
-            console.log(dateRange)
             try {
                 const result = await getAllReports({
                     userId: userInfo.id,
@@ -58,14 +56,6 @@ export default function ListReport() {
         };
         fetchReports();
     }, [userInfo.id, selectedFilterType, startDate, endDate]);
-
-    const handleButtonClick = (buttonName: ReportFilterOptions) => {
-        if (selectedFilterType === buttonName) {
-            setSelectedFilterType("none");
-        } else {
-            setSelectedFilterType(buttonName);
-        }
-    };
 
     function getWeeklyProgressText(value: number, total: number, reportId: string) {
         const percentage = ((value / total) * 100).toFixed(0)
@@ -120,25 +110,33 @@ export default function ListReport() {
                         <div className="flex flex-row gap-2">
                             <button
                                 className={button({ selected: selectedFilterType === 'onlyMine' })}
-                                onClick={() => handleButtonClick('onlyMine')}
+                                onClick={() => setSelectedFilterType('onlyMine')}
                             >
                                 Only mine
                             </button>
                             <button
                                 className={button({ selected: selectedFilterType === 'whoDoIFollow' })}
-                                onClick={() => handleButtonClick('whoDoIFollow')}
+                                onClick={() => setSelectedFilterType('whoDoIFollow')}
                             >
                                 Who do I follow
                             </button>
                             <button
                                 className={button({ selected: selectedFilterType === 'everyone' })}
-                                onClick={() => handleButtonClick('everyone')}
+                                onClick={() => setSelectedFilterType('everyone')}
                             >
                                 Everyone
                             </button>
                         </div>
                     </div>
                     <ul className="mt-10 w-full">
+                        {
+                            !reports && (
+                                <div className="w-full h-full flex m-auto flex-col justify-center items-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">
+                                    <Binoculars size={56} />
+                                    <p>No reports found!</p>
+                                </div>
+                            )
+                        }
                         {reports && reports.map(data => (
                             <Link key={data.reportId} href={`/report/${data.reportId}`}>
                                 <li

@@ -144,9 +144,9 @@ export default function findUser() {
                         )
                     }
                     {
+                        //TODO: remove the actual user from listage
                         users && users.map(user => (
                             <div className="bg-NEUTRAL_GRAY_02 dark:bg-NEUTRAL_DARK_300 flex justify-between py-3 rounded-lg mb-4 pl-6 pr-4 items-center" key={user.id}>
-
                                 <div className="flex gap-3 items-center">
                                     <ProfileImage imageUrl={user.imageURL} rounded className="h-12 w-12" />
                                     <div>
