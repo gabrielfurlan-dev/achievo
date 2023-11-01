@@ -4,14 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getFollowers } from "@/services/user/getFollowers";
 import { Prisma } from "@prisma/client";
 import { IReportItem } from "@/interfaces/reports/IReportItem";
-
-// interface IFilterReport {
-//     userId: string,
-//     startDate: string,
-//     endDate: string,
-//     option: "onlyMine" | "whoDoIFollow" | "everyone",
-// }
-
+import { ReportFilterOptions } from "@/interfaces/reports/types/reportFilterOptions";
 
 export default async function handler(
     req: NextApiRequest,
@@ -27,13 +20,12 @@ export default async function handler(
         const userId = req.query.userId as string;
         const startDate = new Date(req.query.startDate as string)
         const endDate = new Date(req.query.endDate as string)
-        const option = req.query.option as "onlyMine" | "whoDoIFollow" | "everyone";
+        const option = req.query.option as ReportFilterOptions;
         const searchName = req.query.searchName as string;
 
         if (!userId || !startDate || !endDate || !option) {
             return res.status(400).send({ message: 'Parâmetros inválidos' });
         }
-
 
         const filterByName = () => {
             if (option == "onlyMine" || !searchName || searchName.length == 0)
@@ -69,9 +61,11 @@ export default async function handler(
                               ${await filterByOption()}
                               GROUP BY "U"."name", "U"."username", "U"."description", "U"."imageURL", "R"."id", "U"."id";`
 
+        console.log(sql)
+
         const reports = await db.$queryRaw(sql) as IReportItem[]
 
-        return res.status(201).json({
+        return res.status(200).json({
             success: true,
             data: reports,
             message: "Relatórios obtidos com sucesso!",

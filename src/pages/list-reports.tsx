@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { IReport } from "@/interfaces/iReport";
-import { Calendar, Eye, PencilSimple, RocketLaunch } from "phosphor-react";
+import { Calendar, Eye, PencilSimple } from "phosphor-react";
 import Link from "next/link";
-import { NoBackgroundButton } from "@/components/Buttons";
-import { getWeek } from "date-fns";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
-import { getAllReports } from "@/services/reports/reportService";
+import { getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getUpdatedTimeElapsed } from "@/helpers/elapsedTime";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import { ProfileImage } from "@/components/profileImage";
@@ -16,12 +12,14 @@ import DatePicker from 'react-datepicker'
 import { IReportItem } from "@/interfaces/reports/IReportItem";
 import { Rocket } from "@/assets/icons/Rocket";
 import { getElementStyle } from "@/helpers/ElementHelper";
+import { getAllReports } from "@/services/reports/getAll";
+import { ReportFilterOptions } from "@/interfaces/reports/types/reportFilterOptions";
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReportItem[]>([]);
     const { userInfo } = useUserInfoStore();
-    const [selectedFilterType, setSelectedFilterType] = useState<"onlyMine" | "WhoDoIFollow" | "everyone" | "none">("none")
-    const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
+    const [selectedFilterType, setSelectedFilterType] = useState<"onlyMine" | "whoDoIFollow" | "everyone" | "none">("none")
+    const [dateRange, setDateRange] = useState<[Date, Date]>([new Date(), new Date()]);
     const [startDate, endDate] = dateRange;
 
     const button = tv({
@@ -37,16 +35,16 @@ export default function ListReport() {
     useEffect(() => {
         const fetchReports = async () => {
             try {
-                const result = await getAllReports();
+                const result = await getAllReports({ userId: userInfo.id, startDate: startDate, endDate: endDate, option: selectedFilterType });
                 setReports(result.data);
             } catch (error) {
                 console.error("Error fetching reports:", error);
             }
         };
         fetchReports();
-    }, []);
+    }, [selectedFilterType, startDate, endDate]);
 
-    const handleButtonClick = (buttonName: "onlyMine" | "WhoDoIFollow" | "everyone" | "none") => {
+    const handleButtonClick = (buttonName: ReportFilterOptions) => {
         if (selectedFilterType === buttonName) {
             setSelectedFilterType("none");
         } else {
@@ -74,6 +72,11 @@ export default function ListReport() {
         )
     }
 
+    function handleSetDate(update: [Date | null, Date | null]) {
+        if (update[0] == null || update[1] == null) return;
+        setDateRange([update[0], update[1]]);
+    }
+
     return (
         <PageLayout>
             <CompactNavBar
@@ -93,9 +96,7 @@ export default function ListReport() {
                                     selectsRange={true}
                                     startDate={startDate}
                                     endDate={endDate}
-                                    onChange={(update) => {
-                                        setDateRange(update);
-                                    }}
+                                    onChange={(update) => handleSetDate(update)}
                                     placeholderText={`${new Date().toLocaleDateString()} - ${new Date().toLocaleDateString()}`}
                                 />
                                 <Calendar size={24} className="text-NEUTRAL_GRAY_06 dark:bg-DARK_BACKGROUND_SECONDARY" />
@@ -110,8 +111,8 @@ export default function ListReport() {
                                 Only mine
                             </button>
                             <button
-                                className={button({ selected: selectedFilterType === 'WhoDoIFollow' })}
-                                onClick={() => handleButtonClick('WhoDoIFollow')}
+                                className={button({ selected: selectedFilterType === 'whoDoIFollow' })}
+                                onClick={() => handleButtonClick('whoDoIFollow')}
                             >
                                 Who do I follow
                             </button>
@@ -145,10 +146,10 @@ export default function ListReport() {
                                         </div>
                                         <div className="flex flex-col w-[120px] items-center text-center px-6">
 
-                                                {userInfo.id == data.userId ? (
-                                                    <button className="py-2"><PencilSimple size={24} className="text-PRINCIPAL" /></button>)
-                                                    : (<button className="py-2" children={<Eye size={24} className="text-PRINCIPAL" />} />)
-                                                }
+                                            {userInfo.id == data.userId ? (
+                                                <button className="py-2"><PencilSimple size={24} className="text-PRINCIPAL" /></button>)
+                                                : (<button className="py-2" children={<Eye size={24} className="text-PRINCIPAL" />} />)
+                                            }
 
                                             <p className="text-xs text-NEUTRAL_GRAY_06 font-normal">
                                                 {`${getUpdatedTimeElapsed(data.updatedDate)}`}</p>
