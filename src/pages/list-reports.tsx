@@ -11,9 +11,9 @@ import { tv } from "tailwind-variants";
 import DatePicker from 'react-datepicker'
 import { IReportItem } from "@/interfaces/reports/IReportItem";
 import { Rocket } from "@/assets/icons/Rocket";
-import { getElementStyle } from "@/helpers/ElementHelper";
 import { getAllReports } from "@/services/reports/getAll";
 import { ReportFilterOptions } from "@/interfaces/reports/types/reportFilterOptions";
+import { startOfToday, startOfTomorrow, startOfYesterday, subMonths } from "date-fns";
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReportItem[]>([]);
@@ -23,7 +23,7 @@ export default function ListReport() {
     const [startDate, endDate] = dateRange;
 
     const button = tv({
-        base: "min-w-28 h-10 rounded-full border-2 px-2 border-SECONDARY_DEFAULT font-semibold text-sm",
+        base: "min-w-28 h-10 rounded-full border-2 px-4 border-SECONDARY_DEFAULT font-semibold text-sm",
         variants: {
             selected: {
                 true: "bg-SECONDARY_DEFAULT text-white",
@@ -33,6 +33,13 @@ export default function ListReport() {
     })
 
     useEffect(() => {
+        const tomorrow = startOfTomorrow();
+        const oneMonthAgo = subMonths(startOfToday(), 1);
+        setDateRange([oneMonthAgo, tomorrow]);
+
+    }, [])
+
+    useEffect(() => {
         const fetchReports = async () => {
 
             if (!userInfo.id) {
@@ -40,13 +47,13 @@ export default function ListReport() {
             }
 
             try {
-                const defaultStartDate = new Date(new Date().setMonth(new Date().getMonth() - 1));
-                const defaultEndDate = new Date();
+
+
 
                 const result = await getAllReports({
                     userId: userInfo.id,
-                    startDate: startDate ?? defaultStartDate,
-                    endDate: endDate ?? defaultEndDate,
+                    startDate: startDate ?? new Date(),
+                    endDate: endDate ?? new Date(),
                     option: selectedFilterType
                 });
                 setReports(result.data);
@@ -71,7 +78,7 @@ export default function ListReport() {
 
         return (
             <div id={reportId} className={style({ conclued: percentage == "100" })}>
-                <Rocket size={24} color={getElementStyle(reportId)?.color} />
+                <Rocket size={24} color={percentage == "100" ? "#5C8A74" : "#D97251"} />
                 <span>Weekly Progress {percentage}%</span>
             </div>
         )
@@ -106,27 +113,21 @@ export default function ListReport() {
                         <div className="flex flex-row gap-2">
                             <button
                                 className={button({ selected: selectedFilterType === 'onlyMine' })}
-                                onClick={() => setSelectedFilterType('onlyMine')}
-                            >
-                                Only mine
-                            </button>
+                                onClick={() => setSelectedFilterType('onlyMine')} children={"Only mine"}
+                            />
                             <button
                                 className={button({ selected: selectedFilterType === 'whoDoIFollow' })}
-                                onClick={() => setSelectedFilterType('whoDoIFollow')}
-                            >
-                                Who do I follow
-                            </button>
+                                onClick={() => setSelectedFilterType('whoDoIFollow')} children={"Who do I follow"}
+                            />
                             <button
                                 className={button({ selected: selectedFilterType === 'everyone' })}
-                                onClick={() => setSelectedFilterType('everyone')}
-                            >
-                                Everyone
-                            </button>
+                                onClick={() => setSelectedFilterType('everyone')} children={"Everyone"}
+                            />
                         </div>
                     </div>
-                    <ul className="mt-10 w-full">
+                    <ul className="py-10 w-full h-full">
                         {
-                            !reports && (
+                            reports.length == 0 && (
                                 <div className="w-full h-full flex m-auto flex-col justify-center items-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">
                                     <Binoculars size={56} />
                                     <p>No reports found!</p>
@@ -136,11 +137,14 @@ export default function ListReport() {
                         {reports && reports.map(data => (
                             <Link key={data.reportId} href={`/report/${data.reportId}`}>
                                 <li
-                                    className="mb-4 bg-NEUTRAL_GRAY_02 dark:bg-DARK_BACKGROUND_SECONDARY rounded-lg p-2 w-full"
+                                    className="mb-4 transition duration-150 rounded-lg p-2 w-full
+                                              border-transparent border-2 hover:border-PRIMARY_DEFAULT hover:border-opacity-10
+                                            bg-NEUTRAL_GRAY_02 hover:bg-PRIMARY_DEFAULT hover:bg-opacity-25
+                                            dark:bg-DARK_BACKGROUND_SECONDARY dark:hover:bg-PRINCIPAL dark:hover:bg-opacity-40"
                                     key={data.reportId}
                                 >
                                     <div className="flex justify-between">
-                                        <div className="ml-4 flex gap-4 items-center  text-LIGHT_TEXT dark:text-DARK_TEXT">
+                                        <div className="ml-4 flex gap-4 items-center  text-LIGHT_TEXT dark:text-DARK_TEXT ">
                                             <ProfileImage imageUrl={data.imageURL} rounded size={48} />
                                             <div>
                                                 <div className="flex flex-row gap-2">
