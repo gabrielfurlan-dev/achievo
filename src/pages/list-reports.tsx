@@ -15,14 +15,11 @@ import { getElementStyle } from "@/helpers/ElementHelper";
 import { getAllReports } from "@/services/reports/getAll";
 import { ReportFilterOptions } from "@/interfaces/reports/types/reportFilterOptions";
 
-const defaultStartDate = new Date(new Date().setMonth(new Date().getMonth() - 1));
-const defaultEndDate = new Date();
-
 export default function ListReport() {
     const [reports, setReports] = useState<IReportItem[]>([]);
     const { userInfo } = useUserInfoStore();
     const [selectedFilterType, setSelectedFilterType] = useState<ReportFilterOptions>("everyone")
-    const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([defaultStartDate, defaultEndDate]);
+    const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
     const [startDate, endDate] = dateRange;
 
     const button = tv({
@@ -43,10 +40,13 @@ export default function ListReport() {
             }
 
             try {
+                const defaultStartDate = new Date(new Date().setMonth(new Date().getMonth() - 1));
+                const defaultEndDate = new Date();
+
                 const result = await getAllReports({
                     userId: userInfo.id,
-                    startDate: startDate ?? new Date(new Date().setMonth(new Date().getMonth() - 1)),
-                    endDate: endDate ?? new Date(),
+                    startDate: startDate ?? defaultStartDate,
+                    endDate: endDate ?? defaultEndDate,
                     option: selectedFilterType
                 });
                 setReports(result.data);
@@ -96,11 +96,7 @@ export default function ListReport() {
                                     selectsRange={true}
                                     startDate={startDate}
                                     endDate={endDate}
-                                    onChange={(update: [Date | null, Date | null]) => {
-                                        if (update[0] && update[1]) {
-                                            setDateRange(update);
-                                        }
-                                    }}
+                                    onChange={(update) => setDateRange(update)}
                                     placeholderText={`${new Date().toLocaleDateString()} - ${new Date().toLocaleDateString()}`}
                                 />
                                 <Calendar size={24} className="text-NEUTRAL_GRAY_06 dark:bg-DARK_BACKGROUND_SECONDARY" />
