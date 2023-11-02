@@ -23,7 +23,7 @@ export default function ListReport() {
     const [startDate, endDate] = dateRange;
 
     const button = tv({
-        base: "min-w-28 h-10 rounded-full border-2 px-4 border-SECONDARY_DEFAULT font-semibold text-sm",
+        base: "min-w-28 rounded-full border-2 px-4 py-2 border-SECONDARY_DEFAULT font-semibold text-sm",
         variants: {
             selected: {
                 true: "bg-SECONDARY_DEFAULT text-white",
@@ -47,9 +47,6 @@ export default function ListReport() {
             }
 
             try {
-
-
-
                 const result = await getAllReports({
                     userId: userInfo.id,
                     startDate: startDate ?? new Date(),
@@ -92,14 +89,13 @@ export default function ListReport() {
                 goBackUrl="/home"
             />
 
-            <div className="pt-14 h-full">
-                <div className="bg-NEUTRAL_GRAY_0 h-full w-full dark:bg-NEUTRAL_DARK_100 rounded-3xl pt-14 px-4 md:px-24">
-                    <div className="flex w-full justify-between items-center">
-                        <div className="bg-NEUTRAL_GRAY_02 dark:bg-DARK_BACKGROUND_SECONDARY py-3 px-4 rounded-lg text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_06">
-
-                            <div date-rangepicker className="flex gap-2 items-center">
+            <div className="pt-14 h-full w-full">
+                <div className="bg-NEUTRAL_GRAY_0 min-h-screen w-full dark:bg-NEUTRAL_DARK_100 rounded-3xl pt-14 px-2 md:px-24">
+                    <div className="flex flex-col gap-6 md:flex-row w-full justify-between items-center">
+                        <div className="w-full md:w-fit bg-NEUTRAL_GRAY_02 dark:bg-DARK_BACKGROUND_SECONDARY py-3 px-4 rounded-lg text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_06">
+                            <div date-rangepicker className="flex justify-between gap-2 items-center w-full">
                                 <DatePicker
-                                    className="outline-none bg-transparent"
+                                    className="outline-none bg-transparent w-full"
                                     selectsRange={true}
                                     startDate={startDate}
                                     endDate={endDate}
@@ -108,7 +104,6 @@ export default function ListReport() {
                                 />
                                 <Calendar size={24} className="text-NEUTRAL_GRAY_06 dark:bg-DARK_BACKGROUND_SECONDARY" />
                             </div>
-
                         </div>
                         <div className="flex flex-row gap-2">
                             <button
@@ -125,7 +120,7 @@ export default function ListReport() {
                             />
                         </div>
                     </div>
-                    <ul className="py-10 w-full h-full">
+                    <ul className="pt-10 pb-1 md:pb-10 w-full h-full">
                         {
                             reports.length == 0 && (
                                 <div className="w-full h-full flex m-auto flex-col justify-center items-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">
@@ -143,28 +138,30 @@ export default function ListReport() {
                                             dark:bg-DARK_BACKGROUND_SECONDARY dark:hover:bg-PRINCIPAL dark:hover:bg-opacity-40"
                                     key={data.reportId}
                                 >
-                                    <div className="flex justify-between">
-                                        <div className="ml-4 flex gap-4 items-center  text-LIGHT_TEXT dark:text-DARK_TEXT ">
+                                    <div className="flex justify-between items-center">
+                                        <div className="md:ml-4 flex gap-4 items-center  text-LIGHT_TEXT dark:text-DARK_TEXT ">
                                             <ProfileImage imageUrl={data.imageURL} rounded size={48} />
                                             <div>
-                                                <div className="flex flex-row gap-2">
-                                                    <span className="text-lg font-bold text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_WHITE">{data.name}</span>
+                                                <div className="flex flex-wrap">
+                                                    <span className="text-lg font-bold text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_WHITE mr-2">{data.name}</span>
                                                     <span className="text-base text-NEUTRAL_GRAY_06">@{data.username}</span>
                                                 </div>
                                                 <p>{data.description}</p>
                                                 <p className="text-NEUTRAL_GRAY_06">{getFormatedWeekInterval(data.createdDate)}</p>
                                                 {getWeeklyProgressText(data.value, data.total, data.reportId.toString())}
+                                                <p className="flex md:hidden text-xs text-NEUTRAL_GRAY_06 font-normal h-full w-full pt-2 items-center ">
+                                                    {`${getUpdatedTimeElapsed(data.updatedDate)}`}
+                                                </p>
                                             </div>
                                         </div>
-                                        <div className="flex flex-col w-[120px] items-center text-center px-6">
-
-                                            {userInfo.id == data.userId ? (
-                                                <button className="py-2"><PencilSimple size={24} className="text-PRINCIPAL" /></button>)
-                                                : (<button className="py-2" children={<Eye size={24} className="text-PRINCIPAL" />} />)
+                                        <div className="flex flex-col md:w-[120px] h-full items-center text-center mr-4 md:px-6">
+                                            {
+                                                userInfo.id == data.userId &&
+                                                (<button className="py-2" children={<PencilSimple size={24} className="text-PRINCIPAL" />} />)
                                             }
-
-                                            <p className="text-xs text-NEUTRAL_GRAY_06 font-normal">
-                                                {`${getUpdatedTimeElapsed(data.updatedDate)}`}</p>
+                                            <p className="hidden md:flex text-xs text-NEUTRAL_GRAY_06 font-normal h-full items-center ">
+                                                {`${getUpdatedTimeElapsed(data.updatedDate)}`}
+                                            </p>
                                         </div>
                                     </div>
                                 </li>

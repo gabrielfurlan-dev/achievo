@@ -25,6 +25,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             where:{
                 name: {
                     contains: name
+                },
+                id: {
+                    not:{
+                        contains: userId
+                    }
                 }
             }
         });

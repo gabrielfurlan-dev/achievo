@@ -100,7 +100,7 @@ export default function home() {
 
                 <div className="mt-10 flex gap-1">
                     <IconButton
-                        IconButton={<FilePlus weight="regular" color="#5C8A74" size={24}/>}
+                        IconButton={<FilePlus weight="regular" color="#5C8A74" size={24} />}
                         name="Add"
                         method={handleAddReport}
                     />
@@ -132,6 +132,9 @@ export default function home() {
                     </div>
                 </Modal>
             </div>
+
+            <span className="text-GRAY_DARK dark:text-DARK_TEXT w-full text-end">v 0.1.6</span>
+
         </PageLoadLayout>
     );
 }
@@ -187,7 +190,7 @@ function IconButton({ name, method, IconButton, newModule }: props) {
                     onMouseEnter={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}
                     onClick={method}>
-                    <div className={newModule ? iconStyle({isHovering: isHovering ? true : false }) : ""}>
+                    <div className={newModule ? iconStyle({ isHovering: isHovering ? true : false }) : ""}>
                         {IconButton}
                     </div>
                     <p className="text-neutral-800 dark:text-neutral-200 font-medium">{name}</p>

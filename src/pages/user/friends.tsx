@@ -7,7 +7,7 @@ import { getFollowers } from "@/services/user/getFollowers";
 import { searchUsers } from "@/services/user/search";
 import { unfollowUser } from "@/services/user/unfollow";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { Binoculars, DotsThree, MagnifyingGlass, UserPlus, Users } from "phosphor-react";
+import { Binoculars, Check, DotsThree, MagnifyingGlass, UserPlus, Users, X } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { tv } from "tailwind-variants";
 
@@ -97,11 +97,11 @@ export default function findUser() {
     return (
         <PageLayout>
             <CompactNavBar title="Friends" />
-            <div className="bg-NEUTRAL_GRAY_0 dark:bg-NEUTRAL_DARK_100 py-14 px-28 mt-14 rounded-3xl h-full">
+            <div className="bg-NEUTRAL_GRAY_0 dark:bg-NEUTRAL_DARK_100 py-14 px-2 md:px-28 mt-14 rounded-3xl h-full">
                 <div id="filters">
-                    <div className="flex justify-between">
-                        <div className="flex gap-4">
-                            <div id="search" className="bg-NEUTRAL_GRAY_01 dark:bg-NEUTRAL_DARK_300 flex rounded-xl py-2 px-4 items-center gap-4 max-w-sm">
+                    <div className="flex flex-col md:flex-row justify-between gap-4 items-center w-full">
+                        <div className="flex gap-4 w-full">
+                            <div id="search" className="bg-NEUTRAL_GRAY_01 dark:bg-NEUTRAL_DARK_300 flex rounded-xl py-2 px-4 items-center gap-4 w-full md:max-w-sm">
                                 <MagnifyingGlass className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_06" size={36} />
                                 <input
                                     type="text"
@@ -116,16 +116,12 @@ export default function findUser() {
                             <div className="flex space-x-4">
                                 <button
                                     className={button({ selected: selectedButton === 'follower' })}
-                                    onClick={() => handleButtonClick('follower')}
-                                >
-                                    Follower
-                                </button>
+                                    onClick={() => handleButtonClick('follower')} children={"Followers"}
+                                />
                                 <button
                                     className={button({ selected: selectedButton === 'following' })}
-                                    onClick={() => handleButtonClick('following')}
-                                >
-                                    Following
-                                </button>
+                                    onClick={() => handleButtonClick('following')} children={"Following"}
+                                />
                             </div>
                         </div>
                     </div>
@@ -144,45 +140,52 @@ export default function findUser() {
                         )
                     }
                     {
-                        //TODO: remove the actual user from listage
                         users && users.map(user => (
-                            <div className="bg-NEUTRAL_GRAY_02 dark:bg-NEUTRAL_DARK_300 flex justify-between py-3 rounded-lg mb-4 pl-6 pr-4 items-center" key={user.id}>
-                                <div className="flex gap-3 items-center">
-                                    <ProfileImage imageUrl={user.imageURL} rounded className="h-12 w-12" />
-                                    <div>
-                                        <div className="flex gap-2">
-                                            <span className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_02 font-bold text-lg">{user.name}</span>
-                                            <span className="text-NEUTRAL_GRAY_06">@{user.username}</span>
-                                        </div>
-                                        <div className="flex gap-1 items-center text-NEUTRAL_GRAY_06">
-                                            <Users size={24} />
-                                            <span>{getMessageCommonFollowers(user)}</span>
+                            <div
+                                className="bg-NEUTRAL_GRAY_02 dark:bg-NEUTRAL_DARK_300 justify-between py-3 rounded-lg mb-4 pl-6 pr-4 items-center"
+                                key={user.id}>
+                                <div className="flex justify-between">
+                                    <div className="flex gap-3 items-center">
+                                        <ProfileImage imageUrl={user.imageURL} rounded className="h-12 w-12" />
+                                        <div>
+                                            <div className="flex flex-wrap">
+                                                <span className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_02 font-bold text-lg mr-2">{user.name}</span>
+                                                <span className="text-NEUTRAL_GRAY_06">@{user.username}</span>
+                                            </div>
+                                            <div className="hidden md:flex gap-1 items-center text-NEUTRAL_GRAY_06">
+                                                <Users size={24} />
+                                                <span>{getMessageCommonFollowers(user)}</span>
+                                            </div>
                                         </div>
                                     </div>
+
+
+                                    <div className="flex items-end md:items-center flex-col-reverse md:flex-row md:gap-6">
+
+                                        {
+                                            followers.some(x => x == user.id)
+                                                ?
+                                                <button
+                                                    className="flex items-center h-10 bg-PRIMARY_DEFAULT text-NEUTRAL_WHITE px-4 md:px-6 rounded-lg text-md"
+                                                    onClick={() => handleFollowUser("unfollow", user.id)}
+                                                >
+                                                    <Check size={24} className="md:hidden" />
+                                                    <span className="hidden md:block">Unfollow</span>
+                                                </button>
+                                                :
+                                                <button
+                                                    className="text-md text-NEUTRAL_WHITE flex items-center h-10 bg-PRIMARY_DEFAULT px-4 rounded-lg gap-2"
+                                                    onClick={() => handleFollowUser("follow", user.id)}
+                                                >
+                                                    <UserPlus size={24} />
+                                                    <span className="hidden md:block">Follow</span>
+                                                </button>
+                                        }
+                                    </div>
                                 </div>
-
-                                <div className="flex items-center gap-6">
-
-                                    {
-                                        followers.some(x => x == user.id)
-                                            ?
-                                            <button
-                                                className="h-10 bg-PRIMARY_DEFAULT text-NEUTRAL_WHITE px-6 rounded-lg text-md"
-                                                onClick={() => handleFollowUser("unfollow", user.id)}
-                                                children={"Unfollow"}
-                                            />
-                                            :
-                                            <button
-                                                className="text-md text-NEUTRAL_WHITE flex items-center h-10 bg-PRIMARY_DEFAULT px-4 rounded-lg gap-2"
-                                                onClick={() => handleFollowUser("follow", user.id)}
-                                            >
-                                                <UserPlus size={24} />
-                                                Follow
-                                            </button>
-                                    }
-
-                                    <DotsThree className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_02" size={24} />
-
+                                <div className="flex md:hidden gap-1 items-center text-NEUTRAL_GRAY_06 py-2">
+                                    <Users size={24} />
+                                    <span>{getMessageCommonFollowers(user)}</span>
                                 </div>
                             </div>
                         ))
