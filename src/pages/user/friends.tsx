@@ -101,8 +101,8 @@ export default function findUser() {
                 <div id="filters">
                     <div className="flex flex-col md:flex-row justify-between gap-4 items-center w-full">
                         <div className="flex gap-4 w-full">
-                            <div id="search" className="bg-NEUTRAL_GRAY_01 dark:bg-NEUTRAL_DARK_300 flex rounded-xl py-2 px-4 items-center gap-4 w-full md:max-w-sm">
-                                <MagnifyingGlass className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_06" size={36} />
+                            <div id="search" className="bg-NEUTRAL_GRAY_01 dark:bg-NEUTRAL_DARK_300 flex rounded-xl py-4 px-5 items-center gap-4 w-full md:max-w-sm">
+                                <MagnifyingGlass className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_06" size={26} />
                                 <input
                                     type="text"
                                     className="outline-none w-full bg-transparent text-NEUTRAL_GRAY_06"
@@ -113,7 +113,7 @@ export default function findUser() {
                             </div>
                         </div>
                         <div className="flex flex-row gap-6">
-                            <div className="flex space-x-4">
+                            <div className="flex space-x-6">
                                 <button
                                     className={button({ selected: selectedButton === 'follower' })}
                                     onClick={() => handleButtonClick('follower')} children={"Followers"}
