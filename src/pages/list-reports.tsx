@@ -23,7 +23,7 @@ export default function ListReport() {
     const [startDate, endDate] = dateRange;
 
     const button = tv({
-        base: "min-w-28 rounded-full border-2 px-4 py-2 border-SECONDARY_DEFAULT font-semibold text-sm",
+        base: "min-w-28 rounded-full border-2 px-4 py-2 border-SECONDARY_DEFAULT font-semibold text-xs md:text-sm",
         variants: {
             selected: {
                 true: "bg-SECONDARY_DEFAULT text-white",
@@ -120,10 +120,10 @@ export default function ListReport() {
                             />
                         </div>
                     </div>
-                    <ul className="pt-10 pb-1 md:pb-10 w-full h-full">
+                    <ul className="pt-10 pb-1 md:pb-10 w-full h-full" >
                         {
                             reports.length == 0 && (
-                                <div className="w-full h-full flex m-auto flex-col justify-center items-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">
+                                <div className="bg-red-500 w-full h-full flex m-auto flex-col justify-center items-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">
                                     <Binoculars size={56} />
                                     <p>No reports found!</p>
                                 </div>
