@@ -87,7 +87,7 @@ export default function findUser() {
             success = (await unfollowUser(userInfo.id, userIdToAct)).success
         }
 
-        if(success){
+        if (success) {
             setOriginalUsers(users => {
                 return users.map(user => {
                     if (user.id == userIdToAct) {
@@ -97,7 +97,7 @@ export default function findUser() {
                 })
             });
             filterUsers();
-        }else{
+        } else {
             Swal.fire("Something went wrong!", `Unable to ${action} user`, 'error');
         }
     }
@@ -107,9 +107,9 @@ export default function findUser() {
             <CompactNavBar title="Friends" />
             <div className="bg-NEUTRAL_GRAY_0 dark:bg-NEUTRAL_DARK_100 py-14 px-2 md:px-28 mt-14 rounded-3xl h-full">
                 <div id="filters">
-                    <div className="flex flex-col md:flex-row justify-between gap-4 items-center w-full">
+                    <div className="flex flex-col lg:flex-row justify-between gap-4 items-center w-full">
                         <div className="flex gap-4 w-full">
-                            <div id="search" className="bg-NEUTRAL_GRAY_01 dark:bg-NEUTRAL_DARK_300 flex rounded-xl py-4 px-5 items-center gap-4 w-full md:max-w-sm">
+                            <div id="search" className="bg-NEUTRAL_GRAY_01 dark:bg-NEUTRAL_DARK_300 flex rounded-xl py-4 px-5 items-center gap-4 w-full lg:max-w-sm">
                                 <MagnifyingGlass className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_06" size={26} />
                                 <input
                                     type="text"
@@ -120,21 +120,19 @@ export default function findUser() {
                                 />
                             </div>
                         </div>
-                        <div className="flex flex-row gap-6">
-                            <div className="flex space-x-6">
-                                <button
-                                    className={button({ selected: selectedButton === 'follower' })}
-                                    onClick={() => setSelectedButton('follower')} children={"Followers"}
-                                />
-                                <button
-                                    className={button({ selected: selectedButton === 'following' })}
-                                    onClick={() => setSelectedButton('following')} children={"Following"}
-                                />
-                                <button
-                                    className={button({ selected: selectedButton === 'all' })}
-                                    onClick={() => setSelectedButton('all')} children={"all"}
-                                />
-                            </div>
+                        <div className="flex flex-row gap-2 md:gap-6">
+                            <button
+                                className={button({ selected: selectedButton === 'follower' })}
+                                onClick={() => setSelectedButton('follower')} children={"Followers"}
+                            />
+                            <button
+                                className={button({ selected: selectedButton === 'following' })}
+                                onClick={() => setSelectedButton('following')} children={"Following"}
+                            />
+                            <button
+                                className={button({ selected: selectedButton === 'all' })}
+                                onClick={() => setSelectedButton('all')} children={"all"}
+                            />
                         </div>
                     </div>
                     <div>

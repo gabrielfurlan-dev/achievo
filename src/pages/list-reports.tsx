@@ -88,9 +88,8 @@ export default function ListReport() {
                 subTitle="Todos os Reports estão aqui"
                 goBackUrl="/home"
             />
-
             <div className="pt-14 h-full w-full">
-                <div className="bg-NEUTRAL_GRAY_0 min-h-screen w-full dark:bg-NEUTRAL_DARK_100 rounded-3xl pt-14 px-2 md:px-24">
+                <div className="bg-NEUTRAL_GRAY_0 h-full w-full dark:bg-NEUTRAL_DARK_100 rounded-3xl pt-14 px-2 md:px-24">
                     <div className="flex flex-col gap-6 md:flex-row w-full justify-between items-center">
                         <div className="w-full md:w-fit bg-NEUTRAL_GRAY_02 dark:bg-DARK_BACKGROUND_SECONDARY py-3 px-4 rounded-lg text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_06">
                             <div date-rangepicker className="flex justify-between gap-2 items-center w-full">
@@ -120,10 +119,10 @@ export default function ListReport() {
                             />
                         </div>
                     </div>
-                    <ul className="pt-10 pb-1 md:pb-10 w-full h-full" >
+                    <ul className="pt-10 pb-1 md:pb-10 w-full" >
                         {
                             reports.length == 0 && (
-                                <div className="bg-red-500 w-full h-full flex m-auto flex-col justify-center items-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">
+                                <div className="w-full h-full flex m-auto flex-col justify-center items-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">
                                     <Binoculars size={56} />
                                     <p>No reports found!</p>
                                 </div>
@@ -134,8 +133,8 @@ export default function ListReport() {
                                 <li
                                     className="mb-4 transition duration-150 rounded-lg p-2 w-full
                                               border-transparent border-2 hover:border-PRIMARY_DEFAULT hover:border-opacity-10
-                                            bg-NEUTRAL_GRAY_02 hover:bg-PRIMARY_DEFAULT hover:bg-opacity-25
-                                            dark:bg-DARK_BACKGROUND_SECONDARY dark:hover:bg-PRINCIPAL dark:hover:bg-opacity-40"
+                                                bg-NEUTRAL_GRAY_02 hover:bg-PRIMARY_DEFAULT hover:bg-opacity-25
+                                                dark:bg-DARK_BACKGROUND_SECONDARY dark:hover:bg-PRINCIPAL dark:hover:bg-opacity-40"
                                     key={data.reportId}
                                 >
                                     <div className="flex justify-between items-center">
@@ -170,7 +169,6 @@ export default function ListReport() {
                     </ul>
                 </div>
             </div>
-
         </PageLayout >
     );
 }
