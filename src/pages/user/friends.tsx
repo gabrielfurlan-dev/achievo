@@ -16,7 +16,7 @@ export default function findUser() {
     const { userInfo } = useUserInfoStore()
     const [originalUsers, setOriginalUsers] = useState<IUserListItem[]>([])
     const [users, setUsers] = useState<IUserListItem[]>(originalUsers)
-    const [selectedButton, setSelectedButton] = useState<"following" | "follower" | "none">("none");
+    const [selectedButton, setSelectedButton] = useState<"following" | "follower" | "all">("all");
 
     const button = tv({
         base: "w-28 h-10 rounded-full border-2 border-SECONDARY_DEFAULT font-semibold text-sm",
@@ -62,14 +62,6 @@ export default function findUser() {
     useEffect(() => {
         filterUsers()
     }, [filterName, selectedButton, originalUsers])
-
-    const handleButtonClick = (buttonName: "following" | "follower" | "none") => {
-        if (selectedButton === buttonName) {
-            setSelectedButton("none");
-        } else {
-            setSelectedButton(buttonName);
-        }
-    };
 
     function getMessageCommonFollowers(user: IUserListItem) {
 
@@ -132,11 +124,15 @@ export default function findUser() {
                             <div className="flex space-x-6">
                                 <button
                                     className={button({ selected: selectedButton === 'follower' })}
-                                    onClick={() => handleButtonClick('follower')} children={"Followers"}
+                                    onClick={() => setSelectedButton('follower')} children={"Followers"}
                                 />
                                 <button
                                     className={button({ selected: selectedButton === 'following' })}
-                                    onClick={() => handleButtonClick('following')} children={"Following"}
+                                    onClick={() => setSelectedButton('following')} children={"Following"}
+                                />
+                                <button
+                                    className={button({ selected: selectedButton === 'all' })}
+                                    onClick={() => setSelectedButton('all')} children={"all"}
                                 />
                             </div>
                         </div>
