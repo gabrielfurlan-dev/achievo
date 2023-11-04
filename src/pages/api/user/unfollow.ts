@@ -7,7 +7,7 @@ export default async function unfollowUser(
 ) {
     if (req.method !== "DELETE") {
         return res.status(405).send({
-            message: "Somente métodos DELETE são permitidos",
+            message: "Only DELETE methods are allowed",
         });
     }
 
@@ -25,12 +25,12 @@ export default async function unfollowUser(
 
         return res.status(200).json({
             success: true,
-            message: "Deixou de seguir com sucesso!",
+            message: "User unfollowed successfully",
         });
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: "Erro ao deixar de seguir o usuário",
+            message: "Error when unfollowing user",
             error: String(error),
         });
     }

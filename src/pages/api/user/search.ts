@@ -1,7 +1,8 @@
 import { db } from './../../../db';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getCommonFollowersFunction } from '@/repositories/Followers';
 import { IResponseData } from '@/interfaces/iResponseData';
+import { Prisma } from '@prisma/client';
+import { IUserListItem } from '@/interfaces/users/IUserListItem';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== 'GET') {
@@ -11,44 +12,45 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     try {
-        const userId = req.query.userId as string;
-        const name = req.query.name as string;
+        const userId = await req.query.userId as string;
 
-        const users = await db.user.findMany({
-            select: {
-                id: true,
-                name: true,
-                username: true,
-                imageURL: true,
+        const sql = Prisma.sql`
+            WITH SpecificUserFollowers AS (
+                SELECT "F"."followingUserId"
+                FROM "Follow" AS "F"
+                WHERE "F"."userId" = ${userId}
+            )
 
-            },
-            where:{
-                name: {
-                    contains: name
-                },
-                id: {
-                    not:{
-                        contains: userId
-                    }
-                }
-            }
-        });
+            SELECT
+            "U2"."id",
+            "U2"."name",
+            "U2"."username",
+            "U2"."imageURL",
 
-        let usersWithCommonFollowers = await Promise.all(
-            users.map(async (user) => {
+            ARRAY_AGG(DISTINCT CASE WHEN "F"."followingUserId" IS NOT NULL THEN "U"."name" ELSE NULL END) FILTER (WHERE "F"."followingUserId" IS NOT NULL) AS "commonFollowers",
 
-                const commomUsers = await getCommonFollowersFunction(userId, user.id);
+            CASE
+                WHEN (SELECT "F"."userId" FROM "Follow" AS "F"
+                    WHERE "F"."userId" = "U2"."id"
+                    AND "F"."followingUserId" = ${userId}) IS NOT NULL THEN TRUE
+                ELSE FALSE
+            END AS "isFollowingYou",
 
-                return {
-                    ...user,
-                    commonFollowers: commomUsers.map((follower) => follower.userFollowed.username),
-                };
-            })
-        );
+            CASE WHEN "FollowCheck"."id" IS NOT NULL THEN TRUE ELSE FALSE END AS "following"
+
+            FROM "User" AS "U2"
+            LEFT JOIN "Follow" AS "F" ON "U2"."id" = "F"."userId" AND "F"."followingUserId" IN (SELECT "followingUserId" FROM SpecificUserFollowers)
+            LEFT JOIN "User" AS "U" ON "F"."followingUserId" = "U"."id"
+            LEFT JOIN "Follow" AS "FollowCheck" ON "U2"."id" = "FollowCheck"."followingUserId" AND "FollowCheck"."userId" = ${userId}
+            WHERE "U2"."id" != ${userId}
+            GROUP BY "U2"."id", "FollowCheck"."id"
+            ORDER BY "U2"."name";`
+
+        const users = await db.$queryRaw(sql) as IUserListItem[]
 
         res.status(200).json({
             success: true,
-            data: usersWithCommonFollowers,
+            data: users,
             message: "List of users obtained successfully",
         } as IResponseData);
     } catch (error) {

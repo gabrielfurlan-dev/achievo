@@ -3,12 +3,12 @@ import { IUserListItem } from "@/interfaces/users/IUserListItem";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import PageLayout from "@/layouts/PageLayout";
 import { followUser } from "@/services/user/follow";
-import { getFollowers } from "@/services/user/getFollowers";
 import { searchUsers } from "@/services/user/search";
 import { unfollowUser } from "@/services/user/unfollow";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { Binoculars, Check, DotsThree, MagnifyingGlass, UserPlus, Users, X } from "phosphor-react";
+import { Binoculars, Check, MagnifyingGlass, UserPlus, Users, X } from "phosphor-react";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import { tv } from "tailwind-variants";
 
 export default function findUser() {
@@ -17,7 +17,6 @@ export default function findUser() {
     const [originalUsers, setOriginalUsers] = useState<IUserListItem[]>([])
     const [users, setUsers] = useState<IUserListItem[]>(originalUsers)
     const [selectedButton, setSelectedButton] = useState<"following" | "follower" | "none">("none");
-    const [followers, setFollowers] = useState<string[]>([]);
 
     const button = tv({
         base: "w-28 h-10 rounded-full border-2 border-SECONDARY_DEFAULT font-semibold text-sm",
@@ -38,7 +37,6 @@ export default function findUser() {
 
         setOriginalUsers(obtainedUsers);
         setUsers(obtainedUsers);
-        setFollowers((await getFollowers(userInfo.id)).data)
     }
 
     function filterUsers() {
@@ -46,8 +44,8 @@ export default function findUser() {
 
         const filteredUsers = originalUsers.filter((user) => {
             const nameMatch = regex.test(user.name) || regex.test(user.username);
-            const followerMatch = !(selectedButton == "follower") || user.commonFollowers.some(x => x == userInfo.username);
-            const followingMatch = !(selectedButton == "following") || followers.some(follower => follower == user.id);
+            const followerMatch = !(selectedButton == "follower") || user.isFollowingYou
+            const followingMatch = !(selectedButton == "following") || user.following;
 
             return nameMatch && followingMatch && followerMatch;
         });
@@ -56,12 +54,14 @@ export default function findUser() {
     }
 
     useEffect(() => {
+        if (!userInfo.id) return;
+
         updateUsersList();
     }, [userInfo.id])
 
     useEffect(() => {
         filterUsers()
-    }, [filterName, selectedButton])
+    }, [filterName, selectedButton, originalUsers])
 
     const handleButtonClick = (buttonName: "following" | "follower" | "none") => {
         if (selectedButton === buttonName) {
@@ -72,25 +72,41 @@ export default function findUser() {
     };
 
     function getMessageCommonFollowers(user: IUserListItem) {
+
+        if (user.commonFollowers == null)
+            return "you have no followers in common"
+
         if (user.commonFollowers.length > 3)
             return `${user.commonFollowers.join(', ')} and ${user.commonFollowers.length - 3} are following`;
         if (user.commonFollowers.length > 1)
             return `${user.commonFollowers.join(" and ")} are following`
         if (user.commonFollowers.length == 1)
             return `${user.commonFollowers} is following`
-
-        return "you have no followers in common"
     }
 
-    function handleFollowUser(action: "follow" | "unfollow", userIdToAct: string) {
+    async function handleFollowUser(action: "follow" | "unfollow", userIdToAct: string) {
+
+        let success = false
 
         if (action == "follow") {
-            followUser(userInfo.id, userIdToAct);
-            setFollowers(prevFollowers => [...prevFollowers, userIdToAct]);
+            success = (await followUser(userInfo.id, userIdToAct)).success
         }
         else if (action == "unfollow") {
-            unfollowUser(userInfo.id, userIdToAct);
-            setFollowers(followers.filter(x => x !== userIdToAct));
+            success = (await unfollowUser(userInfo.id, userIdToAct)).success
+        }
+
+        if(success){
+            setOriginalUsers(users => {
+                return users.map(user => {
+                    if (user.id == userIdToAct) {
+                        return { ...user, following: action == "follow" }
+                    }
+                    return user;
+                })
+            });
+            filterUsers();
+        }else{
+            Swal.fire("Something went wrong!", `Unable to ${action} user`, 'error');
         }
     }
 
@@ -100,7 +116,7 @@ export default function findUser() {
             <div className="bg-NEUTRAL_GRAY_0 dark:bg-NEUTRAL_DARK_100 py-14 px-2 md:px-28 mt-14 rounded-3xl h-full">
                 <div id="filters">
                     <div className="flex flex-col md:flex-row justify-between gap-4 items-center w-full">
-                        <div className="flex gap-4 w-full">
+                        <div className="flex gap-4 text- w-full">
                             <div id="search" className="bg-NEUTRAL_GRAY_01 dark:bg-NEUTRAL_DARK_300 flex rounded-xl py-2 px-4 items-center gap-4 w-full md:max-w-sm">
                                 <MagnifyingGlass className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_06" size={36} />
                                 <input
@@ -142,7 +158,7 @@ export default function findUser() {
                     {
                         users && users.map(user => (
                             <div
-                                className="bg-NEUTRAL_GRAY_02 dark:bg-NEUTRAL_DARK_300 justify-between py-3 rounded-lg mb-4 pl-6 pr-4 items-center"
+                                className="bg-NEUTRAL_GRAY_01 dark:bg-NEUTRAL_DARK_300 justify-between py-3 rounded-lg mb-4 pl-6 pr-4 items-center"
                                 key={user.id}>
                                 <div className="flex justify-between">
                                     <div className="flex gap-3 items-center">
@@ -159,18 +175,16 @@ export default function findUser() {
                                         </div>
                                     </div>
 
-
                                     <div className="flex items-end md:items-center flex-col-reverse md:flex-row md:gap-6">
 
                                         {
-                                            followers.some(x => x == user.id)
-                                                ?
+                                            user.following ?
                                                 <button
-                                                    className="flex items-center h-10 bg-PRIMARY_DEFAULT text-NEUTRAL_WHITE px-4 md:px-6 rounded-lg text-md"
+                                                    className="flex items-center h-10 bg-NEUTRAL_GRAY_02 dark:bg-NEUTRAL_GRAY_09 text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_WHITE px-4 md:px-6 rounded-lg text-md"
                                                     onClick={() => handleFollowUser("unfollow", user.id)}
                                                 >
                                                     <Check size={24} className="md:hidden" />
-                                                    <span className="hidden md:block">Unfollow</span>
+                                                    <span className="hidden md:block">Following</span>
                                                 </button>
                                                 :
                                                 <button

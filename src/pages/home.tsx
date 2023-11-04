@@ -133,7 +133,7 @@ export default function home() {
                 </Modal>
             </div>
 
-            <span className="text-GRAY_DARK dark:text-DARK_TEXT w-full text-end">v 0.1.6</span>
+            <span className="text-NEUTRAL_GRAY_06 w-full text-end">v 0.1.6</span>
 
         </PageLoadLayout>
     );

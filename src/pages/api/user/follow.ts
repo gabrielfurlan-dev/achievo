@@ -7,7 +7,7 @@ export default async function followUser(
 ) {
     if (req.method !== "POST") {
         return res.status(405).send({
-            message: "Somente métodos POST são permitidos",
+            message: "Only POST methods are allowed",
         });
     }
 
@@ -21,16 +21,16 @@ export default async function followUser(
             },
         });
 
-        return res.status(201).json({
+        return res.status(200).json({
             success: true,
             data: follow,
-            message: "Seguindo com sucesso!",
+            message: "User followed successfully",
         });
     } catch (error) {
         return res.status(500).json({
             success: false,
             data: null,
-            message: "Erro ao seguir o usuário",
+            message: "Error following user",
             error: String(error),
         });
     }

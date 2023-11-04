@@ -4,5 +4,6 @@ export interface IUserListItem {
     username: string;
     imageURL: string;
     commonFollowers: string[];
-    isFollowing: boolean;
+    isFollowingYou: boolean;
+    following: boolean;
 }
