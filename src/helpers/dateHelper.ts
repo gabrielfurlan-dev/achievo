@@ -21,7 +21,6 @@ export function getCurrentDate() {
         day = "0" + day;
     }
 
-    console.log(`${year}-${month}-${day}`);
     return `${year}-${month}-${day}`;
 }
 
@@ -45,7 +44,6 @@ export function getFormatedWeekInterval(date: string) {
     }
 
     const userLocale = navigator.language;
-    console.log(userLocale);
 
     if (userLocale.toUpperCase() == "PT-BR") {
         return getFormatedWeekIntervalBrazil(interval);

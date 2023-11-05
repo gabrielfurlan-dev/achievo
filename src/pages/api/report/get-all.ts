@@ -16,11 +16,11 @@ export default async function handler(
     }
 
     try {
-        const userId = req.query.userId as string;
-        const startDate = new Date(req.query.startDate as string)
-        const endDate = new Date(req.query.endDate as string)
-        const option = req.query.option as ReportFilterOptions;
-        const searchName = req.query.searchName as string;
+        const userId = await req.query.userId as string;
+        const startDate = await new Date(req.query.startDate as string)
+        const endDate = await new Date(req.query.endDate as string)
+        const option = await req.query.option as ReportFilterOptions;
+        const searchName = await req.query.searchName as string;
 
         if (!userId || !startDate || !endDate || !option) {
             return res.status(400).send({ message: 'Parâmetros inválidos' });

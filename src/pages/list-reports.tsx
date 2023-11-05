@@ -13,7 +13,8 @@ import { IReportItem } from "@/interfaces/reports/IReportItem";
 import { Rocket } from "@/assets/icons/Rocket";
 import { getAllReports } from "@/services/reports/getAll";
 import { ReportFilterOptions } from "@/interfaces/reports/types/reportFilterOptions";
-import { startOfToday, startOfTomorrow, startOfYesterday, subMonths } from "date-fns";
+import { startOfToday, startOfTomorrow, subMonths } from "date-fns";
+import { IResponseData } from "@/interfaces/iResponseData";
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReportItem[]>([]);
@@ -36,33 +37,41 @@ export default function ListReport() {
         const tomorrow = startOfTomorrow();
         const oneMonthAgo = subMonths(startOfToday(), 1);
         setDateRange([oneMonthAgo, tomorrow]);
-
     }, [])
 
+    async function fetchReports() {
+        try {
+            const result = await getAllReports({
+                userId: userInfo.id,
+                startDate: startDate ?? new Date(),
+                endDate: endDate ?? new Date(),
+                option: selectedFilterType
+            }) as IResponseData;
+
+            setReports(result.data as IReportItem[]);
+        } catch (error) {
+            console.error("Error fetching reports:", error);
+        }
+    };
+
     useEffect(() => {
-        const fetchReports = async () => {
-
-            if (!userInfo.id) {
-                return;
-            }
-
-            try {
-                const result = await getAllReports({
-                    userId: userInfo.id,
-                    startDate: startDate ?? new Date(),
-                    endDate: endDate ?? new Date(),
-                    option: selectedFilterType
-                });
-                setReports(result.data);
-            } catch (error) {
-                console.error("Error fetching reports:", error);
-            }
-        };
+        if (!userInfo.id || !startDate || !endDate) return;
         fetchReports();
     }, [userInfo.id, selectedFilterType, startDate, endDate]);
 
     function getWeeklyProgressText(value: number, total: number, reportId: string) {
-        const percentage = ((value / total) * 100).toFixed(0)
+
+        let percentage = ((value / total) * 100).toFixed(0)
+
+        if (!parseInt(percentage)) {
+            return (
+                <div id={reportId} className={"flex text-NEUTRAL_GRAY_07 items-center gap-2"}>
+                    <Rocket size={24} color={"rgb(73 80 87 / var(--tw-text-opacity))"} />
+                    <span>Weekly progress not updated yet</span>
+                </div>
+            )
+        }
+
         const style = tv({
             base: "flex items-center gap-2",
             variants: {
@@ -119,7 +128,7 @@ export default function ListReport() {
                             />
                         </div>
                     </div>
-                    <ul className="pt-10 pb-1 md:pb-10 w-full" >
+                    <ul className="pt-10 pb-1 md:pb-10 h-full w-full" >
                         {
                             reports.length == 0 && (
                                 <div className="w-full h-full flex m-auto flex-col justify-center items-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">
