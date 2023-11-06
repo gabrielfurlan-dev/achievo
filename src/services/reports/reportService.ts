@@ -87,29 +87,6 @@ export async function updateReport({
     }
 }
 
-export async function getAllReports() {
-    try {
-        const report = await fetch("/api/report/get-all", {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-        });
-
-        const data = await report.json();
-
-        return {
-            success: true,
-            message: "Relatórios obtidos com sucesso.",
-            data: data.data,
-        } as IResponseData;
-    } catch (error) {
-        return {
-            success: false,
-            message: "Erro ao obter os relatórios.",
-            data: null,
-        } as IResponseData;
-    }
-}
-
 export async function getReport(reportId: number) {
     try {
         const report = await fetch("/api/report/get?reportId=" + reportId,

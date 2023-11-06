@@ -7,6 +7,7 @@ import { DarkThemeProvider } from "@/contexts/ThemeContext";
 import { SessionProvider, getSession } from 'next-auth/react'
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import 'react-datepicker/dist/react-datepicker.css';
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
@@ -30,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 const App: React.FC<AppProps> = ({ Component, pageProps: { session, ...props } }) => {
 
     return (
-        <div className="flex col bg-WHITE dark:bg-DARK_BACKGROUND">
+        <div className="font-sans flex col bg-WHITE dark:bg-DARK_BACKGROUND">
             <SessionProvider session={session}>
                 <ThemeProvider theme={theme}>
                     <DarkThemeProvider>

@@ -13,7 +13,8 @@ import Swal from "sweetalert2";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 import { Stairs } from "@/assets/icons/Stairs";
 import { ListMagnifyingGlass } from "@/assets/icons/ListMagnifyingGlass";
-import { FilePlus, House } from "phosphor-react";
+import { FilePlus, House, Users } from "phosphor-react";
+import { tv } from "tailwind-variants";
 
 export default function home() {
     const router = useRouter();
@@ -86,45 +87,54 @@ export default function home() {
 
     return (
         <PageLoadLayout isLoading={isLoading}>
-            <SimpleNavBar IconPage={House} title="Início" />
+            <SimpleNavBar IconPage={House} title="Home" />
             <div className="flex flex-col justify-center items-center text-center h-full">
                 <div>
                     <h1 className="text-4xl font-medium text-GRAY_DARK dark:text-DARK_TEXT">
                         Weekly Report
                     </h1>
                     <h3 className="text-GRAY_SECONDARY dark:text-DARK_TEXT_SECONDARY">
-                        Um novo passo para seu progresso.
+                        A next step to your progress.
                     </h3>
                 </div>
 
                 <div className="mt-10 flex gap-1">
                     <IconButton
-                        IconButton={<FilePlus weight="light" color="#5C8A74" size={24} />}
+                        IconButton={<FilePlus weight="regular" color="#5C8A74" size={24} />}
                         name="Add"
                         method={handleAddReport}
                     />
                     <IconButton
-                        IconButton={<ListMagnifyingGlass strokeWidth={1.2} color="#5C8A74" size={28} />}
-                        name="Listar"
+                        IconButton={<ListMagnifyingGlass strokeWidth={1.5} color="#5C8A74" size={28} />}
+                        name="List"
                         method={() => router.push("list-reports")}
+                    />
+                    <IconButton
+                        IconButton={<Users size={28} className="" />}
+                        name="Friends"
+                        method={() => router.push("user/friends")}
+                        newModule
                     />
                 </div>
                 <Modal
                     isOpen={mustShowDialog}
                     onClose={() => { setMustShowDialog(false) }}
                     title={""}
-                    confirmText={"Sim"}
-                    cancelText={"Cancelar"}
+                    confirmText={"Yes"}
+                    cancelText={"Cancel"}
                     handleSaveButton={() => router.push("/report/" + reportIdOfCurrentWeek)}
                     hideDelete
                 >
                     <div className="flex flex-col w-full items-center">
-                        <Stairs size={56} color="#5C8A74"/>
+                        <Stairs size={56} color="#5C8A74" />
                         <h2 className="text-xl font-bold mt-10">Editar Meta</h2>
                         <p className="mt-2">Você já possui um Report essa semana, deseja visualiza-lo?</p>
                     </div>
                 </Modal>
             </div>
+
+            <span className="text-NEUTRAL_GRAY_06 w-full text-end">v 0.1.6</span>
+
         </PageLoadLayout>
     );
 }
@@ -133,14 +143,44 @@ type props = {
     name: string;
     method: () => void;
     IconButton: ReactNode;
+    newModule?: boolean;
 };
 
-function IconButton({ name, method, IconButton }: props) {
+function IconButton({ name, method, IconButton, newModule }: props) {
     const [isHovering, setIsHovering] = useState<boolean>(false)
+
+    const hoverSpan = tv({
+        base: "w-full h-1 animate-pulse rounded-lg",
+        variants: {
+            newModule: {
+                true: "bg-SECONDARY_DEFAULT",
+                false: "bg-PRIMARY_DEFAULT"
+            }
+        }
+    })
+
+    const iconStyle = tv({
+        base: "",
+        variants: {
+            isHovering: {
+                true: "text-SECONDARY_DEFAULT",
+                false: "text-PRIMARY_DEFAULT"
+            }
+        }
+    })
 
     return (
         <div>
             <div className="">
+                {
+                    newModule ?
+                        <div className="group top-5 relative flex left-14">
+                            <button className="bg-SECONDARY_DEFAULT p-[6px] animate-pulse rounded-full text-sm text-white shadow-sm" />
+                            <span className="absolute top-5 scale-0 transition-all rounded bg-SECONDARY_DEFAULT p-2 text-xs text-white group-hover:scale-100">✨ New Feature!</span>
+                        </div>
+                        :
+                        <div className="pt-[12px]" />
+                }
                 <button
                     className="rounded-xl
                                 border-aanimate-spin text-GRAY
@@ -150,9 +190,12 @@ function IconButton({ name, method, IconButton }: props) {
                     onMouseEnter={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}
                     onClick={method}>
-                    {IconButton}
+                    <div className={newModule ? iconStyle({ isHovering: isHovering ? true : false }) : ""}>
+                        {IconButton}
+                    </div>
                     <p className="text-neutral-800 dark:text-neutral-200 font-medium">{name}</p>
-                    <span className="w-full h-1 bg-PRINCIPAL animate-pulse rounded-lg" style={{ backgroundColor: !isHovering ? "transparent" : "" }} />
+                    <span className={hoverSpan({ newModule: newModule ? true : false })}
+                        style={{ backgroundColor: !isHovering ? "transparent" : "" }} />
                 </button>
             </div>
         </div>

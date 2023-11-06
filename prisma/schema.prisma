@@ -16,9 +16,24 @@ model User {
     description       String?
     enable            Boolean @default(true)
     alreadyRegistered Boolean @default(false)
+    registeredDate DateTime @default(now())
 
     Reports           Report[]
     ReadNotifications ReadNotifications[]
+
+    Following Follow[] @relation("UserFollowing")
+    Followers Follow[] @relation("UserFollowers")
+}
+
+model Follow {
+    id              Int    @id @default(autoincrement())
+    userId          String
+    followingUserId String
+
+    userFollowing User @relation("UserFollowing", fields: [userId], references: [id])
+    userFollowed  User @relation("UserFollowers", fields: [followingUserId], references: [id])
+
+    @@unique([userId, followingUserId])
 }
 
 model Notification {
@@ -67,6 +82,7 @@ model ProgressGoal {
 
 model CheckGoal {
     id          Int      @id @default(autoincrement())
+    createdDate DateTime @default(now())
     updatedDate DateTime @updatedAt
     title       String
     index       Int

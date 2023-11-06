@@ -13,8 +13,6 @@ module.exports = {
 
                 PRINCIPAL_DARK: '#3b4a3c',
 
-                SECONDARY: '#D97251',
-
                 WHITE_PRINCIPAL: '#F5F5F5',
                 WHITE_SECONDARY: '#EAEAEA',
                 WHITE_TERTIARY: '#DADADA',
@@ -38,7 +36,6 @@ module.exports = {
                 DARK_TEXT: "#DADADA",
                 DARK_TEXT_SECONDARY: "#808080",
 
-                PRINCIPAL: '#5C8A74',
                 LIGHT_PRINCIPAL_SECONDARY: "#5C8A7457",
                 DARK_PRINCIPAL_SECONDARY: "#5C8A7457",
 
@@ -50,6 +47,16 @@ module.exports = {
 
                 //## ===REORGANIZATION ==##
                 //NEUTRAL COLORS
+                NEUTRAL_WHITE: "#FFFFFF",
+
+                NEUTRAL_GRAY_0: "#F8F9FA",
+                NEUTRAL_GRAY_01: "#F1F3F5",
+                NEUTRAL_GRAY_02: "#E9ECEF",
+                NEUTRAL_GRAY_04: "#CED4DA",
+                NEUTRAL_GRAY_06: "#868E96",
+                NEUTRAL_GRAY_07: "#495057",
+                NEUTRAL_GRAY_09: "#212529",
+
                 NEUTRAL_600: "#F8F8F8",
                 NEUTRAL_550: "#E7E7E7",
                 NEUTRAL_500: "#EFEFEF",
@@ -68,9 +75,17 @@ module.exports = {
                 //AUXILIAR COLORS
                 NEGATIVE: "#F97474",
 
+                //PRIMARY
+                PRINCIPAL: '#5C8A74', //NEED TO BE CHANGED TO PRIMARY_DEFAULT
+                PRIMARY_DEFAULT: '#5C8A74',
+
+                //SECONDARY
+                SECONDARY: '#D97251', //NEED TO BE CHANGED TO SECONDARY_DEFAULT
+                SECONDARY_DEFAULT: '#D97251',
+
             },
             fontFamily: {
-                'sans': ['Montserrat', 'sans-serif']
+                sans: ['Poppins', 'sans-serif']
             }
         },
     },
