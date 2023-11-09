@@ -72,6 +72,10 @@ export default function ListReport() {
             )
         }
 
+        if(parseInt(percentage) > 100){
+            percentage = "100"
+        }
+
         const style = tv({
             base: "flex items-center gap-2",
             variants: {
