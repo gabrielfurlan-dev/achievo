@@ -1,7 +1,6 @@
 import { IResponseData } from "@/interfaces/iResponseData";
 import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getFollowers } from "@/services/user/getFollowers";
 import { Prisma } from "@prisma/client";
 import { IReportItem } from "@/interfaces/reports/IReportItem";
 import { ReportFilterOptions } from "@/interfaces/reports/types/reportFilterOptions";
@@ -70,7 +69,8 @@ export default async function handler(
                               WHERE "R"."createdDate" BETWEEN ${startDate} AND ${endDate}
                               ${filterByName()}
                               ${await filterByOption()}
-                              GROUP BY "U"."name", "U"."username", "U"."description", "U"."imageURL", "R"."id", "U"."id";`
+                              GROUP BY "U"."name", "U"."username", "U"."description", "U"."imageURL", "R"."id", "U"."id"
+                              ORDER BY "R"."createdDate" DESC;`
 
         const reports = await db.$queryRaw(sql) as IReportItem[]
 
