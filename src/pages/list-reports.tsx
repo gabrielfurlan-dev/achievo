@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Binoculars, Calendar, Eye, PencilSimple } from "phosphor-react";
+import { Binoculars, Calendar, PencilSimple } from "phosphor-react";
 import Link from "next/link";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";

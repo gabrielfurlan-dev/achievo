@@ -11,8 +11,6 @@ module.exports = {
                 CINZA: '#f3f4f6',
                 VERDE_CLARO: '#c3ffc9',
 
-                PRINCIPAL_DARK: '#3b4a3c',
-
                 WHITE_PRINCIPAL: '#F5F5F5',
                 WHITE_SECONDARY: '#EAEAEA',
                 WHITE_TERTIARY: '#DADADA',
@@ -78,6 +76,8 @@ module.exports = {
                 //PRIMARY
                 PRINCIPAL: '#5C8A74', //NEED TO BE CHANGED TO PRIMARY_DEFAULT
                 PRIMARY_DEFAULT: '#5C8A74',
+                PRINCIPAL_DARK: '#3b4a3c', //NEED TO BE CHANGED TO PRIMARY_DARK
+                PRIMARY_DARK: '#3b4a3c',
 
                 //SECONDARY
                 SECONDARY: '#D97251', //NEED TO BE CHANGED TO SECONDARY_DEFAULT
