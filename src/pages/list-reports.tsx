@@ -158,7 +158,6 @@ export default function ListReport() {
                                                     <span className="text-lg font-bold text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_WHITE mr-2">{data.name}</span>
                                                     <span className="text-base text-NEUTRAL_GRAY_06">@{data.username}</span>
                                                 </div>
-                                                <p>{data.description}</p>
                                                 <p className="text-NEUTRAL_GRAY_06">{getFormatedWeekInterval(data.createdDate)}</p>
                                                 {getWeeklyProgressText(data.value, data.total, data.reportId.toString())}
                                                 <p className="flex md:hidden text-xs text-NEUTRAL_GRAY_06 font-normal h-full w-full pt-2 items-center ">
