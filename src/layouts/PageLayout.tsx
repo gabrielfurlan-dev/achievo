@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { ReactNode } from "react";
+import icon from "@/assets/favicon.ico"
 
 type LayoutProps = {
     pageName: string,
@@ -10,7 +11,7 @@ const PageLayout = ({ pageName, children }: LayoutProps) => (
     <>
         <Head>
             <title>{pageName ?? "Achievo"}</title>
-            <link rel="icon" href={"@/assets/favicon.ico"} />
+            <link rel="icon" href={icon.src} />
         </Head>
         <div className="w-full flex-1 flex flex-col min-h-screen">
             <div className="h-full flex flex-col

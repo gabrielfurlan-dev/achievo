@@ -1,4 +1,4 @@
-import { ProfileImage } from "@/components/profileImage";
+import { ProfileImage } from "@/components/ProfileImage";
 import { IUserListItem } from "@/interfaces/users/IUserListItem";
 import { Check, UserPlus, Users } from "phosphor-react";
 

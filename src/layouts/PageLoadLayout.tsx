@@ -1,6 +1,7 @@
 import { CircularProgress } from "@mui/material";
 import Head from "next/head";
 import { ReactNode } from "react";
+import icon from "@/assets/favicon.ico"
 
 type LayoutProps = {
     pageName: string,
@@ -14,7 +15,7 @@ export function PageLoadLayout({ pageName, children, isLoading }: LayoutProps) {
         <>
             <Head>
                 <title>{pageName ?? "Achievo"}</title>
-                <link rel="icon" href={"@/assets/favicon.ico"} />
+                <link rel="icon" href={icon.src} />
             </Head>
             {
                 isLoading ? (

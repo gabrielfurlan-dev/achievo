@@ -1,4 +1,4 @@
-import { ProfileImage } from "@/components/profileImage";
+import { ProfileImage } from "@/components/ProfileImage";
 import { FriendItem } from "@/components/users/friends/FriendItem";
 import { IUserListItem } from "@/interfaces/users/IUserListItem";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";

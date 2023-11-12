@@ -8,7 +8,7 @@ export interface SvgIconProps extends SVGAttributes<SVGElement> {
 export function DefaultProfile({ color, size}: SvgIconProps) {
     return (
         <>
-            <svg height={size ?? 40} width={size ?? 40} viewBox="0 0 48 48" fill="none"
+            <svg height={size} width={size} viewBox="0 0 48 48" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
 
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M30.6609 24.3109C30.6609 25.4196 29.7621 26.3184 28.6534 26.3184C27.5446 26.3184 26.6458 25.4196 26.6458 24.3109C26.6458 23.2022 27.5446 22.3034 28.6534 22.3034C29.7621 22.3034 30.6609 23.2022 30.6609 24.3109Z" fill={color ?? "#2C2C2C"} />
