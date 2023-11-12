@@ -72,7 +72,7 @@ export default function ListReport() {
             )
         }
 
-        if(parseInt(percentage) > 100){
+        if (parseInt(percentage) > 100) {
             percentage = "100"
         }
 
@@ -97,8 +97,8 @@ export default function ListReport() {
     return (
         <PageLayout>
             <CompactNavBar
-                title="Relatórios"
-                subTitle="Todos os Reports estão aqui"
+                title="Reports"
+                subTitle="Everything here"
                 goBackUrl="/home"
             />
             <div className="pt-14 h-full w-full">

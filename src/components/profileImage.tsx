@@ -1,3 +1,4 @@
+import { DefaultProfile } from "@/assets/icons/defaultProfile";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { CircularProgress } from "@mui/material";
 import { ImgHTMLAttributes, useState } from "react";
@@ -59,12 +60,22 @@ export function ProfileImage({ imageUrl, rounded, size, ...props }: profileImage
                                         style={{ borderRadius: rounded ? "100%" : "0px" }}
                                         onError={() => { setIsLoading(true) }}
                                     />
+                                    {/*//TODO: validate if image has error*/}
                                     {/* <button onClick={handleEditClick}>Editar</button> */}
                                 </div>
                             )
                         }
                     </>
-                ) : (<CircularProgress/>)
+                ) : (
+                    <div style={{ height: size ?? 40, width: size ?? 40 }}>
+                        <div className="hidden dark:block">
+                            <DefaultProfile color="#2C2C2C"  />
+                        </div>
+                        <div className="block dark:hidden">
+                            <DefaultProfile color="#ADB5BD" />
+                        </div>
+                    </div>
+                )
             }
 
         </div >
