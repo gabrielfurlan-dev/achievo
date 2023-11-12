@@ -25,12 +25,13 @@ export const ThemeToggleButton: React.FC = () => {
             onClick={() => onToggle()}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className="bg-transparent focus:outline-none"
+            className="bg-transparent focus:outline-none p-2 rounded-lg
+            md:hover:bg-WHITE_PRINCIPAL hover:dark:bg-DARK_BACKGROUND_SECONDARY"
         >
             {theme == "dark" ? (
                 <Sun size={32} color={isHovering ? "#F1E57A" : "white"} />
             ) : (
-                <Moon size={32} color={isHovering ? "gray" : "black"} />
+                <Moon size={32} color={isHovering ? "#6685D5" : "black"} />
             )}
         </button>
     );
