@@ -1,5 +1,5 @@
 import { SimpleButton } from "@/components/Buttons";
-import { ProfileImage } from "@/components/profileImage";
+import { ProfileImage } from "@/components/ProfileImage";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
@@ -15,7 +15,7 @@ export default function profile() {
     }, []);
 
     return (
-        <PageLayout>
+        <PageLayout pageName={userInfo.name ?? "Profile"}>
             <CompactNavBar
                 goBackUrl="/home"
                 title="Meu Perfil"

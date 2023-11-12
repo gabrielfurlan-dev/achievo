@@ -15,7 +15,7 @@ interface ModalProps {
     title: string;
     subtitle?: string;
     confirmText: "Salvar" | "Adicionar" | "Sim" | "Yes";
-    cancelText: "Cancelar" | "Não" | "Cancel";
+    cancelText: "Cancelar" | "Não" | "No" | "Cancel";
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -65,7 +65,7 @@ const Modal: React.FC<ModalProps> = ({
                                         <div className="flex gap-2">
                                             <Trash size={20} />
                                             <p className="hidden md:block">
-                                                Eliminar
+                                                Delete
                                             </p>
                                         </div>
                                     </DangerButton>
@@ -97,15 +97,15 @@ const Modal: React.FC<ModalProps> = ({
                 isOpen={showConfirmDelete}
                 onClose={() => setShowConfirmDelete(false)}
                 title={""}
-                confirmText={"Sim"}
-                cancelText={"Cancelar"}
+                confirmText={"Yes"}
+                cancelText={"Cancel"}
                 handleSaveButton={onDelete}
                 hideDelete
             >
                 <div className="flex flex-col w-full items-center">
                     <Warning size={56} className="text-PRINCIPAL" />
-                    <h2 className="text-xl font-bold mt-10">Esta ação não poderá ser desfeita</h2>
-                    <p className="mt-2">Você tem certeza que deseja prosseguir?</p>
+                    <h2 className="text-xl font-bold mt-10">This action cannot be undone</h2>
+                    <p className="mt-2">Are you sure you want to proceed?</p>
                 </div>
             </Modal>
         </div>

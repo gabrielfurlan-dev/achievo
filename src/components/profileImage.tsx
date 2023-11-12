@@ -1,72 +1,42 @@
-import { useUserInfoStore } from "@/store/userStoreInfo";
-import { CircularProgress } from "@mui/material";
-import { ImgHTMLAttributes, useState } from "react";
+import React, { useState } from 'react';
+import { DefaultProfile } from "@/assets/icons/defaultProfile"; // Ajuste este import conforme necessário
 
-interface profileImageProps extends ImgHTMLAttributes<HTMLImageElement> {
-    imageUrl: string | undefined,
-    rounded?: boolean,
-    size?: number
+interface ProfileImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+    imageUrl: string;
+    rounded?: boolean;
+    size?: number;
 }
 
-export function ProfileImage({ imageUrl, rounded, size, ...props }: profileImageProps) {
-    const { userInfo, setUserInfo } = useUserInfoStore();
+export function ProfileImage({ imageUrl, rounded, size }: ProfileImageProps) {
+    const [hasError, setHasError] = useState(false);
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
-    const [newImageURL, setNewImageURL] = useState("");
-
-    const handleEditClick = () => {
-        setIsEditing(true);
+    const handleError = () => {
+        setHasError(true);
     };
 
-    const handleCancelClick = () => {
-        setIsEditing(false);
-        setNewImageURL("");
-    };
+    const borderRadius = rounded ? '50%' : '0';
 
-    const handleSaveClick = () => {
-        if (newImageURL) {
-            setIsEditing(false);
-            // setUserInfo({imageURL: newImageURL})
-            setNewImageURL("");
-        }
-    };
+    if (hasError || !imageUrl) {
+        return (
+            <div style={{ height: size ?? 40, width: size ?? 40 }}>
+                <div className="hidden dark:block">
+                    <DefaultProfile color="#2C2C2C" />
+                </div>
+                <div className="block dark:hidden">
+                    <DefaultProfile color="#ADB5BD" />
+                </div>
+            </div>
+        )
+    }
 
     return (
-        <div>
-            {
-                !isLoading ? (
-                    <>
-                        {
-                            isEditing ? (
-                                <>
-                                    <input
-                                        type="text"
-                                        value={newImageURL}
-                                        onChange={e => setNewImageURL(e.target.value)}
-                                        placeholder="Insira a URL da nova imagem"
-                                    />
-                                    <button onClick={handleSaveClick}>Salvar</button>
-                                    <button onClick={handleCancelClick}>Cancelar</button>
-                                </>
-                            ) : (
-                                <div style={{ height: size ?? 40, width: size ?? 40 }}>
-                                    <img
-                                        {...props}
-                                        className="w-full h-full"
-                                        src={imageUrl}
-                                        alt="Profile Image"
-                                        style={{ borderRadius: rounded ? "100%" : "0px" }}
-                                        onError={() => { setIsLoading(true) }}
-                                    />
-                                    {/* <button onClick={handleEditClick}>Editar</button> */}
-                                </div>
-                            )
-                        }
-                    </>
-                ) : (<CircularProgress/>)
-            }
-
-        </div >
+        <div style={{ height: size, width: size, borderRadius }}>
+            <img
+                src={imageUrl}
+                alt="Profile"
+                style={{ height: size ?? 40, width: size ?? 40, borderRadius }}
+                onError={handleError}
+            />
+        </div>
     );
 }

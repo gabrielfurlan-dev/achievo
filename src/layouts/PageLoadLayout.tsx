@@ -1,15 +1,22 @@
 import { CircularProgress } from "@mui/material";
+import Head from "next/head";
 import { ReactNode } from "react";
+import icon from "@/assets/favicon.ico"
 
 type LayoutProps = {
-    isLoading: boolean;
+    pageName: string,
+    isLoading: boolean,
     children: ReactNode;
 };
 
-export function PageLoadLayout({ children, isLoading }: LayoutProps) {
+export function PageLoadLayout({ pageName, children, isLoading }: LayoutProps) {
 
     return (
         <>
+            <Head>
+                <title>{pageName ?? "Achievo"}</title>
+                <link rel="icon" href={icon.src} />
+            </Head>
             {
                 isLoading ? (
                     <div className="w-full h-screen flex justify-center items-center">

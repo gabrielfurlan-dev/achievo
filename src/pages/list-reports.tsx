@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Binoculars, Calendar, Eye, PencilSimple } from "phosphor-react";
+import { Binoculars, Calendar, PencilSimple } from "phosphor-react";
 import Link from "next/link";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getUpdatedTimeElapsed } from "@/helpers/elapsedTime";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
-import { ProfileImage } from "@/components/profileImage";
+import { ProfileImage } from "@/components/ProfileImage";
 import { tv } from "tailwind-variants";
 import DatePicker from 'react-datepicker'
 import { IReportItem } from "@/interfaces/reports/IReportItem";
@@ -72,6 +72,10 @@ export default function ListReport() {
             )
         }
 
+        if (parseInt(percentage) > 100) {
+            percentage = "100"
+        }
+
         const style = tv({
             base: "flex items-center gap-2",
             variants: {
@@ -91,10 +95,10 @@ export default function ListReport() {
     }
 
     return (
-        <PageLayout>
+        <PageLayout pageName="Reports">
             <CompactNavBar
-                title="Relatórios"
-                subTitle="Todos os Reports estão aqui"
+                title="Reports"
+                subTitle="Everything here"
                 goBackUrl="/home"
             />
             <div className="pt-14 h-full w-full">
@@ -154,7 +158,6 @@ export default function ListReport() {
                                                     <span className="text-lg font-bold text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_WHITE mr-2">{data.name}</span>
                                                     <span className="text-base text-NEUTRAL_GRAY_06">@{data.username}</span>
                                                 </div>
-                                                <p>{data.description}</p>
                                                 <p className="text-NEUTRAL_GRAY_06">{getFormatedWeekInterval(data.createdDate)}</p>
                                                 {getWeeklyProgressText(data.value, data.total, data.reportId.toString())}
                                                 <p className="flex md:hidden text-xs text-NEUTRAL_GRAY_06 font-normal h-full w-full pt-2 items-center ">

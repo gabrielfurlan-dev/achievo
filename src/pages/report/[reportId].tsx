@@ -7,7 +7,6 @@ import { getWeek } from "date-fns";
 import { NoBackgroundButton } from "@/components/Buttons";
 import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
 import CheckInput from "@/components/goals/CheckGoal/CheckInput";
-import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
 import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
@@ -24,6 +23,8 @@ import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrase
 import { Plus } from "phosphor-react";
 import { ConfirmButton } from "@/components/Buttons/ConfirmButton";
 import { isNumber } from "lodash";
+import { ProfileImage } from "@/components/ProfileImage";
+import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 
 export default function EditReport() {
 
@@ -31,6 +32,7 @@ export default function EditReport() {
     const { reportId } = router.query;
     const { userInfo } = useUserInfoStore();
     const [motivationalPhrase, setMotivationalPhrase] = useState<string>("")
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     const [name, setName] = useState("");
     const [reportOwnerImageURL, setReportOwnerImageURL] = useState<string>("")
@@ -93,18 +95,18 @@ export default function EditReport() {
 
         const fetchData = () => {
             try {
-
                 if (!handleNewReport()) {
                     handleReceivedReport(Number(reportId))
                 }
 
             } catch (error) {
-                Swal.fire("Erro ao buscar o relatório", "error");
+                Swal.fire("Error when fetching the report", "error");
                 router.push("/list-reports")
             }
         };
 
         fetchData();
+        setIsLoading(false);
 
     }, [reportId, userInfo]);
 
@@ -122,7 +124,7 @@ export default function EditReport() {
             if (modified && !forceCancel) {
                 event.preventDefault();
                 event.returnValue =
-                    "Você tem alterações não salvas. Tem certeza que deseja sair?";
+                    "You have unsaved changes. Are you sure you want to quit?";
             }
         };
 
@@ -149,7 +151,7 @@ export default function EditReport() {
             {
                 id: generateInvalidUniqueID(),
                 reportId: 0,
-                title: "Sem título",
+                title: "No title",
                 updatedDate: String(new Date()),
                 checked: false,
                 index: checkGoals.length + 1,
@@ -163,7 +165,7 @@ export default function EditReport() {
             {
                 id: generateInvalidUniqueID(),
                 reportId: 0,
-                title: "Sem título",
+                title: "No title",
                 total: 0,
                 value: 0,
                 updatedDate: String(new Date()),
@@ -182,7 +184,7 @@ export default function EditReport() {
     async function handleSaveReport() {
 
         if (!modified) {
-            return Swal.fire("Oops!", "É necessário inserir ou editar uma meta para que o Report seja salvo.", "warning");
+            return Swal.fire("Oops!", "It is necessary to enter or edit a goal for the Report to be saved.", "warning");
         }
 
         let result: IResponseData;
@@ -222,25 +224,25 @@ export default function EditReport() {
     }
 
     function getTitlePage() {
-        if (isNew) return "Adicionar"
-        if (isOwner) return "Editar"
-        return "Visualizar"
+        if (isNew) return "Add"
+        if (isOwner) return "Edit"
+        return "View"
     }
 
     return (
-        <PageLayout>
+        <PageLoadLayout isLoading={isLoading} pageName={`Report - ${reportId}`}>
             {isOwner && (
                 <Modal
                     isOpen={showModal}
                     onClose={() => setShowModal(false)}
                     handleSaveButton={() => handleCancel(true)}
-                    title="Alterações não salvas"
+                    title="Unsaved changes"
                     hideDelete
-                    cancelText="Não"
-                    confirmText="Sim"
+                    cancelText="No"
+                    confirmText="Yes"
                 >
-                    <p>Você possui alterações não salvas.</p>
-                    <p>Deseja mesmo descartá-las?</p>
+                    <p>You have unsaved changes.</p>
+                    <p>Do you really want to discard them?</p>
                 </Modal>
             )}
 
@@ -256,7 +258,7 @@ export default function EditReport() {
 
                 <div className="flex flex-col w-full mt-10">
                     <div className="flex gap-4 items-center">
-                        <img className="h-16 w-16 rounded-full" src={isNew ? userInfo.imageURL : reportOwnerImageURL} />
+                        <ProfileImage size={64} imageUrl={isNew ? userInfo.imageURL ?? reportOwnerImageURL : reportOwnerImageURL} rounded/>
                         <div className="flex flex-col">
                             <h2 className="text-2xl text-LIGHT_TEXT dark:text-DARK_TEXT font-bold">
                                 {`Week ${getWeek(stringToDate(isNew ? new Date().toISOString() : selectedDate))}`}
@@ -275,7 +277,7 @@ export default function EditReport() {
                             <div className="rounded-md p-4">
                                 <div className="flex justify-between mb-2">
                                     <p className="text-2xl font-bold text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
-                                        Progresso
+                                        Progress
                                     </p>
                                     {isOwner && (
                                         <NoBackgroundButton onClick={handleAddProgressGoal} className="w-full" >
@@ -298,9 +300,9 @@ export default function EditReport() {
                                         <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL dark:bg-DARK_BACKGROUND_SECONDARY">
                                             <div className="flex items-center text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
                                                 {isOwner ? (
-                                                    <p className="flex"> Adicione um progresso no icone "<Plus />"</p>
+                                                    <p className="flex"> Add a goal by clicking "<Plus />"</p>
                                                 ) : (
-                                                    <p>Sem metas de progresso</p>
+                                                    <p>No Progress Goals</p>
                                                 )}
                                             </div>
                                         </div>
@@ -334,11 +336,11 @@ export default function EditReport() {
                                         <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL dark:bg-DARK_BACKGROUND_SECONDARY ">
                                             {isOwner ? (
                                                 <p className="flex text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
-                                                    Adicione um&nbsp;<i>check goal&nbsp;</i> no icone "<Plus />"
+                                                    Add a goal by clicking "<Plus />"
                                                 </p>
                                             ) : (
                                                 <p className="flex text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
-                                                    Sem metas de <i className="pl-2"> check</i>
+                                                    No Check Goals
                                                 </p>
                                             )}
                                         </div>
@@ -353,17 +355,17 @@ export default function EditReport() {
             <div className="flex justify-end mt-10">
                 <div className="flex gap-2 px-4">
                     <NoBackgroundButton onClick={() => handleCancel(false)}>
-                        <p>Cancelar</p>
+                        <p>Cancel</p>
                     </NoBackgroundButton>
                     {isOwner && (
                         <div className="w-36 h-12">
                             <ConfirmButton onClick={handleSaveReport}>
-                                {isNew ? "Adicionar" : "Atualizar"}
+                                {isNew ? "Add" : "Update"}
                             </ConfirmButton>
                         </div>
                     )}
                 </div>
             </div>
-        </PageLayout>
+        </PageLoadLayout>
     );
 }

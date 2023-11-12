@@ -6,7 +6,7 @@ import { useUserInfoStore } from "@/store/userStoreInfo";
 export default function pages() {
     const { userInfo } = useUserInfoStore()
     return (
-        <PageLayout>
+        <PageLayout pageName="Update Profile">
             <CompactNavBar goBackUrl={"/profile/" + userInfo.id} title="Editar perfil" subTitle="" />
             <UpdateUserLayout destinationPathOnUpdate="/home" />
         </PageLayout>

@@ -1,4 +1,4 @@
-import { ProfileImage } from "@/components/profileImage";
+import { ProfileImage } from "@/components/ProfileImage";
 import { updateUser, usernameAlradyTaken } from "@/services/user/userService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";

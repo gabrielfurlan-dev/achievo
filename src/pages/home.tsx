@@ -15,6 +15,7 @@ import { Stairs } from "@/assets/icons/Stairs";
 import { ListMagnifyingGlass } from "@/assets/icons/ListMagnifyingGlass";
 import { FilePlus, House, Users } from "phosphor-react";
 import { tv } from "tailwind-variants";
+import Head from "next/head";
 
 export default function home() {
     const router = useRouter();
@@ -86,12 +87,12 @@ export default function home() {
     }
 
     return (
-        <PageLoadLayout isLoading={isLoading}>
+        <PageLoadLayout isLoading={isLoading} pageName="Achievo">
             <SimpleNavBar IconPage={House} title="Home" />
             <div className="flex flex-col justify-center items-center text-center h-full">
                 <div>
                     <h1 className="text-4xl font-medium text-GRAY_DARK dark:text-DARK_TEXT">
-                        Weekly Report
+                        Achievo
                     </h1>
                     <h3 className="text-GRAY_SECONDARY dark:text-DARK_TEXT_SECONDARY">
                         A next step to your progress.
