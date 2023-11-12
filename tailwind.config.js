@@ -76,8 +76,9 @@ module.exports = {
                 //PRIMARY
                 PRINCIPAL: '#5C8A74', //NEED TO BE CHANGED TO PRIMARY_DEFAULT
                 PRIMARY_DEFAULT: '#5C8A74',
-                PRINCIPAL_DARK: '#3b4a3c', //NEED TO BE CHANGED TO PRIMARY_DARK
-                PRIMARY_DARK: '#3b4a3c',
+                PRIMARY_03: '#76B296 ',
+                PRIMARY_05: '#426554',
+
 
                 //SECONDARY
                 SECONDARY: '#D97251', //NEED TO BE CHANGED TO SECONDARY_DEFAULT

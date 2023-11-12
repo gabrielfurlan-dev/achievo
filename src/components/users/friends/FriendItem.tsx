@@ -47,8 +47,8 @@ export function FriendItem({user, handleFollowUser}:props) {
                         {
                             user.following ?
                                 <button
-                                    className="flex items-center h-10 bg-NEUTRAL_GRAY_02 dark:bg-NEUTRAL_GRAY_09 text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_WHITE px-4 md:px-6 rounded-lg text-md
-                                    hover:bg-NEUTRAL_GRAY_04 dark:hover:bg-NEUTRAL_GRAY_07 transition-transform"
+                                    className="flex items-center h-10 bg-NEUTRAL_GRAY_02 dark:bg-NEUTRAL_GRAY_09 text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_WHITE px-4 md:px-6 rounded-lg text-md transition duration-150
+                                    hover:bg-NEUTRAL_GRAY_04 dark:hover:bg-NEUTRAL_GRAY_07"
                                     onClick={() => handleFollowUser("unfollow", user.id)}
                                 >
                                     <Check size={24} className="md:hidden" />
@@ -56,7 +56,7 @@ export function FriendItem({user, handleFollowUser}:props) {
                                 </button>
                                 :
                                 <button
-                                    className="text-md text-NEUTRAL_WHITE flex items-center h-10 bg-PRIMARY_DEFAULT hover:bg-PRIMARY_DARK px-4 rounded-lg gap-2 "
+                                    className="text-md text-NEUTRAL_WHITE transition duration-150 flex items-center h-10 bg-PRIMARY_DEFAULT hover:bg-PRIMARY_03 hover:dark:bg-PRIMARY_05 px-4 rounded-lg gap-2 "
                                     onClick={() => handleFollowUser("follow", user.id)}
                                 >
                                     <UserPlus size={24} />

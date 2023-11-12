@@ -132,7 +132,7 @@ export default function ListReport() {
                             />
                         </div>
                     </div>
-                    <ul className="pt-10 pb-1 md:pb-10 h-full w-full" >
+                    <ul className="pt-10 pb-1 md:pb-10 w-full" >
                         {
                             reports.length == 0 && (
                                 <div className="w-full h-full flex m-auto flex-col justify-center items-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">

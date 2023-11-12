@@ -3,8 +3,8 @@ import { CircularProgress } from "@mui/material";
 import { signIn } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
-import { ReadCVLogo } from "@/assets/icons/ReadCVLogo";
 import { GoogleLogo } from "phosphor-react";
+import { IconAchievo } from "@/assets/icons/IconAchievo";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     const session = await getSession({ req })
@@ -33,17 +33,21 @@ export default function login() {
 
     return (
         <div className="items-center h-screen w-screen justify-center flex flex-col">
-            <div className="text-center items-center justify-center flex flex-col gap-2 dark:text-WHITE_PRINCIPAL">
-                <ReadCVLogo size={64} color="#5C8A74" />
-                <p className="text-xl">Bem vindo ao </p>
-                <span className="text-4xl font-semibold">Weekly Report</span>
+            <div className="text-center items-center justify-center flex flex-col gap-2 dark:text-white p-6 rounded-lg">
+                <div className="bg-opacity-0 bg-white rounded-3xl" style={{ boxShadow: "4px 0px 18px 0px rgba(66, 101, 84, 0.61)" }}>
+                    <IconAchievo size={120} color="#5C8A74" />
+                </div>
+                <div className="pt-6">
+                    <p className="text-xl">Welcome to</p>
+                    <span className="text-4xl font-semibold">Achievo</span>
+                </div>
             </div>
 
-            <div className="flex mt-12">
+            <div className="flex pt-4">
                 {isLoading ? (<CircularProgress color="inherit" />) : (
                     <div className="flex flex-col items-center gap-4">
                         <button
-                            className="flex flex-row items-center  border-[2px] m-auto rounded-xl px-4 py-2 gap-4
+                            className="flex flex-row items-center  border-[2px] m-auto rounded-xl px-4 md:px-10 py-2 gap-4
                             bg-none
                             text-GRAY_DARK
                             border-PRINCIPAL
@@ -52,9 +56,9 @@ export default function login() {
                             onClick={handleNextAuthSignIn}
                         >
                             <GoogleLogo size={24} />
-                            <p className="text-lg">Fazer login com Google</p>
+                            <p className="text-lg">Login with Google</p>
                         </button>
-                        <p className="text-GRAY">Entre para continuar</p>
+                        <p className="text-GRAY">Sign in to continue</p>
                     </div>
                 )}
             </div>

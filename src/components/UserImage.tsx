@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DefaultProfile } from "@/assets/icons/defaultProfile"; // Ajuste este import conforme necessário
+import { DefaultProfile } from "@/assets/icons/defaultProfile";
 
 interface ProfileImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     imageUrl?: string;
