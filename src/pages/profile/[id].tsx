@@ -1,5 +1,5 @@
 import { SimpleButton } from "@/components/Buttons";
-import { ProfileImage } from "@/components/ProfileImage";
+import { ProfileImage } from "@/components/UserImage";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import PageLayout from "@/layouts/PageLayout";
 import { useUserInfoStore } from "@/store/userStoreInfo";
