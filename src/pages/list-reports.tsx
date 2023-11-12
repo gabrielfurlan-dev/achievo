@@ -6,7 +6,7 @@ import { useUserInfoStore } from "@/store/userStoreInfo";
 import { getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getUpdatedTimeElapsed } from "@/helpers/elapsedTime";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
-import { ProfileImage } from "@/components/ProfileImage";
+import { ProfileImage } from "@/components/UserImage";
 import { tv } from "tailwind-variants";
 import DatePicker from 'react-datepicker'
 import { IReportItem } from "@/interfaces/reports/IReportItem";

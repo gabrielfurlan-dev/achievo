@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ProfileDropdownItem } from "./ProfileDropdownItem";
 import { signOut } from "next-auth/react";
 import CircularProgress from "@mui/material/CircularProgress";
-import { ProfileImage } from "../ProfileImage";
+import { ProfileImage } from "../UserImage";
 
 export default function ProfileDropdown() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);

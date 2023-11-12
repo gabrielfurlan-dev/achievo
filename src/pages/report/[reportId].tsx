@@ -23,7 +23,7 @@ import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrase
 import { Plus } from "phosphor-react";
 import { ConfirmButton } from "@/components/Buttons/ConfirmButton";
 import { isNumber } from "lodash";
-import { ProfileImage } from "@/components/ProfileImage";
+import { ProfileImage } from "@/components/UserImage";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 
 export default function EditReport() {
