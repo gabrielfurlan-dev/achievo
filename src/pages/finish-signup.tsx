@@ -17,7 +17,7 @@ export default function pages() {
     }, [userInfo])
 
     return (
-        <PageLayout>
+        <PageLayout pageName="Finishing register">
             <SimpleNavBar IconPage={AddressBook} title="Finalizar Cadastro" subTitle="" />
             <UpdateUserLayout destinationPathOnUpdate="/home" isFinishingRegister />
         </PageLayout>

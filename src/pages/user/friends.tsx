@@ -93,7 +93,7 @@ export default function findUser() {
     }
 
     return (
-        <PageLayout>
+        <PageLayout pageName="Friends">
             <CompactNavBar title="Friends" />
             <div className="bg-NEUTRAL_GRAY_0 dark:bg-NEUTRAL_DARK_100 py-14 px-2 md:px-28 mt-14 rounded-3xl h-full">
                 <div id="filters">

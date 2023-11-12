@@ -95,7 +95,7 @@ export default function ListReport() {
     }
 
     return (
-        <PageLayout>
+        <PageLayout pageName="Reports">
             <CompactNavBar
                 title="Reports"
                 subTitle="Everything here"

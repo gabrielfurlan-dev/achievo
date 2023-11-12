@@ -24,6 +24,7 @@ import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrase
 import { Plus } from "phosphor-react";
 import { ConfirmButton } from "@/components/Buttons/ConfirmButton";
 import { isNumber } from "lodash";
+import Head from "next/head";
 
 export default function EditReport() {
 
@@ -228,7 +229,7 @@ export default function EditReport() {
     }
 
     return (
-        <PageLayout>
+        <PageLayout pageName={`Report - ${reportId}`}>
             {isOwner && (
                 <Modal
                     isOpen={showModal}

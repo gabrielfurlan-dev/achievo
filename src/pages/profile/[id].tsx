@@ -15,7 +15,7 @@ export default function profile() {
     }, []);
 
     return (
-        <PageLayout>
+        <PageLayout pageName={userInfo.name ?? "Profile"}>
             <CompactNavBar
                 goBackUrl="/home"
                 title="Meu Perfil"
