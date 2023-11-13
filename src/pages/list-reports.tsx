@@ -15,13 +15,15 @@ import { getAllReports } from "@/services/reports/getAll";
 import { ReportFilterOptions } from "@/interfaces/reports/types/reportFilterOptions";
 import { startOfToday, startOfTomorrow, subMonths } from "date-fns";
 import { IResponseData } from "@/interfaces/iResponseData";
+import { CircularProgress } from "@mui/material";
 
 export default function ListReport() {
     const [reports, setReports] = useState<IReportItem[]>([]);
     const { userInfo } = useUserInfoStore();
     const [selectedFilterType, setSelectedFilterType] = useState<ReportFilterOptions>("everyone")
     const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
-    const [startDate, endDate] = dateRange;
+    const [startDate, endDate] = dateRange
+    const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
     const button = tv({
         base: "min-w-28 rounded-full border-2 px-4 py-2 border-SECONDARY_DEFAULT font-semibold text-xs md:text-sm",
@@ -49,6 +51,8 @@ export default function ListReport() {
             }) as IResponseData;
 
             setReports(result.data as IReportItem[]);
+            setIsLoaded(true);
+
         } catch (error) {
             console.error("Error fetching reports:", error);
         }
@@ -134,10 +138,17 @@ export default function ListReport() {
                     </div>
                     <ul className="pt-10 pb-1 md:pb-10 w-full" >
                         {
-                            reports.length == 0 && (
+                            reports.length == 0 && isLoaded && (
                                 <div className="w-full h-full flex m-auto flex-col justify-center items-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">
                                     <Binoculars size={56} />
                                     <p>No reports found!</p>
+                                </div>
+                            )
+                        }
+                        {
+                            reports.length == 0 && !isLoaded && (
+                                <div className="w-full h-full flex m-auto flex-col justify-center items-center text-NEUTRAL_GRAY_07 dark:text-NEUTRAL_GRAY_06">
+                                    <CircularProgress />
                                 </div>
                             )
                         }

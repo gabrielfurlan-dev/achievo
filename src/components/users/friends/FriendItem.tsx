@@ -7,7 +7,7 @@ interface props {
     handleFollowUser(action: "follow" | "unfollow", userIdToAct: string): Promise<void>
 }
 
-export function FriendItem({user, handleFollowUser}:props) {
+export function FriendItem({ user, handleFollowUser }: props) {
 
     function getMessageCommonFollowers(user: IUserListItem) {
 
@@ -43,7 +43,6 @@ export function FriendItem({user, handleFollowUser}:props) {
                     </div>
 
                     <div className="flex items-end md:items-center flex-col-reverse md:flex-row md:gap-6">
-
                         {
                             user.following ?
                                 <button
