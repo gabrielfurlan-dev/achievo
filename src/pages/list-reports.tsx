@@ -23,7 +23,7 @@ export default function ListReport() {
     const [selectedFilterType, setSelectedFilterType] = useState<ReportFilterOptions>("everyone")
     const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
     const [startDate, endDate] = dateRange
-    const [isLoaded, setIsLoaded] = useState<boolean>(false)
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
     const button = tv({
         base: "min-w-28 rounded-full border-2 px-4 py-2 border-SECONDARY_DEFAULT font-semibold text-xs md:text-sm",
@@ -42,6 +42,9 @@ export default function ListReport() {
     }, [])
 
     async function fetchReports() {
+
+        setIsLoaded(false);
+
         try {
             const result = await getAllReports({
                 userId: userInfo.id,
@@ -52,7 +55,6 @@ export default function ListReport() {
 
             setReports(result.data as IReportItem[]);
             setIsLoaded(true);
-
         } catch (error) {
             console.error("Error fetching reports:", error);
         }
@@ -136,23 +138,22 @@ export default function ListReport() {
                             />
                         </div>
                     </div>
+                    {
+                        reports.length === 0 && (
+                            <div className="flex flex-col justify-center items-center h-full w-full overflow-hidden">
+                                {isLoaded ? (
+                                    <div className="text-center">
+                                        <Binoculars size={56} />
+                                        <p>No reports found!</p>
+                                    </div>
+                                ) : (
+                                    <CircularProgress className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_02" />
+                                )}
+                            </div>
+                        )
+                    }
                     <ul className="pt-10 pb-1 md:pb-10 w-full" >
-                        {
-                            reports.length == 0 && isLoaded && (
-                                <div className="w-full h-full flex m-auto flex-col justify-center items-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">
-                                    <Binoculars size={56} />
-                                    <p>No reports found!</p>
-                                </div>
-                            )
-                        }
-                        {
-                            reports.length == 0 && !isLoaded && (
-                                <div className="w-full h-full flex m-auto flex-col justify-center items-center text-NEUTRAL_GRAY_07 dark:text-NEUTRAL_GRAY_06">
-                                    <CircularProgress />
-                                </div>
-                            )
-                        }
-                        {reports && reports.map(data => (
+                        {reports && reports.sort((a, b) => b.reportId - a.reportId).map(data => (
                             <Link key={data.reportId} href={`/report/${data.reportId}`}>
                                 <li
                                     className="mb-4 transition duration-150 rounded-lg p-2 w-full

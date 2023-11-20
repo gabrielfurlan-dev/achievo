@@ -7,7 +7,8 @@ import { followUser } from "@/services/user/follow";
 import { searchUsers } from "@/services/user/search";
 import { unfollowUser } from "@/services/user/unfollow";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { Binoculars, Check, MagnifyingGlass, UserPlus, Users, X } from "phosphor-react";
+import { CircularProgress } from "@mui/material";
+import { Binoculars, MagnifyingGlass } from "phosphor-react";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { tv } from "tailwind-variants";
@@ -18,6 +19,7 @@ export default function findUser() {
     const [originalUsers, setOriginalUsers] = useState<IUserListItem[]>([])
     const [users, setUsers] = useState<IUserListItem[]>(originalUsers)
     const [selectedButton, setSelectedButton] = useState<"following" | "follower" | "all">("all");
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
     const button = tv({
         base: "w-28 h-10 rounded-full border-2 border-SECONDARY_DEFAULT font-semibold text-sm",
@@ -31,6 +33,8 @@ export default function findUser() {
 
     async function updateUsersList() {
 
+        setIsLoaded(false);
+
         const obtainedUsers = (await searchUsers({
             name: filterName,
             userId: userInfo.id
@@ -38,6 +42,8 @@ export default function findUser() {
 
         setOriginalUsers(obtainedUsers);
         setUsers(obtainedUsers);
+
+        setIsLoaded(true);
     }
 
     function filterUsers() {
@@ -131,11 +137,17 @@ export default function findUser() {
                 </div>
 
                 <div id="users" className="h-2/3">
-                    {
-                        users.length == 0 && (
-                            <div className="w-full h-full flex flex-col justify-center items-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">
-                                <Binoculars size={56} />
-                                <p>No users found!</p>
+                {
+                        users.length === 0 && (
+                            <div className="flex flex-col justify-center items-center h-full w-full overflow-hidden">
+                                {isLoaded ? (
+                                    <div className="text-center">
+                                        <Binoculars size={56} />
+                                        <p>No users found!</p>
+                                    </div>
+                                ) : (
+                                    <CircularProgress className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_02"/>
+                                )}
                             </div>
                         )
                     }
