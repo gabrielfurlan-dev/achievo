@@ -8,21 +8,22 @@ datasource db {
 }
 
 model User {
-    id                String  @id @default(uuid())
-    email             String  @unique
+    id                String   @id @default(uuid())
+    email             String   @unique
     name              String
     imageURL          String
-    username          String? @unique
+    username          String?  @unique
     description       String?
-    enable            Boolean @default(true)
-    alreadyRegistered Boolean @default(false)
-    registeredDate DateTime @default(now())
+    enable            Boolean  @default(true)
+    alreadyRegistered Boolean  @default(false)
+    registeredDate    DateTime @default(now())
 
     Reports           Report[]
     ReadNotifications ReadNotifications[]
 
-    Following Follow[] @relation("UserFollowing")
-    Followers Follow[] @relation("UserFollowers")
+    Following   Follow[]      @relation("UserFollowing")
+    Followers   Follow[]      @relation("UserFollowers")
+    PersonalTag PersonalTag[]
 }
 
 model Follow {
@@ -74,10 +75,11 @@ model ProgressGoal {
     index       Int
     value       Decimal
     total       Decimal
-    Tags        Tag[]
 
-    Report   Report? @relation(fields: [reportId], references: [id], onDelete: Cascade)
-    reportId Int?
+    Report      Report?       @relation(fields: [reportId], references: [id], onDelete: Cascade)
+    reportId    Int?
+    GlobalTag   GlobalTag[]
+    PersonalTag PersonalTag[]
 }
 
 model CheckGoal {
@@ -87,13 +89,14 @@ model CheckGoal {
     title       String
     index       Int
     checked     Boolean  @default(false)
-    Tags        Tag[]
 
-    Report   Report? @relation(fields: [reportId], references: [id], onDelete: Cascade)
-    reportId Int?
+    Report      Report?       @relation(fields: [reportId], references: [id], onDelete: Cascade)
+    reportId    Int?
+    GlobalTag   GlobalTag[]
+    PersonalTag PersonalTag[]
 }
 
-model Tag {
+model GlobalTag {
     id    Int    @id @default(autoincrement())
     title String
     Icon  String
@@ -108,10 +111,29 @@ model Tag {
     checkGoalId Int?
 }
 
-model Color {
-    id      Int    @id @default(autoincrement())
-    name    String
-    hexCode String
+model PersonalTag {
+    id    Int    @id @default(autoincrement())
+    title String
+    Icon  String
 
-    Tag Tag[]
+    color   Color @relation(fields: [colorId], references: [id])
+    colorId Int
+
+    ProgressGoal   ProgressGoal? @relation(fields: [progressGoalId], references: [id])
+    progressGoalId Int?
+
+    CheckGoal   CheckGoal? @relation(fields: [checkGoalId], references: [id])
+    checkGoalId Int?
+
+    User   User   @relation(fields: [userId], references: [id])
+    userId String
+}
+
+model Color {
+    id          Int           @id @default(autoincrement())
+    name        String
+    hexCode     String
+
+    GlobalTag   GlobalTag[]
+    PersonalTag PersonalTag[]
 }

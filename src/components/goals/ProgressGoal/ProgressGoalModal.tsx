@@ -3,6 +3,8 @@ import { InputField } from "@/components/Inputs/InputField";
 import Modal from "@/components/Modal";
 import { SetStateAction, useState } from "react";
 import Swal from "sweetalert2";
+import { ITag } from "@/interfaces/tags/ITag";
+import { Plus } from "phosphor-react";
 
 type ProgressModalProps = {
     isOpen: boolean;
@@ -27,6 +29,9 @@ export default function ProgressGoalModal({
     );
     const [editingTitle, setEditingTitle] = useState(progressGoal.title);
 
+    const [tags, setTags] = useState<ITag[] | undefined>(progressGoal.tags)
+
+    //TODO: change to react-hook-form
     function validate() {
         if (editingTitle.length == 0) {
             Swal.fire(
@@ -59,6 +64,7 @@ export default function ProgressGoalModal({
             value: Number(editingValue),
             total: Number(editingTotal),
             reportId: progressGoal.id,
+            tags: tags
         };
 
         setProgressGoal(newGoal);
@@ -85,7 +91,24 @@ export default function ProgressGoalModal({
                             placeHolder="Levar a vó no judô."
                             label="Título"
                         />
-                        <div className="flex flex-col gap-4 md:flex-row mt-4 md:mt-8">
+                        <div>
+                            Tags
+                            <ul>
+                                {
+                                    tags?.map(x =>
+                                        <li>
+                                            tag
+                                        </li>)
+                                }
+                                <button
+                                    className="w-8 h-8 rounded-lg border border-neutral-900 flex items-center justify-center hover:bg-NEUTRAL_GRAY_02 hover:border-PRINCIPAL transition"
+                                    onClick={showAddModal}
+                                >
+                                    <Plus />
+                                </button>
+                            </ul>
+                        </div>
+                        <div className="flex flex-col gap-4 md:flex-row pt-4 md:mt-8">
                             <InputField
                                 onChange={setEditingValue}
                                 value={editingValue}
