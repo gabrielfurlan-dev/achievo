@@ -1,3 +1,4 @@
+import { SearchInput } from "@/components/Inputs/SearchInput";
 import { ProfileImage } from "@/components/UserImage";
 import { FriendItem } from "@/components/users/friends/FriendItem";
 import { IUserListItem } from "@/interfaces/users/IUserListItem";
@@ -104,17 +105,8 @@ export default function findUser() {
             <div className="bg-NEUTRAL_GRAY_0 dark:bg-NEUTRAL_DARK_100 py-14 px-2 md:px-28 mt-14 rounded-3xl h-full">
                 <div id="filters">
                     <div className="flex flex-col lg:flex-row justify-between gap-4 items-center w-full">
-                        <div className="flex gap-4 w-full">
-                            <div id="search" className="bg-NEUTRAL_GRAY_01 dark:bg-NEUTRAL_DARK_300 flex rounded-xl py-4 px-5 items-center gap-4 w-full lg:max-w-sm">
-                                <MagnifyingGlass className="text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_GRAY_06" size={26} />
-                                <input
-                                    type="text"
-                                    className="outline-none w-full bg-transparent text-NEUTRAL_GRAY_06"
-                                    placeholder="Search"
-                                    onChange={(e) => setFilterName(e.target.value)}
-                                    value={filterName}
-                                />
-                            </div>
+                        <div className="flex gap-4 w-full lg:max-w-sm">
+                            <SearchInput onChange={(e) => setFilterName(e.target.value)} value={filterName}/>
                         </div>
                         <div className="flex flex-row gap-2 md:gap-6">
                             <button

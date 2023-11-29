@@ -4,7 +4,7 @@ import { SetStateAction, useState } from "react";
 import Swal from "sweetalert2";
 import { ITag } from "@/interfaces/tags/ITag";
 import { Plus, Trash, X } from "phosphor-react";
-import SelectTagModal from "@/components/tags/SelectTagModal";
+import {SelectTagModal} from "@/components/tags/SelectTagModal";
 
 import * as Dialog from '@radix-ui/react-dialog';
 import { DangerButton, NoBackgroundButton } from "@/components/Buttons";
@@ -166,13 +166,6 @@ export default function ProgressGoalModal({
                         </div>
                     </div>
 
-                    <div className="mt-[25px] flex justify-end">
-                        <Dialog.Close asChild>
-                            <button className="bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none">
-                                Save changes
-                            </button>
-                        </Dialog.Close>
-                    </div>
                     <Dialog.Close asChild>
                         <button
                             className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
