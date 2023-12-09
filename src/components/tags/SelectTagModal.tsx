@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Book, X } from 'phosphor-react';
+import { Book, Plus, X } from 'phosphor-react';
 import { SearchInput } from '../Inputs/SearchInput';
 import { ITag } from '@/interfaces/tags/ITag';
+import { addGoalTag } from '@/services/tags/addGoalTag';
+import { toast } from 'sonner'
 
-export function SelectTagModal() {
+interface selectTagModalProps {
+    goalId: number
+}
+
+export function SelectTagModal({goalId}:selectTagModalProps) {
     const [filterName, setFilterName] = useState<string>();
     const [defaultTags, setDefaultTags] = useState<ITag[]>([])
+    const [open, setOpen] = React.useState(false);
 
     useEffect(() => {
         setDefaultTags([
             {
+                id: 1,
                 color: "#2D6B6F",
                 icon: "Body",
                 title: "Physicus"
             },
             {
+                id: 2,
                 color: "#5CA4E5",
                 icon: "Run",
                 title: "Run"
@@ -23,11 +32,22 @@ export function SelectTagModal() {
         ])
     }, [])
 
+    async function setTag(tagId: number){
+        const response = await addGoalTag(goalId, tagId);
+
+        if(response.success){
+            toast.success('goal tag added successfully')
+            setOpen(false);
+        }else{
+            toast.error('Unable to add tag')
+        }
+    }
+
     return (
-        <Dialog.Root>
+        <Dialog.Root open={open} onOpenChange={setOpen}>
             <Dialog.Trigger asChild>
                 <button className="w-4 h-4 border-1">
-                    <X />
+                    <Plus />
                 </button>
             </Dialog.Trigger>
             <Dialog.Portal>
@@ -44,7 +64,8 @@ export function SelectTagModal() {
 
                     <ul className='flex flex-col gap-2 pt-5'>
                         {defaultTags.map(x => (
-                            <li className='flex items-center gap-2 py-3 px-4 rounded-lg text-NEUTRAL_GRAY_0' style={{backgroundColor: x.color}}>
+                            <li className='flex items-center gap-2 py-3 px-4 rounded-lg text-NEUTRAL_GRAY_0' style={{backgroundColor: x.color}}
+                            onClick={() => setTag(x.id)}>
                                 <Book size={24}/>
                                 <p>{x.title}</p>
                             </li>

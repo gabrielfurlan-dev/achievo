@@ -1,6 +1,6 @@
 import { SetStateAction, useEffect, useState } from "react";
 import React from "react";
-import ProgressGoalModal from "./ProgressGoalModal";
+import ProgressGoalModal from "../../Modals/ProgressGoalModal";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
 import { getUpdatedTimeElapsed } from "@/helpers/elapsedTime";
 

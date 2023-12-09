@@ -1,6 +1,6 @@
 import { IResponseData } from "@/interfaces/iResponseData";
-import { registerUser, userExists } from "./user/userService";
-import { sendNewUserEmail } from "./email/newUserEmail";
+import { registerUser, userExists } from "./users/userService";
+import { sendNewUserEmail } from "./emails/newUserEmail";
 
 export async function handleLoginGoogle(name: string, email: string, imageURL: string) {
 

@@ -1,5 +1,5 @@
 import { ProfileImage } from "@/components/UserImage";
-import { updateUser, usernameAlradyTaken } from "@/services/user/userService";
+import { updateUser, usernameAlradyTaken } from "@/services/users/userService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

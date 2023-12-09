@@ -40,6 +40,7 @@
     "react-datepicker": "^4.21.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.1",
+    "sonner": "^1.2.4",
     "styled-components": "^6.0.0-rc.3",
     "supabase": "^1.82.2",
     "sweetalert2": "^11.4.8",

@@ -1,6 +1,6 @@
 import { SetStateAction, useEffect, useState } from "react";
 import { CheckSquare, Square } from "phosphor-react";
-import CheckGoalModal from "./CheckGoalModal";
+import CheckGoalModal from "../../Modals/CheckGoalModal";
 import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
 import { getUpdatedTimeElapsed } from "@/helpers/elapsedTime";
 

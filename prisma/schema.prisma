@@ -18,12 +18,12 @@ model User {
     alreadyRegistered Boolean  @default(false)
     registeredDate    DateTime @default(now())
 
-    Reports           Report[]
-    ReadNotifications ReadNotifications[]
+    reports           Report[]
+    readNotifications ReadNotifications[]
 
-    Following   Follow[]      @relation("UserFollowing")
-    Followers   Follow[]      @relation("UserFollowers")
-    PersonalTag PersonalTag[]
+    following Follow[] @relation("UserFollowing")
+    followers Follow[] @relation("UserFollowers")
+    tag       Tag[]
 }
 
 model Follow {
@@ -43,7 +43,7 @@ model Notification {
     message           String
     title             String
     wikiURL           String
-    ReadNotifications ReadNotifications[]
+    readNotifications ReadNotifications[]
 }
 
 model ReadNotifications {
@@ -51,7 +51,7 @@ model ReadNotifications {
     User   User   @relation(fields: [userId], references: [id])
     userId String
 
-    Notification   Notification @relation(fields: [notificationId], references: [id])
+    notification   Notification @relation(fields: [notificationId], references: [id])
     notificationId Int
 }
 
@@ -76,10 +76,19 @@ model ProgressGoal {
     value       Decimal
     total       Decimal
 
-    Report      Report?       @relation(fields: [reportId], references: [id], onDelete: Cascade)
-    reportId    Int?
-    GlobalTag   GlobalTag[]
-    PersonalTag PersonalTag[]
+    report   Report?    @relation(fields: [reportId], references: [id], onDelete: Cascade)
+    reportId Int?
+    GoalTags GoalTags[]
+}
+
+model GoalTags {
+    progressGoal   ProgressGoal @relation(fields: [progressGoalId], references: [id])
+    progressGoalId Int
+
+    tag   Tag @relation(fields: [tagId], references: [id])
+    tagId Int
+
+    @@unique([progressGoalId, tagId])
 }
 
 model CheckGoal {
@@ -90,50 +99,29 @@ model CheckGoal {
     index       Int
     checked     Boolean  @default(false)
 
-    Report      Report?       @relation(fields: [reportId], references: [id], onDelete: Cascade)
-    reportId    Int?
-    GlobalTag   GlobalTag[]
-    PersonalTag PersonalTag[]
+    report   Report? @relation(fields: [reportId], references: [id], onDelete: Cascade)
+    reportId Int?
 }
 
-model GlobalTag {
+model Tag {
     id    Int    @id @default(autoincrement())
     title String
-    Icon  String
+    icon  String
 
     color   Color @relation(fields: [colorId], references: [id])
     colorId Int
 
-    ProgressGoal   ProgressGoal? @relation(fields: [progressGoalId], references: [id])
-    progressGoalId Int?
+    user     User       @relation(fields: [userId], references: [id])
+    userId   String
+    GoalTags GoalTags[]
 
-    CheckGoal   CheckGoal? @relation(fields: [checkGoalId], references: [id])
-    checkGoalId Int?
-}
-
-model PersonalTag {
-    id    Int    @id @default(autoincrement())
-    title String
-    Icon  String
-
-    color   Color @relation(fields: [colorId], references: [id])
-    colorId Int
-
-    ProgressGoal   ProgressGoal? @relation(fields: [progressGoalId], references: [id])
-    progressGoalId Int?
-
-    CheckGoal   CheckGoal? @relation(fields: [checkGoalId], references: [id])
-    checkGoalId Int?
-
-    User   User   @relation(fields: [userId], references: [id])
-    userId String
+    @@map("PersonalTag")
 }
 
 model Color {
-    id          Int           @id @default(autoincrement())
-    name        String
-    hexCode     String
+    id      Int    @id @default(autoincrement())
+    name    String
+    hexCode String
 
-    GlobalTag   GlobalTag[]
-    PersonalTag PersonalTag[]
+    tag Tag[]
 }

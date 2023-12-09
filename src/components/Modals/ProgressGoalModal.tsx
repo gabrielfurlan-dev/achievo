@@ -4,7 +4,7 @@ import { SetStateAction, useState } from "react";
 import Swal from "sweetalert2";
 import { ITag } from "@/interfaces/tags/ITag";
 import { Plus, Trash, X } from "phosphor-react";
-import {SelectTagModal} from "@/components/tags/SelectTagModal";
+import { SelectTagModal } from "@/components/tags/SelectTagModal";
 
 import * as Dialog from '@radix-ui/react-dialog';
 import { DangerButton, NoBackgroundButton } from "@/components/Buttons";
@@ -108,9 +108,10 @@ export default function ProgressGoalModal({
                                             tags?.map(x =>
                                                 <li>
                                                     tag
-                                                </li>)
+                                                </li>
+                                            )
                                         }
-                                        <SelectTagModal />
+                                        <SelectTagModal goalId={progressGoal.id} />
                                     </ul>
                                 </div>
                                 <div className="flex flex-col gap-4 md:flex-row pt-4 md:mt-8">
@@ -135,14 +136,14 @@ export default function ProgressGoalModal({
 
                     <div className="mt-10 h-12 flex justify-between">
                         <div className="mr-2">
-                                <DangerButton onClick={deleteGoal}>
-                                    <div className="flex gap-2">
-                                        <Trash size={20} />
-                                        <p className="hidden md:block">
-                                            Remove
-                                        </p>
-                                    </div>
-                                </DangerButton>
+                            <DangerButton onClick={deleteGoal}>
+                                <div className="flex gap-2">
+                                    <Trash size={20} />
+                                    <p className="hidden md:block">
+                                        Remove
+                                    </p>
+                                </div>
+                            </DangerButton>
                         </div>
 
                         <div className="flex justify-end w-full">
