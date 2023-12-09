@@ -25,6 +25,8 @@ export default function ProgressGoal({
     const completou = Number(progressoAtual) >= 100;
     const corDeFundo = completou ? "#5C8A74" : "";
 
+    useEffect(() => {console.log(progressGoal.tags)}, [])
+
     useEffect(() => {
         setProgressGoals(prevProgressGoals => {
             const newProgress = prevProgressGoals.map(x => {
@@ -99,6 +101,14 @@ export default function ProgressGoal({
                                 }}
                             />
                         </div>
+                    </div>
+                    <div>
+                        <p>Tags</p>
+                        {goal.tags?.map((tag) => (
+                            <li>
+                                <p>{tag.title}</p>
+                            </li>
+                        ))}
                     </div>
                 </div>
             </button>

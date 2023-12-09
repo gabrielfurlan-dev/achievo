@@ -1,10 +1,8 @@
 import { IResponseData } from "@/interfaces/iResponseData";
 import { ICreateReportCommand } from "@/pages/api/report/create";
 import { IProgressGoalRaw } from "@/interfaces/goals/progressGoals/iProgressGoalRaw";
-import { ICheckGoalRaw } from "@/interfaces/goals/checkGoals/iCheckGoalRaw";
 import { IUpdateReportCommand } from "@/pages/api/report/update";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
-import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
 import { getWeekInterval } from "@/helpers/dateHelper";
 
 export interface IUpdateReport {
@@ -14,30 +12,22 @@ export interface IUpdateReport {
         inserted: IProgressGoal[];
         modified: IProgressGoal[];
     };
-    checkGoals: {
-        deleted: ICheckGoal[];
-        inserted: ICheckGoal[];
-        modified: ICheckGoal[];
-    };
 }
 
 interface ICreateReport {
     userId: string;
     progressGoals: IProgressGoalRaw[];
-    checkGoals: ICheckGoalRaw[];
 }
 
 export async function createReport({
     userId,
     progressGoals,
-    checkGoals,
 }: ICreateReport) {
     try {
         const report = await fetch("/api/report/create", {
             method: "POST",
             body: JSON.stringify({
                 userId: userId,
-                checkGoals,
                 progressGoals,
             } as ICreateReportCommand),
             headers: { "Content-Type": "application/json" },
@@ -60,14 +50,12 @@ export async function createReport({
 export async function updateReport({
     reportId,
     progressGoals,
-    checkGoals,
 }: IUpdateReport) {
     try {
         const report = await fetch("/api/report/update", {
             method: "PUT",
             body: JSON.stringify({
                 reportId,
-                checkGoals,
                 progressGoals,
             } as IUpdateReportCommand),
             headers: { "Content-Type": "application/json" },

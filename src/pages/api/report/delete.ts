@@ -1,4 +1,3 @@
-import { ICheckGoalRaw } from "@/interfaces/goals/checkGoals/iCheckGoalRaw";
 import { IProgressGoalRaw } from "@/interfaces/goals/progressGoals/iProgressGoalRaw";
 import { IResponseData } from "@/interfaces/iResponseData";
 import { db } from "@/db";
@@ -7,7 +6,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 export interface ICreateReportCommand {
     userRef: number;
     progressGoals: IProgressGoalRaw[];
-    checkGoals: ICheckGoalRaw[];
 }
 
 export default async function handler(

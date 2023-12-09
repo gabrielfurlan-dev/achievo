@@ -1,3 +1,4 @@
+import { ITag } from "../tags/ITag"
 
 export interface IReportItem{
     reportId: number,
@@ -10,4 +11,5 @@ export interface IReportItem{
     updatedDate: string,
     total: number
     value: number
+    tags: ITag[]
 }

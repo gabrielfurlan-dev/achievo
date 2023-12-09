@@ -6,15 +6,13 @@ import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/helpers
 import { getWeek } from "date-fns";
 import { NoBackgroundButton } from "@/components/Buttons";
 import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
-import CheckInput from "@/components/goals/CheckGoal/CheckInput";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
-import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
 import { createReport, IUpdateReport, getReport, updateReport } from "@/services/reports/reportService";
 import { IResponseData } from "@/interfaces/iResponseData";
 import { IReport } from "@/interfaces/iReport";
 import { generateInvalidUniqueID } from "@/helpers/uniqueIdHelper";
-import { getCheckGoalsModified, getProgressGoalsModified } from "@/helpers/report/reportHelper";
+import { getProgressGoalsModified } from "@/helpers/report/reportHelper";
 import { ConfirmToReload } from "@/components/ConfirmToReload";
 import isEqual from 'lodash/isEqual';
 import { normalizeProgressGoals } from "@/helpers/goalHelper";
@@ -44,10 +42,7 @@ export default function EditReport() {
 
     const [selectedDate, setSelectedDate] = useState<string>("");
 
-    const [checkGoals, setCheckGoals] = useState<ICheckGoal[]>([]);
     const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([]);
-
-    const [originalCheckGoals, setOriginalCheckGoals] = useState<ICheckGoal[]>([]);
     const [originalProgressGoals, setOriginalProgressGoals] = useState<IProgressGoal[]>([]);
 
     useEffect(() => {
@@ -63,10 +58,6 @@ export default function EditReport() {
             setName(report.user.name);
             setReportOwnerImageURL(report.user.imageURL);
             setSelectedDate(report.createdDate);
-
-            setCheckGoals(report.checkGoals);
-            setOriginalCheckGoals(report.checkGoals);
-
             setProgressGoals(normalizeProgressGoals(report.progressGoals));
             setOriginalProgressGoals(normalizeProgressGoals(report.progressGoals));
         }
@@ -112,12 +103,11 @@ export default function EditReport() {
 
     useEffect(() => {
 
-        const checkGoalsIsChanged = !isEqual(checkGoals, originalCheckGoals);
         const progressGoalsIsChanged = !isEqual(progressGoals, originalProgressGoals);
 
-        setModified(checkGoalsIsChanged || progressGoalsIsChanged);
+        setModified(progressGoalsIsChanged);
 
-    }, [checkGoals, originalCheckGoals, progressGoals, originalProgressGoals]);
+    }, [progressGoals, originalProgressGoals]);
 
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -144,20 +134,6 @@ export default function EditReport() {
             router.events.off("routeChangeStart", handleRouteChangeStart);
         };
     }, [modified, router, forceCancel]);
-
-    function handleAddCheckGoal() {
-        setCheckGoals([
-            ...checkGoals,
-            {
-                id: generateInvalidUniqueID(),
-                reportId: 0,
-                title: "No title",
-                updatedDate: String(new Date()),
-                checked: false,
-                index: checkGoals.length + 1,
-            },
-        ]);
-    }
 
     function handleAddProgressGoal() {
         setProgressGoals([
@@ -192,25 +168,21 @@ export default function EditReport() {
         if (isNew) {
             result = await createReport({
                 userId: userInfo.id,
-                progressGoals,
-                checkGoals
+                progressGoals
             });
         }
 
         else {
 
-            const modifiedCheckGoals = getCheckGoalsModified(originalCheckGoals, checkGoals);
             const modifiedProgressGoals = getProgressGoalsModified(originalProgressGoals, progressGoals);
 
             result = await updateReport({
                 reportId: Number(reportId),
                 progressGoals: modifiedProgressGoals,
-                checkGoals: modifiedCheckGoals,
             } as IUpdateReport);
         }
 
         if (result.success) {
-            setOriginalCheckGoals(checkGoals);
             setOriginalProgressGoals(progressGoals);
         }
 
@@ -305,44 +277,6 @@ export default function EditReport() {
                                                     <p>No Progress Goals</p>
                                                 )}
                                             </div>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className="  rounded-md p-4">
-                                <div className="flex justify-between mb-2">
-                                    <p className="text-2xl font-bold text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
-                                        Check List
-                                    </p>
-                                    {isOwner && (
-                                        <NoBackgroundButton onClick={handleAddCheckGoal} className="w-full">
-                                            <Plus />
-                                        </NoBackgroundButton>
-                                    )}
-                                </div>
-                                <div className="flex flex-col gap-4">
-                                    {checkGoals.length ? (
-                                        Array.isArray(checkGoals) &&
-                                        checkGoals.map(goal => (
-                                            <CheckInput
-                                                key={goal.id}
-                                                checkGoal={goal}
-                                                setCheckGoals={setCheckGoals}
-                                                disabled={!isOwner}
-                                            />
-                                        ))
-                                    ) : (
-                                        <div className="p-2 px-4 rounded-md flex justify-center w-full bg-WHITE_PRINCIPAL dark:bg-DARK_BACKGROUND_SECONDARY ">
-                                            {isOwner ? (
-                                                <p className="flex text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
-                                                    Add a goal by clicking "<Plus />"
-                                                </p>
-                                            ) : (
-                                                <p className="flex text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT">
-                                                    No Check Goals
-                                                </p>
-                                            )}
                                         </div>
                                     )}
                                 </div>

@@ -1,4 +1,3 @@
-import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
 import { IResponseData } from "@/interfaces/iResponseData";
 import { db } from "@/db";
@@ -10,11 +9,6 @@ export interface IUpdateReportCommand {
         deleted: IProgressGoal[];
         inserted: IProgressGoal[];
         modified: IProgressGoal[];
-    };
-    checkGoals: {
-        deleted: ICheckGoal[];
-        inserted: ICheckGoal[];
-        modified: ICheckGoal[];
     };
 }
 
@@ -28,41 +22,10 @@ export default async function handler(
     }
 
     try {
-        const { reportId, checkGoals, progressGoals }: IUpdateReportCommand =
+        const { reportId, progressGoals }: IUpdateReportCommand =
             req.body;
 
         const report = await db.$transaction(async transaction => {
-            checkGoals.modified.map(async goal => {
-                return transaction.checkGoal.update({
-                    data: {
-                        title: goal.title,
-                        index: goal.index,
-                        checked: goal.checked,
-                    },
-                    where: {
-                        id: goal.id,
-                    },
-                });
-            });
-
-            checkGoals.inserted.map(async goal => {
-                return transaction.checkGoal.create({
-                    data: {
-                        title: goal.title,
-                        index: goal.index,
-                        checked: goal.checked,
-                        reportId: reportId,
-                    },
-                });
-            });
-
-            checkGoals.deleted.map(async goal => {
-                return transaction.checkGoal.delete({
-                    where: {
-                        id: goal.id,
-                    },
-                });
-            });
 
             progressGoals.modified.map(async goal => {
                 return transaction.progressGoal.update({

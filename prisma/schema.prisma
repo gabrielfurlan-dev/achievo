@@ -61,7 +61,6 @@ model Report {
     updatedDate DateTime @default(now()) @updatedAt
     enable      Boolean  @default(true)
 
-    checkGoals    CheckGoal[]
     progressGoals ProgressGoal[]
 
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -91,18 +90,6 @@ model GoalTags {
     @@unique([progressGoalId, tagId])
 }
 
-model CheckGoal {
-    id          Int      @id @default(autoincrement())
-    createdDate DateTime @default(now())
-    updatedDate DateTime @updatedAt
-    title       String
-    index       Int
-    checked     Boolean  @default(false)
-
-    report   Report? @relation(fields: [reportId], references: [id], onDelete: Cascade)
-    reportId Int?
-}
-
 model Tag {
     id    Int    @id @default(autoincrement())
     title String
@@ -114,8 +101,6 @@ model Tag {
     user     User       @relation(fields: [userId], references: [id])
     userId   String
     GoalTags GoalTags[]
-
-    @@map("PersonalTag")
 }
 
 model Color {

@@ -1,4 +1,3 @@
-import { ICheckGoalRaw } from "@/interfaces/goals/checkGoals/iCheckGoalRaw";
 import { IProgressGoalRaw } from "@/interfaces/goals/progressGoals/iProgressGoalRaw";
 import { IResponseData } from "@/interfaces/iResponseData";
 import { db } from "@/db";
@@ -7,7 +6,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 export interface ICreateReportCommand {
     userId: string;
     progressGoals: IProgressGoalRaw[];
-    checkGoals: ICheckGoalRaw[];
 }
 
 export default async function handler(
@@ -22,7 +20,7 @@ export default async function handler(
     }
 
     try {
-        const { userId , checkGoals, progressGoals }: ICreateReportCommand =
+        const { userId, progressGoals }: ICreateReportCommand =
             req.body;
 
         const report = await db.$transaction(async transaction => {
@@ -39,17 +37,6 @@ export default async function handler(
                         index: goal.index,
                         total: goal.total,
                         value: goal.value,
-                        reportId: report.id,
-                    },
-                });
-            }
-
-            for (const goal of checkGoals) {
-                await transaction.checkGoal.create({
-                    data: {
-                        title: goal.title,
-                        index: goal.index,
-                        checked: goal.checked,
                         reportId: report.id,
                     },
                 });
