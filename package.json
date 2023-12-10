@@ -9,6 +9,9 @@
     "lint": "next lint",
     "test": "jest"
   },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
@@ -45,7 +48,7 @@
     "supabase": "^1.82.2",
     "sweetalert2": "^11.4.8",
     "tailwind-variants": "^0.1.14",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "zod": "^3.21.4",
     "zustand": "^4.3.9"
   },
@@ -54,7 +57,7 @@
     "@types/jest": "^29.5.4",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/lodash": "^4.14.197",
-    "@types/node": "^20.4.5",
+    "@types/node": "^20.10.4",
     "@types/react": "18.0.27",
     "@types/react-datepicker": "^4.19.1",
     "@types/react-dom": "18.0.10",
@@ -84,6 +87,6 @@
     "prisma": "^5.0.0",
     "tailwindcss": "^3.2.4",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.3.3"
   }
 }

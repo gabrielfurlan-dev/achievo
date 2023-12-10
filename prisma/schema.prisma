@@ -95,8 +95,8 @@ model Tag {
     title String
     icon  String
 
-    color   Color @relation(fields: [colorId], references: [id])
-    colorId Int
+    color   Color @relation(fields: [colorHexCode], references: [hexCode])
+    colorHexCode String
 
     user     User       @relation(fields: [userId], references: [id])
     userId   String
@@ -104,9 +104,8 @@ model Tag {
 }
 
 model Color {
-    id      Int    @id @default(autoincrement())
     name    String
-    hexCode String
+    hexCode String @id @unique
 
     tag Tag[]
 }
