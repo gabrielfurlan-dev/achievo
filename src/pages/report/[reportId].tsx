@@ -146,6 +146,7 @@ export default function EditReport() {
                 value: 0,
                 updatedDate: String(new Date()),
                 index: progressGoals.length + 1,
+                tags: []
             },
         ]);
     }

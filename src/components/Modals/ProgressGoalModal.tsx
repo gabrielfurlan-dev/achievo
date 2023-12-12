@@ -33,7 +33,7 @@ export default function ProgressGoalModal({
     );
     const [editingTitle, setEditingTitle] = useState(progressGoal.title);
 
-    const [tags, setTags] = useState<ITag[] | undefined>(progressGoal.tags)
+    const [tags, setTags] = useState<ITag[]>(progressGoal.tags ?? [])
 
     //TODO: change to react-hook-form
     function validate() {
@@ -78,8 +78,8 @@ export default function ProgressGoalModal({
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild>
-                <button>
-                    Edit profile
+                <button className="text-black dark:text-white">
+                    Edit goal
                 </button>
             </Dialog.Trigger>
             <Dialog.Portal>
@@ -106,12 +106,12 @@ export default function ProgressGoalModal({
                                     <ul>
                                         {
                                             tags?.map(x =>
-                                                <li>
-                                                    tag
+                                                <li className="p-2 rounded-lg" style={{backgroundColor: x.hexColor}}>
+                                                    {x.title}
                                                 </li>
                                             )
                                         }
-                                        <SelectTagModal goalId={progressGoal.id} />
+                                        <SelectTagModal goalId={progressGoal.id} tags={tags} setTags={setTags} />
                                     </ul>
                                 </div>
                                 <div className="flex flex-col gap-4 md:flex-row pt-4 md:mt-8">

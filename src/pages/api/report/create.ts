@@ -2,10 +2,11 @@ import { IProgressGoalRaw } from "@/interfaces/goals/progressGoals/iProgressGoal
 import { IResponseData } from "@/interfaces/iResponseData";
 import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
+import { ITag } from "@/interfaces/tags/ITag";
 
 export interface ICreateReportCommand {
     userId: string;
-    progressGoals: IProgressGoalRaw[];
+    goals: IProgressGoalRaw[];
 }
 
 export default async function handler(
@@ -20,34 +21,36 @@ export default async function handler(
     }
 
     try {
-        const { userId, progressGoals }: ICreateReportCommand =
+        const { userId, goals }: ICreateReportCommand =
             req.body;
 
-        const report = await db.$transaction(async transaction => {
+        await db.$transaction(async transaction => {
+
             const report = await transaction.report.create({
                 data: {
                     userId: userId,
                 },
             });
 
-            for (const goal of progressGoals) {
-                await transaction.progressGoal.create({
+            for (const goal of goals) {
+                const createdGoal = await transaction.progressGoal.create({
                     data: {
                         title: goal.title,
                         index: goal.index,
                         total: goal.total,
                         value: goal.value,
-                        reportId: report.id,
+                        reportId: report.id
                     },
                 });
+
+                await relateTags(goal.tags, transaction, userId, createdGoal.id);
             }
 
-            return report;
         });
 
         return res.status(201).json({
             success: true,
-            data: report,
+            data: null,
             message: "Relatório registrado com sucesso!",
         } as IResponseData);
     } catch (error) {
@@ -57,5 +60,42 @@ export default async function handler(
             message: "Erro ao registrar o relatório",
             error: String(error),
         } as IResponseData);
+    }
+}
+
+async function relateTags(
+    tags: ITag[],
+    transaction: any,
+    userId: string,
+    createdGoalId: number) {
+
+    for (const tag of tags) {
+
+        if (tag.id === 0) {
+            const createdTag = await transaction.tag.create({
+                data: {
+                    title: tag.title,
+                    icon: "",
+                    colorHexCode: tag.hexColor,
+                    userId: userId,
+                }
+            });
+
+            await transaction.goalTags.create({
+                data: {
+                    progressGoalId: createdGoalId,
+                    tagId: createdTag.id
+                }
+            });
+
+        } else {
+            await transaction.goalTags.create({
+                data: {
+                    progressGoalId: tag.id,
+                    tagId: tag.id
+                }
+            });
+
+        }
     }
 }

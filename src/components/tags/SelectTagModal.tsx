@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Book, Plus, X } from 'phosphor-react';
 import { SearchInput } from '../Inputs/SearchInput';
 import { ITag } from '@/interfaces/tags/ITag';
-import { addGoalTag } from '@/services/tags/addGoalTag';
 import { toast } from 'sonner'
+import { generateInvalidUniqueID } from '@/helpers/uniqueIdHelper';
 
 interface selectTagModalProps {
-    goalId: number
+    goalId: number,
+    tags: ITag[]
+    setTags: Dispatch<SetStateAction<ITag[]>>
 }
 
-export function SelectTagModal({goalId}:selectTagModalProps) {
+export function SelectTagModal({goalId, tags, setTags}:selectTagModalProps) {
     const [filterName, setFilterName] = useState<string>();
     const [defaultTags, setDefaultTags] = useState<ITag[]>([])
     const [open, setOpen] = React.useState(false);
@@ -19,28 +21,34 @@ export function SelectTagModal({goalId}:selectTagModalProps) {
         setDefaultTags([
             {
                 id: 1,
-                color: "#2D6B6F",
+                hexColor: "#2D6B6F",
                 icon: "Body",
                 title: "Physicus"
             },
             {
                 id: 2,
-                color: "#5CA4E5",
+                hexColor: "#5CA4E5",
                 icon: "Run",
                 title: "Run"
             }
         ])
     }, [])
 
-    async function setTag(tagId: number){
-        const response = await addGoalTag(goalId, tagId);
+    async function setTag(selectedTag: ITag){
 
-        if(response.success){
-            toast.success('goal tag added successfully')
-            setOpen(false);
+        // const newTag = {
+        //     id: generateInvalidUniqueID(),
+        //     hexColor: "",
+        //     icon: "",
+        //     title: ""
+        // } as ITag
+
+        if (tags == null ||tags == undefined ){
+            setTags([selectedTag])
         }else{
-            toast.error('Unable to add tag')
+            setTags([...tags, selectedTag])
         }
+        toast.success("Tag added by succesful")
     }
 
     return (
@@ -64,8 +72,8 @@ export function SelectTagModal({goalId}:selectTagModalProps) {
 
                     <ul className='flex flex-col gap-2 pt-5'>
                         {defaultTags.map(x => (
-                            <li className='flex items-center gap-2 py-3 px-4 rounded-lg text-NEUTRAL_GRAY_0' style={{backgroundColor: x.color}}
-                            onClick={() => setTag(x.id)}>
+                            <li className='flex items-center gap-2 py-3 px-4 rounded-lg text-NEUTRAL_GRAY_0' style={{backgroundColor: x.hexColor}}
+                            onClick={() => setTag(x)}>
                                 <Book size={24}/>
                                 <p>{x.title}</p>
                             </li>

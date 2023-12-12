@@ -102,7 +102,7 @@ function mapToIReportStructure(rawData: any[]): IReport {
 
         if (row.tagId) {
             const tag = {
-                new: false,
+                id: row.tagId,
                 title: row.tagTitle,
                 icon: row.tagIcon,
                 hexColor: row.hexColor

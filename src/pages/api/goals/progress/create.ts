@@ -1,31 +1,40 @@
 import { db } from "@/db";
+import { ITag } from "@/interfaces/tags/ITag";
 
 export interface ICreateProgressGoalCommand {
     goals: [
         {
-            reportId: number;
-            title: string;
-            index: number;
-            value: number;
-            total: number;
-        }
-    ];
+            title: string,
+            index: number,
+            value: number,
+            total: number,
+            tags: ITag[]
+        },
+    ],
+    reportId: number,
+    userId: string,
 }
 
-export default async function handler({ goals }: ICreateProgressGoalCommand) {
+export default async function handler({ goals, reportId, userId }: ICreateProgressGoalCommand) {
     try {
 
-        for (const goal of goals) {
-            await db.progressGoal.create({
-                data: {
-                    title: goal.title,
-                    index: goal.index,
-                    total: goal.total,
-                    value: goal.value,
-                    reportId: goal.reportId,
-                },
-            });
-        }
+        await db.$transaction(async (tx) => {
+
+            for (const goal of goals) {
+
+                const createdGoal = await tx.progressGoal.create({
+                    data: {
+                        title: goal.title,
+                        index: goal.index,
+                        total: goal.total,
+                        value: goal.value,
+                        reportId: reportId
+                    },
+                });
+
+                await relateTags(goal.tags, tx, userId, createdGoal.id);
+            }
+        })
 
         return {
             data: "Relatório adicionado com sucesso!",
@@ -40,3 +49,41 @@ export default async function handler({ goals }: ICreateProgressGoalCommand) {
         };
     }
 }
+
+async function relateTags(
+        tags: ITag[],
+        tx: any,
+        userId: string,
+        createdGoalId: number) {
+
+    for (const tag of tags) {
+
+        if (tag.id === 0) {
+            const createdTag = await tx.tag.create({
+                data: {
+                    title: tag.title,
+                    icon: "",
+                    colorHexCode: tag.hexColor,
+                    userId: userId,
+                }
+            });
+
+            await tx.goalTags.create({
+                data: {
+                    progressGoalId: createdGoalId,
+                    tagId: createdTag.id
+                }
+            });
+
+        } else {
+            await tx.goalTags.create({
+                data: {
+                    progressGoalId: tag.id,
+                    tagId: tag.id
+                }
+            });
+
+        }
+    }
+}
+

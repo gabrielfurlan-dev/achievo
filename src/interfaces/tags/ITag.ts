@@ -1,7 +1,7 @@
 export interface ITag
 {
-    new: boolean
-    title: string
-    icon:  string
+    id: number,
+    title: string,
+    icon:  string,
     hexColor: string
 }
