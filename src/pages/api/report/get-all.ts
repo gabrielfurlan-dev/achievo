@@ -1,7 +1,6 @@
 import { IResponseData } from "@/interfaces/iResponseData";
 import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getFollowers } from "@/services/users/getFollowers";
 import { Prisma } from "@prisma/client";
 import { IReportItem } from "@/interfaces/reports/IReportItem";
 import { ReportFilterOptions } from "@/interfaces/reports/types/reportFilterOptions";

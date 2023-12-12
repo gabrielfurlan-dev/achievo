@@ -44,7 +44,7 @@ export default async function handler(
             LEFT JOIN "ProgressGoal" AS "G" ON "R".id = "G"."reportId"
             LEFT JOIN "GoalTags" AS "GT" ON "G".id = "GT"."progressGoalId"
             LEFT JOIN "Tag" AS "T" ON "GT"."tagId" = "T".id
-            LEFT JOIN "Color" AS "C" ON "C".id = "T"."colorId"
+            LEFT JOIN "Color" AS "C" ON "C"."hexCode" = "T"."colorHexCode"
             INNER JOIN "User"AS "U" ON "U".id = "R"."userId"
             WHERE "R".id = ${reportId};
         `);
