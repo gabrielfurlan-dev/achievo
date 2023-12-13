@@ -28,7 +28,7 @@ export async function createReport({
             method: "POST",
             body: JSON.stringify({
                 userId: userId,
-                progressGoals,
+                goals: progressGoals,
             } as ICreateReportCommand),
             headers: { "Content-Type": "application/json" },
         });

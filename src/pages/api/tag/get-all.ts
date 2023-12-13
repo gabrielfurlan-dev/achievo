@@ -1,7 +1,7 @@
-import { getCommonFollowersFunction } from "@/repositories/Followers";
+import { db } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function getCommonFollowers(
+export default async function addGoalTag(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
@@ -12,22 +12,26 @@ export default async function getCommonFollowers(
     }
 
     try {
-
         const userId = req.query.userId as string;
-        const userIdToCompare = req.query.userIdToCompare as string;
 
-        const commonFollowers = await getCommonFollowersFunction(userId, userIdToCompare);
+        const response = await db.tag.findMany({
+            where: {
+                userId: {
+                    in: [userId, "0"],
+                },
+            },
+        });
 
         return res.status(200).json({
             success: true,
-            data: commonFollowers,
-            message: "Successfully follower obtained!",
+            data: response,
+            message: "successfully obtained tags",
         });
     } catch (error) {
         return res.status(500).json({
             success: false,
             data: null,
-            message: "Error while getting followers.",
+            message: "Error while getting tags",
             error: String(error),
         });
     }

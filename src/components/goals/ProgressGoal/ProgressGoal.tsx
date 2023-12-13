@@ -17,6 +17,9 @@ export default function ProgressGoal({
 }: ProgressGoalProps) {
     const [goal, setGoal] = useState(progressGoal);
 
+    useEffect(() => {
+        console.log(JSON.stringify(goal))
+    },[])
 
     const progressoAtual = (
         (Number(progressGoal.value) / Number(progressGoal.total)) *
@@ -24,8 +27,6 @@ export default function ProgressGoal({
     ).toFixed();
     const completou = Number(progressoAtual) >= 100;
     const corDeFundo = completou ? "#5C8A74" : "";
-
-    useEffect(() => {console.log(progressGoal.tags)}, [])
 
     useEffect(() => {
         setProgressGoals(prevProgressGoals => {
@@ -102,13 +103,15 @@ export default function ProgressGoal({
                             />
                         </div>
                     </div>
-                    <div>
+                    <div className="flex flex-col items-start">
                         <p>Tags</p>
-                        {goal.tags?.map((tag) => (
-                            <li>
-                                <p>{tag.title}</p>
-                            </li>
-                        ))}
+                        <ul className="flex gap-2">
+                            {goal.tags?.map((tag) => (
+                                <li className="flex rounded-lg py-1 px-2 text-white gap-2 justify-between" style={{ backgroundColor: `#${tag.colorHexCode}` }}>
+                                    <p>{tag.title}</p>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
             </button>

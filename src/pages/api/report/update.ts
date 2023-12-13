@@ -97,11 +97,11 @@ async function updateTags(transaction: prismaTransaction, goal: IProgressGoal, u
 
     for (const tag of goal.tags) {
 
-        if (tag.id == 0) {
+        if (tag.id <= 0) {
             const newTag = await transaction.tag.create({
                 data: {
                     title: tag.title,
-                    colorHexCode: tag.hexColor,
+                    colorHexCode: tag.colorHexCode,
                     icon: tag.icon,
                     userId: userId
                 }
@@ -111,7 +111,7 @@ async function updateTags(transaction: prismaTransaction, goal: IProgressGoal, u
             await transaction.tag.update({
                 data: {
                     title: tag.title,
-                    colorHexCode: tag.hexColor,
+                    colorHexCode: tag.colorHexCode,
                     icon: tag.icon,
                     userId: userId
                 },

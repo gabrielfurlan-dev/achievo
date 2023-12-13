@@ -1,3 +1,4 @@
+import { db } from "@/db";
 import { getCommonFollowersFunction } from "@/repositories/Followers";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -13,21 +14,18 @@ export default async function getCommonFollowers(
 
     try {
 
-        const userId = req.query.userId as string;
-        const userIdToCompare = req.query.userIdToCompare as string;
-
-        const commonFollowers = await getCommonFollowersFunction(userId, userIdToCompare);
+        const colors = await db.color.findMany()
 
         return res.status(200).json({
             success: true,
-            data: commonFollowers,
-            message: "Successfully follower obtained!",
+            data: colors,
+            message: "Successfully obtained colors!",
         });
     } catch (error) {
         return res.status(500).json({
             success: false,
             data: null,
-            message: "Error while getting followers.",
+            message: "Error while getting colors",
             error: String(error),
         });
     }

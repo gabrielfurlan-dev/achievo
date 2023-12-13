@@ -63,7 +63,7 @@ async function relateTags(
                 data: {
                     title: tag.title,
                     icon: "",
-                    colorHexCode: tag.hexColor,
+                    colorHexCode: tag.colorHexCode,
                     userId: userId,
                 }
             });

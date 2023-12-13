@@ -111,10 +111,9 @@ export default function home() {
                         method={() => router.push("list-reports")}
                     />
                     <IconButton
-                        IconButton={<Users size={28} className="" />}
+                        IconButton={<Users size={28} color="#5C8A74" />}
                         name="Friends"
                         method={() => router.push("user/friends")}
-                        newModule
                     />
                 </div>
                 <Modal
@@ -134,7 +133,7 @@ export default function home() {
                 </Modal>
             </div>
 
-            <span className="text-NEUTRAL_GRAY_06 w-full text-end">v 0.1.6</span>
+            <span className="text-NEUTRAL_GRAY_06 w-full text-end">v 0.3.0</span>
 
         </PageLoadLayout>
     );

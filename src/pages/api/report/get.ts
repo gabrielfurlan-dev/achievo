@@ -33,7 +33,7 @@ export default async function handler(
                 "T"."title" AS "tagTitle",
                 "T"."icon" AS "tagIcon",
 
-                "C"."hexCode" AS "hexColor",
+                "C"."hexCode" AS "colorHexCode",
 
                 "U".id AS "userId",
                 "U"."username",
@@ -105,7 +105,7 @@ function mapToIReportStructure(rawData: any[]): IReport {
                 id: row.tagId,
                 title: row.tagTitle,
                 icon: row.tagIcon,
-                hexColor: row.hexColor
+                colorHexCode: row.colorHexCode
             };
             progressGoal.tags?.push(tag);
         }

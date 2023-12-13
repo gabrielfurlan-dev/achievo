@@ -4,11 +4,12 @@ import { SetStateAction, useState } from "react";
 import Swal from "sweetalert2";
 import { ITag } from "@/interfaces/tags/ITag";
 import { Plus, Trash, X } from "phosphor-react";
-import { SelectTagModal } from "@/components/tags/SelectTagModal";
+import { SelectTagModal } from "@/components/Modals/SelectTagModal";
 
 import * as Dialog from '@radix-ui/react-dialog';
 import { DangerButton, NoBackgroundButton } from "@/components/Buttons";
 import { ConfirmButton } from "@/components/Buttons/ConfirmButton";
+import { useUserInfoStore } from "@/store/userStoreInfo";
 
 type ProgressModalProps = {
     isOpen: boolean;
@@ -25,14 +26,11 @@ export default function ProgressGoalModal({
     setProgressGoal,
     deleteGoal,
 }: ProgressModalProps) {
-    const [editingValue, setEditingValue] = useState(
-        progressGoal.value.toString()
-    );
-    const [editingTotal, setEditingTotal] = useState(
-        progressGoal.total.toString()
-    );
-    const [editingTitle, setEditingTitle] = useState(progressGoal.title);
 
+    const { userInfo } = useUserInfoStore();
+    const [editingValue, setEditingValue] = useState(progressGoal.value.toString());
+    const [editingTotal, setEditingTotal] = useState(progressGoal.total.toString());
+    const [editingTitle, setEditingTitle] = useState(progressGoal.title);
     const [tags, setTags] = useState<ITag[]>(progressGoal.tags ?? [])
 
     //TODO: change to react-hook-form
@@ -75,6 +73,10 @@ export default function ProgressGoalModal({
         onClose();
     }
 
+    function removeTag(tagToRemove: ITag) {
+        setTags(tags.filter((tag) => tag.id !== tagToRemove.id));
+    }
+
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild>
@@ -103,15 +105,13 @@ export default function ProgressGoalModal({
                                 />
                                 <div>
                                     Tags
-                                    <ul>
-                                        {
-                                            tags?.map(x =>
-                                                <li className="p-2 rounded-lg" style={{backgroundColor: x.hexColor}}>
-                                                    {x.title}
-                                                </li>
-                                            )
-                                        }
-                                        <SelectTagModal goalId={progressGoal.id} tags={tags} setTags={setTags} />
+                                    <ul className="flex flex-wrap gap-2 items-center">
+                                        {tags?.map(tag =>
+                                            <li className="flex rounded-lg py-1 px-2 text-white gap-2 justify-between" style={{ backgroundColor: `#${tag.colorHexCode}` }}>
+                                                <p>{tag.title}</p>
+                                                <button onClick={() => removeTag(tag)}><X /></button>
+                                            </li>)}
+                                        <SelectTagModal userId={userInfo.id} goalId={progressGoal.id} goalTags={tags} setGoalTag={setTags} />
                                     </ul>
                                 </div>
                                 <div className="flex flex-col gap-4 md:flex-row pt-4 md:mt-8">

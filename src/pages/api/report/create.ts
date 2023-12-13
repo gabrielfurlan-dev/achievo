@@ -71,12 +71,12 @@ async function relateTags(
 
     for (const tag of tags) {
 
-        if (tag.id === 0) {
+        if (tag.id <= 0) {
             const createdTag = await transaction.tag.create({
                 data: {
                     title: tag.title,
                     icon: "",
-                    colorHexCode: tag.hexColor,
+                    colorHexCode: tag.colorHexCode,
                     userId: userId,
                 }
             });

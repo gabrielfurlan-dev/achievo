@@ -1,54 +1,59 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Book, Plus, X } from 'phosphor-react';
+import { Book, Check, Plus, X } from 'phosphor-react';
 import { SearchInput } from '../Inputs/SearchInput';
 import { ITag } from '@/interfaces/tags/ITag';
-import { toast } from 'sonner'
 import { generateInvalidUniqueID } from '@/helpers/uniqueIdHelper';
+import { getAll } from '@/services/tags/getAll';
 
 interface selectTagModalProps {
+    userId: string,
     goalId: number,
-    tags: ITag[]
-    setTags: Dispatch<SetStateAction<ITag[]>>
+    goalTags: ITag[]
+    setGoalTag: Dispatch<SetStateAction<ITag[]>>
 }
 
-export function SelectTagModal({goalId, tags, setTags}:selectTagModalProps) {
+export function SelectTagModal({userId, goalId, goalTags, setGoalTag}:selectTagModalProps) {
     const [filterName, setFilterName] = useState<string>();
-    const [defaultTags, setDefaultTags] = useState<ITag[]>([])
     const [open, setOpen] = React.useState(false);
+    const [defaultTags, setDefaultTags] = useState<ITag[]>([])
+    const [tagIds, setTagIds] = useState<number[]>([])
 
     useEffect(() => {
-        setDefaultTags([
-            {
-                id: 1,
-                hexColor: "#2D6B6F",
-                icon: "Body",
-                title: "Physicus"
-            },
-            {
-                id: 2,
-                hexColor: "#5CA4E5",
-                icon: "Run",
-                title: "Run"
-            }
-        ])
+        async function fetchData(){
+            const tags = (await getAll(userId)).data;
+            setDefaultTags(tags as ITag[])
+            setTagIds(goalTags.map(x => x.id));
+        }
+        fetchData()
     }, [])
 
-    async function setTag(selectedTag: ITag){
+    useEffect(() => {
+            setTagIds(goalTags.map(x => x.id));
+    }, [goalTags])
 
-        // const newTag = {
-        //     id: generateInvalidUniqueID(),
-        //     hexColor: "",
-        //     icon: "",
-        //     title: ""
-        // } as ITag
+    async function handleTag(selectedTag: ITag){
 
-        if (tags == null ||tags == undefined ){
-            setTags([selectedTag])
+        const tagAlreadyAdded = tagIds.find(x => x == selectedTag.id) != null
+
+        if(tagAlreadyAdded){
+            removeTag(selectedTag);
         }else{
-            setTags([...tags, selectedTag])
+            AddTag(selectedTag);
         }
-        toast.success("Tag added by succesful")
+    }
+
+    function removeTag(selectedTag: ITag) {
+        setGoalTag(goalTags.filter((tag) => tag.id !== selectedTag.id));
+    }
+
+    function AddTag(selectedTag: ITag) {
+
+        if (goalTags == null || goalTags == undefined) {
+            setGoalTag([selectedTag]);
+        } else {
+            setGoalTag([...goalTags, selectedTag]);
+        }
     }
 
     return (
@@ -71,11 +76,15 @@ export function SelectTagModal({goalId, tags, setTags}:selectTagModalProps) {
                     <SearchInput onChange={(e) => setFilterName(e.target.value)} value={filterName} />
 
                     <ul className='flex flex-col gap-2 pt-5'>
-                        {defaultTags.map(x => (
-                            <li className='flex items-center gap-2 py-3 px-4 rounded-lg text-NEUTRAL_GRAY_0' style={{backgroundColor: x.hexColor}}
-                            onClick={() => setTag(x)}>
-                                <Book size={24}/>
-                                <p>{x.title}</p>
+                        {defaultTags.map(tag => (
+                            <li className="flex rounded-lg py-1 px-2 text-white gap-2 justify-between"
+                            style={{ backgroundColor: `#${tag.colorHexCode}` }}
+                            onClick={() => handleTag(tag)}>
+                                <div className='flex'>
+                                    <Book size={24}/>
+                                    <p>{tag.title}</p>
+                                </div>
+                                {tagIds.find(x => x == tag.id) != null ? <Check/> : <X/>}
                             </li>
                         ))}
                     </ul>
