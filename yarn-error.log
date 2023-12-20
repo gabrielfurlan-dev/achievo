@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add sonner
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js
 
 PATH: 
   C:\Program Files\Python311\Scripts\;C:\Program Files\Python311\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\Yarn\bin\;C:\Program Files (x86)\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;%NVM_HOME%;%NVM_SYMLINK%;C:\Users\GabrielSilva\AppData\Local\Microsoft\WindowsApps;C:\Users\GabrielSilva\.dotnet\tools;C:\Users\GabrielSilva\AppData\Roaming\npm;C:\Users\GabrielSilva\AppData\Local\Yarn\bin;C:\Program Files\Azure Data Studio\bin;C:\Users\GabrielSilva\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\GabrielSilva\AppData\Local\Programs\oh-my-posh\bin;C:\Users\GabrielSilva\AppData\Roaming\nvm;C:\Program Files\nodejs
@@ -14,7 +14,16 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'C:\dev\personal\achievo\node_modules\prisma\engines\61e140623197a131c2a6189271ffee05a7aa9a59\query_engine-windows.dll.node'
+  Error: https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz: ESOCKETTIMEDOUT
+      at ClientRequest.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141517:19)
+      at Object.onceWrapper (node:events:628:28)
+      at ClientRequest.emit (node:events:514:28)
+      at TLSSocket.emitRequestTimeout (node:_http_client:847:9)
+      at Object.onceWrapper (node:events:628:28)
+      at TLSSocket.emit (node:events:526:35)
+      at Socket._onTimeout (node:net:571:8)
+      at listOnTimeout (node:internal/timers:569:17)
+      at process.processTimers (node:internal/timers:512:7)
 
 npm manifest: 
   {
@@ -27,6 +36,9 @@ npm manifest:
       "start": "next start",
       "lint": "next lint",
       "test": "jest"
+    },
+    "prisma": {
+      "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
     },
     "dependencies": {
       "@emotion/react": "^11.11.0",
@@ -59,11 +71,12 @@ npm manifest:
       "react-datepicker": "^4.21.0",
       "react-dom": "^18.2.0",
       "react-hook-form": "^7.46.1",
+      "sonner": "^1.2.4",
       "styled-components": "^6.0.0-rc.3",
       "supabase": "^1.82.2",
       "sweetalert2": "^11.4.8",
       "tailwind-variants": "^0.1.14",
-      "ts-node": "^10.9.1",
+      "ts-node": "^10.9.2",
       "zod": "^3.21.4",
       "zustand": "^4.3.9"
     },
@@ -72,7 +85,7 @@ npm manifest:
       "@types/jest": "^29.5.4",
       "@types/jsonwebtoken": "^9.0.2",
       "@types/lodash": "^4.14.197",
-      "@types/node": "^20.4.5",
+      "@types/node": "^20.10.4",
       "@types/react": "18.0.27",
       "@types/react-datepicker": "^4.19.1",
       "@types/react-dom": "18.0.10",
@@ -102,7 +115,7 @@ npm manifest:
       "prisma": "^5.0.0",
       "tailwindcss": "^3.2.4",
       "ts-jest": "^29.1.1",
-      "typescript": "^5.1.6"
+      "typescript": "^5.3.3"
     }
   }
 
@@ -2607,10 +2620,17 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@types/mime/-/mime-1.3.2.tgz#93e25bf9ee75fe0fd80b594bc4feb0e862111b5a"
     integrity sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==
   
-  "@types/node@*", "@types/node@^20.4.5":
+  "@types/node@*":
     version "20.6.4"
     resolved "https://registry.yarnpkg.com/@types/node/-/node-20.6.4.tgz#7882cb8b8adc3106c352dac9c02d4d3ebb95cf3e"
     integrity sha512-nU6d9MPY0NBUMiE/nXd2IIoC4OLvsLpwAjheoAeuzgvDZA1Cb10QYg+91AF6zQiKWRN5i1m07x6sMe0niBznoQ==
+  
+  "@types/node@^20.10.4":
+    version "20.10.4"
+    resolved "https://registry.yarnpkg.com/@types/node/-/node-20.10.4.tgz#b246fd84d55d5b1b71bf51f964bd514409347198"
+    integrity sha512-D08YG6rr8X90YB56tSIuBaddy/UXAA9RKJoFvrsnogAum/0pmjkgi4+2nx96A330FmioegBWmEYQ+syqCFaveg==
+    dependencies:
+      undici-types "~5.26.4"
   
   "@types/parse-json@^4.0.0":
     version "4.0.0"
@@ -7356,6 +7376,11 @@ Lockfile:
       ip "^2.0.0"
       smart-buffer "^4.2.0"
   
+  sonner@^1.2.4:
+    version "1.2.4"
+    resolved "https://registry.yarnpkg.com/sonner/-/sonner-1.2.4.tgz#c13b079a79fabef72135537aeb0164ad0671d044"
+    integrity sha512-WGLP2QQnomgewaCTsK7YWiLcy5n1Yj83vsL5cP4zHMmpSkmFsCYTpQKhlXJrPE5kzjwbqCkCFXcOpbKc4vaUaA==
+  
   source-map-js@^1.0.1, source-map-js@^1.0.2:
     version "1.0.2"
     resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
@@ -7759,10 +7784,10 @@ Lockfile:
       semver "^7.5.3"
       yargs-parser "^21.0.1"
   
-  ts-node@^10.9.1:
-    version "10.9.1"
-    resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.9.1.tgz#e73de9102958af9e1f0b168a6ff320e25adcff4b"
-    integrity sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==
+  ts-node@^10.9.2:
+    version "10.9.2"
+    resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.9.2.tgz#70f021c9e185bccdca820e26dc413805c101c71f"
+    integrity sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==
     dependencies:
       "@cspotcode/source-map-support" "^0.8.0"
       "@tsconfig/node10" "^1.0.7"
@@ -7891,10 +7916,10 @@ Lockfile:
     dependencies:
       is-typedarray "^1.0.0"
   
-  typescript@^5.1.6:
-    version "5.2.2"
-    resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.2.2.tgz#5ebb5e5a5b75f085f22bc3f8460fba308310fa78"
-    integrity sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==
+  typescript@^5.3.3:
+    version "5.3.3"
+    resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.3.tgz#b3ce6ba258e72e6305ba66f5c9b452aaee3ffe37"
+    integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
   
   unbox-primitive@^1.0.2:
     version "1.0.2"
@@ -7905,6 +7930,11 @@ Lockfile:
       has-bigints "^1.0.2"
       has-symbols "^1.0.3"
       which-boxed-primitive "^1.0.2"
+  
+  undici-types@~5.26.4:
+    version "5.26.5"
+    resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-5.26.5.tgz#bcd539893d00b56e964fd2657a4866b221a65617"
+    integrity sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
   
   unicode-canonical-property-names-ecmascript@^2.0.0:
     version "2.0.0"

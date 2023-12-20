@@ -14,7 +14,7 @@ export default async function getCommonFollowers(
 
     try {
 
-        const colors = await db.color.findMany()
+        const colors = await db.color.findMany({select: { hexCode: true }})
 
         return res.status(200).json({
             success: true,
