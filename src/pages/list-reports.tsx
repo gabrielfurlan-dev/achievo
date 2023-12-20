@@ -142,7 +142,7 @@ export default function ListReport() {
                         reports.length === 0 && (
                             <div className="flex flex-col justify-center items-center h-full w-full overflow-hidden">
                                 {isLoaded ? (
-                                    <div className="text-center">
+                                    <div className="flex flex-col items-center text-center text-NEUTRAL_GRAY_04 dark:text-NEUTRAL_GRAY_07">
                                         <Binoculars size={56} />
                                         <p>No reports found!</p>
                                     </div>
