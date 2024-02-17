@@ -57,7 +57,7 @@ export function SelectTag({setGoalTag, goalTags, userId}:selectTagProps) {
     return (
         <div>
             <Dialog.Title className="text-mauve12 m-0 text-[17px] font-medium">
-                Select Tag
+                Select Tag ss
             </Dialog.Title>
             <Dialog.Description className="text-mauve11 mt-[10px] mb-5 text-[15px] leading-normal">
                 Chose the tags to your goals

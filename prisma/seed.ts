@@ -1,9 +1,11 @@
 import { PrismaClient } from '@prisma/client'
 import { colors } from './seeds/colors';
+import { tags } from './seeds/tags';
 const prisma = new PrismaClient()
 
 async function main() {
     await colors(prisma);
+    await tags(prisma);
 }
 
 main()

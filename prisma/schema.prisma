@@ -23,7 +23,6 @@ model User {
 
     following Follow[] @relation("UserFollowing")
     followers Follow[] @relation("UserFollowers")
-    tag       Tag[]
 }
 
 model Follow {
@@ -63,8 +62,8 @@ model Report {
 
     progressGoals ProgressGoal[]
 
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId String
+    user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String?
 }
 
 model ProgressGoal {
@@ -95,10 +94,9 @@ model Tag {
     title String
     icon  String
 
-    color   Color @relation(fields: [colorHexCode], references: [hexCode])
+    color        Color  @relation(fields: [colorHexCode], references: [hexCode])
     colorHexCode String
 
-    user     User       @relation(fields: [userId], references: [id])
     userId   String
     GoalTags GoalTags[]
 }
@@ -106,6 +104,5 @@ model Tag {
 model Color {
     name    String
     hexCode String @id @unique
-
-    tag Tag[]
+    tag     Tag[]
 }

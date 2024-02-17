@@ -116,8 +116,6 @@ export function SelectTagModal({ userId, goalId, goalTags, setGoalTag }: selectT
                                 </button>
                             </div>
                         </Dialog.Content>
-
-
                     )
                 }
             </Dialog.Portal>
