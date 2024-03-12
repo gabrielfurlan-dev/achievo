@@ -1,29 +1,33 @@
 import { SimpleNavBar } from "@/layouts/NavBar/SimpleNavBar";
-import { fetchNotifications } from "@/services/notificationsService";
-import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect, useState } from "react";
-import { INotificationData } from "@/interfaces/notifications/iNotificationData";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 import Modal from "@/components/Modal";
-import { validateReportFromWeek } from "@/services/reports/reportService";
+import { getLastReport, validateReportFromWeek } from "@/services/reports/reportService";
 import { useSession } from "next-auth/react";
 import { handleLoginGoogle } from "@/services/loginService";
 import Swal from "sweetalert2";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 import { Stairs } from "@/assets/icons/Stairs";
 import { ListMagnifyingGlass } from "@/assets/icons/ListMagnifyingGlass";
-import { FilePlus, House, Users } from "phosphor-react";
+import { FilePlus, House, Icon, Users } from "phosphor-react";
 import { tv } from "tailwind-variants";
-import Head from "next/head";
+
+type dialogPopup = {
+    mustShow: boolean,
+    title?: string,
+    message?: string,
+    icon?: ReactElement
+}
 
 export default function home() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const { userInfo, setUserInfo } = useUserInfoStore();
-    const [mustShowDialog, setMustShowDialog] = useState(false)
     const [reportIdOfCurrentWeek, setReportIdOfCurrentWeek] = useState<number>(0);
     const { data, status } = useSession();
+
+    const [dialogPopup, setDialogPopup] = useState<dialogPopup>()
 
     useEffect(() => {
         async function setData() {
@@ -65,7 +69,6 @@ export default function home() {
         setData();
     }, [data, status]);
 
-
     async function alreadyExistsReportsOnCurrentWeek() {
 
         const response = await validateReportFromWeek(userInfo.id)
@@ -74,7 +77,12 @@ export default function home() {
 
         if (response.data) {
             setReportIdOfCurrentWeek(response.data);
-            setMustShowDialog(true);
+            setDialogPopup({
+                mustShow: true,
+                title:"Edit goal",
+                message: "You already have a Report this week, do you want to view it?",
+                icon: <Stairs size={56} color="#5C8A74" />
+            })
             return true;
         }
 
@@ -84,6 +92,22 @@ export default function home() {
     async function handleAddReport() {
         if (!await alreadyExistsReportsOnCurrentWeek())
             return router.push("report/new")
+    }
+
+    async function handleGoToLatestReport() {
+        const reportId = (await getLastReport(userInfo.id)).data as string
+
+        if(!reportId){
+            setDialogPopup({
+                mustShow: true,
+                title:"Last Report",
+                message: "You have no reports last week, do you wanna create it?",
+                icon: <Stairs size={56} color="#5C8A74" />
+            })
+            return
+        }
+
+        return router.push(`report/${reportId}`)
     }
 
     return (
@@ -102,6 +126,12 @@ export default function home() {
                 <div className="mt-10 flex gap-1">
                     <IconButton
                         IconButton={<FilePlus weight="regular" color="#5C8A74" size={24} />}
+                        name="Last Report"
+                        method={handleGoToLatestReport}
+                        newModule
+                    />
+                    <IconButton
+                        IconButton={<FilePlus weight="regular" color="#5C8A74" size={24} />}
                         name="Add"
                         method={handleAddReport}
                     />
@@ -114,12 +144,11 @@ export default function home() {
                         IconButton={<Users size={28} className="" />}
                         name="Friends"
                         method={() => router.push("user/friends")}
-                        newModule
                     />
                 </div>
                 <Modal
-                    isOpen={mustShowDialog}
-                    onClose={() => { setMustShowDialog(false) }}
+                    isOpen={dialogPopup?.mustShow ?? false}
+                    onClose={() => { setDialogPopup({mustShow: false}) }}
                     title={""}
                     confirmText={"Yes"}
                     cancelText={"Cancel"}
@@ -127,9 +156,9 @@ export default function home() {
                     hideDelete
                 >
                     <div className="flex flex-col w-full items-center">
-                        <Stairs size={56} color="#5C8A74" />
-                        <h2 className="text-xl font-bold mt-10">Editar Meta</h2>
-                        <p className="mt-2">Você já possui um Report essa semana, deseja visualiza-lo?</p>
+
+                        <h2 className="text-xl font-bold mt-10">{dialogPopup?.title}</h2>
+                        <p className="mt-2">{dialogPopup?.message}</p>
                     </div>
                 </Modal>
             </div>
