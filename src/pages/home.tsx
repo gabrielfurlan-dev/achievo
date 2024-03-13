@@ -18,13 +18,13 @@ type dialogPopup = {
     title?: string,
     message?: string,
     icon?: ReactElement
+    action?: () => {}
 }
 
 export default function home() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const { userInfo, setUserInfo } = useUserInfoStore();
-    const [reportIdOfCurrentWeek, setReportIdOfCurrentWeek] = useState<number>(0);
     const { data, status } = useSession();
 
     const [dialogPopup, setDialogPopup] = useState<dialogPopup>()
@@ -69,40 +69,34 @@ export default function home() {
         setData();
     }, [data, status]);
 
-    async function alreadyExistsReportsOnCurrentWeek() {
-
-        const response = await validateReportFromWeek(userInfo.id)
-
-        if (!response.success) return false;
-
-        if (response.data) {
-            setReportIdOfCurrentWeek(response.data);
-            setDialogPopup({
-                mustShow: true,
-                title:"Edit goal",
-                message: "You already have a Report this week, do you want to view it?",
-                icon: <Stairs size={56} color="#5C8A74" />
-            })
-            return true;
-        }
-
-        return false;
-    }
-
     async function handleAddReport() {
-        if (!await alreadyExistsReportsOnCurrentWeek())
-            return router.push("report/new")
+        const reportId = await (await validateReportFromWeek(userInfo.id)).data as number
+
+        if (!reportId) {
+            router.push("/report/new")
+            return
+        };
+
+        setDialogPopup({
+            mustShow: true,
+            title: "Edit goal",
+            message: "You already have a Report this week, do you want to view it?",
+            icon: <Stairs size={56} color="#5C8A74" />,
+            action: () => router.push("/report/" + reportId)
+        })
+
     }
 
     async function handleGoToLatestReport() {
         const reportId = (await getLastReport(userInfo.id)).data as string
 
-        if(!reportId){
+        if (!reportId) {
             setDialogPopup({
                 mustShow: true,
-                title:"Last Report",
+                title: "Last Report",
                 message: "You have no reports last week, do you wanna create it?",
-                icon: <Stairs size={56} color="#5C8A74" />
+                icon: <Stairs size={56} color="#5C8A74" />,
+                action: () => router.push("/report/new")
             })
             return
         }
@@ -148,11 +142,11 @@ export default function home() {
                 </div>
                 <Modal
                     isOpen={dialogPopup?.mustShow ?? false}
-                    onClose={() => { setDialogPopup({mustShow: false}) }}
+                    onClose={() => { setDialogPopup({ mustShow: false }) }}
                     title={""}
                     confirmText={"Yes"}
                     cancelText={"Cancel"}
-                    handleSaveButton={() => router.push("/report/" + reportIdOfCurrentWeek)}
+                    handleSaveButton={dialogPopup?.action}
                     hideDelete
                 >
                     <div className="flex flex-col w-full items-center">
