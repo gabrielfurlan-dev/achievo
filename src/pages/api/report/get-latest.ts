@@ -15,8 +15,6 @@ export default async function handler(
         const userId = req.query.userId as string;
         const weekInterval = getWeekInterval(new Date())
 
-        console.log(weekInterval)
-
         const report = await db.report.findFirst({
             where: {
                 userId: userId,
