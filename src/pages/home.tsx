@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 import { Stairs } from "@/assets/icons/Stairs";
 import { ListMagnifyingGlass } from "@/assets/icons/ListMagnifyingGlass";
-import { FilePlus, House, Icon, Users } from "phosphor-react";
+import { ClockCounterClockwise, FilePlus, House, Icon, Users } from "phosphor-react";
 import { tv } from "tailwind-variants";
 
 type dialogPopup = {
@@ -119,8 +119,8 @@ export default function home() {
 
                 <div className="mt-10 flex gap-1">
                     <IconButton
-                        IconButton={<FilePlus weight="regular" color="#5C8A74" size={24} />}
-                        name="Last Report"
+                        IconButton={<ClockCounterClockwise weight="regular" color="#5C8A74" size={24} />}
+                        name="Week"
                         method={handleGoToLatestReport}
                         newModule
                     />
@@ -135,7 +135,7 @@ export default function home() {
                         method={() => router.push("list-reports")}
                     />
                     <IconButton
-                        IconButton={<Users size={28} className="" />}
+                        IconButton={<Users size={28} color="#5C8A74" />}
                         name="Friends"
                         method={() => router.push("user/friends")}
                     />
@@ -150,7 +150,7 @@ export default function home() {
                     hideDelete
                 >
                     <div className="flex flex-col w-full items-center">
-
+                        {dialogPopup?.icon}
                         <h2 className="text-xl font-bold mt-10">{dialogPopup?.title}</h2>
                         <p className="mt-2">{dialogPopup?.message}</p>
                     </div>
