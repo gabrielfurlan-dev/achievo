@@ -10,13 +10,13 @@ import Swal from "sweetalert2";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 import { Stairs } from "@/assets/icons/Stairs";
 import { ListMagnifyingGlass } from "@/assets/icons/ListMagnifyingGlass";
-import { ClockCounterClockwise, FilePlus, House, Icon, Users } from "phosphor-react";
+import { ClockCounterClockwise, FilePlus, House, Icon, Users, WarningCircle } from "phosphor-react";
 import { tv } from "tailwind-variants";
 
 type dialogPopup = {
     mustShow: boolean,
     title?: string,
-    message?: string,
+    message?: string | ReactElement,
     icon?: ReactElement
     action?: () => {}
 }
@@ -81,7 +81,7 @@ export default function home() {
             mustShow: true,
             title: "Edit goal",
             message: "You already have a Report this week, do you want to view it?",
-            icon: <Stairs size={56} color="#5C8A74" />,
+            icon: <Stairs size={86} color="#5C8A74" />,
             action: () => router.push("/report/" + reportId)
         })
 
@@ -93,9 +93,14 @@ export default function home() {
         if (!reportId) {
             setDialogPopup({
                 mustShow: true,
-                title: "Last Report",
-                message: "You have no reports last week, do you wanna create it?",
-                icon: <Stairs size={56} color="#5C8A74" />,
+                title: "No reports this week!",
+                message: (
+                    <p>
+                        You don't have any reports added for this week yet. <br/>
+                        Do you want to create one?
+                    </p>
+                ),
+                icon: <WarningCircle size={86} color="#5C8A74" />,
                 action: () => router.push("/report/new")
             })
             return
@@ -152,7 +157,7 @@ export default function home() {
                     <div className="flex flex-col w-full items-center">
                         {dialogPopup?.icon}
                         <h2 className="text-xl font-bold mt-10">{dialogPopup?.title}</h2>
-                        <p className="mt-2">{dialogPopup?.message}</p>
+                        <p className="mt-2 mx-4 max-w-[410px] text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">{dialogPopup?.message}</p>
                     </div>
                 </Modal>
             </div>
