@@ -162,7 +162,7 @@ export default function home() {
                 </Modal>
             </div>
 
-            <span className="text-NEUTRAL_GRAY_06 w-full text-end">v 0.1.6</span>
+            <span className="text-NEUTRAL_GRAY_06 w-full text-end">v 0.2.2</span>
 
         </PageLoadLayout>
     );
