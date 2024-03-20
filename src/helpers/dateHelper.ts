@@ -8,7 +8,7 @@ type PeriodReport = {
     mounth: string;
 }
 
-export function getCurrentDate() {
+export function getCurrentDateString() {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     let month = String(currentDate.getMonth() + 1);

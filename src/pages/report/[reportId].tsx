@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import Modal from "@/components/Modal";
-import { getCurrentDate, stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
+import { getCurrentDateString, stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getWeek } from "date-fns";
 import { NoBackgroundButton } from "@/components/Buttons";
 import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
@@ -74,7 +74,7 @@ export default function EditReport() {
         function handleNewReport(): boolean {
             if (reportId == 'new') {
                 setIsNew(true);
-                setSelectedDate(getCurrentDate());
+                setSelectedDate(getCurrentDateString());
                 return true;
             };
             return false;

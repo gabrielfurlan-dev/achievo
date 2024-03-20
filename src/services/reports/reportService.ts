@@ -136,3 +136,21 @@ export async function validateReportFromWeek(userId: string) {
         } as IResponseData;
     }
 }
+
+export async function getLastReport(userId: string){
+    try {
+        const queryParams = new URLSearchParams({userId: userId});
+
+        const apiUrl = `/api/report/get-latest?${queryParams.toString()}`;
+        const response = await fetch(apiUrl);
+
+        return await response.json() as IResponseData;
+
+    } catch (error) {
+        return {
+            success: false,
+            message: "An error occurred while trying to get the latest report.",
+            data: null,
+        } as IResponseData;
+    }
+}

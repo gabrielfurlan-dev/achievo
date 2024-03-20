@@ -12,7 +12,7 @@ interface ModalProps {
     hideDelete?: boolean;
     onDelete?: () => void;
 
-    title: string;
+    title?: string;
     subtitle?: string;
     confirmText: "Salvar" | "Adicionar" | "Sim" | "Yes";
     cancelText: "Cancelar" | "Não" | "No" | "Cancel";

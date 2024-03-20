@@ -1,29 +1,33 @@
 import { SimpleNavBar } from "@/layouts/NavBar/SimpleNavBar";
-import { fetchNotifications } from "@/services/notificationsService";
-import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect, useState } from "react";
-import { INotificationData } from "@/interfaces/notifications/iNotificationData";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 import Modal from "@/components/Modal";
-import { validateReportFromWeek } from "@/services/reports/reportService";
+import { getLastReport, validateReportFromWeek } from "@/services/reports/reportService";
 import { useSession } from "next-auth/react";
 import { handleLoginGoogle } from "@/services/loginService";
 import Swal from "sweetalert2";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 import { Stairs } from "@/assets/icons/Stairs";
 import { ListMagnifyingGlass } from "@/assets/icons/ListMagnifyingGlass";
-import { FilePlus, House, Users } from "phosphor-react";
+import { ClockCounterClockwise, FilePlus, House, Icon, Users, WarningCircle } from "phosphor-react";
 import { tv } from "tailwind-variants";
-import Head from "next/head";
+
+type dialogPopup = {
+    mustShow: boolean,
+    title?: string,
+    message?: string | ReactElement,
+    icon?: ReactElement
+    action?: () => {}
+}
 
 export default function home() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const { userInfo, setUserInfo } = useUserInfoStore();
-    const [mustShowDialog, setMustShowDialog] = useState(false)
-    const [reportIdOfCurrentWeek, setReportIdOfCurrentWeek] = useState<number>(0);
     const { data, status } = useSession();
+
+    const [dialogPopup, setDialogPopup] = useState<dialogPopup>()
 
     useEffect(() => {
         async function setData() {
@@ -65,25 +69,44 @@ export default function home() {
         setData();
     }, [data, status]);
 
+    async function handleAddReport() {
+        const reportId = await (await validateReportFromWeek(userInfo.id)).data as number
 
-    async function alreadyExistsReportsOnCurrentWeek() {
+        if (!reportId) {
+            router.push("/report/new")
+            return
+        };
 
-        const response = await validateReportFromWeek(userInfo.id)
+        setDialogPopup({
+            mustShow: true,
+            title: "Edit goal",
+            message: "You already have a Report this week, do you want to view it?",
+            icon: <Stairs size={86} color="#5C8A74" />,
+            action: () => router.push("/report/" + reportId)
+        })
 
-        if (!response.success) return false;
-
-        if (response.data) {
-            setReportIdOfCurrentWeek(response.data);
-            setMustShowDialog(true);
-            return true;
-        }
-
-        return false;
     }
 
-    async function handleAddReport() {
-        if (!await alreadyExistsReportsOnCurrentWeek())
-            return router.push("report/new")
+    async function handleGoToLatestReport() {
+        const reportId = (await getLastReport(userInfo.id)).data as string
+
+        if (!reportId) {
+            setDialogPopup({
+                mustShow: true,
+                title: "No reports this week!",
+                message: (
+                    <p>
+                        You don't have any reports added for this week yet. <br/>
+                        Do you want to create one?
+                    </p>
+                ),
+                icon: <WarningCircle size={86} color="#5C8A74" />,
+                action: () => router.push("/report/new")
+            })
+            return
+        }
+
+        return router.push(`report/${reportId}`)
     }
 
     return (
@@ -101,6 +124,12 @@ export default function home() {
 
                 <div className="mt-10 flex gap-1">
                     <IconButton
+                        IconButton={<ClockCounterClockwise weight="regular" color="#5C8A74" size={24} />}
+                        name="Week"
+                        method={handleGoToLatestReport}
+                        newModule
+                    />
+                    <IconButton
                         IconButton={<FilePlus weight="regular" color="#5C8A74" size={24} />}
                         name="Add"
                         method={handleAddReport}
@@ -111,30 +140,29 @@ export default function home() {
                         method={() => router.push("list-reports")}
                     />
                     <IconButton
-                        IconButton={<Users size={28} className="" />}
+                        IconButton={<Users size={28} color="#5C8A74" />}
                         name="Friends"
                         method={() => router.push("user/friends")}
-                        newModule
                     />
                 </div>
                 <Modal
-                    isOpen={mustShowDialog}
-                    onClose={() => { setMustShowDialog(false) }}
+                    isOpen={dialogPopup?.mustShow ?? false}
+                    onClose={() => { setDialogPopup({ mustShow: false }) }}
                     title={""}
                     confirmText={"Yes"}
                     cancelText={"Cancel"}
-                    handleSaveButton={() => router.push("/report/" + reportIdOfCurrentWeek)}
+                    handleSaveButton={dialogPopup?.action}
                     hideDelete
                 >
                     <div className="flex flex-col w-full items-center">
-                        <Stairs size={56} color="#5C8A74" />
-                        <h2 className="text-xl font-bold mt-10">Editar Meta</h2>
-                        <p className="mt-2">Você já possui um Report essa semana, deseja visualiza-lo?</p>
+                        {dialogPopup?.icon}
+                        <h2 className="text-xl font-bold mt-10">{dialogPopup?.title}</h2>
+                        <p className="mt-2 mx-4 max-w-[410px] text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">{dialogPopup?.message}</p>
                     </div>
                 </Modal>
             </div>
 
-            <span className="text-NEUTRAL_GRAY_06 w-full text-end">v 0.1.6</span>
+            <span className="text-NEUTRAL_GRAY_06 w-full text-end">v 0.2.2</span>
 
         </PageLoadLayout>
     );
