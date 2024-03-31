@@ -60,58 +60,21 @@ model Report {
     updatedDate DateTime @default(now()) @updatedAt
     enable      Boolean  @default(true)
 
-    checkGoals    CheckGoal[]
-    progressGoals ProgressGoal[]
+    tasks Task[]
 
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
 }
 
-model ProgressGoal {
+model Task {
     id          Int      @id @default(autoincrement())
     updatedDate DateTime @updatedAt
     title       String
     index       Int
     value       Decimal
     total       Decimal
-    Tags        Tag[]
 
     Report   Report? @relation(fields: [reportId], references: [id], onDelete: Cascade)
     reportId Int?
-}
-
-model CheckGoal {
-    id          Int      @id @default(autoincrement())
-    createdDate DateTime @default(now())
-    updatedDate DateTime @updatedAt
-    title       String
-    index       Int
-    checked     Boolean  @default(false)
-    Tags        Tag[]
-
-    Report   Report? @relation(fields: [reportId], references: [id], onDelete: Cascade)
-    reportId Int?
-}
-
-model Tag {
-    id    Int    @id @default(autoincrement())
-    title String
-    Icon  String
-
-    color   Color @relation(fields: [colorId], references: [id])
-    colorId Int
-
-    ProgressGoal   ProgressGoal? @relation(fields: [progressGoalId], references: [id])
-    progressGoalId Int?
-
-    CheckGoal   CheckGoal? @relation(fields: [checkGoalId], references: [id])
-    checkGoalId Int?
-}
-
-model Color {
-    id      Int    @id @default(autoincrement())
-    name    String
-    hexCode String
-
-    Tag Tag[]
+	@@map("ProgressGoal")
 }

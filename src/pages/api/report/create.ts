@@ -33,7 +33,7 @@ export default async function handler(
             });
 
             for (const goal of progressGoals) {
-                await transaction.progressGoal.create({
+                await transaction.task.create({
                     data: {
                         title: goal.title,
                         index: goal.index,
@@ -45,11 +45,12 @@ export default async function handler(
             }
 
             for (const goal of checkGoals) {
-                await transaction.checkGoal.create({
+                await transaction.task.create({
                     data: {
                         title: goal.title,
                         index: goal.index,
-                        checked: goal.checked,
+                        value: goal.checked ? 1 : 0,
+                        total: 1,
                         reportId: report.id,
                     },
                 });

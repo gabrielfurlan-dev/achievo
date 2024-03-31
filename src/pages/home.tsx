@@ -88,6 +88,7 @@ export default function home() {
     }
 
     async function handleGoToLatestReport() {
+
         const reportId = (await getLastReport(userInfo.id)).data as string
 
         if (!reportId) {
@@ -96,7 +97,7 @@ export default function home() {
                 title: "No reports this week!",
                 message: (
                     <p>
-                        You don't have any reports added for this week yet. <br/>
+                        You don't have any reports added for this week yet. <br />
                         Do you want to create one?
                     </p>
                 ),

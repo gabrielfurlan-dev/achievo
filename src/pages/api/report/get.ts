@@ -24,8 +24,7 @@ export default async function handler(
     try {
         const report = await db.report.findFirst({
             include: {
-                checkGoals: true,
-                progressGoals: true,
+                tasks: true,
                 user: true,
             },
             where: {

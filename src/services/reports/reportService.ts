@@ -24,20 +24,17 @@ export interface IUpdateReport {
 interface ICreateReport {
     userId: string;
     progressGoals: IProgressGoalRaw[];
-    checkGoals: ICheckGoalRaw[];
 }
 
 export async function createReport({
     userId,
-    progressGoals,
-    checkGoals,
+    progressGoals
 }: ICreateReport) {
     try {
         const report = await fetch("/api/report/create", {
             method: "POST",
             body: JSON.stringify({
                 userId: userId,
-                checkGoals,
                 progressGoals,
             } as ICreateReportCommand),
             headers: { "Content-Type": "application/json" },
@@ -60,14 +57,12 @@ export async function createReport({
 export async function updateReport({
     reportId,
     progressGoals,
-    checkGoals,
 }: IUpdateReport) {
     try {
         const report = await fetch("/api/report/update", {
             method: "PUT",
             body: JSON.stringify({
                 reportId,
-                checkGoals,
                 progressGoals,
             } as IUpdateReportCommand),
             headers: { "Content-Type": "application/json" },
@@ -137,14 +132,14 @@ export async function validateReportFromWeek(userId: string) {
     }
 }
 
-export async function getLastReport(userId: string){
+export async function getLastReport(userId: string) {
     try {
-        const queryParams = new URLSearchParams({userId: userId});
+        const queryParams = new URLSearchParams({ userId: userId });
 
         const apiUrl = `/api/report/get-latest?${queryParams.toString()}`;
         const response = await fetch(apiUrl);
 
-        return await response.json() as IResponseData;
+        return await response.json();
 
     } catch (error) {
         return {

@@ -16,7 +16,7 @@ export default async function handler({ goals }: ICreateProgressGoalCommand) {
     try {
 
         for (const goal of goals) {
-            await db.progressGoal.create({
+            await db.task.create({
                 data: {
                     title: goal.title,
                     index: goal.index,

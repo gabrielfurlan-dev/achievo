@@ -1,5 +1,4 @@
-import { ICheckGoal } from '@/interfaces/goals/checkGoals/iCheckGoal';
-import { IProgressGoal } from '@/interfaces/goals/progressGoals/iProgressGoal';
+import { IProgressGoal as ITask } from '@/interfaces/goals/progressGoals/iProgressGoal';
 import { IUser } from '@/interfaces/users/IUser';
 
 export interface IReport {
@@ -7,7 +6,6 @@ export interface IReport {
     createdDate: string;
     username: string;
     updatedDate: string;
-    progressGoals: IProgressGoal[];
-    checkGoals: ICheckGoal[];
+    tasks: ITask[];
     user: IUser;
 }

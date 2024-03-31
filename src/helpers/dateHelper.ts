@@ -31,7 +31,9 @@ export function getWeekInterval(date: Date) {
     const lastDayOfWeek = new Date(currentDate);
 
     firstDayOfWeek.setDate(currentDate.getDate() - currentDay);
+    firstDayOfWeek.setHours(0, 0, 0, 0);
     lastDayOfWeek.setDate(currentDate.getDate() + (6 - currentDay));
+    lastDayOfWeek.setHours(0, 0, 0, 0);
 
     return { firstDayOfWeek, lastDayOfWeek };
 }

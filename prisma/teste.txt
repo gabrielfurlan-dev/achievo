@@ -1,0 +1,9 @@
+## Query pra jogar todos os check goals para os progress goals
+
+INSERT INTO "ProgressGoal" ("index", "reportId", title, total, "updatedDate", "value")
+SELECT "CG"."index", "CG"."reportId", "CG"."title", 1, "CG"."updatedDate",
+CASE
+WHEN "CG"."checked" THEN 1
+ELSE 0
+END
+FROM "CheckGoal" AS "CG";

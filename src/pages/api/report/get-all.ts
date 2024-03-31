@@ -71,6 +71,8 @@ export default async function handler(
                               ${await filterByOption()}
                               GROUP BY "U"."name", "U"."username", "U"."description", "U"."imageURL", "R"."id", "U"."id";`
 
+        //TODO: REFATORAR SAPOHA
+
         const reports = await db.$queryRaw(sql) as IReportItem[]
 
         return res.status(200).json({

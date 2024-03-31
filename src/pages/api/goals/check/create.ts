@@ -15,11 +15,12 @@ export default async function handler({ goals }: ICreateCheckGoalCommand) {
     try {
 
         for (const goal of goals) {
-            await db.checkGoal.create({
+            await db.task.create({
                 data: {
                     title: goal.title,
                     index: goal.index,
-                    checked: goal.checked,
+                    value: goal.checked ? 1 : 0,
+                    total: 1,
                     reportId: goal.reportId,
                 },
             });
