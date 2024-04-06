@@ -5,16 +5,12 @@ import Modal from "@/components/Modal";
 import { getCurrentDateString, stringToDate, getFormatedWeekInterval } from "@/helpers/dateHelper";
 import { getWeek } from "date-fns";
 import { NoBackgroundButton } from "@/components/Buttons";
-import ProgressGoal from "@/components/goals/ProgressGoal/ProgressGoal";
+import TaskItem from "@/components/goals/ProgressGoal/TaskItem";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
-import { createReport, IUpdateReport, getReport, updateReport } from "@/services/reports/reportService";
-import { IResponseData } from "@/interfaces/iResponseData";
-import { IReport } from "@/interfaces/iReport";
+import { createReport, getReport, updateReport } from "@/services/reports/reportService";
 import { generateInvalidUniqueID } from "@/helpers/uniqueIdHelper";
 import { ConfirmToReload } from "@/components/ConfirmToReload";
 import isEqual from 'lodash/isEqual';
-import { normalizeProgressGoals } from "@/helpers/goalHelper";
 import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrasesHelper";
 import { Plus } from "phosphor-react";
@@ -23,6 +19,10 @@ import { isNumber } from "lodash";
 import { ProfileImage } from "@/components/UserImage";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 import { getProgressGoalsModified } from "@/helpers/report/reportHelper";
+import { Report } from "@/types/Entities/Report";
+import { Task } from "@/types/Entities/Task";
+import { CreateNewReportCommand } from "@/types/Commands/Report/CreateNewReportCommand";
+import { UpdateReportCommand } from "@/types/Commands/Report/UpdateReportCommand";
 
 export default function EditReport() {
 
@@ -40,33 +40,28 @@ export default function EditReport() {
     const [forceCancel, setForceCancel] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
-    const [selectedDate, setSelectedDate] = useState<string>("");
+    const [selectedDate, setDisplayDate] = useState<string>("Week Interval");
 
-    const [progressGoals, setProgressGoals] = useState<IProgressGoal[]>([]);
-
-    const [originalProgressGoals, setOriginalProgressGoals] = useState<IProgressGoal[]>([]);
+    const [tasks, setTasks] = useState<Task[]>([]);
+    const [originalTasks, setOriginalTasks] = useState<Task[]>([]);
 
     useEffect(() => {
 
         setMotivationalPhrase(getRandomMotivationalPhrase());
 
-        async function getReportData(reportId: number) {
-            return (await getReport(reportId)).data as IReport;
-        }
-
-        function setReportData(report: IReport) {
+        function setReportData(report: Report) {
             setIsOwner(userInfo.id == report.user.id);
             setName(report.user.name);
-            setReportOwnerImageURL(report.user.imageURL);
-            setSelectedDate(report.createdDate);
-            setProgressGoals(normalizeProgressGoals(report.tasks));
-            setOriginalProgressGoals(normalizeProgressGoals(report.tasks));
+            setReportOwnerImageURL(report.user.imageUrl);
+            // setDisplayDate(report.createdDate);
+            setTasks(report.tasks);
+            setOriginalTasks(report.tasks);
         }
 
         function handleNewReport(): boolean {
             if (reportId == 'new') {
                 setIsNew(true);
-                setSelectedDate(getCurrentDateString());
+                setDisplayDate(getCurrentDateString());
                 return true;
             };
             return false;
@@ -74,15 +69,13 @@ export default function EditReport() {
 
         async function handleReceivedReport(reportId: number) {
 
-            if (isNumber(reportId) && userInfo) {
-                const report = await getReportData(reportId);
-                if (report) {
-                    setReportData(report)
-                }
-                else {
-                    router.push("/404")
-                }
-            }
+            if (!isNumber(reportId) && !userInfo) return;
+
+            const report = await getReport(reportId);
+            if (report)
+                setReportData(report)
+            else
+                router.push("/404")
         }
 
         const fetchData = () => {
@@ -104,11 +97,11 @@ export default function EditReport() {
 
     useEffect(() => {
 
-        const progressGoalsIsChanged = !isEqual(progressGoals, originalProgressGoals);
+        const progressGoalsIsChanged = !isEqual(tasks, originalTasks);
 
         setModified(progressGoalsIsChanged);
 
-    }, [progressGoals, originalProgressGoals]);
+    }, [tasks, originalTasks]);
 
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -137,16 +130,16 @@ export default function EditReport() {
     }, [modified, router, forceCancel]);
 
     function handleAddProgressGoal() {
-        setProgressGoals([
-            ...progressGoals,
+        setTasks([
+            ...tasks,
             {
                 id: generateInvalidUniqueID(),
                 reportId: 0,
                 title: "No title",
                 total: 0,
                 value: 0,
-                updatedDate: String(new Date()),
-                index: progressGoals.length + 1,
+                progress: 0,
+                updatedDate: new Date()
             },
         ]);
     }
@@ -160,40 +153,29 @@ export default function EditReport() {
 
     async function handleSaveReport() {
 
-        if (!modified) {
+        if (!modified)
             return Swal.fire("Oops!", "It is necessary to enter or edit a goal for the Report to be saved.", "warning");
+
+        try {
+            if (isNew) {
+                const command: CreateNewReportCommand = { userId: userInfo.id, tasks: tasks };
+                await createReport(command);
+            }
+            else {
+                const modifiedProgressGoals = getProgressGoalsModified(originalTasks, tasks);
+                const command: UpdateReportCommand = {
+                    id: Number(reportId),
+                    inserted: modifiedProgressGoals.inserted,
+                    deleted: modifiedProgressGoals.deleted,
+                    modified: modifiedProgressGoals.modified,
+                }
+                await updateReport(command);
+                setOriginalTasks(tasks);
+            }
+            await Swal.fire("Good Job!", "Report created.", "success")
+        } catch (error) {
+            await Swal.fire("Ops!", `Something went wrong.\n${error}`, "error")
         }
-
-        let result: IResponseData;
-
-        if (isNew) {
-            result = await createReport({
-                userId: userInfo.id,
-                progressGoals
-            });
-        }
-
-        else {
-
-            const modifiedProgressGoals = getProgressGoalsModified(originalProgressGoals, progressGoals);
-
-            result = await updateReport({
-                reportId: Number(reportId),
-                progressGoals: modifiedProgressGoals,
-            } as IUpdateReport);
-        }
-
-        if (result.success) {
-            setOriginalProgressGoals(progressGoals);
-        }
-
-        await Swal.fire(
-            result.success ? "Good Job!" : "Oops!",
-            result.message,
-            result.success ? "success" : "error"
-        );
-
-        handleCancel(true);
     }
 
     function getTitlePage() {
@@ -231,7 +213,7 @@ export default function EditReport() {
 
                 <div className="flex flex-col w-full mt-10">
                     <div className="flex gap-4 items-center">
-                        <ProfileImage size={64} imageUrl={isNew ? userInfo.imageURL ?? reportOwnerImageURL : reportOwnerImageURL} rounded/>
+                        <ProfileImage size={64} imageUrl={isNew ? userInfo.imageURL ?? reportOwnerImageURL : reportOwnerImageURL} rounded />
                         <div className="flex flex-col">
                             <h2 className="text-2xl text-LIGHT_TEXT dark:text-DARK_TEXT font-bold">
                                 {`Week ${getWeek(stringToDate(isNew ? new Date().toISOString() : selectedDate))}`}
@@ -259,13 +241,13 @@ export default function EditReport() {
                                     )}
                                 </div>
                                 <div className="flex flex-col gap-4">
-                                    {progressGoals.length ? (
-                                        Array.isArray(progressGoals) &&
-                                        progressGoals.map(goal => (
-                                            <ProgressGoal
-                                                key={goal.id}
-                                                progressGoal={goal}
-                                                setProgressGoals={setProgressGoals}
+                                    {tasks.length ? (
+                                        Array.isArray(tasks) &&
+                                        tasks.map(task => (
+                                            <TaskItem
+                                                key={task.id}
+                                                task={task}
+                                                setTask={setTasks}
                                                 disabled={!isOwner}
                                             />
                                         ))

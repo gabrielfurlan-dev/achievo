@@ -1,5 +1,6 @@
 import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
+import { Task } from "@/types/Entities/Task";
 
 export function getCheckGoalsModified(
     originalGoals: ICheckGoal[],
@@ -27,12 +28,12 @@ export function getCheckGoalsModified(
 }
 
 export function getProgressGoalsModified(
-    originalGoals: IProgressGoal[],
-    newGoals: IProgressGoal[]
+    originalGoals: Task[],
+    newGoals: Task[]
 ) {
-    const inserted: IProgressGoal[] = newGoals.filter(goal => goal.id < 0);
-    const deleted: IProgressGoal[] = [];
-    const modified: IProgressGoal[] = [];
+    const inserted: Task[] = newGoals.filter(task => task.id < 0);
+    const deleted: Task[] = [];
+    const modified: Task[] = [];
 
     for (const originalGoal of originalGoals) {
         const goalFinded = newGoals.find(

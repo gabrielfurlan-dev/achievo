@@ -3,4 +3,5 @@ export interface IProgressGoalRaw {
     total: number;
     value: number;
     index: number;
+    progress: number;
 }

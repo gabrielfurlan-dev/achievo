@@ -71,10 +71,11 @@ model Task {
     updatedDate DateTime @updatedAt
     title       String
     index       Int
-    value       Decimal
-    total       Decimal
+    value       Float
+    total       Float
+    progress    Int
 
-    Report   Report? @relation(fields: [reportId], references: [id], onDelete: Cascade)
-    reportId Int?
+    Report   Report @relation(fields: [reportId], references: [id], onDelete: Cascade)
+    reportId Int
 	@@map("ProgressGoal")
 }

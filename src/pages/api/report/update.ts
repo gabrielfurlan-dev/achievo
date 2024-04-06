@@ -48,6 +48,7 @@ export default async function handler(
                         index: goal.index,
                         total: goal.total,
                         value: goal.value,
+                        progress: Math.floor(goal.total / goal.value * 100),
                         reportId: reportId,
                     },
                 });
@@ -63,9 +64,7 @@ export default async function handler(
 
             const report = await transaction.report.update({
                 where: { id: reportId },
-                data: {
-                    id: reportId,
-                },
+                data: { id: reportId },
             });
 
             return report;

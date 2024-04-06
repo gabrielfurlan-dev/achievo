@@ -3,7 +3,7 @@ import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import Modal from "@/components/Modal";
-import { getLastReport, validateReportFromWeek } from "@/services/reports/reportService";
+import { getLastReportId, existsReportInCurrentWeek } from "@/services/reports/reportService";
 import { useSession } from "next-auth/react";
 import { handleLoginGoogle } from "@/services/loginService";
 import Swal from "sweetalert2";
@@ -70,26 +70,26 @@ export default function home() {
     }, [data, status]);
 
     async function handleAddReport() {
-        const reportId = await (await validateReportFromWeek(userInfo.id)).data as number
+        // const reportId = await existsReportInCurrentWeek(userInfo.id)
 
-        if (!reportId) {
+        // if (!reportId) {
             router.push("/report/new")
             return
-        };
+        // };
 
-        setDialogPopup({
-            mustShow: true,
-            title: "Edit goal",
-            message: "You already have a Report this week, do you want to view it?",
-            icon: <Stairs size={86} color="#5C8A74" />,
-            action: () => router.push("/report/" + reportId)
-        })
+        // setDialogPopup({
+        //     mustShow: true,
+        //     title: "Edit goal",
+        //     message: "You already have a Report this week, do you want to view it?",
+        //     icon: <Stairs size={86} color="#5C8A74" />,
+        //     action: () => router.push("/report/" + reportId)
+        // })
 
     }
 
     async function handleGoToLatestReport() {
 
-        const reportId = (await getLastReport(userInfo.id)).data as string
+        const reportId = await getLastReportId(userInfo.id)
 
         if (!reportId) {
             setDialogPopup({
