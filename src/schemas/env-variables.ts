@@ -8,6 +8,7 @@ const envSchema = z.object({
     MAIL_SERVICE_KEY: z.string(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_SECRET_KEY: z.string(),
+    BACK_END_URL: z.string(),
 });
 
 const variables = envSchema.parse({
@@ -18,6 +19,7 @@ const variables = envSchema.parse({
     MAIL_SERVICE_KEY: process.env.NEXT_PUBLIC_MAIL_SERVICE_KEY,
     GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
     GOOGLE_SECRET_KEY: process.env.NEXT_PUBLIC_GOOGLE_SECRET_KEY,
+    BACK_END_URL: process.env.NEXT_PUBLIC_BACK_END_URL,
 });
 
 export default variables;
