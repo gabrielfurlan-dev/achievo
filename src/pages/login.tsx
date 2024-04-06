@@ -7,34 +7,39 @@ import { GoogleLogo } from "phosphor-react";
 import { IconAchievo } from "@/assets/icons/IconAchievo";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-    const session = await getSession({ req })
+    const session = await getSession({ req });
 
     if (session) {
         return {
             redirect: {
-                destination: '/home',
-                permanent: false
-            }
-        }
+                destination: "/home",
+                permanent: false,
+            },
+        };
     }
 
     return {
-        props: {}
-    }
-}
+        props: {},
+    };
+};
 
 export default function login() {
     const [isLoading, setIsLoading] = useState(false);
 
     async function handleNextAuthSignIn() {
         setIsLoading(true);
-        await signIn('google')
+        await signIn("google");
     }
 
     return (
-        <div className="items-center h-screen w-screen justify-center flex flex-col">
-            <div className="text-center items-center justify-center flex flex-col gap-2 dark:text-white p-6 rounded-lg">
-                <div className="bg-opacity-0 bg-white rounded-3xl" style={{ boxShadow: "4px 0px 18px 0px rgba(66, 101, 84, 0.61)" }}>
+        <div className="flex flex-col items-center justify-center w-screen h-screen">
+            <div className="flex flex-col items-center justify-center gap-2 p-6 text-center rounded-lg dark:text-white">
+                <div
+                    className="bg-white bg-opacity-0 rounded-3xl"
+                    style={{
+                        boxShadow: "4px 0px 18px 0px rgba(66, 101, 84, 0.61)",
+                    }}
+                >
                     <IconAchievo size={120} color="#5C8A74" />
                 </div>
                 <div className="pt-6">
@@ -44,7 +49,9 @@ export default function login() {
             </div>
 
             <div className="flex pt-4">
-                {isLoading ? (<CircularProgress color="inherit" />) : (
+                {isLoading ? (
+                    <CircularProgress color="inherit" />
+                ) : (
                     <div className="flex flex-col items-center gap-4">
                         <button
                             className="flex flex-row items-center  border-[2px] m-auto rounded-xl px-4 md:px-10 py-2 gap-4
