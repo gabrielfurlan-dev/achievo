@@ -3,15 +3,15 @@ import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import Modal from "@/components/Modal";
-import { getLastReportId, existsReportInCurrentWeek } from "@/services/reports/reportService";
+import { getLastReportId } from "@/services/reports/reportService";
 import { useSession } from "next-auth/react";
 import { handleLoginGoogle } from "@/services/loginService";
 import Swal from "sweetalert2";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
-import { Stairs } from "@/assets/icons/Stairs";
 import { ListMagnifyingGlass } from "@/assets/icons/ListMagnifyingGlass";
 import { ClockCounterClockwise, FilePlus, House, Icon, Users, WarningCircle } from "phosphor-react";
 import { tv } from "tailwind-variants";
+import { Stairs } from "@/assets/icons/Stairs";
 
 type dialogPopup = {
     mustShow: boolean,
@@ -26,28 +26,21 @@ export default function home() {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const { userInfo, setUserInfo } = useUserInfoStore();
     const { data, status } = useSession();
-
     const [dialogPopup, setDialogPopup] = useState<dialogPopup>()
 
     useEffect(() => {
         async function setData() {
-
             if (status !== "authenticated" || !data || !data.user) {
                 return router.push("/login");
             }
-
             const { name, email, image } = data.user;
-
             if (!name || !email || !image)
                 return;
-
             const loginData = await handleLoginGoogle(name, email, image);
-
             if (!loginData.success) {
                 Swal.fire("Oops!", "Não foi possível realizar o login.");
                 return;
             }
-
             setUserInfo({
                 alreadyRegistered: loginData.data.alreadyRegistered,
                 id: loginData.data.id,
@@ -57,40 +50,31 @@ export default function home() {
                 description: loginData.data.description,
                 imageURL: loginData.data.imageURL,
             });
-
             if (!loginData.data.alreadyRegistered) {
                 return router.push("/finish-signup");
             }
-
             setIsLoading(false);
-
         }
-
         setData();
     }, [data, status]);
 
     async function handleAddReport() {
-        // const reportId = await existsReportInCurrentWeek(userInfo.id)
-
-        // if (!reportId) {
+        const reportId = await getLastReportId(userInfo.id)
+        if (!reportId) {
             router.push("/report/new")
             return
-        // };
-
-        // setDialogPopup({
-        //     mustShow: true,
-        //     title: "Edit goal",
-        //     message: "You already have a Report this week, do you want to view it?",
-        //     icon: <Stairs size={86} color="#5C8A74" />,
-        //     action: () => router.push("/report/" + reportId)
-        // })
-
+        };
+        setDialogPopup({
+            mustShow: true,
+            title: "Edit goal",
+            message: "You already have a Report this week, do you want to view it?",
+            icon: <Stairs size={86} color="#5C8A74" />,
+            action: () => router.push("/report/" + reportId)
+        })
     }
 
     async function handleGoToLatestReport() {
-
         const reportId = await getLastReportId(userInfo.id)
-
         if (!reportId) {
             setDialogPopup({
                 mustShow: true,
@@ -106,7 +90,6 @@ export default function home() {
             })
             return
         }
-
         return router.push(`report/${reportId}`)
     }
 

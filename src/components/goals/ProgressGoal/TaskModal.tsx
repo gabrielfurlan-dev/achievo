@@ -2,13 +2,13 @@ import { InputField } from "@/components/Inputs/InputField";
 import Modal from "@/components/Modal";
 import { SetStateAction, useState } from "react";
 import Swal from "sweetalert2";
-import { Task, TaskSchema } from "@/types/Entities/Task";
+import { TaskDTO, TaskDTOSchema } from "@/types/Entities/Task";
 
 type ProgressModalProps = {
     isOpen: boolean;
     onClose: () => void;
-    task: Task;
-    setTask: (value: SetStateAction<Task>) => void;
+    task: TaskDTO;
+    setTask: (value: SetStateAction<TaskDTO>) => void;
     deleteTask: () => void;
 };
 
@@ -51,7 +51,7 @@ export default function TaskModal({
     function handleSaveGoal() {
         if (!validate()) return;
 
-        const newGoal: Task = {
+        const newGoal: TaskDTO = {
             id: progressGoal.id,
             title: editingTitle,
             updatedDate: new Date(),

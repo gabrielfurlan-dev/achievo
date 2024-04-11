@@ -7001,10 +7001,10 @@ source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.1:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
-spellbinder@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/spellbinder/-/spellbinder-0.0.5.tgz#19f813b3b0cf290f93d377112a32886a7ab08c96"
-  integrity sha512-OpqnTyBMTmO5E6hrpM6md2nDx1AfOkwSMEqyI+7N3NhGG9qR4SpFjFphMtHy6pKOWm5T6WEtsfk4HN0eICL3Ig==
+spellbinder@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/spellbinder/-/spellbinder-0.1.0.tgz#2ee84c42aabdc59db93e60772f4fdaa46d0f6ee1"
+  integrity sha512-EXN5/UaFrse1p9GKHrH/GmU/9zAX4JPkjK8oGDRSm5rmOwq2jiKv75h+LFxPvVPPzJ8nSvH5zPnlNs32ultE9g==
   dependencies:
     effect "^2.4.14"
     zod "^3.22.4"

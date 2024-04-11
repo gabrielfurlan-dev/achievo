@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { TaskSchema } from "@/types/Entities/Task";
+import { TaskDTOSchema } from "@/types/Entities/Task";
 
 export const CreateNewReportCommandSchema = z.object({
     userId: z.string(),
-    tasks: z.array(TaskSchema)
+    tasks: z.array(TaskDTOSchema)
 })
 
 export type CreateNewReportCommand = z.infer<typeof CreateNewReportCommandSchema>;

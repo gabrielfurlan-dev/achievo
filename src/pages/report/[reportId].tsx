@@ -20,7 +20,7 @@ import { ProfileImage } from "@/components/UserImage";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 import { getProgressGoalsModified } from "@/helpers/report/reportHelper";
 import { Report } from "@/types/Entities/Report";
-import { Task } from "@/types/Entities/Task";
+import { TaskDTO } from "@/types/Entities/Task";
 import { CreateNewReportCommand } from "@/types/Commands/Report/CreateNewReportCommand";
 import { UpdateReportCommand } from "@/types/Commands/Report/UpdateReportCommand";
 
@@ -42,8 +42,8 @@ export default function EditReport() {
 
     const [selectedDate, setDisplayDate] = useState<string>("Week Interval");
 
-    const [tasks, setTasks] = useState<Task[]>([]);
-    const [originalTasks, setOriginalTasks] = useState<Task[]>([]);
+    const [tasks, setTasks] = useState<TaskDTO[]>([]);
+    const [originalTasks, setOriginalTasks] = useState<TaskDTO[]>([]);
 
     useEffect(() => {
 
@@ -52,26 +52,28 @@ export default function EditReport() {
         function setReportData(report: Report) {
             setIsOwner(userInfo.id == report.user.id);
             setName(report.user.name);
-            setReportOwnerImageURL(report.user.imageUrl);
+            setReportOwnerImageURL(report.user.imageURL);
             // setDisplayDate(report.createdDate);
+
+            if (!report.tasks) return;
+
             setTasks(report.tasks);
             setOriginalTasks(report.tasks);
         }
 
         function handleNewReport(): boolean {
-            if (reportId == 'new') {
-                setIsNew(true);
-                setDisplayDate(getCurrentDateString());
-                return true;
-            };
-            return false;
+            if (reportId !== 'new') return false;
+            setIsNew(true);
+            setDisplayDate(getCurrentDateString());
+            return true;
         }
 
         async function handleReceivedReport(reportId: number) {
-
-            if (!isNumber(reportId) && !userInfo) return;
+            if (isNaN(reportId) || !userInfo) return;
 
             const report = await getReport(reportId);
+            console.log(report)
+
             if (report)
                 setReportData(report)
             else
@@ -83,7 +85,6 @@ export default function EditReport() {
                 if (!handleNewReport()) {
                     handleReceivedReport(Number(reportId))
                 }
-
             } catch (error) {
                 Swal.fire("Error when fetching the report", "error");
                 router.push("/list-reports")
@@ -139,7 +140,7 @@ export default function EditReport() {
                 total: 0,
                 value: 0,
                 progress: 0,
-                updatedDate: new Date()
+                updatedDate: new Date().toString()
             },
         ]);
     }

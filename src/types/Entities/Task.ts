@@ -1,14 +1,14 @@
 import { z } from 'zod';
 
-export const TaskSchema = z.object({
-    id: z.number().int(),
-    reportId: z.number(),
-    createdDate: z.date().optional(),
-    updatedDate: z.date().optional(),
+export const TaskDTOSchema = z.object({
+    id: z.number().optional(),
+    reportId: z.number().optional(),
     title: z.string(),
     value: z.number(),
     total: z.number(),
-    progress: z.number(),
+    updatedDate: z.string().optional(),
+    createdDate: z.string().optional(),
+    progress: z.number().optional(),
 });
 
-export type Task = z.infer<typeof TaskSchema>;
+export type TaskDTO = z.infer<typeof TaskDTOSchema>;

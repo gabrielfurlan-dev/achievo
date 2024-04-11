@@ -2,11 +2,11 @@ import { SetStateAction, useEffect, useState } from "react";
 import React from "react";
 import TaskModal from "./TaskModal";
 import { getUpdatedTimeElapsed } from "@/helpers/elapsedTime";
-import { Task } from "@/types/Entities/Task";
+import { TaskDTO } from "@/types/Entities/Task";
 
 type TaskProps = {
-    task: Task;
-    setTask: (value: SetStateAction<Task[]>) => void;
+    task: TaskDTO;
+    setTask: (value: SetStateAction<TaskDTO[]>) => void;
     disabled?: boolean;
 };
 

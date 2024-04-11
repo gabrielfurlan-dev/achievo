@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { sb } from '@/spellBinder';
-import { ReportSchema } from '@/types/Entities/Report';
+import { Report, ReportSchema } from '@/types/Entities/Report';
 import { UpdateReportCommand } from '@/types/Commands/Report/UpdateReportCommand';
 import { CreateNewReportCommand, CreateNewReportCommandSchema } from '@/types/Commands/Report/CreateNewReportCommand';
 
@@ -22,25 +22,17 @@ export async function updateReport(command: UpdateReportCommand) {
 }
 
 export async function getReport(reportId: number) {
-    const queryParams = new URLSearchParams({ reportId: reportId.toString() });
+    console.log(reportId)
     return await sb.get({
-        url: `/reports?${queryParams.toString()}`,
+        url: '/reports/' + reportId,
         schema: ReportSchema,
     });
 }
 
-export async function existsReportInCurrentWeek(userId: string) {
-    const queryParams = new URLSearchParams({ userId });
-    return await sb.get({
-        url: `/reports/exists/current-week?${queryParams.toString()}`,
-        schema: z.boolean(),
-    });
-}
-
 export async function getLastReportId(userId: string) {
-    const queryParams = new URLSearchParams({ userId: userId });
     return await sb.get({
-        url: `/report/current-week?${queryParams.toString()}`,
+        url: '/reports/current-week',
+        params: { userId },
         schema: z.number(),
     });
 }
