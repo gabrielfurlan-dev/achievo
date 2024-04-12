@@ -9,16 +9,15 @@ import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import { ProfileImage } from "@/components/UserImage";
 import { tv } from "tailwind-variants";
 import DatePicker from "react-datepicker";
-import { IReportItem } from "@/interfaces/reports/IReportItem";
 import { Rocket } from "@/assets/icons/Rocket";
-import { getAllReports } from "@/services/reports/getAll";
 import { ReportFilterOptions } from "@/interfaces/reports/types/reportFilterOptions";
 import { startOfToday, startOfTomorrow, subMonths } from "date-fns";
-import { IResponseData } from "@/interfaces/iResponseData";
 import { CircularProgress } from "@mui/material";
+import { getAllReports } from "@/services/reports/reportGateway";
+import { ResumedReportResult } from "@/types/Result/ResumedReportResult";
 
 export default function ListReport() {
-    const [reports, setReports] = useState<IReportItem[]>([]);
+    const [reports, setReports] = useState<ResumedReportResult[]>([]);
     const { userInfo } = useUserInfoStore();
     const [selectedFilterType, setSelectedFilterType] =
         useState<ReportFilterOptions>("everyone");
@@ -49,14 +48,15 @@ export default function ListReport() {
         setIsLoaded(false);
 
         try {
-            const result = (await getAllReports({
+            const reports = await getAllReports({
                 userId: userInfo.id,
                 startDate: startDate ?? new Date(),
                 endDate: endDate ?? new Date(),
                 option: selectedFilterType,
-            })) as IResponseData;
+                searchName: ""
+            });
 
-            setReports(result.data as IReportItem[]);
+            setReports(reports);
             setIsLoaded(true);
         } catch (error) {
             console.error("Error fetching reports:", error);
@@ -191,9 +191,9 @@ export default function ListReport() {
                         </div>
                     )}
                     <ul className="w-full pt-10 pb-1 md:pb-10">
-                        {reports &&
-                            reports
-                                .sort((a, b) => b.reportId - a.reportId)
+                        {
+                            reports &&
+                            reports.sort((a, b) => b.reportId - a.reportId)
                                 .map(data => (
                                     <Link
                                         key={data.reportId}
@@ -206,56 +206,48 @@ export default function ListReport() {
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-4 md:ml-4 text-LIGHT_TEXT dark:text-DARK_TEXT ">
                                                     <ProfileImage
-                                                        imageUrl={data.imageURL}
+                                                        imageUrl={data.userImageURL}
                                                         rounded
                                                         size={48}
                                                     />
                                                     <div>
                                                         <div className="flex flex-wrap">
                                                             <span className="mr-2 text-lg font-bold text-NEUTRAL_GRAY_09 dark:text-NEUTRAL_WHITE">
-                                                                {data.name}
+                                                                {data.userName}
                                                             </span>
                                                             <span className="text-base text-NEUTRAL_GRAY_06">
-                                                                @{data.username}
+                                                                @{data.userUsername}
                                                             </span>
                                                         </div>
                                                         <p className="text-NEUTRAL_GRAY_06">
-                                                            {getFormatedWeekInterval(
-                                                                data.createdDate
-                                                            )}
+                                                            {getFormatedWeekInterval(data.createdDate.toString())}
                                                         </p>
-                                                        {getWeeklyProgressText(
-                                                            data.value,
-                                                            data.total,
-                                                            data.reportId.toString()
-                                                        )}
+                                                        {`weekly progress ${data.progress}%`}
                                                         <p className="flex items-center w-full h-full pt-2 text-xs font-normal md:hidden text-NEUTRAL_GRAY_06 ">
-                                                            {`${getUpdatedTimeElapsed(
-                                                                data.updatedDate
-                                                            )}`}
+                                                            {`${getUpdatedTimeElapsed(data.updatedDate.toString())}`}
                                                         </p>
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-col md:w-[120px] h-full items-center text-center mr-4 md:px-6">
                                                     {userInfo.id ==
                                                         data.userId && (
-                                                        <button className="py-2">
-                                                            <PencilSimple
-                                                                size={24}
-                                                                className="text-PRINCIPAL"
-                                                            />
-                                                        </button>
-                                                    )}
+                                                            <button className="py-2">
+                                                                <PencilSimple
+                                                                    size={24}
+                                                                    className="text-PRINCIPAL"
+                                                                />
+                                                            </button>
+                                                        )}
                                                     <p className="items-center hidden h-full text-xs font-normal md:flex text-NEUTRAL_GRAY_06 ">
-                                                        {`${getUpdatedTimeElapsed(
-                                                            data.updatedDate
-                                                        )}`}
+                                                        {`${getUpdatedTimeElapsed(data.updatedDate.toString())}`}
                                                     </p>
                                                 </div>
                                             </div>
                                         </li>
                                     </Link>
-                                ))}
+                                )
+                                )
+                        }
                     </ul>
                 </div>
             </div>

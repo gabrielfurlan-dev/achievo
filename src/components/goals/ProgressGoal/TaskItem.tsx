@@ -2,7 +2,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import React from "react";
 import TaskModal from "./TaskModal";
 import { getUpdatedTimeElapsed } from "@/helpers/elapsedTime";
-import { TaskDTO } from "@/types/Entities/Task";
+import { TaskDTO } from "@/types/Entities/task";
 
 type TaskProps = {
     task: TaskDTO;

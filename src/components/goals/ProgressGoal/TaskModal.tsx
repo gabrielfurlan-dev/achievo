@@ -2,7 +2,7 @@ import { InputField } from "@/components/Inputs/InputField";
 import Modal from "@/components/Modal";
 import { SetStateAction, useState } from "react";
 import Swal from "sweetalert2";
-import { TaskDTO, TaskDTOSchema } from "@/types/Entities/Task";
+import { TaskDTO, TaskDTOSchema } from "@/types/Entities/task";
 
 type ProgressModalProps = {
     isOpen: boolean;

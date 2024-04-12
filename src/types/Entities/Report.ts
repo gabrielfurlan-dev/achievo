@@ -1,5 +1,5 @@
 import z from 'zod'
-import { TaskDTOSchema } from '@/types/Entities/Task';
+import { TaskDTOSchema } from '@/types/Entities/task';
 
 export const ReportSchema = z.object({
     id: z.number().optional(),

@@ -1,6 +1,6 @@
 import { ICheckGoal } from "@/interfaces/goals/checkGoals/iCheckGoal";
 import { IProgressGoal } from "@/interfaces/goals/progressGoals/iProgressGoal";
-import { TaskDTO } from "@/types/Entities/Task";
+import { TaskDTO } from "@/types/Entities/task";
 
 export function getCheckGoalsModified(
     originalGoals: ICheckGoal[],

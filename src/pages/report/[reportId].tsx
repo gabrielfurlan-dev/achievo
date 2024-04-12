@@ -7,7 +7,7 @@ import { getWeek } from "date-fns";
 import { NoBackgroundButton } from "@/components/Buttons";
 import TaskItem from "@/components/goals/ProgressGoal/TaskItem";
 import { useUserInfoStore } from "@/store/userStoreInfo";
-import { createReport, getReport, updateReport } from "@/services/reports/reportService";
+import { createReport, getReport, updateReport } from "@/services/reports/reportGateway";
 import { generateInvalidUniqueID } from "@/helpers/uniqueIdHelper";
 import { ConfirmToReload } from "@/components/ConfirmToReload";
 import isEqual from 'lodash/isEqual';
@@ -15,12 +15,11 @@ import { CompactNavBar } from "@/layouts/NavBar/CompactNavBar";
 import { getRandomMotivationalPhrase } from "@/helpers/report/motivationalPhrasesHelper";
 import { Plus } from "phosphor-react";
 import { ConfirmButton } from "@/components/Buttons/ConfirmButton";
-import { isNumber } from "lodash";
 import { ProfileImage } from "@/components/UserImage";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 import { getProgressGoalsModified } from "@/helpers/report/reportHelper";
-import { Report } from "@/types/Entities/Report";
-import { TaskDTO } from "@/types/Entities/Task";
+import { TaskDTO } from "@/types/Entities/task";
+import { Report } from '@/types/Entities/Report'
 import { CreateNewReportCommand } from "@/types/Commands/Report/CreateNewReportCommand";
 import { UpdateReportCommand } from "@/types/Commands/Report/UpdateReportCommand";
 
@@ -72,7 +71,6 @@ export default function EditReport() {
             if (isNaN(reportId) || !userInfo) return;
 
             const report = await getReport(reportId);
-            console.log(report)
 
             if (report)
                 setReportData(report)

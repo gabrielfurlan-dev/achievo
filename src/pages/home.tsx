@@ -3,7 +3,7 @@ import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useRouter } from "next/router";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import Modal from "@/components/Modal";
-import { getLastReportId } from "@/services/reports/reportService";
+import { getLastReportId } from "@/services/reports/reportGateway";
 import { useSession } from "next-auth/react";
 import { handleLoginGoogle } from "@/services/loginService";
 import Swal from "sweetalert2";
