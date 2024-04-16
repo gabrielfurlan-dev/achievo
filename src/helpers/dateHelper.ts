@@ -8,6 +8,12 @@ type PeriodReport = {
     mounth: string;
 }
 
+export function adjustTimeZone(data: Date) {
+    data.setHours(data.getHours() + 3);
+
+    return data;
+}
+
 export function getCurrentDateString() {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
