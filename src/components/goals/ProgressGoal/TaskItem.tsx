@@ -26,9 +26,9 @@ export default function TaskItem({
                 if (x.id === task.id) {
                     return {
                         ...x,
-                        value: task.value,
-                        total: task.total,
-                        title: task.title,
+                        value: editedTask.value,
+                        total: editedTask.total,
+                        title: editedTask.title,
                     };
                 } else {
                     return x;

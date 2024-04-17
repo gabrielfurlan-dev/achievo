@@ -2,7 +2,7 @@ import { InputField } from "@/components/Inputs/InputField";
 import Modal from "@/components/Modal";
 import { SetStateAction, useState } from "react";
 import Swal from "sweetalert2";
-import { TaskDTO, TaskDTOSchema } from "@/types/Entities/task";
+import { TaskDTO } from "@/types/Entities/task";
 
 type ProgressModalProps = {
     isOpen: boolean;
@@ -15,17 +15,17 @@ type ProgressModalProps = {
 export default function TaskModal({
     isOpen,
     onClose,
-    task: progressGoal,
+    task: task,
     setTask: setProgressGoal,
     deleteTask: deleteGoal,
 }: ProgressModalProps) {
     const [editingValue, setEditingValue] = useState(
-        progressGoal.value.toString()
+        task.value.toString()
     );
     const [editingTotal, setEditingTotal] = useState(
-        progressGoal.total.toString()
+        task.total.toString()
     );
-    const [editingTitle, setEditingTitle] = useState(progressGoal.title);
+    const [editingTitle, setEditingTitle] = useState(task.title);
 
     function validate() {
         if (editingTitle.length == 0) {
@@ -52,15 +52,13 @@ export default function TaskModal({
         if (!validate()) return;
 
         const newGoal: TaskDTO = {
-            id: progressGoal.id,
+            id: task.id,
             title: editingTitle,
-            updatedDate: new Date(),
             value: Number(editingValue),
             total: Number(editingTotal),
-            progress: Math.floor(Number(editingTotal) / Number(editingValue) * 100), //TODO: REMOVE FROM HERE
-            reportId: progressGoal.id
+            reportId: task.id
         };
-
+        console.log(newGoal)
         setProgressGoal(newGoal);
         onClose();
     }

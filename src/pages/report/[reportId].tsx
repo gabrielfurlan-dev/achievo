@@ -19,9 +19,9 @@ import { ProfileImage } from "@/components/UserImage";
 import { PageLoadLayout } from "@/layouts/PageLoadLayout";
 import { getProgressGoalsModified } from "@/helpers/report/reportHelper";
 import { TaskDTO } from "@/types/Entities/task";
-import { Report } from '@/types/Entities/Report'
-import { CreateNewReportCommand } from "@/types/Commands/Report/CreateNewReportCommand";
-import { UpdateReportCommand } from "@/types/Commands/Report/UpdateReportCommand";
+import { Report } from '@/types/Entities/report'
+import { CreateNewReportCommand } from "@/types/Commands/Report/createNewReportCommand";
+import { UpdateReportCommand } from "@/types/Commands/Report/updateReportCommand";
 
 export default function EditReport() {
 
