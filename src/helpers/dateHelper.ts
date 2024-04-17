@@ -8,6 +8,13 @@ type PeriodReport = {
     mounth: string;
 }
 
+export function adjustDatabaseTimeZone(stringDate: string) {
+    const DATABASE_TIME_ZONE_DIFFERENCE = 3;
+    let newDate = new Date(stringDate)
+    newDate.setHours(newDate.getHours() + DATABASE_TIME_ZONE_DIFFERENCE);
+    return newDate
+}
+
 export function getCurrentDateString() {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
