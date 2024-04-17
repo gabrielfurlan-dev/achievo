@@ -8,8 +8,7 @@ type PeriodReport = {
     mounth: string;
 }
 
-export function adjustTimeZone(data: Date) {
-    
+export function adjustSupabaseTimeZone(data: Date) {
    return data.setHours(data.getHours() + 3);
 }
 
