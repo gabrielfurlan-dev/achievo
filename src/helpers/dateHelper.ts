@@ -9,9 +9,8 @@ type PeriodReport = {
 }
 
 export function adjustTimeZone(data: Date) {
-    data.setHours(data.getHours() + 3);
-
-    return data;
+    
+   return data.setHours(data.getHours() + 3);
 }
 
 export function getCurrentDateString() {
