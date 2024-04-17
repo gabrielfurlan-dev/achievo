@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Prisma } from "@prisma/client";
 import { IReportItem } from "@/interfaces/reports/IReportItem";
 import { ReportFilterOptions } from "@/interfaces/reports/types/reportFilterOptions";
-import { adjustSupabaseTimeZone } from "@/helpers/dateHelper";
+import { adjustDatabaseTimeZone } from "@/helpers/dateHelper";
 
 export default async function handler(
     req: NextApiRequest,
@@ -17,8 +17,8 @@ export default async function handler(
 
     try {
         const userId = req.query.userId as string;
-        const startDate = adjustSupabaseTimeZone(new Date(req.query.startDate as string))
-        const endDate = adjustSupabaseTimeZone(new Date(req.query.endDate as string))
+        const startDate = adjustDatabaseTimeZone(req.query.startDate as string)
+        const endDate = adjustDatabaseTimeZone(req.query.endDate as string)
         const option = req.query.option as ReportFilterOptions;
         const searchName = req.query.searchName as string;
 
