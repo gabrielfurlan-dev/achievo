@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useNotificationStore } from "@/store/notificationsStore";
 import { Bell } from "phosphor-react";
 import React, { useEffect, useRef, useState } from "react";
@@ -102,18 +103,52 @@ export function NotificationDropdown() {
                     >
                         <div className="px-6 py-2">
                             <h3 className="text-LIGHT_TEXT dark:text-DARK_TEXT mt-4">
-                                <b>O que há de novo?</b>
+                                <b>What's new?</b>
                             </h3>
+                            <div className="flex flex-row pt-2">
+                                <div>
+                                    <button className="bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm">Unread</button>
+                                </div>
+                                <div className="pl-6">
+                                    <button className="bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm text-[#868E96]">All</button>
+                                </div>
+                            </div>
 
                             <div className="mt-2">
                                 <div>
+                                    <div className="py-2">
+                                        <NotificationItem
+                                            wikiURL={"notification.wikiURL"}
+                                            id={2}
+                                            title={"notification.title"}
+                                            message={"notification.message"}
+                                            isUnred
+                                        />
+                                        <NotificationItem
+                                            wikiURL={"notification.wikiURL"}
+                                            id={2}
+                                            title={"notification.title"}
+                                            message={"notification.message"}
+                                            isUnred
+                                        />
+                                    </div>
+                                </div>
+                                {/* <div>
                                     {unreadNotifications.length > 0 && (
                                         <div>
                                             <h3 className="text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">
                                                 Não lidos
                                             </h3>
                                             <div className="py-2">
-                                                {unreadNotifications.map(
+                                                <NotificationItem
+                                                    wikiURL={"notification.wikiURL"}
+                                                    id={2}
+                                                    title={notification.title}
+                                                    message={notification.message}
+                                                    key={notification.id}
+                                                    isUnred
+                                                />
+                                                 {unreadNotifications.map(
                                                     notification => (
                                                         <NotificationItem
                                                             wikiURL={notification.wikiURL}
@@ -124,7 +159,7 @@ export function NotificationDropdown() {
                                                             isUnred
                                                         />
                                                     )
-                                                )}
+                                                )} 
                                             </div>
                                         </div>
                                     )}
@@ -154,6 +189,15 @@ export function NotificationDropdown() {
                                             </div>
                                         </div>
                                     )}
+                                </div> */}
+                            </div>
+
+                            <div className="flex flex-row justify-evenly">
+                                <div>
+                                    <button className="bg-[#F8F9FA] text-[#868E96] underline p-2">Previous</button>
+                                </div>
+                                <div>
+                                    <button className="bg-[#C3E5D5] p-2 rounded-md ">Next</button>
                                 </div>
                             </div>
                         </div>
