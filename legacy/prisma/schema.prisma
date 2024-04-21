@@ -1,0 +1,117 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("NEXT_PUBLIC_SUPABASE_URL")
+}
+
+model User {
+    id                String  @id @default(uuid())
+    email             String  @unique
+    name              String
+    imageURL          String
+    username          String? @unique
+    description       String?
+    enable            Boolean @default(true)
+    alreadyRegistered Boolean @default(false)
+    registeredDate DateTime @default(now())
+
+    Reports           Report[]
+    ReadNotifications ReadNotifications[]
+
+    Following Follow[] @relation("UserFollowing")
+    Followers Follow[] @relation("UserFollowers")
+}
+
+model Follow {
+    id              Int    @id @default(autoincrement())
+    userId          String
+    followingUserId String
+
+    userFollowing User @relation("UserFollowing", fields: [userId], references: [id])
+    userFollowed  User @relation("UserFollowers", fields: [followingUserId], references: [id])
+
+    @@unique([userId, followingUserId])
+}
+
+model Notification {
+    id                Int                 @id @default(autoincrement())
+    createdDate       DateTime            @default(now())
+    message           String
+    title             String
+    wikiURL           String
+    ReadNotifications ReadNotifications[]
+}
+
+model ReadNotifications {
+    id     Int    @id @default(autoincrement())
+    User   User   @relation(fields: [userId], references: [id])
+    userId String
+
+    Notification   Notification @relation(fields: [notificationId], references: [id])
+    notificationId Int
+}
+
+model Report {
+    id          Int      @id @default(autoincrement())
+    createdDate DateTime @default(now())
+    updatedDate DateTime @default(now()) @updatedAt
+    enable      Boolean  @default(true)
+
+    checkGoals    CheckGoal[]
+    progressGoals ProgressGoal[]
+
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
+}
+
+model ProgressGoal {
+    id          Int      @id @default(autoincrement())
+    updatedDate DateTime @updatedAt
+    title       String
+    index       Int
+    value       Decimal
+    total       Decimal
+    Tags        Tag[]
+
+    Report   Report? @relation(fields: [reportId], references: [id], onDelete: Cascade)
+    reportId Int?
+}
+
+model CheckGoal {
+    id          Int      @id @default(autoincrement())
+    createdDate DateTime @default(now())
+    updatedDate DateTime @updatedAt
+    title       String
+    index       Int
+    checked     Boolean  @default(false)
+    Tags        Tag[]
+
+    Report   Report? @relation(fields: [reportId], references: [id], onDelete: Cascade)
+    reportId Int?
+}
+
+model Tag {
+    id    Int    @id @default(autoincrement())
+    title String
+    Icon  String
+
+    color   Color @relation(fields: [colorId], references: [id])
+    colorId Int
+
+    ProgressGoal   ProgressGoal? @relation(fields: [progressGoalId], references: [id])
+    progressGoalId Int?
+
+    CheckGoal   CheckGoal? @relation(fields: [checkGoalId], references: [id])
+    checkGoalId Int?
+}
+
+model Color {
+    id      Int    @id @default(autoincrement())
+    name    String
+    hexCode String
+
+    Tag Tag[]
+}
