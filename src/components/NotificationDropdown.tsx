@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { useNotificationStore } from "@/store/notificationsStore";
-import { Bell } from "phosphor-react";
+import { ArrowArcLeft, ArrowLeft, ArrowRight, Bell } from "phosphor-react";
 import React, { useEffect, useRef, useState } from "react";
 import { NotificationItem } from "./NotificationItem";
 import { fetchNotifications } from "@/services/notificationsService";
@@ -102,10 +102,10 @@ export function NotificationDropdown() {
                         style={{ width: "20rem" }}
                     >
                         <div className="px-6 py-2">
-                            <h3 className="text-LIGHT_TEXT dark:text-DARK_TEXT mt-4">
+                            <h3 className="text-LIGHT_TEXT dark:text-DARK_TEXT pt-4">
                                 <b>What's new?</b>
                             </h3>
-                            <div className="flex flex-row pt-2">
+                            <div className="flex flex-row pt-4">
                                 <div>
                                     <button className="bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm">Unread</button>
                                 </div>
@@ -115,23 +115,28 @@ export function NotificationDropdown() {
                             </div>
 
                             <div className="mt-2">
-                                <div>
-                                    <div className="py-2">
+                                <div className="flex flex-col justify-between pb-8">
+                                    <div className="py-2 flex flex-col pb-4">
                                         <NotificationItem
                                             wikiURL={"notification.wikiURL"}
                                             id={2}
-                                            title={"notification.title"}
-                                            message={"notification.message"}
+                                            title={"Update 0.1.4 is live!"}
+                                            message={"Check out what's new. 🤖"}
                                             isUnred
-                                        />
-                                        <NotificationItem
-                                            wikiURL={"notification.wikiURL"}
-                                            id={2}
-                                            title={"notification.title"}
-                                            message={"notification.message"}
-                                            isUnred
+                                            updatedTime={"1h"}
                                         />
                                     </div>
+                                    <div className="flex flex-col">
+                                        <NotificationItem
+                                            wikiURL={"notification.wikiURL"}
+                                            id={2}
+                                            title={"Update 0.1.3"}
+                                            message={"We now have a last update date, check out the details by clicking here! ⌛"}
+                                            isUnred
+                                            updatedTime={"20min"}
+                                        />
+                                    </div>
+                                    
                                 </div>
                                 {/* <div>
                                     {unreadNotifications.length > 0 && (
@@ -194,10 +199,14 @@ export function NotificationDropdown() {
 
                             <div className="flex flex-row justify-evenly">
                                 <div>
-                                    <button className="bg-[#F8F9FA] text-[#868E96] underline p-2">Previous</button>
+                                    <button className="bg-[#F8F9FA] text-[#868E96] p-2 rounded-md flex items-center justify-between w-20 text-sm font-normal underline hover:text-black">
+                                        Previous
+                                    </button>
                                 </div>
                                 <div>
-                                    <button className="bg-[#C3E5D5] p-2 rounded-md ">Next</button>
+                                    <button className="bg-[#C3E5D5] p-2 rounded-md flex items-center justify-between w-20 text-sm text-[#212529] font-normal">Next
+                                        <ArrowRight color="#212529" />
+                                    </button>
                                 </div>
                             </div>
                         </div>

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { INotificationData } from "@/interfaces/notifications/iNotificationData";
 import {
     fetchNotifications,
@@ -13,6 +14,7 @@ type NotificationProps = {
     message: string;
     wikiURL: string;
     isUnred?: boolean;
+    updatedTime: string;
 };
 
 export function NotificationItem({
@@ -21,6 +23,7 @@ export function NotificationItem({
     message,
     isUnred,
     wikiURL,
+    updatedTime,
 }: NotificationProps) {
     const { userInfo } = useUserInfoStore();
     const { setReadNotifications, setUnreadNotifications } =
@@ -67,7 +70,10 @@ export function NotificationItem({
                                     hover:text-WHITE_PRINCIPAL
                                     rounded-lg py-2 px-4 mb-2 transition duration-150"
                     >
+                        <div className="flex flex-row justify-between">
                         <h4 className="font-semibold mb-2">{title}</h4>
+                        <p className="text-sm font-light">{updatedTime} ago</p>
+                        </div>
                         <p>{message}</p>
                     </div>
                 </a>
