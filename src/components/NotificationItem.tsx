@@ -8,7 +8,7 @@ import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useEffect } from "react";
 
-type NotificationProps = {
+export type NotificationProps = {
     id: number;
     title: string;
     message: string;
@@ -71,10 +71,10 @@ export function NotificationItem({
                                     rounded-lg py-2 px-4 mb-2 transition duration-150"
                     >
                         <div className="flex flex-row justify-between">
-                        <h4 className="font-semibold mb-2">{title}</h4>
-                        <p className="text-sm font-light">{updatedTime} ago</p>
+                            <h4 className="font-semibold mb-2 line-clamp-1">{title}</h4>
+                            <p className="text-sm font-light">{updatedTime} ago</p>
                         </div>
-                        <p>{message}</p>
+                        <p className="line-clamp-3">{message}</p>
                     </div>
                 </a>
             ) : (
@@ -92,8 +92,11 @@ export function NotificationItem({
                                     hover:text-GRAY_DARK hover:dark:text-WHITE_PRINCIPAL
                                     rounded-lg py-2 px-4 mb-2 transition duration-150"
                     >
-                        <h4>{title}</h4>
-                        <p>{message}</p>
+                        <div className="flex flex-row justify-between">
+                            <h4 className="font-semibold mb-2 line-clamp-1">{title}</h4>
+                            <p className="text-sm font-light">{updatedTime} ago</p>
+                        </div>
+                        <p className="line-clamp-3">{message}</p>
                     </div>
                 </a>
             )}

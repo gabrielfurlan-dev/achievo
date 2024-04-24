@@ -1,3 +1,4 @@
+/* eslint-disable */
 type IntervalWeek = {
     firstDayOfWeek: Date,
     lastDayOfWeek: Date

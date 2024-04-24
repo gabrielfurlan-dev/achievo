@@ -1,11 +1,11 @@
 /* eslint-disable */
 import { useNotificationStore } from "@/store/notificationsStore";
-import { ArrowArcLeft, ArrowLeft, ArrowRight, Bell } from "phosphor-react";
+import { ArrowRight, Bell } from "phosphor-react";
 import React, { useEffect, useRef, useState } from "react";
-import { NotificationItem } from "./NotificationItem";
 import { fetchNotifications } from "@/services/notificationsService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { INotificationData } from "@/interfaces/notifications/iNotificationData";
+import { Paginate } from "@/helpers/Pagination";
 
 export function NotificationDropdown() {
 
@@ -20,6 +20,7 @@ export function NotificationDropdown() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const [filterNotification, setFilterNotification] = useState(FilterNotification)
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -29,7 +30,6 @@ export function NotificationDropdown() {
         if (userInfo.id == "") return;
 
         const result = await fetchNotifications(userInfo.id);
-
         const { unreadNotifications, readNotifications } = result.data as INotificationData;
 
         setReadNotifications(readNotifications);
@@ -66,6 +66,14 @@ export function NotificationDropdown() {
         };
 
     }, [userInfo]);
+
+    function typeNotification() {
+        if (filterNotification.Read) {
+            return readNotifications;
+        }
+
+        return unreadNotifications;
+    }
 
     return (
         <div className="relative">
@@ -113,106 +121,19 @@ export function NotificationDropdown() {
                                     <button className="bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm text-[#868E96]">All</button>
                                 </div>
                             </div>
-
-                            <div className="mt-2">
-                                <div className="flex flex-col justify-between pb-8">
-                                    <div className="py-2 flex flex-col pb-4">
-                                        <NotificationItem
-                                            wikiURL={"notification.wikiURL"}
-                                            id={2}
-                                            title={"Update 0.1.4 is live!"}
-                                            message={"Check out what's new. 🤖"}
-                                            isUnred
-                                            updatedTime={"1h"}
-                                        />
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <NotificationItem
-                                            wikiURL={"notification.wikiURL"}
-                                            id={2}
-                                            title={"Update 0.1.3"}
-                                            message={"We now have a last update date, check out the details by clicking here! ⌛"}
-                                            isUnred
-                                            updatedTime={"20min"}
-                                        />
-                                    </div>
-                                    
-                                </div>
-                                {/* <div>
-                                    {unreadNotifications.length > 0 && (
-                                        <div>
-                                            <h3 className="text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY">
-                                                Não lidos
-                                            </h3>
-                                            <div className="py-2">
-                                                <NotificationItem
-                                                    wikiURL={"notification.wikiURL"}
-                                                    id={2}
-                                                    title={notification.title}
-                                                    message={notification.message}
-                                                    key={notification.id}
-                                                    isUnred
-                                                />
-                                                 {unreadNotifications.map(
-                                                    notification => (
-                                                        <NotificationItem
-                                                            wikiURL={notification.wikiURL}
-                                                            id={notification.id}
-                                                            title={notification.title}
-                                                            message={notification.message}
-                                                            key={notification.id}
-                                                            isUnred
-                                                        />
-                                                    )
-                                                )} 
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                                {readNotifications.length > 0 &&
-                                    unreadNotifications.length > 0 && (
-                                        <hr className="opacity-25 m-2 border-LIGHT_TEXT dark:border-DARK_TEXT" />
-                                    )}
-                                <div>
-                                    {readNotifications.length > 0 && (
-                                        <div>
-                                            <h3 className="text-LIGHT_TEXT_SECONDARY dark:text-DARK_TEXT_SECONDARY mt-4">
-                                                Lidas
-                                            </h3>
-                                            <div className="py-2 px-2">
-                                                {readNotifications.map(
-                                                    notification => (
-                                                        <NotificationItem
-                                                            wikiURL={notification.wikiURL}
-                                                            id={notification.id}
-                                                            title={notification.title}
-                                                            message={notification.message}
-                                                            key={notification.id}
-                                                        />
-                                                    )
-                                                )}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div> */}
-                            </div>
-
-                            <div className="flex flex-row justify-evenly">
-                                <div>
-                                    <button className="bg-[#F8F9FA] text-[#868E96] p-2 rounded-md flex items-center justify-between w-20 text-sm font-normal underline hover:text-black">
-                                        Previous
-                                    </button>
-                                </div>
-                                <div>
-                                    <button className="bg-[#C3E5D5] p-2 rounded-md flex items-center justify-between w-20 text-sm text-[#212529] font-normal">Next
-                                        <ArrowRight color="#212529" />
-                                    </button>
-                                </div>
+                            <div className="pt-4">
+                                <Paginate notifications={typeNotification()} />
                             </div>
                         </div>
                     </div>
                 </div>
-            )}
+            )
+            }
         </div>
     );
+}
+
+enum FilterNotification {
+    Read,
+    Unread
 }
