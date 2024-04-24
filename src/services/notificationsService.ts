@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { IResponseData } from "@/interfaces/iResponseData";
 import { IMarkNotificationAsReadCommand } from "@/pages/api/notification/mark-as-read";
 

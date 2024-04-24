@@ -20,7 +20,7 @@ export function NotificationDropdown() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
-    const [filterNotification, setFilterNotification] = useState(FilterNotification)
+    const [filterNotification, setFilterNotification] = useState(FilterNotification.Unread)
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -68,12 +68,13 @@ export function NotificationDropdown() {
     }, [userInfo]);
 
     function typeNotification() {
-        if (filterNotification.Read) {
+        if (filterNotification == FilterNotification.All) {
             return readNotifications;
         }
 
         return unreadNotifications;
     }
+
 
     return (
         <div className="relative">
@@ -115,10 +116,18 @@ export function NotificationDropdown() {
                             </h3>
                             <div className="flex flex-row pt-4">
                                 <div>
-                                    <button className="bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm">Unread</button>
+                                    <button className={filterNotification == FilterNotification.Unread ? "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-between rounded-sm  items-center JUS" : "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm text-[#868E96]"}
+                                        onClick={() => setFilterNotification(FilterNotification.Unread)} >
+                                        <span className="pr-2">Unread</span>
+                                        <span className="text-xs bg-[#DEE2E6] px-1 rounded-sm">{unreadNotifications.length}</span>
+                                    </button>
                                 </div>
                                 <div className="pl-6">
-                                    <button className="bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm text-[#868E96]">All</button>
+                                    <button className={filterNotification == FilterNotification.Unread ? "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-between rounded-sm  items-center JUS" : "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm text-[#868E96]"}
+                                        onClick={() => setFilterNotification(FilterNotification.All)}  >
+                                        <span className="pr-2">All</span>
+                                        <span className="text-xs bg-[#DEE2E6] px-1 rounded-sm">{readNotifications.length}</span>
+                                    </button>
                                 </div>
                             </div>
                             <div className="pt-4">
@@ -134,6 +143,6 @@ export function NotificationDropdown() {
 }
 
 enum FilterNotification {
-    Read,
+    All,
     Unread
 }
