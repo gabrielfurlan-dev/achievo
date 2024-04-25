@@ -1,13 +1,12 @@
-/* eslint-disable */
 type IntervalWeek = {
-    firstDayOfWeek: Date,
-    lastDayOfWeek: Date
-}
+    firstDayOfWeek: Date;
+    lastDayOfWeek: Date;
+};
 
 type PeriodReport = {
     day: string;
     mounth: string;
-}
+};
 
 export function getCurrentDateString() {
     const currentDate = new Date();
@@ -40,7 +39,7 @@ export function getWeekInterval(date: Date) {
 export function getFormatedWeekInterval(date: string) {
     const interval = getWeekInterval(stringToDate(date));
 
-    if (typeof navigator == 'undefined') {
+    if (typeof navigator == "undefined") {
         return getFormatedWeekIntervalBrazil(interval);
     }
 
@@ -69,7 +68,7 @@ function getFormatedWeekIntervalBrazil(interval: IntervalWeek) {
     const firstDayFormatted = `${firstPeriod.day}/${firstPeriod.mounth}`;
     const lastDayFormatted = `${lastPeriod.day}/${lastPeriod.mounth}`;
 
-    return `${firstDayFormatted} until ${lastDayFormatted}, ${interval.lastDayOfWeek.getFullYear()}`
+    return `${firstDayFormatted} until ${lastDayFormatted}, ${interval.lastDayOfWeek.getFullYear()}`;
 }
 
 function getFormatedWeekIntervalOtherCountries(interval: IntervalWeek) {
@@ -83,7 +82,7 @@ function getFormatedWeekIntervalOtherCountries(interval: IntervalWeek) {
 }
 
 function getPeriod(interval: Date) {
-    const day = `${interval.getDate().toString().padStart(2, '0')}`
-    const mounth = `${(interval.getMonth() + 1).toString().padStart(2, '0')}`
-    return { day, mounth }
+    const day = `${interval.getDate().toString().padStart(2, "0")}`;
+    const mounth = `${(interval.getMonth() + 1).toString().padStart(2, "0")}`;
+    return { day, mounth };
 }

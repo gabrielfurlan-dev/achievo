@@ -72,7 +72,7 @@ export function NotificationItem({
                     >
                         <div className="flex flex-row justify-between">
                             <h4 className="font-semibold mb-2 line-clamp-1">{title}</h4>
-                            <p className="text-sm font-light">{updatedTime} ago</p>
+                            <p className="text-sm font-light">{updatedTime}</p>
                         </div>
                         <p className="line-clamp-3">{message}</p>
                     </div>
@@ -94,7 +94,7 @@ export function NotificationItem({
                     >
                         <div className="flex flex-row justify-between">
                             <h4 className="font-semibold mb-2 line-clamp-1">{title}</h4>
-                            <p className="text-sm font-light">{updatedTime} ago</p>
+                            <p className="text-sm font-light">{updatedTime}</p>
                         </div>
                         <p className="line-clamp-3">{message}</p>
                     </div>

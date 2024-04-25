@@ -3,6 +3,8 @@ import { NotificationItem, NotificationProps } from '@/components/NotificationIt
 import { INotification } from '@/interfaces/notifications/iNotification';
 import { ArrowRight } from 'phosphor-react';
 import { useState } from 'react';
+import { getCreatedTimeElapsed } from './elapsedTime';
+import { string } from 'zod';
 
 const ITEMS_PER_PAGE = 2;
 
@@ -24,8 +26,8 @@ export function Paginate({ notifications }: { notifications: Array<INotification
                         title={notification.title}
                         message={notification.message}
                         key={notification.id}
-                        isUnred
-                        updatedTime="1h"
+                        isUnred={!notification.isRead}
+                        updatedTime={getCreatedTimeElapsed(String(notification.createdDate), "")}
                     />
                 </div>
             ))}

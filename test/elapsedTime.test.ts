@@ -1,6 +1,9 @@
-import { getCreatedTimeElapsed, getUpdatedTimeElapsed } from "../src/helpers/elapsedTime";
+import {
+    getCreatedTimeElapsed,
+    getUpdatedTimeElapsed,
+} from "../src/helpers/elapsedTime";
 
-test('Should return updated elapsed time', () => {
+test("Should return updated elapsed time", () => {
     let currentDate = new Date();
     currentDate.setDate(currentDate.getDate() - 3);
 
@@ -37,7 +40,7 @@ test('Should return updated elapsed time', () => {
     expect(result).toBe(`Atualizado há 1 ano atrás`);
 });
 
-test('Should return created elapsed time', () => {
+test("Should return created elapsed time", () => {
     let currentDate = new Date();
     currentDate.setDate(currentDate.getDate() - 3);
 
