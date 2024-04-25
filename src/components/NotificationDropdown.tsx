@@ -11,9 +11,9 @@ export function NotificationDropdown() {
 
     const { userInfo } = useUserInfoStore();
     const {
-        readNotifications,
+        allNotifications,
         unreadNotifications,
-        setReadNotifications,
+        setAllNotifications,
         setUnreadNotifications
     } = useNotificationStore();
 
@@ -30,9 +30,9 @@ export function NotificationDropdown() {
         if (userInfo.id == "") return;
 
         const result = await fetchNotifications(userInfo.id);
-        const { unreadNotifications, readNotifications } = result.data as INotificationData;
+        const { unreadNotifications, allNotifications } = result.data as INotificationData;
 
-        setReadNotifications(readNotifications);
+        setAllNotifications(allNotifications);
         setUnreadNotifications(unreadNotifications);
     }
 
@@ -69,7 +69,7 @@ export function NotificationDropdown() {
 
     function typeNotification() {
         if (filterNotification == FilterNotification.All) {
-            return readNotifications;
+            return allNotifications;
         }
 
         return unreadNotifications;
@@ -126,7 +126,7 @@ export function NotificationDropdown() {
                                     <button className={filterNotification == FilterNotification.Unread ? "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-between rounded-sm  items-center JUS" : "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm text-[#868E96]"}
                                         onClick={() => setFilterNotification(FilterNotification.All)}  >
                                         <span className="pr-2">All</span>
-                                        <span className="text-xs bg-[#DEE2E6] px-1 rounded-sm">{readNotifications.length}</span>
+                                        <span className="text-xs bg-[#DEE2E6] px-1 rounded-sm">{allNotifications.length}</span>
                                     </button>
                                 </div>
                             </div>

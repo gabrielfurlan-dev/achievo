@@ -26,7 +26,7 @@ export function NotificationItem({
     updatedTime,
 }: NotificationProps) {
     const { userInfo } = useUserInfoStore();
-    const { setReadNotifications, setUnreadNotifications } =
+    const { setAllNotifications, setUnreadNotifications } =
         useNotificationStore();
 
     async function setReadNotification(notificationId: number) {
@@ -42,10 +42,10 @@ export function NotificationItem({
     async function getNotifications() {
         try {
             const result = await fetchNotifications(userInfo.id);
-            const { unreadNotifications, readNotifications } =
+            const { unreadNotifications, allNotifications } =
                 result.data as INotificationData;
 
-            setReadNotifications(readNotifications);
+                setAllNotifications(allNotifications);
             setUnreadNotifications(unreadNotifications);
         } catch (error) {
             console.error("Error fetching notifications:", error);

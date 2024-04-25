@@ -8,7 +8,9 @@ export default async function handler(
     res: NextApiResponse
 ) {
     if (req.method !== "GET") {
-        return res.status(405).send({ message: "Somente métodos GET são permitidos" });
+        return res
+            .status(405)
+            .send({ message: "Somente métodos GET são permitidos" });
     }
 
     const userId = req.query.userId as string;
@@ -29,33 +31,35 @@ export default async function handler(
                 userId,
             },
             take,
-            skip
+            skip,
         });
 
-        const readNotifications: INotification[] = [];
-        const unreadNotifications: INotification[] = [];
+        const allNotifications: INotification[] = notifications.map(
+            notification => {
+                const { id, createdDate, message, title, wikiURL } =
+                    notification;
+                const isRead = readNotificationIds.some(
+                    read => read.notificationId === id
+                );
 
-        notifications.forEach(notification => {
-            const { id, createdDate, message, title, wikiURL } = notification;
-
-            const formattedNotification = {
-                id,
-                createdDate: createdDate.toString(),
-                message,
-                title,
-                wikiURL
-            };
-
-            if (readNotificationIds.some(read => read.notificationId === id)) {
-                readNotifications.push(formattedNotification);
-            } else {
-                unreadNotifications.push(formattedNotification);
+                return {
+                    id,
+                    createdDate: createdDate.toString(),
+                    message,
+                    title,
+                    wikiURL,
+                    isRead,
+                };
             }
-        });
+        );
+
+        const unreadNotifications = allNotifications.filter(
+            notif => !notif.isRead
+        );
 
         return res.status(201).json({
             success: true,
-            data: { readNotifications, unreadNotifications },
+            data: { allNotifications, unreadNotifications },
             message: "Notificações obtidas com sucesso!",
         } as IResponseData);
     } catch (error) {
