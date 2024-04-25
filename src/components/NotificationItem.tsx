@@ -45,7 +45,7 @@ export function NotificationItem({
             const { unreadNotifications, allNotifications } =
                 result.data as INotificationData;
 
-                setAllNotifications(allNotifications);
+            setAllNotifications(allNotifications);
             setUnreadNotifications(unreadNotifications);
         } catch (error) {
             console.error("Error fetching notifications:", error);
@@ -70,9 +70,11 @@ export function NotificationItem({
                                     hover:text-WHITE_PRINCIPAL
                                     rounded-lg py-2 px-4 mb-2 transition duration-150"
                     >
-                        <div className="flex flex-row justify-between">
-                            <h4 className="font-semibold mb-2 line-clamp-1">{title}</h4>
-                            <p className="text-sm font-light">{updatedTime}</p>
+                        <div className="flex flex-row justify-between pb-2">
+                            <h4 className="font-semibold line-clamp-1 text-base">{title}</h4>
+                            <div className="w-3/6 flex items-center justify-end">
+                                <p className="text-xs font-light line-clamp-1 ">{updatedTime}</p>
+                            </div>
                         </div>
                         <p className="line-clamp-3">{message}</p>
                     </div>
@@ -92,9 +94,11 @@ export function NotificationItem({
                                     hover:text-GRAY_DARK hover:dark:text-WHITE_PRINCIPAL
                                     rounded-lg py-2 px-4 mb-2 transition duration-150"
                     >
-                        <div className="flex flex-row justify-between">
-                            <h4 className="font-semibold mb-2 line-clamp-1">{title}</h4>
-                            <p className="text-sm font-light">{updatedTime}</p>
+                        <div className="flex flex-row justify-between pb-2">
+                            <h4 className="font-semibold line-clamp-1">{title}</h4>
+                            <div className="w-3/6 flex items-center justify-end">
+                                <p className="text-xs font-light line-clamp-1 ">{updatedTime}</p>
+                            </div>
                         </div>
                         <p className="line-clamp-3">{message}</p>
                     </div>
