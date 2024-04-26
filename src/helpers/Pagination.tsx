@@ -31,17 +31,17 @@ export function Paginate({ notifications }: { notifications: Array<INotification
                     />
                 </div>
             ))}
-            <span>Página {currentPage} de {totalPages}</span>
+            <span className="text-white">Página {currentPage} de {totalPages}</span>
             <div className="flex flex-row justify-evenly pt-2">
                 <div>
-                    <button className={ currentPage == 1 ? "bg-neutral-100 text-[#868E96] py-2 rounded-md flex items-center justify-center w-20 text-sm font-normal underline dark:bg-DARK_BACKGROUND_SECONDARY" : "bg-neutral-200 text-black py-2 rounded-md flex items-center justify-center w-20 text-sm font-normal underline hover:text-black dark:bg-DARK_BACKGROUND_SECONDARY"}
+                    <button className={ currentPage == 1 ? "bg-neutral-100 text-[#868E96] py-2 rounded-md flex items-center justify-center w-20 text-sm font-normal underline dark:bg-DARK_BACKGROUND_SECONDARY dark:text-white opacity-10" : "bg-neutral-200 text-black py-2 rounded-md flex items-center justify-center w-20 text-sm font-normal underline dark:text-neutral-200 dark:bg-DARK_BACKGROUND_TERTIARY"}
                         onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
                         Previous
                     </button>
                 </div>
                 <div>
                     <button
-                        className={currentPage != totalPages ? "bg-[#C3E5D5] p-2 rounded-md flex items-center justify-between w-20 text-sm text-[#212529] font-normal dark:bg-DARK_PRINCIPAL_SECONDARY dark:text-white hover:bg-PRINCIPAL hover:dark:bg-PRINCIPAL hover:text-white" : "bg-neutral-100 p-2 rounded-md flex items-center justify-between w-20 text-sm text-[#868E96] font-normal dark:bg-DARK_PRINCIPAL_SECONDARY dark:text-white "}
+                        className={currentPage != totalPages ? "bg-[#C3E5D5] p-2 rounded-md flex items-center justify-between w-20 text-sm text-[#212529] font-normal dark:bg-DARK_PRINCIPAL_SECONDARY dark:text-white hover:bg-PRINCIPAL hover:dark:bg-PRINCIPAL hover:text-white" : "bg-neutral-100 p-2 rounded-md flex items-center justify-between w-20 text-sm text-[#868E96] font-normal dark:bg-DARK_PRINCIPAL_SECONDARY dark:text-white opacity-50"}
                         onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>
                         Next
                         <ArrowRight />

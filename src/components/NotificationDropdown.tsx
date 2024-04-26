@@ -116,17 +116,17 @@ export function NotificationDropdown() {
                             </h3>
                             <div className="flex flex-row pt-4">
                                 <div>
-                                    <button className={filterNotification == FilterNotification.Unread ? "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-between rounded-sm  items-center" : "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm text-[#868E96] items-center"}
+                                    <button className={filterNotification == FilterNotification.Unread ? "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-between rounded-sm  items-center dark:bg-DARK_BACKGROUND_TERTIARY dark:text-white" : "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm text-[#868E96] items-center dark:bg-DARK_BACKGROUND_TERTIARY"}
                                         onClick={() => setFilterNotification(FilterNotification.Unread)} >
                                         <span className="pr-2">Unread</span>
-                                        <span className="text-xs bg-[#DEE2E6] px-1 rounded-sm">{unreadNotifications.length}</span>
+                                        <span className="text-xs bg-[#DEE2E6] px-1 rounded-sm dark:bg-DARK_BACKGROUND_SECONDARY">{unreadNotifications.length}</span>
                                     </button>
                                 </div>
                                 <div className="pl-6">
-                                    <button className={filterNotification == FilterNotification.Unread ? "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm text-[#868E96] items-center" : "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-between rounded-sm  items-center"}
+                                    <button className={filterNotification == FilterNotification.Unread ? "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm text-[#868E96] items-center dark:bg-DARK_BACKGROUND_TERTIARY" : "bg-LIGHT_BACKGROUND_SECONDARY dark:bg-DARK_BACKGROUND_TERTIARY dark:text-white px-2 py flex justify-between rounded-sm  items-center"}
                                         onClick={() => setFilterNotification(FilterNotification.All)}  >
                                         <span className="pr-2">All</span>
-                                        <span className="text-xs bg-[#DEE2E6] px-1 rounded-sm">{allNotifications.length}</span>
+                                        <span className="text-xs bg-[#DEE2E6] px-1 rounded-sm dark:bg-DARK_BACKGROUND_SECONDARY">{allNotifications.length}</span>
                                     </button>
                                 </div>
                             </div>
