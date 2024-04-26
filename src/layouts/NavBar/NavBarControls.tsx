@@ -1,4 +1,4 @@
-import { NotificationDropdown } from "../../components/NotificationDropdown";
+import { NotificationDropdown } from "../../components/Notifications/NotificationDropdown";
 import ProfileDropdown from "../../components/ProfileDropdown/ProfileDropdown";
 import { ThemeToggleButton } from "../../components/ThemeToggleButton";
 

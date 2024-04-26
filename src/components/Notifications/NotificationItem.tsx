@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { INotificationData } from "@/interfaces/notifications/iNotificationData";
 import {
     fetchNotifications,
@@ -30,7 +29,7 @@ export function NotificationItem({
         useNotificationStore();
 
     async function setReadNotification(notificationId: number) {
-        const result = await setNotificationRead(notificationId, userInfo.id);
+        await setNotificationRead(notificationId, userInfo.id);
 
         getNotifications();
     }
@@ -71,9 +70,13 @@ export function NotificationItem({
                                     rounded-lg py-2 px-4 mb-2 transition duration-150"
                     >
                         <div className="flex flex-row justify-between pb-2">
-                            <h4 className="font-semibold line-clamp-1 text-base">{title}</h4>
+                            <h4 className="font-semibold line-clamp-1 text-base">
+                                {title}
+                            </h4>
                             <div className="w-3/6 flex items-center justify-end">
-                                <p className="text-xs font-light line-clamp-1 ">{updatedTime}</p>
+                                <p className="text-xs font-light line-clamp-1 ">
+                                    {updatedTime}
+                                </p>
                             </div>
                         </div>
                         <p className="line-clamp-3">{message}</p>
@@ -95,9 +98,13 @@ export function NotificationItem({
                                     rounded-lg py-2 px-4 mb-2 transition duration-150"
                     >
                         <div className="flex flex-row justify-between pb-2">
-                            <h4 className="font-semibold line-clamp-1">{title}</h4>
+                            <h4 className="font-semibold line-clamp-1">
+                                {title}
+                            </h4>
                             <div className="w-3/6 flex items-center justify-end">
-                                <p className="text-xs font-light line-clamp-1 ">{updatedTime}</p>
+                                <p className="text-xs font-light line-clamp-1 ">
+                                    {updatedTime}
+                                </p>
                             </div>
                         </div>
                         <p className="line-clamp-3">{message}</p>
