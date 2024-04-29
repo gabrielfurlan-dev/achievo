@@ -4,8 +4,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { fetchNotifications } from "@/services/notificationsService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { INotificationData } from "@/interfaces/notifications/iNotificationData";
-import { NotificationPage } from "@/components/Notifications/NotificationPage";
-import { EfilterNotification } from "./Enums/EFilterNotification";
+import { EfilterNotification } from "@/components/notifications/Enums/EFilterNotification";
+import { NotificationPage } from "@/components/notifications/NotificationPage";
+import { TabNotificationButton } from "./TabNotificationButton";
 
 export function NotificationDropdown() {
     const { userInfo } = useUserInfoStore();
@@ -19,11 +20,9 @@ export function NotificationDropdown() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
-    const [filterNotification, setFilterNotification] = useState(
-        EfilterNotification.Unread
-    );
+    const [filterNotification, setFilterNotification] = useState(EfilterNotification.Unread);
 
-    const toggleDropdown = () => {
+    function toggleDropdown() {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
@@ -31,8 +30,7 @@ export function NotificationDropdown() {
         if (userInfo.id == "") return;
 
         const result = await fetchNotifications(userInfo.id);
-        const { unreadNotifications, allNotifications } =
-            result.data as INotificationData;
+        const { unreadNotifications, allNotifications } = result.data as INotificationData;
 
         setAllNotifications(allNotifications);
         setUnreadNotifications(unreadNotifications);
@@ -71,7 +69,6 @@ export function NotificationDropdown() {
         if (filterNotification == EfilterNotification.All) {
             return allNotifications;
         }
-
         return unreadNotifications;
     }
 
@@ -88,15 +85,10 @@ export function NotificationDropdown() {
                 <div className="flex flex-row-reverse">
                     {unreadNotifications.length > 0 && (
                         <div className="absolute bg-red-600 w-4 h-4 text-[10px] font-bold text-WHITE_PRINCIPAL rounded-full right-2">
-                            {unreadNotifications.length > 9
-                                ? "9+"
-                                : unreadNotifications.length}
+                            {unreadNotifications.length > 9 ? "9+" : unreadNotifications.length}
                         </div>
                     )}
-                    <Bell
-                        size={32}
-                        className="text-LIGHT_TEXT dark:text-DARK_TEXT"
-                    />
+                    <Bell size={32} className="text-LIGHT_TEXT dark:text-DARK_TEXT" />
                 </div>
             </button>
 
@@ -107,7 +99,6 @@ export function NotificationDropdown() {
                     ref={dropdownRef}
                 >
                     <div
-
                         className="absolute right-0 mt-2 bg-LIGHT_BACKGROUND dark:bg-DARK_BACKGROUND_SECONDARY shadow-lg rounded-md overflow-hidden z-20"
                         style={{ width: "20rem" }}
                     >
@@ -115,47 +106,19 @@ export function NotificationDropdown() {
                             <h3 className="text-LIGHT_TEXT dark:text-DARK_TEXT pt-4 font-semibold">
                                 What's new?
                             </h3>
-                            <div className="flex flex-row pt-4">
-                                <div>
-                                    <button
-                                        className={
-                                            filterNotification ==
-                                            EfilterNotification.Unread
-                                                ? "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-between rounded-sm  items-center dark:bg-DARK_BACKGROUND_TERTIARY dark:text-white"
-                                                : "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm text-[#868E96] items-center dark:bg-DARK_BACKGROUND_TERTIARY"
-                                        }
-                                        onClick={() =>
-                                            setFilterNotification(
-                                                EfilterNotification.Unread
-                                            )
-                                        }
-                                    >
-                                        <span className="pr-2">Unread</span>
-                                        <span className="text-xs bg-[#DEE2E6] px-1 rounded-sm dark:bg-DARK_BACKGROUND_SECONDARY">
-                                            {unreadNotifications.length}
-                                        </span>
-                                    </button>
-                                </div>
-                                <div className="pl-6">
-                                    <button
-                                        className={
-                                            filterNotification ==
-                                            EfilterNotification.Unread
-                                                ? "bg-LIGHT_BACKGROUND_SECONDARY px-2 py flex justify-center rounded-sm text-[#868E96] items-center dark:bg-DARK_BACKGROUND_TERTIARY"
-                                                : "bg-LIGHT_BACKGROUND_SECONDARY dark:bg-DARK_BACKGROUND_TERTIARY dark:text-white px-2 py flex justify-between rounded-sm  items-center"
-                                        }
-                                        onClick={() =>
-                                            setFilterNotification(
-                                                EfilterNotification.All
-                                            )
-                                        }
-                                    >
-                                        <span className="pr-2">All</span>
-                                        <span className="text-xs bg-[#DEE2E6] px-1 rounded-sm dark:bg-DARK_BACKGROUND_SECONDARY">
-                                            {allNotifications.length}
-                                        </span>
-                                    </button>
-                                </div>
+                            <div className="flex flex-row pt-4 gap-4">
+                                <TabNotificationButton
+                                    title="Unread"
+                                    numberCount={unreadNotifications.length}
+                                    onClickAction={() => setFilterNotification(EfilterNotification.Unread)}
+                                    selected={filterNotification == EfilterNotification.Unread}
+                                />
+                                <TabNotificationButton
+                                    title="All"
+                                    numberCount={allNotifications.length}
+                                    onClickAction={() => setFilterNotification(EfilterNotification.All)}
+                                    selected={filterNotification == EfilterNotification.All}
+                                />
                             </div>
                             <div className="pt-4">
                                 <NotificationPage notifications={typeNotification()} />
