@@ -21,6 +21,9 @@ export default async function handler(
         const notifications = await db.notification.findMany({
             take,
             skip,
+            orderBy: {
+                createdDate: "desc"
+            }
         });
 
         const readNotificationIds = await db.readNotifications.findMany({

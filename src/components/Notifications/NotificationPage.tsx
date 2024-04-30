@@ -1,7 +1,7 @@
 import { INotification } from "@/interfaces/notifications/iNotification";
 import { ArrowRight } from "phosphor-react";
 import { useState } from "react";
-import { getCreatedTimeElapsed } from "../../helpers/elapsedTime";
+import { getCreatedTimeElapsed } from "@/helpers/elapsedTime";
 import { NotificationItem } from "@/components/notifications/NotificationItem";
 import { tv } from "tailwind-variants";
 
@@ -36,19 +36,21 @@ export function NotificationPage({ notifications }: { notifications: Array<INoti
     return (
         <div>
             {
-                currentPageItems && currentPageItems.map(notification => (
-                    <div className="pb-4">
-                        <NotificationItem
-                            wikiURL={notification.wikiURL}
-                            id={notification.id}
-                            title={notification.title}
-                            message={notification.message}
-                            key={notification.id}
-                            isUnred={!notification.isRead}
-                            updatedTime={getCreatedTimeElapsed(String(notification.createdDate))}
-                        />
-                    </div>
-                ))
+                currentPageItems &&
+                currentPageItems
+                    .map(notification => (
+                        <div className="pb-4">
+                            <NotificationItem
+                                wikiURL={notification.wikiURL}
+                                id={notification.id}
+                                title={notification.title}
+                                message={notification.message}
+                                key={notification.id}
+                                isUnred={!notification.isRead}
+                                updatedTime={getCreatedTimeElapsed(String(notification.createdDate))}
+                            />
+                        </div>
+                    ))
             }
             {
                 currentPageItems.length ?
