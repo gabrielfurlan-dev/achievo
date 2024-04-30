@@ -2,8 +2,8 @@ import { INotification } from "@/interfaces/notifications/iNotification";
 import { ArrowRight } from "phosphor-react";
 import { useState } from "react";
 import { getTimeElapsed } from "@/helpers/elapsedTime";
-import { NotificationItem } from "@/components/notifications/NotificationItem";
 import { tv } from "tailwind-variants";
+import { NotificationItem } from "./NotificationItem";
 
 const ITEMS_PER_PAGE = 2;
 

@@ -4,9 +4,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { fetchNotifications } from "@/services/notificationsService";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { INotificationData } from "@/interfaces/notifications/iNotificationData";
-import { EfilterNotification } from "@/components/notifications/Enums/EFilterNotification";
-import { NotificationPage } from "@/components/notifications/NotificationPage";
-import { TabNotificationButton } from "@/components/notifications/TabNotificationButton";
+import { EfilterNotification } from "./Enums/EFilterNotification";
+import { NotificationPage } from "./NotificationPage";
+import { TabNotificationButton } from "./TabNotificationButton";
 
 export function NotificationDropdown() {
     const { userInfo } = useUserInfoStore();
