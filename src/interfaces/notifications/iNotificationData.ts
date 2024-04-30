@@ -1,6 +1,6 @@
 import { INotification } from "./iNotification";
 
 export interface INotificationData {
-    readNotifications: INotification[];
+    allNotifications: INotification[];
     unreadNotifications: INotification[];
 }

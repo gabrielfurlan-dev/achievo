@@ -4,4 +4,5 @@ export interface INotification {
     message: string;
     title: string;
     wikiURL: string;
+    isRead?: boolean;
 }

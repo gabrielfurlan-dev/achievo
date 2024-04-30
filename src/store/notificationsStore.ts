@@ -4,20 +4,20 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 interface NotificationStore {
     unreadNotifications: INotification[];
-    readNotifications: INotification[];
+    allNotifications: INotification[];
     setUnreadNotifications: (notifications: INotification[]) => void;
-    setReadNotifications: (notifications: INotification[]) => void;
+    setAllNotifications: (notifications: INotification[]) => void;
 }
 
 export const useNotificationStore = create<NotificationStore>()(
     persist(
         set => ({
             unreadNotifications: [],
-            readNotifications: [],
+            allNotifications: [],
             setUnreadNotifications: notifications =>
                 set({ unreadNotifications: notifications }),
-            setReadNotifications: notifications =>
-                set({ readNotifications: notifications }),
+            setAllNotifications: notifications =>
+                set({ allNotifications: notifications }),
         }),
         {
             name: "notifications",

@@ -7,12 +7,13 @@ import { useNotificationStore } from "@/store/notificationsStore";
 import { useUserInfoStore } from "@/store/userStoreInfo";
 import { useEffect } from "react";
 
-type NotificationProps = {
+export type NotificationProps = {
     id: number;
     title: string;
     message: string;
     wikiURL: string;
     isUnred?: boolean;
+    updatedTime: string;
 };
 
 export function NotificationItem({
@@ -21,13 +22,14 @@ export function NotificationItem({
     message,
     isUnred,
     wikiURL,
+    updatedTime,
 }: NotificationProps) {
     const { userInfo } = useUserInfoStore();
-    const { setReadNotifications, setUnreadNotifications } =
+    const { setAllNotifications, setUnreadNotifications } =
         useNotificationStore();
 
     async function setReadNotification(notificationId: number) {
-        const result = await setNotificationRead(notificationId, userInfo.id);
+        await setNotificationRead(notificationId, userInfo.id);
 
         getNotifications();
     }
@@ -39,10 +41,10 @@ export function NotificationItem({
     async function getNotifications() {
         try {
             const result = await fetchNotifications(userInfo.id);
-            const { unreadNotifications, readNotifications } =
+            const { unreadNotifications, allNotifications } =
                 result.data as INotificationData;
 
-            setReadNotifications(readNotifications);
+            setAllNotifications(allNotifications);
             setUnreadNotifications(unreadNotifications);
         } catch (error) {
             console.error("Error fetching notifications:", error);
@@ -67,8 +69,17 @@ export function NotificationItem({
                                     hover:text-WHITE_PRINCIPAL
                                     rounded-lg py-2 px-4 mb-2 transition duration-150"
                     >
-                        <h4 className="font-semibold mb-2">{title}</h4>
-                        <p>{message}</p>
+                        <div className="flex flex-row justify-between pb-2">
+                            <h4 className="font-semibold line-clamp-1 text-base">
+                                {title}
+                            </h4>
+                            <div className="w-3/6 flex items-center justify-end">
+                                <p className="text-xs font-light line-clamp-1 ">
+                                    {updatedTime}
+                                </p>
+                            </div>
+                        </div>
+                        <p className="line-clamp-3">{message}</p>
                     </div>
                 </a>
             ) : (
@@ -86,8 +97,17 @@ export function NotificationItem({
                                     hover:text-GRAY_DARK hover:dark:text-WHITE_PRINCIPAL
                                     rounded-lg py-2 px-4 mb-2 transition duration-150"
                     >
-                        <h4>{title}</h4>
-                        <p>{message}</p>
+                        <div className="flex flex-row justify-between pb-2">
+                            <h4 className="font-semibold line-clamp-1">
+                                {title}
+                            </h4>
+                            <div className="w-3/6 flex items-center justify-end">
+                                <p className="text-xs font-light line-clamp-1 ">
+                                    {updatedTime}
+                                </p>
+                            </div>
+                        </div>
+                        <p className="line-clamp-3">{message}</p>
                     </div>
                 </a>
             )}
