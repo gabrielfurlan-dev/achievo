@@ -1,7 +1,7 @@
 import { INotification } from "@/interfaces/notifications/iNotification";
 import { ArrowRight } from "phosphor-react";
 import { useState } from "react";
-import { getCreatedTimeElapsed } from "@/helpers/elapsedTime";
+import { getTimeElapsed } from "@/helpers/elapsedTime";
 import { NotificationItem } from "@/components/notifications/NotificationItem";
 import { tv } from "tailwind-variants";
 
@@ -46,8 +46,8 @@ export function NotificationPage({ notifications }: { notifications: Array<INoti
                                 title={notification.title}
                                 message={notification.message}
                                 key={notification.id}
-                                isUnred={!notification.isRead}
-                                updatedTime={getCreatedTimeElapsed(String(notification.createdDate))}
+                                isUnread={!notification.isRead}
+                                timeElasped={getTimeElapsed(String(notification.createdDate))}
                             />
                         </div>
                     ))
