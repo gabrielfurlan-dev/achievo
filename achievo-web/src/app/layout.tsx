@@ -1,6 +1,7 @@
 //* Libraries imports
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ClerkProvider } from '@clerk/nextjs'
 
 //* Styles imports
 import "./globals.css";
@@ -21,12 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <QueryClient>
-          {children}
-        </QueryClient>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <QueryClient>
+            {children}
+          </QueryClient>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
