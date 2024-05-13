@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { ClerkProvider } from '@clerk/nextjs'
 
 //* Styles imports
-import "../globals.css";
+import "./globals.css";
 
 //* Components imports
 import { QueryClient } from "@/components/wrapper/query-client";
