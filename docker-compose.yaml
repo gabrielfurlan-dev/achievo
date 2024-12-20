@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: achievo
+      POSTGRES_PASSWORD: achievo
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  nextjs:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://achievo:achievo@db:5432/achievo
+      NEXT_PUBLIC_API_URL: http://localhost:3000
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+volumes:
+  postgresql:
+  postgresql_data:
